@@ -14,12 +14,42 @@
     <text name="UserIsNotActiveAndCanNotLogin" value="用户 {0} 未激活，不能登录." />
     <text name="PleaseEnterLoginInformation" value="请输入登录信息" />
     <text name="TenancyName" value="租户名称" />
+    <text name="Actions" value="操作" />
+    <text name="Name" value="姓名" />
+    <text name="IsActive" value="是否启用" />
     <text name="UserNameOrEmail" value="用户名或邮箱地址" />
     <text name="Password" value="密码" />
     <text name="RememberMe" value="记住我" />
     <text name="LogIn" value="登录" />
-    
     <text name="LoginFailed" value="登录失败!" />
-    
+    <text value="租户" name="Tenants"/>
+    <text value="角色" name="Roles"/>
+    <text value="用户" name="Users"/>
+    <text value="退出登录" name="LogOut"/>
+    <text value="清理本地缓存" name="ClearAllLocalStorage"/>
+    <text value="全屏" name="FullScreen"/>
+    <text value="保存" name="Save"/>
+    <text value="取消" name="Cancel"/>
+    <text name="home" value="主页" />
+    <text name="Home" value="主页" />
+    <text name="RoleName" value="角色名" />
+    <text name="DisplayName" value="显示名称" />
+    <text name="UserName" value="用户名" />
+    <text name="FullName" value="全名" />
+    <text name="EmailAddress" value="邮箱地址" />
+    <text name="Yes" value="是" />
+    <text name="No" value="否" />
+    <text name="UserDetails" value="用户详情" />
+    <text name="UserRoles" value="用户角色" />
+    <text name="CreateNewRole" value="创建新的角色" />
+    <text name="CreateNewTenant" value="创建新的租户" />
+    <text name="EditTenant" value="修改租户" />
+    <text name="EditRole" value="修改角色" />
+    <text name="EditUser" value="修改用户" />
+    <text name="Logout" value="退出登录" />
+    <text name="CurrentTenant" value="当前租户" />
+    <text name="NotSelected" value="未选择" />
+    <text name="Change" value="请选择" />
+    <text name="DefaultPasswordIs" value="默认密码:{0}" />
   </texts>
 </localizationDictionary>

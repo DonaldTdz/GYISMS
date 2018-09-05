@@ -57,7 +57,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
       id: 'members-5',
       title: 'github源代码',
       logo: 'https://major.io/wp-content/uploads/2014/08/github.png',
-      link: 'https://github.com/52ABP/LTMCompanyNameFree.YoyoCmsTemplate',
+      link: 'https://github.com/52ABP/LTMCompanyNameFree.GYISMS',
     },
     {
       id: 'members-5',
@@ -79,7 +79,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         'http://wx.qlogo.cn/mmhead/Q3auHgzwzM6PQV7JWIpJ2seavD5UuzCVWPyZs0SVqFkdYRyc3HQUkg/0',
       link: 'https://zhuanlan.zhihu.com/52abp',
     },
-    // 、、https://github.com/52ABP/LTMCompanyNameFree.YoyoCmsTemplate
+    // 、、https://github.com/52ABP/LTMCompanyNameFree.GYISMS
   ];
 
   notice: any[];

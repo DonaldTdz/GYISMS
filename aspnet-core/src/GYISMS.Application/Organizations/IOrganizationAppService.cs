@@ -7,6 +7,7 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GYISMS.Organizations.Dtos;
 using GYISMS.Organizations;
+using GYISMS.Dtos;
 
 namespace GYISMS.Organizations
 {
@@ -16,16 +17,16 @@ namespace GYISMS.Organizations
     public interface IOrganizationAppService : IApplicationService
     {
         /// <summary>
-    /// 获取Organization的分页列表信息
-    ///</summary>
+        /// 获取Organization的分页列表信息
+        ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
         Task<PagedResultDto<OrganizationListDto>> GetPagedOrganizationsAsync(GetOrganizationsInput input);
 
-		/// <summary>
-		/// 通过指定id获取OrganizationListDto信息
-		/// </summary>
-		Task<OrganizationListDto> GetOrganizationByIdAsync(EntityDto<int> input);
+        /// <summary>
+        /// 通过指定id获取OrganizationListDto信息
+        /// </summary>
+        Task<OrganizationListDto> GetOrganizationByIdAsync(EntityDto<int> input);
 
 
         /// <summary>
@@ -66,6 +67,7 @@ namespace GYISMS.Organizations
         Task BatchDeleteOrganizationsAsync(List<int> input);
 
         List<Organization> GetOrganization();
+        Task<APIResultDto> SynchronousOrganizationAsync();
 
         //// custom codes
 

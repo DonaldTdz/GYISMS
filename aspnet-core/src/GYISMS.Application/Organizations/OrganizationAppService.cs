@@ -21,13 +21,14 @@ using DingTalk.Api;
 using DingTalk.Api.Request;
 using DingTalk.Api.Response;
 using GYISMS.Dtos;
+using GYISMS.Authorization;
 
 namespace GYISMS.Organizations
 {
     /// <summary>
     /// Organization应用层服务的接口实现方法  
     ///</summary>
-//[AbpAuthorize(OrganizationAppPermissions.Organization)] 
+    [AbpAuthorize(AppPermissions.Pages)]
     public class OrganizationAppService : GYISMSAppServiceBase, IOrganizationAppService
     {
         private readonly IRepository<Organization, int>
@@ -209,67 +210,81 @@ namespace GYISMS.Organizations
             return entity;
         }
 
-        //public async Task<PagedResultDto<OrganizationListDto>> GetOrganizationAsync(GetOrganizationsInput input)
-        //{
-        //    string accessToken = "de975eff4b473259ac5fa342dbfdeae7";
-        //    IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
-        //    OapiDepartmentListRequest request = new OapiDepartmentListRequest();
-        //    request.Id = "1";
-        //    request.SetHttpMethod("GET");
-        //    OapiDepartmentListResponse response = client.Execute(request, accessToken);
-        //    var entity = from o in response.Department
-        //                  select new Organization()
-        //                  {
-        //                      Id = (int)o.Id,
-        //                      DepartmentName = o.Name,
-        //                      ParentId = (int)o.Parentid,
-        //                      IsDeleted = false
-        //                  };
-        //    var organizationCount = entity.Count();
 
-        //    var organizations =  entity
-        //            .OrderBy(input.Sorting).AsNoTracking()
-        //            .PageBy(input)
-        //            .ToList();
-
-        //    // var organizationListDtos = ObjectMapper.Map<List <OrganizationListDto>>(organizations);
-        //    var organizationListDtos = organizations.MapTo<List<OrganizationListDto>>();
-
-        //    return new PagedResultDto<OrganizationListDto>(
-        //        organizationCount,
-        //        organizationListDtos
-        //        );
-        //    return entity;
-        //}
-
-        public async Task<APIResultDto> SynchronousOrganizationAsync()
-        {
-            return new APIResultDto() { Code = 0, Msg = "成功" };
-        }
 
         /// <summary>
         /// 同步组织架构
         /// </summary>
+        /// <returns></returns>
+        public async Task<APIResultDto> SynchronousOrganizationAsync()
+        {
+            string accessToken = GetAccessToken();
+            //string accessToken = "0929f705e9c93c3ba237c984b8522177";
+            IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
+            OapiDepartmentListRequest request = new OapiDepartmentListRequest();
+            request.Id = "1";
+            request.SetHttpMethod("GET");
+            OapiDepartmentListResponse response = client.Execute(request, accessToken);
+            var entityByDD = (from o in response.Department
+                          select new Organization()
+                          {
+                              Id = (int)o.Id,
+                              DepartmentName = o.Name,
+                              ParentId = (int)o.Parentid,
+                              IsDeleted = false,
+                              CreationTime = DateTime.Now
+                          }).ToList();
+
+            var originEntity = await _organizationRepository.GetAll().ToListAsync();
+            foreach (var item in entityByDD)
+            {
+                var o = originEntity.Where(r => r.Id == item.Id).FirstOrDefault();
+                if (o != null)
+                {
+                    o.Id = item.Id;
+                    o.DepartmentName = item.DepartmentName;
+                    o.IsDeleted = item.IsDeleted;
+                    o.CreationTime = DateTime.Now;
+                }
+                else
+                {
+                    var organization = new Organization();
+                    organization.Id = item.Id;
+                    organization.DepartmentName = item.DepartmentName;
+                    organization.IsDeleted = item.IsDeleted;
+                    organization.CreationTime = DateTime.Now;
+                    await CreateOrganizationAsync(organization);
+                }
+            }
+            await CurrentUnitOfWork.SaveChangesAsync();
+            return new APIResultDto() { Code = 0, Msg = "同步组织架构成功" };
+        }
+
+        /// <summary>
+        /// 插入组织架构
+        /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task SynchronousOrganizationAsync(OrganizationEditDto input)
+        private async Task<Organization> CreateOrganizationAsync(Organization input)
         {
-            var list = GetOrganization();
-            var organization = new Organization();
-            foreach (var item in list)
-            {
-                organization.Id = item.Id;
-                organization.DepartmentName = item.DepartmentName;
-                organization.IsDeleted = item.IsDeleted;
-            }
-            //if (input.Id.HasValue)
-            //{
-            //    await UpdateOrganizationAsync(input);
-            //}
-            //else
-            //{
-            //    await CreateOrganizationAsync(input);
-            //}
+            var entity = ObjectMapper.Map<Organization>(input);
+            entity = await _organizationRepository.InsertAsync(entity);
+            return entity.MapTo<Organization>();
+        }
+
+        /// <summary>
+        /// 获取AccessToken
+        /// </summary>
+        /// <returns></returns>
+        private string GetAccessToken()
+        {
+            DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
+            OapiGettokenRequest request = new OapiGettokenRequest();
+            request.Appkey = "ding7xespi5yumrzraaq";
+            request.Appsecret = "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3";
+            request.SetHttpMethod("GET");
+            OapiGettokenResponse response = client.Execute(request);
+            return response.AccessToken;
         }
     }
 }

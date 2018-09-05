@@ -22,6 +22,7 @@ import { DelonModule } from 'delon.module';
 import { RootRoutingModule } from 'root-routing.module';
 import { SharedModule } from '@shared/shared.module';
 import { AppModule } from '@app/app.module';
+import { HttpModule } from '@angular/http';
 export function appInitializerFactory(injector: Injector) {
   return () => {
     //  abp.ui.setBusy();
@@ -65,6 +66,7 @@ export function getCurrentLanguage(): string {
     ServiceProxyModule,
     RootRoutingModule,
     HttpClientModule,
+    HttpModule,
     /** 导入 ng-zorro-antd 模块 **/
     NgZorroAntdModule,
     /** 必须导入 ng-zorro 才能导入此项 */
@@ -88,4 +90,4 @@ export function getCurrentLanguage(): string {
   ],
   bootstrap: [RootComponent],
 })
-export class RootModule {}
+export class RootModule { }
