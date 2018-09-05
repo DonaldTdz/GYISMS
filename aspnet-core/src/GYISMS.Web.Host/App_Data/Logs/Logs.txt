@@ -8749,3 +8749,1128 @@ INFO  2018-09-05 16:34:57,459 [38   ] ore.Mvc.Internal.ControllerActionInvoker -
 INFO  2018-09-05 16:34:57,463 [38   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
 INFO  2018-09-05 16:34:57,463 [38   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 11.3448ms
 INFO  2018-09-05 16:34:57,463 [38   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 16.2129ms 200 application/json; charset=utf-8
+DEBUG 2018-09-05 16:35:38,566 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2018-09-05 16:35:38,594 [1    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2018-09-05 16:35:38,610 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.Web.Host.Startup.GYISMSWebHostModule, GYISMS.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,613 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSWebCoreModule, GYISMS.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,613 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSApplicationModule, GYISMS.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,613 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSCoreModule, GYISMS.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,613 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,614 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,614 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,614 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,614 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.EntityFrameworkCore.GYISMSEntityFrameworkModule, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,615 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,615 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,615 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,615 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,615 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,616 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:38,618 [1    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2018-09-05 16:35:38,677 [1    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-05 16:35:38,677 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-05 16:35:38,677 [1    ] o.Configuration.LanguageManagementConfig - Converted GYISMS (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-05 16:35:38,677 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-05 16:35:38,936 [1    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: GYISMS.EntityFrameworkCore.GYISMSDbContext, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 16:35:39,305 [1    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2018-09-05 16:35:39,366 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2018-09-05 16:35:39,413 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2018-09-05 16:35:39,417 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: GYISMS
+DEBUG 2018-09-05 16:35:39,445 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2018-09-05 16:35:39,478 [1    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2018-09-05 16:35:39,524 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 10 classes define auto mapping attributes
+DEBUG 2018-09-05 16:35:39,524 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Models.TokenAuth.ExternalLoginProviderInfoModel
+DEBUG 2018-09-05 16:35:39,531 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.CreateUserDto
+DEBUG 2018-09-05 16:35:39,531 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.UserDto
+DEBUG 2018-09-05 16:35:39,532 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2018-09-05 16:35:39,532 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.UserLoginInfoDto
+DEBUG 2018-09-05 16:35:39,532 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.CreateRoleDto
+DEBUG 2018-09-05 16:35:39,532 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.PermissionDto
+DEBUG 2018-09-05 16:35:39,532 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.RoleDto
+DEBUG 2018-09-05 16:35:39,533 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2018-09-05 16:35:39,533 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.TenantDto
+INFO  2018-09-05 16:35:43,356 [13   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/  
+INFO  2018-09-05 16:35:44,585 [13   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing action GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host)
+INFO  2018-09-05 16:35:44,976 [13   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host) - Validation state: Valid
+INFO  2018-09-05 16:35:44,980 [13   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host), returned result Microsoft.AspNetCore.Mvc.RedirectResult in 1.9435ms.
+INFO  2018-09-05 16:35:45,227 [10   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2018-09-05 16:35:45,241 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host) in 652.2365ms
+INFO  2018-09-05 16:35:45,308 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1956.055ms 302 
+INFO  2018-09-05 16:35:45,310 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/index.html  
+INFO  2018-09-05 16:35:45,347 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 37.181ms 200 text/html
+INFO  2018-09-05 16:35:45,377 [13   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui.css  
+INFO  2018-09-05 16:35:45,377 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui-bundle.js  
+INFO  2018-09-05 16:35:45,380 [6    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui-standalone-preset.js  
+INFO  2018-09-05 16:35:45,404 [10   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui-bundle.js was not modified
+INFO  2018-09-05 16:35:45,404 [6    ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui-standalone-preset.js was not modified
+INFO  2018-09-05 16:35:45,404 [13   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui.css was not modified
+INFO  2018-09-05 16:35:45,408 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 30.3137ms 304 application/javascript
+INFO  2018-09-05 16:35:45,408 [6    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 27.8596ms 304 application/javascript
+INFO  2018-09-05 16:35:45,408 [13   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 30.9848ms 304 text/css
+INFO  2018-09-05 16:35:45,588 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/v1/swagger.json  
+INFO  2018-09-05 16:35:45,699 [7    ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:35:45,966 [11   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 377.9905ms 200 application/json;charset=utf-8
+INFO  2018-09-05 16:35:53,625 [11   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetOrganization  
+INFO  2018-09-05 16:35:53,626 [11   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:35:53,638 [11   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetOrganization", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetOrganization (GYISMS.Application)
+INFO  2018-09-05 16:35:54,209 [11   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetOrganization (GYISMS.Application) - Validation state: Valid
+ERROR 2018-09-05 16:35:54,832 [11   ] Mvc.ExceptionHandling.AbpExceptionFilter - Value cannot be null.
+Parameter name: source
+System.ArgumentNullException: Value cannot be null.
+Parameter name: source
+   at System.Linq.Enumerable.Select[TSource,TResult](IEnumerable`1 source, Func`2 selector)
+   at GYISMS.Organizations.OrganizationAppService.GetOrganization() in D:\20180903GYISMS\GYISMS\aspnet-core\src\GYISMS.Application\Organizations\OrganizationAppService.cs:line 202
+   at lambda_method(Closure , Object , Object[] )
+   at Microsoft.AspNetCore.Mvc.Internal.ActionMethodExecutor.SyncObjectResultExecutor.Execute(IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeActionMethodAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeNextActionFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Rethrow(ActionExecutedContext context)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Internal.ControllerActionInvoker.InvokeInnerFilterAsync()
+   at Microsoft.AspNetCore.Mvc.Internal.ResourceInvoker.InvokeNextExceptionFilterAsync()
+INFO  2018-09-05 16:35:54,970 [11   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:35:54,991 [11   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetOrganization (GYISMS.Application) in 1352.6093ms
+INFO  2018-09-05 16:35:54,991 [11   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1366.5336ms 500 application/json; charset=utf-8
+INFO  2018-09-05 16:36:14,569 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync  
+INFO  2018-09-05 16:36:14,570 [10   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:36:14,616 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 16:36:14,720 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 16:36:15,377 [11   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 657.2224ms.
+INFO  2018-09-05 16:36:15,383 [17   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:36:15,394 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 777.7918ms
+INFO  2018-09-05 16:36:15,394 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 825.0835ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:36:39,381 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:36:39,389 [10   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:36:39,393 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 11.6524ms 204 
+INFO  2018-09-05 16:36:39,411 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:36:39,412 [10   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:36:39,412 [10   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:36:39,419 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:36:39,419 [10   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:36:39,421 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:36:39,870 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 449.1802ms.
+INFO  2018-09-05 16:36:39,885 [10   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:36:39,918 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 499.1999ms
+INFO  2018-09-05 16:36:39,918 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 507.1215ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:36:39,931 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:36:39,931 [10   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:36:39,932 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.4737ms 204 
+INFO  2018-09-05 16:36:39,940 [11   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:36:39,940 [11   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:36:39,941 [11   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:36:39,953 [11   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:36:39,953 [11   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:36:39,971 [11   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:36:39,992 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 20.6431ms.
+INFO  2018-09-05 16:36:39,994 [10   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:36:39,997 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 44.0787ms
+INFO  2018-09-05 16:36:39,997 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 57.3917ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:37:44,213 [21   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:37:44,213 [21   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:37:44,214 [21   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2426ms 204 
+INFO  2018-09-05 16:37:44,242 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:37:44,242 [25   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:37:44,243 [25   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:37:44,247 [25   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:37:44,247 [25   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:37:44,248 [25   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:37:44,255 [25   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.9262ms.
+INFO  2018-09-05 16:37:44,267 [25   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:37:44,268 [25   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 20.968ms
+INFO  2018-09-05 16:37:44,268 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 25.8549ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:37:44,288 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:37:44,288 [25   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:37:44,288 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.1972ms 204 
+INFO  2018-09-05 16:37:44,296 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:37:44,297 [10   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:37:44,297 [10   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:37:44,301 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:37:44,301 [10   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:37:44,303 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:37:44,308 [25   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 5.5896ms.
+INFO  2018-09-05 16:37:44,309 [25   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:37:44,309 [25   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 8.4213ms
+INFO  2018-09-05 16:37:44,309 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.0911ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:38:42,234 [24   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:38:42,234 [24   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:42,234 [24   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3126ms 204 
+INFO  2018-09-05 16:38:42,253 [6    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:38:42,253 [6    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:42,253 [6    ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:38:42,257 [6    ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:38:42,257 [6    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:42,259 [6    ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:38:42,269 [6    ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 10.2461ms.
+INFO  2018-09-05 16:38:42,296 [27   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:38:42,297 [27   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 39.7407ms
+INFO  2018-09-05 16:38:42,297 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 44.2138ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:38:42,322 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:38:42,322 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:42,322 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.4416ms 204 
+INFO  2018-09-05 16:38:42,328 [6    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:38:42,329 [6    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:42,329 [6    ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:38:42,333 [6    ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:38:42,333 [6    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:42,335 [6    ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:38:42,339 [27   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.5911ms.
+INFO  2018-09-05 16:38:42,340 [27   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:38:42,340 [27   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 6.5303ms
+INFO  2018-09-05 16:38:42,340 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 11.5244ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:38:46,197 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Tenant/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 16:38:46,197 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:46,198 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.939ms 204 
+INFO  2018-09-05 16:38:46,261 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Tenant/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 16:38:46,261 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:46,262 [27   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:38:46,272 [27   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "Tenant"}. Executing action GYISMS.MultiTenancy.TenantAppService.GetAll (GYISMS.Application)
+INFO  2018-09-05 16:38:46,272 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:46,372 [27   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.MultiTenancy.TenantAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-05 16:38:46,420 [29   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.MultiTenancy.TenantAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 47.2213ms.
+INFO  2018-09-05 16:38:46,423 [29   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:38:46,426 [29   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.MultiTenancy.TenantAppService.GetAll (GYISMS.Application) in 154.4641ms
+INFO  2018-09-05 16:38:46,426 [29   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 165.1611ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:38:51,068 [29   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 16:38:51,069 [29   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:51,069 [29   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.4362ms 204 
+INFO  2018-09-05 16:38:51,106 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 16:38:51,106 [7    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:51,107 [7    ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:38:51,115 [7    ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "Role"}. Executing action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application)
+INFO  2018-09-05 16:38:51,116 [7    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:38:51,194 [7    ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-05 16:38:51,438 [29   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 244.1302ms.
+INFO  2018-09-05 16:38:51,441 [29   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:38:51,445 [29   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) in 328.9392ms
+INFO  2018-09-05 16:38:51,445 [29   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 339.4976ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:41:26,043 [33   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:41:26,043 [33   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:26,043 [33   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2208ms 204 
+INFO  2018-09-05 16:41:26,062 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:41:26,063 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:26,064 [40   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:41:26,068 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:41:26,068 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:26,069 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:41:26,075 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 6.4232ms.
+INFO  2018-09-05 16:41:26,081 [41   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:41:26,081 [41   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 13.3874ms
+INFO  2018-09-05 16:41:26,081 [41   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 19.0689ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:41:26,110 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:41:26,111 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:26,111 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1.1205ms 204 
+INFO  2018-09-05 16:41:26,117 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:41:26,117 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:26,117 [40   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:41:26,120 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:41:26,120 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:26,125 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:41:26,129 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.5816ms.
+INFO  2018-09-05 16:41:26,130 [40   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:41:26,130 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 9.4453ms
+INFO  2018-09-05 16:41:26,130 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.2829ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:41:28,033 [39   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 16:41:28,034 [39   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:28,034 [39   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.5338ms 204 
+INFO  2018-09-05 16:41:28,143 [39   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 16:41:28,143 [39   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:28,144 [39   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:41:28,146 [39   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "Role"}. Executing action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application)
+INFO  2018-09-05 16:41:28,146 [39   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:41:28,148 [39   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-05 16:41:28,168 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 20.2799ms.
+INFO  2018-09-05 16:41:28,196 [40   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:41:28,196 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) in 49.227ms
+INFO  2018-09-05 16:41:28,196 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 52.5598ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:42:08,711 [42   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:42:08,711 [42   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:08,712 [42   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3679ms 204 
+INFO  2018-09-05 16:42:08,722 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:42:08,722 [36   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:08,722 [36   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:42:08,725 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:42:08,725 [36   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:08,725 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:42:08,730 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 4.5073ms.
+INFO  2018-09-05 16:42:08,734 [36   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:42:08,734 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 9.333ms
+INFO  2018-09-05 16:42:08,734 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 12.2538ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:42:08,760 [35   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:42:08,760 [35   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:08,761 [35   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1.0444ms 204 
+INFO  2018-09-05 16:42:08,773 [35   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:42:08,773 [35   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:08,774 [35   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:42:08,776 [35   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:42:08,776 [35   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:08,778 [35   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:42:08,781 [35   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.321ms.
+INFO  2018-09-05 16:42:08,782 [35   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:42:08,782 [35   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 5.4022ms
+INFO  2018-09-05 16:42:08,782 [35   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 9.0002ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:42:11,065 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 16:42:11,065 [36   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:11,066 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2645ms 204 
+INFO  2018-09-05 16:42:11,151 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 16:42:11,152 [36   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:11,152 [36   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:42:11,160 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 16:42:11,160 [36   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:42:11,163 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 16:42:11,186 [35   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 23.2157ms.
+INFO  2018-09-05 16:42:11,194 [35   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:42:11,194 [35   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 34.1984ms
+INFO  2018-09-05 16:42:11,194 [35   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 43.0267ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:43:27,371 [35   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:43:27,371 [35   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:43:27,371 [35   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2027ms 204 
+INFO  2018-09-05 16:43:27,392 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:43:27,392 [48   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:43:27,392 [48   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:43:27,396 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:43:27,396 [48   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:43:27,397 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:43:27,406 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 8.7176ms.
+INFO  2018-09-05 16:43:27,410 [48   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:43:27,410 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 14.1666ms
+INFO  2018-09-05 16:43:27,410 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 18.7371ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:43:27,429 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:43:27,429 [48   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:43:27,429 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2303ms 204 
+INFO  2018-09-05 16:43:27,441 [35   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:43:27,441 [35   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:43:27,441 [35   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:43:27,444 [35   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:43:27,444 [35   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:43:27,445 [35   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:43:27,455 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 10.0877ms.
+INFO  2018-09-05 16:43:27,456 [48   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:43:27,456 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 12.576ms
+INFO  2018-09-05 16:43:27,456 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 15.7569ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:44:15,480 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:44:15,480 [48   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:44:15,480 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.1993ms 204 
+INFO  2018-09-05 16:44:15,505 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:44:15,506 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:44:15,509 [49   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:44:15,513 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:44:15,513 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:44:15,514 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:44:15,519 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.1828ms.
+INFO  2018-09-05 16:44:15,529 [49   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:44:15,529 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 16.4659ms
+INFO  2018-09-05 16:44:15,529 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 24.1779ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:44:15,547 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:44:15,549 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:44:15,549 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1.4216ms 204 
+INFO  2018-09-05 16:44:15,559 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:44:15,559 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:44:15,559 [49   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:44:15,563 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:44:15,563 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:44:15,565 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:44:15,568 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.9842ms.
+INFO  2018-09-05 16:44:15,569 [49   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:44:15,569 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 6.1675ms
+INFO  2018-09-05 16:44:15,569 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 10.5448ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:45:46,925 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:45:46,925 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:45:46,925 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.342ms 204 
+INFO  2018-09-05 16:45:46,955 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:45:46,956 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:45:46,958 [51   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:45:46,961 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:45:46,961 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:45:46,966 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:45:46,975 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 8.5039ms.
+INFO  2018-09-05 16:45:46,985 [51   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:45:46,985 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 23.9649ms
+INFO  2018-09-05 16:45:46,985 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 30.6913ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:45:47,006 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:45:47,006 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:45:47,006 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3839ms 204 
+INFO  2018-09-05 16:45:47,013 [57   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:45:47,014 [57   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:45:47,015 [57   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:45:47,019 [57   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:45:47,019 [57   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:45:47,021 [57   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:45:47,024 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.1522ms.
+INFO  2018-09-05 16:45:47,025 [51   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:45:47,025 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 6.2771ms
+INFO  2018-09-05 16:45:47,026 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 12.66ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:46:55,504 [55   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:46:55,504 [55   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:55,504 [55   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2775ms 204 
+INFO  2018-09-05 16:46:55,539 [61   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:46:55,539 [61   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:55,540 [61   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:46:55,544 [61   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:46:55,544 [61   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:55,545 [61   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:46:55,551 [61   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 6.1955ms.
+INFO  2018-09-05 16:46:55,564 [63   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:46:55,564 [63   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 20.0864ms
+INFO  2018-09-05 16:46:55,564 [63   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 25.5757ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:46:55,583 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:46:55,583 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:55,583 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2976ms 204 
+INFO  2018-09-05 16:46:55,593 [63   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:46:55,593 [63   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:55,594 [63   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:46:55,596 [63   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:46:55,596 [63   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:55,599 [63   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:46:55,602 [63   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.1887ms.
+INFO  2018-09-05 16:46:55,603 [63   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:46:55,603 [63   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 6.4996ms
+INFO  2018-09-05 16:46:55,603 [63   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 9.703ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:46:57,053 [61   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 16:46:57,054 [61   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:57,054 [61   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2341ms 204 
+INFO  2018-09-05 16:46:57,136 [61   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 16:46:57,137 [61   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:57,137 [61   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:46:57,140 [61   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 16:46:57,140 [61   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:46:57,146 [61   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 16:46:57,149 [63   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.2344ms.
+INFO  2018-09-05 16:46:57,154 [63   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:46:57,154 [63   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 13.7069ms
+INFO  2018-09-05 16:46:57,154 [63   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 17.4598ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:50:06,323 [70   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:50:06,324 [70   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:50:06,324 [70   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.244ms 204 
+INFO  2018-09-05 16:50:06,344 [70   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:50:06,345 [70   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:50:06,346 [70   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:50:06,350 [70   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:50:06,350 [70   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:50:06,352 [70   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:50:06,358 [70   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 6.1614ms.
+INFO  2018-09-05 16:50:06,364 [70   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:50:06,364 [70   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 13.6062ms
+INFO  2018-09-05 16:50:06,364 [70   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 19.7082ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:50:06,385 [67   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:50:06,385 [67   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:50:06,385 [67   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.4884ms 204 
+INFO  2018-09-05 16:50:06,391 [67   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:50:06,392 [67   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:50:06,392 [67   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:50:06,395 [67   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:50:06,395 [67   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:50:06,397 [67   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:50:06,404 [67   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 6.9853ms.
+INFO  2018-09-05 16:50:06,405 [67   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:50:06,405 [67   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 9.718ms
+INFO  2018-09-05 16:50:06,405 [67   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.6253ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:51:26,099 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:51:26,101 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:51:26,101 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.1026ms 204 
+INFO  2018-09-05 16:51:26,123 [73   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:51:26,123 [73   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:51:26,124 [73   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:51:26,127 [73   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:51:26,127 [73   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:51:26,128 [73   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:51:26,138 [73   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 9.5467ms.
+INFO  2018-09-05 16:51:26,144 [69   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:51:26,144 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 17.2328ms
+INFO  2018-09-05 16:51:26,145 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 21.7504ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:51:26,163 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:51:26,163 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:51:26,164 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.6509ms 204 
+INFO  2018-09-05 16:51:26,181 [75   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:51:26,181 [75   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:51:26,182 [75   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:51:26,192 [75   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:51:26,192 [75   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:51:26,194 [75   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:51:26,198 [75   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 4.1663ms.
+INFO  2018-09-05 16:51:26,202 [75   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:51:26,203 [75   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 11.1762ms
+INFO  2018-09-05 16:51:26,203 [75   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 22.3579ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:52:16,752 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 16:52:16,752 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:52:16,752 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2201ms 204 
+INFO  2018-09-05 16:52:16,787 [79   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 16:52:16,788 [79   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:52:16,788 [79   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:52:16,791 [79   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 16:52:16,791 [79   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:52:16,792 [79   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 16:52:16,799 [79   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 6.8362ms.
+INFO  2018-09-05 16:52:16,807 [79   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:52:16,807 [79   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 15.6446ms
+INFO  2018-09-05 16:52:16,807 [79   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 19.8089ms 200 application/json; charset=utf-8
+INFO  2018-09-05 16:52:16,840 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 16:52:16,840 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:52:16,840 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2706ms 204 
+INFO  2018-09-05 16:52:16,852 [79   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 16:52:16,852 [79   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:52:16,853 [79   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 16:52:16,856 [79   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 16:52:16,856 [79   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 16:52:16,858 [79   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 16:52:16,863 [80   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 5.1787ms.
+INFO  2018-09-05 16:52:16,864 [80   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 16:52:16,864 [80   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 8.3899ms
+INFO  2018-09-05 16:52:16,864 [80   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 12.4166ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:05,762 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:00:05,762 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:05,762 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2501ms 204 
+INFO  2018-09-05 17:00:05,791 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:00:05,792 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:05,792 [93   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:05,802 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:00:05,802 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:05,803 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:00:05,809 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.7268ms.
+INFO  2018-09-05 17:00:05,813 [100  ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:05,814 [100  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 11.5128ms
+INFO  2018-09-05 17:00:05,814 [100  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 24.6046ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:05,832 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:00:05,832 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:05,832 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.4014ms 204 
+INFO  2018-09-05 17:00:05,837 [100  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:00:05,837 [100  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:05,838 [100  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:05,840 [100  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:00:05,840 [100  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:05,845 [100  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:00:05,848 [100  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.7787ms.
+INFO  2018-09-05 17:00:05,848 [100  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:05,848 [100  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 8.2459ms
+INFO  2018-09-05 17:00:05,849 [100  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 11.2295ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:25,232 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:00:25,233 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:25,233 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.172ms 204 
+INFO  2018-09-05 17:00:25,254 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:00:25,254 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:25,255 [93   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:25,258 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:00:25,258 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:25,259 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:00:25,266 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 7.1676ms.
+INFO  2018-09-05 17:00:25,269 [93   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:25,270 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 11.1322ms
+INFO  2018-09-05 17:00:25,270 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 15.5101ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:25,284 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:00:25,284 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:25,285 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2553ms 204 
+INFO  2018-09-05 17:00:25,292 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:00:25,292 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:25,292 [93   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:25,305 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:00:25,305 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:25,307 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:00:25,314 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 7.3516ms.
+INFO  2018-09-05 17:00:25,315 [93   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:25,315 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 10.2027ms
+INFO  2018-09-05 17:00:25,315 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 24.1721ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:35,454 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:00:35,454 [93   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:35,454 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3819ms 204 
+INFO  2018-09-05 17:00:35,568 [98   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:00:35,568 [98   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:35,569 [98   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:35,573 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:00:35,573 [98   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:35,576 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:00:35,604 [99   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 28.32ms.
+INFO  2018-09-05 17:00:35,621 [99   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:35,621 [99   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 48.3378ms
+INFO  2018-09-05 17:00:35,622 [99   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 53.3902ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:40,263 [98   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:00:40,263 [98   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:40,263 [98   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.5195ms 204 
+INFO  2018-09-05 17:00:40,284 [98   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:00:40,285 [98   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:40,285 [98   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:40,290 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:00:40,290 [98   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:40,291 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:00:40,296 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.2841ms.
+INFO  2018-09-05 17:00:40,299 [98   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:40,300 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 9.616ms
+INFO  2018-09-05 17:00:40,300 [98   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 15.5129ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:40,333 [99   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:00:40,333 [99   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:40,333 [99   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3853ms 204 
+INFO  2018-09-05 17:00:40,343 [100  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:00:40,343 [100  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:40,343 [100  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:40,346 [100  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:00:40,346 [100  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:40,348 [100  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:00:40,349 [99   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 1.6438ms.
+INFO  2018-09-05 17:00:40,350 [99   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:40,350 [99   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 4.5124ms
+INFO  2018-09-05 17:00:40,350 [99   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 7.752ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:41,664 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:00:41,664 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:41,664 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2464ms 204 
+INFO  2018-09-05 17:00:41,747 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:00:41,747 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:41,748 [95   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:41,750 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:00:41,750 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:41,754 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:00:41,756 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 1.908ms.
+INFO  2018-09-05 17:00:41,774 [95   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:41,774 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 24.0882ms
+INFO  2018-09-05 17:00:41,775 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 27.322ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:43,193 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync  
+INFO  2018-09-05 17:00:43,195 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:43,195 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.0148ms 204 
+INFO  2018-09-05 17:00:43,197 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:00:43,197 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:43,198 [95   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:43,200 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:00:43,200 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:43,202 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:00:43,205 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 1.9353ms.
+INFO  2018-09-05 17:00:43,208 [95   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:43,209 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 8.2298ms
+INFO  2018-09-05 17:00:43,209 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 11.3677ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:46,581 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:00:46,581 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:46,583 [95   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:46,594 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:00:46,594 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:46,621 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:00:46,638 [98   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 POST http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync application/json 0
+INFO  2018-09-05 17:00:46,639 [98   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:46,639 [98   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:00:46,645 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 23.8574ms.
+INFO  2018-09-05 17:00:46,655 [95   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:46,655 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 60.3435ms
+INFO  2018-09-05 17:00:46,655 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 73.9494ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:00:46,656 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "SynchronousOrganizationAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application)
+INFO  2018-09-05 17:00:46,656 [98   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:00:46,659 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:00:47,343 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 684.2887ms.
+INFO  2018-09-05 17:00:47,349 [98   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:00:47,350 [98   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) in 694.2253ms
+INFO  2018-09-05 17:00:47,350 [98   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 712.1203ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:01:47,705 [103  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:01:47,706 [103  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:01:47,706 [103  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2665ms 204 
+INFO  2018-09-05 17:01:47,734 [108  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:01:47,735 [108  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:01:47,735 [108  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:01:47,739 [108  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:01:47,739 [108  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:01:47,740 [108  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:01:47,746 [108  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.763ms.
+INFO  2018-09-05 17:01:47,752 [99   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:01:47,752 [99   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 12.8655ms
+INFO  2018-09-05 17:01:47,752 [99   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 18.1145ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:01:47,771 [109  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:01:47,772 [109  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:01:47,772 [109  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.5365ms 204 
+INFO  2018-09-05 17:01:47,780 [109  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:01:47,780 [109  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:01:47,780 [109  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:01:47,786 [109  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:01:47,786 [109  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:01:47,789 [109  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:01:47,792 [99   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.0614ms.
+INFO  2018-09-05 17:01:47,793 [99   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:01:47,793 [99   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 7.2478ms
+INFO  2018-09-05 17:01:47,793 [99   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.5475ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:19,466 [122  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:08:19,466 [122  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:19,466 [122  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2406ms 204 
+INFO  2018-09-05 17:08:19,486 [121  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:08:19,486 [121  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:19,487 [121  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:19,491 [121  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:08:19,491 [121  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:19,492 [121  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:08:19,497 [121  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.5889ms.
+INFO  2018-09-05 17:08:19,503 [122  ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:19,504 [122  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 12.8064ms
+INFO  2018-09-05 17:08:19,504 [122  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 18.2046ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:19,519 [125  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:08:19,519 [125  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:19,520 [125  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.5263ms 204 
+INFO  2018-09-05 17:08:19,528 [125  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:08:19,528 [125  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:19,529 [125  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:19,532 [125  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:08:19,532 [125  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:19,536 [125  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:08:19,539 [126  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.7806ms.
+INFO  2018-09-05 17:08:19,540 [126  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:19,540 [126  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 8.5251ms
+INFO  2018-09-05 17:08:19,540 [126  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 12.3531ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:21,032 [126  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:08:21,033 [126  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:21,033 [126  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.7809ms 204 
+INFO  2018-09-05 17:08:21,121 [126  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:08:21,121 [126  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:21,122 [126  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:21,131 [126  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:08:21,131 [126  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:21,134 [126  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:08:21,142 [126  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 7.3267ms.
+INFO  2018-09-05 17:08:21,145 [126  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:21,145 [126  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 13.7403ms
+INFO  2018-09-05 17:08:21,145 [126  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 24.5203ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:23,906 [121  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync  
+INFO  2018-09-05 17:08:23,906 [121  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:23,906 [121  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3754ms 204 
+INFO  2018-09-05 17:08:23,908 [121  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:08:23,908 [121  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:23,908 [121  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:23,913 [121  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:08:23,913 [121  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:23,914 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:08:23,914 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:23,915 [119  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:23,916 [121  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:08:23,918 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:08:23,918 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:23,918 [125  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.7013ms.
+INFO  2018-09-05 17:08:23,924 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:08:23,926 [128  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 POST http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync application/json 0
+INFO  2018-09-05 17:08:23,926 [128  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:23,927 [128  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:23,931 [128  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "SynchronousOrganizationAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application)
+INFO  2018-09-05 17:08:23,931 [128  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:23,931 [121  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:23,931 [121  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 18.1759ms
+INFO  2018-09-05 17:08:23,931 [121  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 23.5099ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:23,934 [128  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:08:23,940 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 16.0918ms.
+INFO  2018-09-05 17:08:23,944 [119  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:23,944 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 26.0065ms
+INFO  2018-09-05 17:08:23,944 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 30.0396ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:24,538 [128  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 603.4826ms.
+INFO  2018-09-05 17:08:24,548 [128  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:24,548 [128  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) in 617.2134ms
+INFO  2018-09-05 17:08:24,548 [128  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 622.3269ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:35,053 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:08:35,054 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:35,054 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3508ms 204 
+INFO  2018-09-05 17:08:35,074 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:08:35,075 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:35,076 [119  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:35,081 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:08:35,081 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:35,082 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:08:35,087 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 4.5561ms.
+INFO  2018-09-05 17:08:35,096 [119  ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:35,097 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 15.3883ms
+INFO  2018-09-05 17:08:35,097 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 23.3369ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:35,115 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:08:35,115 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:35,115 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.6843ms 204 
+INFO  2018-09-05 17:08:35,128 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:08:35,128 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:35,128 [119  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:35,131 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:08:35,131 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:35,134 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:08:35,137 [126  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.9422ms.
+INFO  2018-09-05 17:08:35,138 [126  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:35,138 [126  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 6.3907ms
+INFO  2018-09-05 17:08:35,138 [126  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 10.1498ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:08:36,319 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:08:36,319 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:36,319 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2112ms 204 
+INFO  2018-09-05 17:08:36,403 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:08:36,404 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:36,404 [119  ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:08:36,408 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:08:36,408 [119  ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:08:36,410 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:08:36,421 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 11.0813ms.
+INFO  2018-09-05 17:08:36,455 [119  ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:08:36,455 [119  ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 47.3114ms
+INFO  2018-09-05 17:08:36,456 [119  ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 52.1123ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:16:18,306 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync  
+INFO  2018-09-05 17:16:18,306 [91   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,306 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3498ms 204 
+INFO  2018-09-05 17:16:18,310 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:16:18,310 [91   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,310 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.1966ms 204 
+INFO  2018-09-05 17:16:18,320 [87   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:16:18,320 [87   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,320 [87   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.1972ms 204 
+INFO  2018-09-05 17:16:18,332 [87   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 POST http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync application/json 0
+INFO  2018-09-05 17:16:18,332 [87   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,332 [89   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:16:18,332 [89   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,332 [87   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:16:18,332 [89   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:16:18,336 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:16:18,336 [87   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "SynchronousOrganizationAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application)
+INFO  2018-09-05 17:16:18,336 [87   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,337 [89   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,339 [87   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:16:18,339 [92   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:16:18,339 [92   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,340 [92   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:16:18,341 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:16:18,342 [92   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:16:18,342 [92   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:18,344 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.8287ms.
+INFO  2018-09-05 17:16:18,345 [92   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:16:18,347 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 1.9913ms.
+INFO  2018-09-05 17:16:18,352 [92   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:16:18,352 [92   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 10.1724ms
+INFO  2018-09-05 17:16:18,352 [92   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.1385ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:16:18,359 [89   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:16:18,359 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 22.4248ms
+INFO  2018-09-05 17:16:18,359 [89   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 27.1223ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:16:18,926 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 586.9781ms.
+INFO  2018-09-05 17:16:18,939 [89   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:16:18,939 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) in 603.3167ms
+INFO  2018-09-05 17:16:18,939 [89   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 607.6393ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:16:28,842 [89   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:16:28,842 [89   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:28,842 [89   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3566ms 204 
+INFO  2018-09-05 17:16:28,863 [89   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:16:28,863 [89   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:28,864 [89   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:16:28,868 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:16:28,868 [89   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:28,870 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:16:28,876 [89   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.5719ms.
+INFO  2018-09-05 17:16:28,880 [85   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:16:28,881 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 12.9641ms
+INFO  2018-09-05 17:16:28,881 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 17.9568ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:16:28,900 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:16:28,900 [85   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:28,900 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3061ms 204 
+INFO  2018-09-05 17:16:28,909 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:16:28,910 [85   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:28,910 [85   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:16:28,912 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:16:28,912 [85   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:28,915 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:16:28,921 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 5.5435ms.
+INFO  2018-09-05 17:16:28,923 [85   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:16:28,923 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 10.8857ms
+INFO  2018-09-05 17:16:28,923 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.6785ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:16:30,711 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:16:30,711 [85   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:30,711 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2338ms 204 
+INFO  2018-09-05 17:16:30,796 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:16:30,796 [85   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:30,797 [85   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:16:30,801 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:16:30,801 [85   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:16:30,804 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:16:30,808 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.9065ms.
+INFO  2018-09-05 17:16:30,818 [85   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:16:30,819 [85   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 17.7131ms
+INFO  2018-09-05 17:16:30,819 [85   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 22.6727ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:19:58,078 [77   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:19:58,078 [77   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,078 [77   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.273ms 204 
+INFO  2018-09-05 17:19:58,104 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:19:58,104 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,105 [74   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:19:58,109 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:19:58,109 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,110 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:19:58,118 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 7.9131ms.
+INFO  2018-09-05 17:19:58,128 [74   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:19:58,128 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 19.1866ms
+INFO  2018-09-05 17:19:58,128 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 24.1172ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:19:58,143 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:19:58,144 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,144 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3041ms 204 
+INFO  2018-09-05 17:19:58,152 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:19:58,152 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,153 [74   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:19:58,159 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:19:58,159 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,161 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:19:58,169 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 7.7656ms.
+INFO  2018-09-05 17:19:58,170 [74   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:19:58,170 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 11.382ms
+INFO  2018-09-05 17:19:58,170 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 18.4555ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:19:58,400 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:19:58,400 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,400 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.1976ms 204 
+INFO  2018-09-05 17:19:58,502 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:19:58,502 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,503 [74   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:19:58,505 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:19:58,505 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:19:58,508 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:19:58,511 [71   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.0801ms.
+INFO  2018-09-05 17:19:58,520 [70   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:19:58,520 [70   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 15.4828ms
+INFO  2018-09-05 17:19:58,520 [70   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 18.0793ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:31,490 [70   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:20:31,490 [70   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,490 [70   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2181ms 204 
+INFO  2018-09-05 17:20:31,525 [70   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:20:31,525 [70   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,526 [70   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:31,535 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:20:31,535 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,536 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:20:31,542 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 6.3662ms.
+INFO  2018-09-05 17:20:31,549 [69   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:31,549 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 14.2356ms
+INFO  2018-09-05 17:20:31,550 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 24.5258ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:31,565 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:20:31,565 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,565 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.1788ms 204 
+INFO  2018-09-05 17:20:31,573 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:20:31,573 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,573 [69   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:31,578 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:20:31,578 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,580 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:20:31,585 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 4.8817ms.
+INFO  2018-09-05 17:20:31,587 [69   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:31,587 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 9.2262ms
+INFO  2018-09-05 17:20:31,587 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 14.5203ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:31,859 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:20:31,859 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,859 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3775ms 204 
+INFO  2018-09-05 17:20:31,968 [69   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:20:31,968 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,968 [69   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:31,970 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:20:31,970 [69   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:31,973 [69   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:20:31,976 [68   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.3215ms.
+INFO  2018-09-05 17:20:31,980 [71   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:31,980 [71   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 9.6614ms
+INFO  2018-09-05 17:20:31,980 [71   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 12.5272ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:55,028 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:20:55,028 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,028 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.5249ms 204 
+INFO  2018-09-05 17:20:55,053 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:20:55,053 [66   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,054 [66   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:55,065 [66   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:20:55,065 [66   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,073 [66   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:20:55,083 [66   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 9.4467ms.
+INFO  2018-09-05 17:20:55,095 [66   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:55,095 [66   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 30.3963ms
+INFO  2018-09-05 17:20:55,095 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 42.0269ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:55,116 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:20:55,116 [66   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,117 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3222ms 204 
+INFO  2018-09-05 17:20:55,125 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:20:55,125 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,125 [72   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:55,128 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:20:55,128 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,130 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:20:55,134 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 4.1229ms.
+INFO  2018-09-05 17:20:55,135 [72   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:55,136 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 7.313ms
+INFO  2018-09-05 17:20:55,136 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 10.7362ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:55,352 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:20:55,353 [66   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,353 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.317ms 204 
+INFO  2018-09-05 17:20:55,471 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:20:55,471 [66   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,472 [66   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:55,474 [66   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:20:55,474 [66   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:55,477 [66   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:20:55,488 [66   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 11.4841ms.
+INFO  2018-09-05 17:20:55,501 [66   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:55,501 [66   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 26.387ms
+INFO  2018-09-05 17:20:55,501 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 31.1278ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:57,921 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync  
+INFO  2018-09-05 17:20:57,921 [66   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:57,921 [66   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2266ms 204 
+INFO  2018-09-05 17:20:57,928 [68   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:20:57,928 [68   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:57,929 [68   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:57,935 [68   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:20:57,935 [68   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:57,938 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 POST http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync application/json 0
+INFO  2018-09-05 17:20:57,938 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:57,938 [72   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:57,939 [68   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:20:57,941 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "SynchronousOrganizationAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application)
+INFO  2018-09-05 17:20:57,941 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:57,942 [68   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.1858ms.
+INFO  2018-09-05 17:20:57,945 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:20:57,952 [68   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:57,952 [68   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 17.2141ms
+INFO  2018-09-05 17:20:57,952 [68   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 24.5305ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:58,484 [58   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 538.7344ms.
+INFO  2018-09-05 17:20:58,493 [58   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:58,494 [58   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) in 552.3386ms
+INFO  2018-09-05 17:20:58,494 [58   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 555.6164ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:20:58,527 [58   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:20:58,527 [58   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:58,528 [58   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:20:58,531 [58   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:20:58,531 [58   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:20:58,535 [58   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:20:58,537 [68   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.1148ms.
+INFO  2018-09-05 17:20:58,541 [68   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:20:58,541 [68   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 10.1751ms
+INFO  2018-09-05 17:20:58,541 [68   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.9434ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:21:52,188 [65   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:21:52,188 [65   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,188 [65   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3662ms 204 
+INFO  2018-09-05 17:21:52,215 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:21:52,215 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,215 [64   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:21:52,222 [64   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:21:52,222 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,223 [64   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:21:52,232 [64   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 9.3852ms.
+INFO  2018-09-05 17:21:52,239 [64   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:21:52,240 [64   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 17.5868ms
+INFO  2018-09-05 17:21:52,240 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 25.9437ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:21:52,263 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:21:52,263 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,263 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3822ms 204 
+INFO  2018-09-05 17:21:52,272 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:21:52,272 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,272 [72   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:21:52,275 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:21:52,275 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,281 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:21:52,286 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 4.2294ms.
+INFO  2018-09-05 17:21:52,287 [72   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:21:52,287 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 11.8773ms
+INFO  2018-09-05 17:21:52,287 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 15.435ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:21:52,501 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:21:52,501 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,501 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.7673ms 204 
+INFO  2018-09-05 17:21:52,600 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:21:52,600 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,601 [72   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:21:52,604 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:21:52,604 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:52,606 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:21:52,633 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 27.0554ms.
+INFO  2018-09-05 17:21:52,657 [63   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:21:52,657 [63   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 53.4862ms
+INFO  2018-09-05 17:21:52,657 [63   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 57.4268ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:21:59,665 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync  
+INFO  2018-09-05 17:21:59,665 [72   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:21:59,665 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3522ms 204 
+INFO  2018-09-05 17:22:11,059 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:22:11,059 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:22:11,059 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.4082ms 204 
+INFO  2018-09-05 17:22:13,761 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:22:13,761 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:22:13,761 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1.9653ms 204 
+INFO  2018-09-05 17:22:13,782 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:22:13,782 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:22:13,783 [64   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:22:13,783 [65   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 POST http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync application/json 0
+INFO  2018-09-05 17:22:13,786 [65   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:22:13,786 [65   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:22:13,790 [64   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:22:13,790 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:22:13,790 [65   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "SynchronousOrganizationAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application)
+INFO  2018-09-05 17:22:13,790 [65   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:22:13,793 [64   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:22:13,793 [65   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:22:13,796 [64   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:22:13,796 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:22:13,797 [64   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:22:13,799 [55   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 6.005ms.
+INFO  2018-09-05 17:22:13,799 [64   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:22:13,799 [64   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:22:13,803 [64   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:22:13,806 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.9808ms.
+INFO  2018-09-05 17:22:13,810 [72   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:22:13,810 [72   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 10.9427ms
+INFO  2018-09-05 17:22:13,810 [72   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.871ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:22:13,811 [55   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:22:13,811 [55   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 21.3531ms
+INFO  2018-09-05 17:22:13,811 [55   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 29.8041ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:22:14,392 [65   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 598.3233ms.
+INFO  2018-09-05 17:22:14,406 [65   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:22:14,406 [65   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) in 615.6275ms
+INFO  2018-09-05 17:22:14,406 [65   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 623.6663ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:26:54,117 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:26:54,117 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,117 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.3799ms 204 
+INFO  2018-09-05 17:26:54,137 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:26:54,137 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,138 [49   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:26:54,142 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:26:54,142 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,144 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:26:54,150 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 6.827ms.
+INFO  2018-09-05 17:26:54,155 [49   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:26:54,156 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 13.4099ms
+INFO  2018-09-05 17:26:54,156 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 18.6405ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:26:54,175 [46   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:26:54,175 [46   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,175 [46   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.4584ms 204 
+INFO  2018-09-05 17:26:54,182 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:26:54,182 [36   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,183 [36   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:26:54,185 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:26:54,185 [36   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,187 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:26:54,190 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.8842ms.
+INFO  2018-09-05 17:26:54,190 [36   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:26:54,191 [36   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 5.6183ms
+INFO  2018-09-05 17:26:54,191 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 8.4319ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:26:54,334 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:26:54,334 [36   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,334 [36   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2348ms 204 
+INFO  2018-09-05 17:26:54,409 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:26:54,409 [48   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,410 [48   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:26:54,415 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:26:54,416 [48   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:26:54,419 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:26:54,422 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.3566ms.
+INFO  2018-09-05 17:26:54,428 [48   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:26:54,429 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 13.0699ms
+INFO  2018-09-05 17:26:54,429 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 19.5945ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:29:45,967 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-05 17:29:45,967 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:45,967 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.229ms 204 
+INFO  2018-09-05 17:29:46,041 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-05 17:29:46,041 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:46,042 [40   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:29:46,044 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-05 17:29:46,044 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:46,045 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-05 17:29:46,050 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.4012ms.
+INFO  2018-09-05 17:29:46,054 [40   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:29:46,054 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 10.4403ms
+INFO  2018-09-05 17:29:46,054 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 13.4324ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:29:46,069 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-05 17:29:46,069 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:46,069 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.1904ms 204 
+INFO  2018-09-05 17:29:46,074 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-05 17:29:46,074 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:46,075 [40   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:29:46,078 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-05 17:29:46,078 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:46,079 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-05 17:29:46,082 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.746ms.
+INFO  2018-09-05 17:29:46,083 [40   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:29:46,083 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 5.0793ms
+INFO  2018-09-05 17:29:46,083 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 8.6742ms 200 application/json; charset=utf-8
+INFO  2018-09-05 17:29:46,383 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-05 17:29:46,383 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:46,383 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.2853ms 204 
+INFO  2018-09-05 17:29:46,504 [40   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetPagedOrganizationsAsync?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-05 17:29:46,504 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:46,504 [40   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-05 17:29:46,507 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetPagedOrganizationsAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application)
+INFO  2018-09-05 17:29:46,507 [40   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-05 17:29:46,509 [40   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) with arguments (GYISMS.Organizations.Dtos.GetOrganizationsInput) - Validation state: Valid
+INFO  2018-09-05 17:29:46,512 [34   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 2.8112ms.
+INFO  2018-09-05 17:29:46,516 [34   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-05 17:29:46,516 [34   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetPagedOrganizationsAsync (GYISMS.Application) in 9.5201ms
+INFO  2018-09-05 17:29:46,517 [34   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 12.703ms 200 application/json; charset=utf-8
