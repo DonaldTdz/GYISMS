@@ -1,0 +1,29 @@
+<!--component html goes here -->
+<nz-card>
+    <form nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="8" class="mb-md" [class.text-left]="'false'">
+                <button nz-button nzType="primary" nzLoading>
+                        <i class="anticon anticon-poweroff"></i>
+                <span>同步组织架构</span></button>
+            </div>
+        </div>
+    </form>
+    <nz-table #nzTable [nzAjaxData]="organizationList" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowTotal]="'true'" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
+        <thead>
+            <tr>
+                <th>部门名称</th>
+                <th>父部门id</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <!-- <tbody>
+            <tr nz-tbody-tr *ngFor="let item of nzTable.data">
+    <td>{{item.departmentName}}</td>
+    <td>{{item.parentId}}</td>
+          <td nz-td>
+                    <a (click)="goDetail(item.id)">详情</a>
+                </td>  </tr>
+</tbody> -->
+    </nz-table>
+</nz-card>

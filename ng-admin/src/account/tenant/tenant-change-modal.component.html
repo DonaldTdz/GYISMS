@@ -1,0 +1,30 @@
+﻿<div class="padding-bottom-45">
+
+  <h3>
+    <span>{{l('ChangeTenant')}}</span>
+  </h3>
+
+  <form nz-form [formGroup]="validateForm" (ngSubmit)="submit()">
+    <nz-form-item>
+      <nz-form-label [nzSpan]="6" nzFor="" nzHasFeedback nzRequired>{{l("TenancyName")}}</nz-form-label>
+      <nz-form-control [nzSpan]="14" nzHasFeedback [nzValidateStatus]="getFormControl('tenancyName')">
+        <input nz-input formControlName="tenancyName" type="text" />
+      </nz-form-control>
+    </nz-form-item>
+
+    <nz-form-label>{{l("LeaveEmptyToSwitchToHost")}}</nz-form-label>
+
+    <!-- 功能按钮 -->
+    <div class="custom-modal-footer">
+      <div class="custom-modal-footter-group">
+        <button nz-button type="button" [disabled]="saving" (click)="close()">
+          {{l("Cancel")}}
+        </button>
+        <button nz-button [nzType]="'primary'" type="submit" [disabled]="!validateForm.valid">
+          {{l("Save")}}
+        </button>
+      </div>
+    </div>
+
+  </form>
+</div>

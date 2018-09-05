@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <VersionPrefix>1.0.0.0</VersionPrefix>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssetTargetFallback>$(AssetTargetFallback);portable-net45+win8+wp8+wpa81;</AssetTargetFallback>
+    <AssemblyName>GYISMS.Application</AssemblyName>
+    <PackageId>GYISMS.Application</PackageId>
+    <GenerateAssemblyConfigurationAttribute>false</GenerateAssemblyConfigurationAttribute>
+    <GenerateAssemblyCompanyAttribute>false</GenerateAssemblyCompanyAttribute>
+    <GenerateAssemblyProductAttribute>false</GenerateAssemblyProductAttribute>
+    <RootNamespace>GYISMS</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GYISMS.Core\GYISMS.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="TopSdk">
+      <HintPath>C:\Users\Perha\Desktop\SDK示例代码\钉钉SDK\TopSdk.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

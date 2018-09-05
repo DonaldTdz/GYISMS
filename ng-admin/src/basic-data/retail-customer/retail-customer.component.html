@@ -1,0 +1,31 @@
+<!--component html goes here -->
+<nz-card>
+    <form nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
+        <div nz-row [nzGutter]="24">
+            <!-- <div nz-col [nzSpan]="8" class="mb-md" [class.text-left]="'false'">
+                    <button nz-button nzType="primary" nzLoading>
+                            <i class="anticon anticon-poweroff"></i>
+                    <span>同步组织架构</span></button>
+                </div> -->
+        </div>
+    </form>
+    <nz-table #rowSelectionTable (nzCurrentPageDataChange)="currentPageDataChange($event)" (nzPageIndexChange)="refreshStatus()" (nzPageSizeChange)="refreshStatus()">
+        <thead>
+            <tr>
+                <!-- <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th> -->
+                <th>用户名</th>
+                <th>性别</th>
+                <th>年龄</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <!-- <tbody>
+      <tr *ngFor="let data of rowSelectionTable.data">
+        <td nzShowCheckbox [(nzChecked)]="data.checked" [nzDisabled]="data.disabled" (nzCheckedChange)="refreshStatus($event)"></td>
+        <td>{{data.name}}</td>
+        <td>{{data.age}}</td>
+        <td>{{data.address}}</td>
+      </tr>
+    </tbody> -->
+    </nz-table>
+</nz-card>
