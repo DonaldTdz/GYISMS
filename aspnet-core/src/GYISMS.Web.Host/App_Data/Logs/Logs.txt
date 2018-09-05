@@ -776,3 +776,81 @@ INFO  2018-09-04 17:19:13,813 [7    ] ore.Mvc.Internal.ControllerActionInvoker -
 INFO  2018-09-04 17:19:13,873 [14   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
 INFO  2018-09-04 17:19:13,900 [14   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetOrganization (GYISMS.Application) in 21310.483ms
 INFO  2018-09-04 17:19:13,903 [14   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 21335.1146ms 200 application/json; charset=utf-8
+DEBUG 2018-09-05 17:52:24,263 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2018-09-05 17:52:24,346 [1    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2018-09-05 17:52:24,359 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.Web.Host.Startup.GYISMSWebHostModule, GYISMS.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,361 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSWebCoreModule, GYISMS.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,361 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSApplicationModule, GYISMS.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,362 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSCoreModule, GYISMS.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,362 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,362 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,362 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,363 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,363 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.EntityFrameworkCore.GYISMSEntityFrameworkModule, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,363 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,363 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,364 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,364 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,364 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,364 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:24,367 [1    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2018-09-05 17:52:24,424 [1    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-05 17:52:24,424 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-05 17:52:24,424 [1    ] o.Configuration.LanguageManagementConfig - Converted GYISMS (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-05 17:52:24,424 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-05 17:52:24,715 [1    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: GYISMS.EntityFrameworkCore.GYISMSDbContext, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-05 17:52:25,419 [1    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2018-09-05 17:52:25,472 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2018-09-05 17:52:25,510 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2018-09-05 17:52:25,527 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: GYISMS
+DEBUG 2018-09-05 17:52:25,552 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2018-09-05 17:52:25,693 [1    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2018-09-05 17:52:25,732 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 10 classes define auto mapping attributes
+DEBUG 2018-09-05 17:52:25,732 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Models.TokenAuth.ExternalLoginProviderInfoModel
+DEBUG 2018-09-05 17:52:25,738 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.CreateUserDto
+DEBUG 2018-09-05 17:52:25,739 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.UserDto
+DEBUG 2018-09-05 17:52:25,739 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2018-09-05 17:52:25,739 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.UserLoginInfoDto
+DEBUG 2018-09-05 17:52:25,739 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.CreateRoleDto
+DEBUG 2018-09-05 17:52:25,739 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.PermissionDto
+DEBUG 2018-09-05 17:52:25,739 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.RoleDto
+DEBUG 2018-09-05 17:52:25,740 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2018-09-05 17:52:25,740 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.TenantDto
+INFO  2018-09-05 17:52:29,483 [12   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/  
+INFO  2018-09-05 17:52:29,483 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 DEBUG http://localhost:21021/  0
+INFO  2018-09-05 17:52:29,552 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 75.8817ms 200 
+INFO  2018-09-05 17:52:32,248 [12   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing action GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host)
+INFO  2018-09-05 17:52:32,945 [12   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host) - Validation state: Valid
+INFO  2018-09-05 17:52:32,950 [12   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host), returned result Microsoft.AspNetCore.Mvc.RedirectResult in 1.776ms.
+INFO  2018-09-05 17:52:33,131 [11   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2018-09-05 17:52:33,144 [11   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host) in 890.859ms
+INFO  2018-09-05 17:52:33,182 [11   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3688.2751ms 302 
+INFO  2018-09-05 17:52:33,183 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/index.html  
+INFO  2018-09-05 17:52:33,211 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 27.756ms 200 text/html
+INFO  2018-09-05 17:52:33,233 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui-bundle.js  
+INFO  2018-09-05 17:52:33,235 [13   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui.css  
+INFO  2018-09-05 17:52:33,239 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui-standalone-preset.js  
+INFO  2018-09-05 17:52:33,268 [13   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui.css was not modified
+INFO  2018-09-05 17:52:33,270 [7    ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui-standalone-preset.js was not modified
+INFO  2018-09-05 17:52:33,272 [15   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui-bundle.js was not modified
+INFO  2018-09-05 17:52:33,277 [13   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 41.1556ms 304 text/css
+INFO  2018-09-05 17:52:33,280 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 41.1035ms 304 application/javascript
+INFO  2018-09-05 17:52:33,282 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 45.7534ms 304 application/javascript
+INFO  2018-09-05 17:52:33,704 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/v1/swagger.json  
+ERROR 2018-09-05 17:52:33,902 [15   ] Microsoft.AspNetCore.Server.Kestrel      - Connection id "0HLGJ2L5G6HHJ", Request id "0HLGJ2L5G6HHJ:00000002": An unhandled exception was thrown by the application.
+System.NotSupportedException: HTTP method "POST" & path "api/services/app/Organization/SynchronousOrganizationAsync" overloaded by actions - GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application),GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application). Actions require unique method/path combination for Swagger 2.0. Use ConflictingActionsResolver as a workaround
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.CreatePathItem(IEnumerable`1 apiDescriptions, ISchemaRegistry schemaRegistry)
+   at System.Linq.Enumerable.ToDictionary[TSource,TKey,TElement](IEnumerable`1 source, Func`2 keySelector, Func`2 elementSelector, IEqualityComparer`1 comparer)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.CreatePathItems(IEnumerable`1 apiDescriptions, ISchemaRegistry schemaRegistry)
+   at Swashbuckle.AspNetCore.SwaggerGen.SwaggerGenerator.GetSwagger(String documentName, String host, String basePath, String[] schemes)
+   at Swashbuckle.AspNetCore.Swagger.SwaggerMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Builder.RouterMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Authentication.AuthenticationMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware.Invoke(HttpContext context)
+   at Microsoft.AspNetCore.Cors.Infrastructure.CorsMiddleware.Invoke(HttpContext context)
+   at Abp.AspNetCore.Security.AbpSecurityHeadersMiddleware.Invoke(HttpContext httpContext) in D:\Github\aspnetboilerplate\src\Abp.AspNetCore\AspNetCore\Security\AbpSecurityHeadersMiddleware.cs:line 26
+   at Microsoft.AspNetCore.Server.IISIntegration.IISMiddleware.Invoke(HttpContext httpContext)
+   at Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests[TContext](IHttpApplication`1 application)
+INFO  2018-09-05 17:52:33,905 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 204.0647ms 500 
