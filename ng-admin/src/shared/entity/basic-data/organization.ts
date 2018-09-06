@@ -5,7 +5,6 @@ export class Organization implements IOrganization {
     order: number;
     deptHiding: boolean;
     orgDeptOwner: string;
-    isDeleted: boolean;
     creationTime: Date;
     constructor(data?: IOrganization) {
         if (data) {
@@ -24,7 +23,6 @@ export class Organization implements IOrganization {
             this.order = data["order"];
             this.deptHiding = data["deptHiding"];
             this.orgDeptOwner = data["orgDeptOwner"];
-            this.isDeleted = data["isDeleted"];
             this.creationTime = data["creationTime"];
         }
     }
@@ -54,7 +52,6 @@ export class Organization implements IOrganization {
         data["order"] = this.order;
         data["deptHiding"] = this.deptHiding;
         data["orgDeptOwner"] = this.orgDeptOwner;
-        data["isDeleted"] = this.isDeleted;
         data["creationTime"] = this.creationTime;
 
         return data;
@@ -74,8 +71,66 @@ export interface IOrganization {
     order: number;
     deptHiding: boolean;
     orgDeptOwner: string;
-    isDeleted: boolean;
     creationTime: Date;
+}
+
+export class TreeNode implements ITreeNode {
+    title: string;
+    key: string;
+    children: TreeNode[]
+    constructor(data?: ITreeNode) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.title = data["title"];
+            this.key = data["key"];
+            this.children = data["children"];
+        }
+    }
+
+    static fromJS(data: any): TreeNode {
+        let result = new TreeNode();
+        result.init(data);
+        return result;
+    }
+
+    static fromJSArray(dataArray: any[]): TreeNode[] {
+        let array = [];
+        dataArray.forEach(result => {
+            let item = new TreeNode();
+            item.init(result);
+            array.push(item);
+        });
+
+        return array;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["title"] = this.title;
+        data["key"] = this.key;
+        data["children"] = this.children;
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new TreeNode();
+        result.init(json);
+        return result;
+    }
+}
+export interface ITreeNode {
+    title: string;
+    key: string;
+    children: TreeNode[]
 }
 
 

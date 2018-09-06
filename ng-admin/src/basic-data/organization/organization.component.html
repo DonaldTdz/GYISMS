@@ -1,5 +1,5 @@
 <!--component html goes here -->
-<nz-card>
+<!-- <nz-card>
     <form nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="8" class="mb-md" [class.text-left]="'false'">
@@ -14,17 +14,20 @@
             <tr>
                 <th>部门名称</th>
                 <th>父部门id</th>
-                <th>操作</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let data of nzTable.data">
                 <td>{{data.departmentName}}</td>
                 <td>{{data.parentId}}</td>
-                <td nz-td>
-                    <a (click)="goDetail(data.id)">详情</a>
-                </td>
             </tr>
         </tbody>
     </nz-table>
-</nz-card>
+</nz-card> -->
+<nz-input-group [nzSuffix]="suffixIcon">
+    <input type="text" nz-input placeholder="Search Tree Node" [(ngModel)]="searchValue">
+</nz-input-group>
+<ng-template #suffixIcon>
+    <i class="anticon anticon-search"></i>
+</ng-template>
+<nz-tree [(ngModel)]="rootNode" [nzAsyncData]="true" (nzExpandChange)="mouseAction('expand',$event)"></nz-tree>

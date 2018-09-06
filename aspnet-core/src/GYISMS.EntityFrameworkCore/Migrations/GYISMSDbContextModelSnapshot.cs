@@ -20,37 +20,37 @@ namespace GYISMS.Migrations
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Abp.Application.Editions.Edition", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("CreationTime");
+                b.Property<DateTime>("CreationTime");
 
-                    b.Property<long?>("CreatorUserId");
+                b.Property<long?>("CreatorUserId");
 
-                    b.Property<long?>("DeleterUserId");
+                b.Property<long?>("DeleterUserId");
 
-                    b.Property<DateTime?>("DeletionTime");
+                b.Property<DateTime?>("DeletionTime");
 
-                    b.Property<string>("DisplayName")
-                        .IsRequired()
-                        .HasMaxLength(64);
+                b.Property<string>("DisplayName")
+                    .IsRequired()
+                    .HasMaxLength(64);
 
-                    b.Property<bool>("IsDeleted");
+                b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModificationTime");
+                b.Property<DateTime?>("LastModificationTime");
 
-                    b.Property<long?>("LastModifierUserId");
+                b.Property<long?>("LastModifierUserId");
 
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(32);
+                b.Property<string>("Name")
+                    .IsRequired()
+                    .HasMaxLength(32);
 
-                    b.HasKey("Id");
+                b.HasKey("Id");
 
-                    b.ToTable("AbpEditions");
-                });
+                b.ToTable("AbpEditions");
+            });
 
             modelBuilder.Entity("Abp.Application.Features.FeatureSetting", b =>
                 {

@@ -16,12 +16,12 @@ namespace GYISMS.Organizations
     ///</summary>
     public class OrganizationManager :GYISMSDomainServiceBase, IOrganizationManager
     {
-    private readonly IRepository<Organization,int> _organizationRepository;
+    private readonly IRepository<Organization,long> _organizationRepository;
 
         /// <summary>
             /// Organization的构造方法
             ///</summary>
-        public OrganizationManager(IRepository<Organization, int>
+        public OrganizationManager(IRepository<Organization, long>
 organizationRepository)
             {
             _organizationRepository =  organizationRepository;
