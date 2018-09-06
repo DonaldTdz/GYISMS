@@ -217,7 +217,6 @@ export class RoleServiceProxy {
     constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
-        alert(this.baseUrl);
     }
 
     /**

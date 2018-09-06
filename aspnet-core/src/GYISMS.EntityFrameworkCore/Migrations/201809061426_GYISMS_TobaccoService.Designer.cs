@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace GYISMS.Migrations
 {
     [DbContext(typeof(GYISMSDbContext))]
-    [Migration("201809041730.GYISMS")]
-    partial class GYISMS
+    [Migration("201809061426_GYISMS_TobaccoService")]
+    partial class GYISMS_TobaccoService
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -1254,8 +1254,8 @@ namespace GYISMS.Migrations
             modelBuilder.Entity("GYISMS.Organizations.Organization", b =>
             {
                 b.Property<long>("Id").ValueGeneratedOnAdd();
-                 //.ValueGeneratedOnAdd()
-                 //.HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                //.ValueGeneratedOnAdd()
+                //.HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
                 b.Property<string>("DepartmentName").IsRequired().HasMaxLength(100);
                 b.Property<long?>("ParentId");
                 b.Property<long?>("Order");
@@ -1267,6 +1267,284 @@ namespace GYISMS.Migrations
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
 
                 b.ToTable("Organizations");
+            });
+
+            modelBuilder.Entity("GYISMS.SystemDatas.SystemData", b =>
+            {
+                b.Property<int>("Id").ValueGeneratedOnAdd();
+                b.Property<int?>("ModelId");
+                b.Property<int>("Type").IsRequired();
+                b.Property<string>("Code").IsRequired().HasMaxLength(50);
+                b.Property<string>("Desc").IsRequired().HasMaxLength(500);
+                b.Property<int?>("Seq");
+                b.Property<DateTime?>("CreationTime");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("SystemDatas");
+            });
+            modelBuilder.Entity("GYISMS.Meetings.Meeting", b =>
+            {
+                b.Property<Guid>("Id").ValueGeneratedOnAdd();
+                b.Property<int>("MeetingRoomId").IsRequired();
+                b.Property<string>("Subject").IsRequired().HasMaxLength(100);
+                b.Property<string>("Issues").HasMaxLength(2000);
+                b.Property<string>("Desc").HasMaxLength(500);
+                b.Property<DateTime>("BeginTime").IsRequired();
+                b.Property<DateTime>("EndTime").IsRequired();
+                b.Property<string>("HostId").HasMaxLength(100);
+                b.Property<string>("HostName");
+                b.Property<int?>("NoticeWay");
+                b.Property<int?>("RemindingWay");
+                b.Property<int?>("RemindingTime");
+                b.Property<int?>("Status");
+                b.Property<string>("AuditId").HasMaxLength(100);
+                b.Property<string>("AuditName");
+                b.Property<DateTime?>("AuditTime");
+                b.Property<string>("CancelUserId").HasMaxLength(100);
+                b.Property<string>("CancelUserName").HasMaxLength(50);
+                b.Property<DateTime?>("CancelTime");
+                b.Property<string>("ResponsibleId").HasMaxLength(100);
+                b.Property<string>("ResponsibleName");
+                b.Property<bool?>("IsSeatingOrder");
+                b.Property<string>("Summary");
+                b.Property<string>("FilePath").HasMaxLength(500);
+                b.Property<bool?>("IsDeleted");
+                b.Property<DateTime?>("CreationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("Meetings");
+            });
+
+            modelBuilder.Entity("GYISMS.MeetingMaterials.MeetingMaterial", b =>
+            {
+                b.Property<Guid>("Id").ValueGeneratedOnAdd();
+                b.Property<Guid>("MeetingId").IsRequired();
+                b.Property<string>("Code");
+                b.Property<string>("Name").IsRequired().HasMaxLength(50);
+                b.Property<int?>("Num");
+                b.Property<DateTime?>("CreationTime");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("MeetingMaterials");
+            });
+
+            modelBuilder.Entity("GYISMS.MeetingParticipants.MeetingParticipant", b =>
+            {
+                b.Property<Guid>("Id").ValueGeneratedOnAdd();
+                b.Property<Guid>("MeetingId").IsRequired();
+                b.Property<string>("UserId").HasMaxLength(100);
+                b.Property<string>("UserName").IsRequired();
+                b.Property<int?>("Row");
+                b.Property<int?>("Column");
+                b.Property<DateTime?>("ConfirmTime");
+                b.Property<DateTime?>("SignTime");
+                b.Property<DateTime?>("CreationTime");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("MeetingParticipants");
+            });
+
+            modelBuilder.Entity("GYISMS.MeetingRooms.MeetingRoom ", b =>
+            {
+                b.Property<int>("Id").ValueGeneratedOnAdd();
+                b.Property<string>("Name").IsRequired().HasMaxLength(50);
+                b.Property<string>("Photo").IsRequired().HasMaxLength(200);
+                b.Property<int>("Num").IsRequired();
+                b.Property<int?>("RoomType");
+                b.Property<string>("Address").HasMaxLength(500);
+                b.Property<string>("BuildDesc");
+                b.Property<bool?>("IsApprove");
+                b.Property<string>("ManagerId").HasMaxLength(100);
+                b.Property<string>("ManagerName").HasMaxLength(50);
+                b.Property<int?>("Row");
+                b.Property<int?>("Column");
+                b.Property<int?>("LayoutPattern");
+                b.Property<string>("PlanPath");
+                b.Property<string>("Remark").HasMaxLength(500);
+                b.Property<string>("Devices").HasMaxLength(500);
+                b.Property<bool?>("IsDeleted");
+                b.Property<DateTime?>("CreationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("MeetingRooms");
+            });
+
+            modelBuilder.Entity("HC.WeChat.Growers.Grower", b =>
+            {
+                b.Property<string>("Id").ValueGeneratedOnAdd();
+                b.Property<int?>("Year");
+                b.Property<string>("UnitCode").HasMaxLength(20);
+                b.Property<string>("UnitName").HasMaxLength(50);
+                b.Property<string>("Name").IsRequired().HasMaxLength(50);
+                b.Property<int?>("CountyCode");
+                b.Property<string>("EmployeeId").HasMaxLength(200);
+                b.Property<string>("ContractNo").HasMaxLength(50);
+                b.Property<string>("VillageGroup").HasMaxLength(50);
+                b.Property<string>("Tel").HasMaxLength(20);
+                b.Property<string>("Address").HasMaxLength(500);
+                b.Property<int?>("Type");
+                b.Property<decimal?>("PlantingArea");
+                b.Property<decimal?>("Longitude");
+                b.Property<decimal?>("Latitude");
+                b.Property<DateTime?>("ContractTime");
+                b.Property<bool?>("IsDeleted");
+                b.Property<DateTime?>("CreationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("Growers");
+            });        
+
+            modelBuilder.Entity("GYISMS.Schedules.Schedule", b =>
+            {
+                b.Property<Guid>("Id").ValueGeneratedOnAdd();
+                b.Property<string>("Desc").HasMaxLength(500);
+                b.Property<int>("Type").IsRequired();
+                b.Property<DateTime?>("BeginTime");
+                b.Property<DateTime?>("EndTime");
+                b.Property<int?>("Status");
+                b.Property<DateTime?>("PublishTime");
+                b.Property<bool?>("IsDeleted");
+                b.Property<DateTime?>("CreationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("Schedules");
+            });
+
+            modelBuilder.Entity("GYISMS.ScheduleDetails.ScheduleDetail", b =>
+            {
+                b.Property<Guid>("Id").ValueGeneratedOnAdd();
+                b.Property<int>("TaskId").IsRequired();
+                b.Property<Guid>("ScheduleId").IsRequired();
+                b.Property<string>("EmployeeId").IsRequired().HasMaxLength(200);
+                b.Property<int>("GrowerId").IsRequired();
+                b.Property<int?>("VisitNum");
+                b.Property<int?>("CompleteNum");
+                b.Property<DateTime?>("CreationTime");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("ScheduleDetails");
+            });
+
+            modelBuilder.Entity("GYISMS.ScheduleTasks.ScheduleTask", b =>
+            {
+                b.Property<Guid>("Id").ValueGeneratedOnAdd();
+                b.Property<int>("TaskId").IsRequired();
+                b.Property<Guid>("ScheduleId").IsRequired();
+                b.Property<int?>("VisitNum");
+                b.Property<DateTime?>("CreationTime");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("ScheduleTasks");
+            });
+
+            modelBuilder.Entity("GYISMS.VisitTasks.VisitTask", b =>
+            {
+                b.Property<int>("Id").ValueGeneratedOnAdd();
+                b.Property<string>("Name").IsRequired().HasMaxLength(50);
+                b.Property<int>("Type").IsRequired();
+                b.Property<bool?>("IsExamine");
+                b.Property<string>("Desc").HasMaxLength(500);
+                b.Property<bool?>("IsDeleted");
+                b.Property<DateTime?>("CreationTime");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("VisitTasks");
+            });
+
+            modelBuilder.Entity("GYISMS.TaskExamines.TaskExamine", b =>
+            {
+                b.Property<int>("Id").ValueGeneratedOnAdd();
+                b.Property<int?>("TaskId");
+                b.Property<string>("Name").IsRequired().HasMaxLength(50);
+                b.Property<string>("Desc").HasMaxLength(500);
+                b.Property<int?>("Seq");
+                b.Property<DateTime?>("CreationTime");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("TaskExamines");
+            });
+
+            modelBuilder.Entity("GYISMS.VisitExamines.VisitExamine", b =>
+            {
+                b.Property<Guid>("Id").ValueGeneratedOnAdd();
+                b.Property<Guid?>("VisitRecordId");
+                b.Property<string>("EmployeeId").HasMaxLength(200);
+                b.Property<int?>("GrowerId");
+                b.Property<int?>("TaskExamineId");
+                b.Property<int?>("Score");
+                b.Property<DateTime?>("CreationTime");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("VisitExamines");
+            });
+
+            modelBuilder.Entity("GYISMS.VisitRecords.VisitRecord", b =>
+            {
+                b.Property<Guid>("Id").ValueGeneratedOnAdd();
+                b.Property<Guid>("ScheduleDetailId").IsRequired();
+                b.Property<string>("EmployeeId").HasMaxLength(200);
+                b.Property<int?>("GrowerId");
+                b.Property<DateTime?>("SignTime");
+                b.Property<string>("Location").HasMaxLength(200);
+                b.Property<decimal?>("Longitude");
+                b.Property<decimal?>("Latitude");
+                b.Property<string>("Desc").HasMaxLength(500);
+                b.Property<string>("ImgPath").HasMaxLength(200);
+                b.Property<DateTime?>("CreationTime");
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("VisitRecords");
             });
         }
     }

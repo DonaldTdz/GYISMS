@@ -83,14 +83,17 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
 
     mouseAction(name: string, e: NzFormatEmitEvent): void {
         if (name === 'expand') {
-            this.organizationService.getChildOrganization(e.node.key).subscribe((result: TreeNode[]) => {
-                this.y = result;
-                console.log(this.y);
+            // this.organizationService.getChildOrganization(e.node.key).subscribe((result: TreeNode[]) => {
+            //     result.filter(v => {
+            //             v.key
+            //     })
+            //     this.rootNode.push(...result);
+            //     console.log(this.y);
 
-                // this.x.map(v => v.title = result.filter(v => v.title));
-                // this.x.title = this.treeNode.title;
-                // this.x.key = this.treeNode.key;
-            });
+            //     // this.x.map(v => v.title = result.filter(v => v.title));
+            //     // this.x.title = this.treeNode.title;
+            //     // this.x.key = this.treeNode.key;
+            // });
             // if (e.node.getChildren().length === 0 && e.node.isExpanded) {
             //     e.node.addChildren([
             //         {
