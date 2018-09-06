@@ -85,6 +85,8 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
         if (name === 'expand') {
             this.organizationService.getChildOrganization(e.node.key).subscribe((result: TreeNode[]) => {
                 this.y = result;
+                console.log(this.y);
+
                 // this.x.map(v => v.title = result.filter(v => v.title));
                 // this.x.title = this.treeNode.title;
                 // this.x.key = this.treeNode.key;

@@ -309,9 +309,9 @@ namespace GYISMS.Organizations
         {
             var orgChild = await _organizationRepository.GetAll().Where(v => v.ParentId == Convert.ToInt32(id)).ToListAsync();
             List<NzTreeNode> treeNodeList = new List<NzTreeNode>();
-            NzTreeNode treeNode = new NzTreeNode();
             foreach (var item in orgChild)
             {
+                NzTreeNode treeNode = new NzTreeNode();
                 treeNode.title = item.DepartmentName;
                 treeNode.key = item.Id.ToString();
                 treeNodeList.Add(treeNode);
