@@ -17,16 +17,16 @@ namespace GYISMS.Organizations
     public interface IOrganizationAppService : IApplicationService
     {
         /// <summary>
-        /// 获取Organization的分页列表信息
-        ///</summary>
+    /// 获取Organization的分页列表信息
+    ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
         Task<PagedResultDto<OrganizationListDto>> GetPagedOrganizationsAsync(GetOrganizationsInput input);
 
-        /// <summary>
-        /// 通过指定id获取OrganizationListDto信息
-        /// </summary>
-        Task<OrganizationListDto> GetOrganizationByIdAsync(EntityDto<int> input);
+		/// <summary>
+		/// 通过指定id获取OrganizationListDto信息
+		/// </summary>
+		Task<OrganizationListDto> GetOrganizationByIdAsync(EntityDto<long> input);
 
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace GYISMS.Organizations
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<GetOrganizationForEditOutput> GetOrganizationForEdit(NullableIdDto<int> input);
+        Task<GetOrganizationForEditOutput> GetOrganizationForEdit(NullableIdDto<long> input);
 
         //todo:缺少Dto的生成GetOrganizationForEditOutput
 
@@ -58,19 +58,16 @@ namespace GYISMS.Organizations
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task DeleteOrganization(EntityDto<int> input);
+        Task DeleteOrganization(EntityDto<long> input);
 
 
         /// <summary>
         /// 批量删除Organization
         /// </summary>
-        Task BatchDeleteOrganizationsAsync(List<int> input);
+        Task BatchDeleteOrganizationsAsync(List<long> input);
 
-        List<Organization> GetOrganization();
         Task<APIResultDto> SynchronousOrganizationAsync();
-
-        //// custom codes
-
-        //// custom codes end
+        Task<List<NzTreeNode>> GetChildTree(string id);
+        Task<NzTreeNode> GetRootTree(long? id);
     }
 }

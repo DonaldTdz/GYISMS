@@ -16,7 +16,6 @@ using Microsoft.EntityFrameworkCore;
 
 using GYISMS.Organizations.Authorization;
 using GYISMS.Organizations.Dtos;
-using GYISMS.Organizations;
 using DingTalk.Api;
 using DingTalk.Api.Request;
 using DingTalk.Api.Response;
@@ -31,7 +30,7 @@ namespace GYISMS.Organizations
     [AbpAuthorize(AppPermissions.Pages)]
     public class OrganizationAppService : GYISMSAppServiceBase, IOrganizationAppService
     {
-        private readonly IRepository<Organization, int>
+        private readonly IRepository<Organization, long>
         _organizationRepository;
 
 
@@ -41,7 +40,8 @@ namespace GYISMS.Organizations
         /// 构造函数 
         ///</summary>
         public OrganizationAppService(
-        IRepository<Organization, int> organizationRepository
+        IRepository<Organization, long>
+    organizationRepository
             , IOrganizationManager organizationManager
             )
         {
@@ -78,7 +78,7 @@ namespace GYISMS.Organizations
         /// <summary>
         /// 通过指定id获取OrganizationListDto信息
         /// </summary>
-        public async Task<OrganizationListDto> GetOrganizationByIdAsync(EntityDto<int> input)
+        public async Task<OrganizationListDto> GetOrganizationByIdAsync(EntityDto<long> input)
         {
             var entity = await _organizationRepository.GetAsync(input.Id);
 
@@ -90,7 +90,7 @@ namespace GYISMS.Organizations
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<GetOrganizationForEditOutput> GetOrganizationForEdit(NullableIdDto<int> input)
+        public async Task<GetOrganizationForEditOutput> GetOrganizationForEdit(NullableIdDto<long> input)
         {
             var output = new GetOrganizationForEditOutput();
             OrganizationEditDto organizationEditDto;
@@ -149,7 +149,7 @@ namespace GYISMS.Organizations
         /// <summary>
         /// 编辑Organization
         /// </summary>
-        //[AbpAuthorize(OrganizationAppPermissions.Organization_Edit)]
+        [AbpAuthorize(OrganizationAppPermissions.Organization_Edit)]
         protected virtual async Task UpdateOrganizationAsync(OrganizationEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -169,7 +169,7 @@ namespace GYISMS.Organizations
         /// <param name="input"></param>
         /// <returns></returns>
         [AbpAuthorize(OrganizationAppPermissions.Organization_Delete)]
-        public async Task DeleteOrganization(EntityDto<int> input)
+        public async Task DeleteOrganization(EntityDto<long> input)
         {
             //TODO:删除前的逻辑判断，是否允许删除
             await _organizationRepository.DeleteAsync(input.Id);
@@ -181,34 +181,34 @@ namespace GYISMS.Organizations
         /// 批量删除Organization的方法
         /// </summary>
         [AbpAuthorize(OrganizationAppPermissions.Organization_BatchDelete)]
-        public async Task BatchDeleteOrganizationsAsync(List<int> input)
+        public async Task BatchDeleteOrganizationsAsync(List<long> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _organizationRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+
         /// <summary>
         /// 通过接口获取钉钉组织架构
         /// </summary>
         /// <returns></returns>
-        public List<Organization> GetOrganization()
-        {
-            string accessToken = "de975eff4b473259ac5fa342dbfdeae7";
-            IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
-            OapiDepartmentListRequest request = new OapiDepartmentListRequest();
-            request.Id = "1";
-            request.SetHttpMethod("GET");
-            OapiDepartmentListResponse response = client.Execute(request, accessToken);
-            var entity = (from o in response.Department
-                          select new Organization()
-                          {
-                              Id = (int)o.Id,
-                              DepartmentName = o.Name,
-                              ParentId = (int)o.Parentid,
-                              IsDeleted = false
-                          }).ToList();
-            return entity;
-        }
+        //public List<Organization> GetOrganization()
+        //{
+        //    string accessToken = "de975eff4b473259ac5fa342dbfdeae7";
+        //    IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
+        //    OapiDepartmentListRequest request = new OapiDepartmentListRequest();
+        //    request.Id = "1";
+        //    request.SetHttpMethod("GET");
+        //    OapiDepartmentListResponse response = client.Execute(request, accessToken);
+        //    var entity = (from o in response.Department
+        //                  select new Organization()
+        //                  {
+        //                      Id = o.Id,
+        //                      DepartmentName = o.Name,
+        //                      ParentId = o.Parentid,
+        //                  }).ToList();
+        //    return entity;
+        //}
 
 
 
@@ -222,18 +222,17 @@ namespace GYISMS.Organizations
             //string accessToken = "0929f705e9c93c3ba237c984b8522177";
             IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
             OapiDepartmentListRequest request = new OapiDepartmentListRequest();
-            request.Id = "1";
+            //request.Id = "1";
             request.SetHttpMethod("GET");
             OapiDepartmentListResponse response = client.Execute(request, accessToken);
             var entityByDD = (from o in response.Department
-                          select new Organization()
-                          {
-                              Id = (int)o.Id,
-                              DepartmentName = o.Name,
-                              ParentId = (int)o.Parentid,
-                              IsDeleted = false,
-                              CreationTime = DateTime.Now
-                          }).ToList();
+                              select new Organization()
+                              {
+                                  Id = o.Id,
+                                  DepartmentName = o.Name,
+                                  ParentId = o.Parentid,
+                                  CreationTime = DateTime.Now
+                              }).ToList();
 
             var originEntity = await _organizationRepository.GetAll().ToListAsync();
             foreach (var item in entityByDD)
@@ -243,7 +242,7 @@ namespace GYISMS.Organizations
                 {
                     o.Id = item.Id;
                     o.DepartmentName = item.DepartmentName;
-                    o.IsDeleted = item.IsDeleted;
+                    o.ParentId = item.ParentId;
                     o.CreationTime = DateTime.Now;
                 }
                 else
@@ -251,7 +250,7 @@ namespace GYISMS.Organizations
                     var organization = new Organization();
                     organization.Id = item.Id;
                     organization.DepartmentName = item.DepartmentName;
-                    organization.IsDeleted = item.IsDeleted;
+                    organization.ParentId = item.ParentId;
                     organization.CreationTime = DateTime.Now;
                     await CreateOrganizationAsync(organization);
                 }
@@ -285,6 +284,39 @@ namespace GYISMS.Organizations
             request.SetHttpMethod("GET");
             OapiGettokenResponse response = client.Execute(request);
             return response.AccessToken;
+        }
+
+        /// <summary>
+        /// 获取根节点
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<NzTreeNode> GetRootTree(long? id)
+        {
+            var organiztion = await _organizationRepository.GetAll().Where(v => v.Id == id).FirstOrDefaultAsync();
+            NzTreeNode treeNode = new NzTreeNode();
+            treeNode.title = organiztion.DepartmentName;
+            treeNode.key = organiztion.Id.ToString();
+            return treeNode;
+        }
+
+        /// <summary>
+        /// 按需获取子节点
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<NzTreeNode>> GetChildTree(string id)
+        {
+            var orgChild = await _organizationRepository.GetAll().Where(v => v.ParentId == Convert.ToInt32(id)).ToListAsync();
+            List<NzTreeNode> treeNodeList = new List<NzTreeNode>();
+            NzTreeNode treeNode = new NzTreeNode();
+            foreach (var item in orgChild)
+            {
+                treeNode.title = item.DepartmentName;
+                treeNode.key = item.Id.ToString();
+                treeNodeList.Add(treeNode);
+            }
+            return treeNodeList;
         }
     }
 }

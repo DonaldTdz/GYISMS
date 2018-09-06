@@ -1251,16 +1251,19 @@ namespace GYISMS.Migrations
             });
 #pragma warning restore 612, 618
 
-            modelBuilder.Entity("HC.WeChat.Organizations.Organization", b => {
-                b.Property<int>("Id").ValueGeneratedOnAdd();
+            modelBuilder.Entity("GYISMS.Organizations.Organization", b =>
+            {
+                b.Property<long>("Id").ValueGeneratedOnAdd();
+                 //.ValueGeneratedOnAdd()
+                 //.HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
                 b.Property<string>("DepartmentName").IsRequired().HasMaxLength(100);
-                b.Property<int>("ParentId").IsRequired();
-                b.Property<int?>("Order");
+                b.Property<long?>("ParentId");
+                b.Property<long?>("Order");
                 b.Property<bool?>("DeptHiding");
                 b.Property<string>("OrgDeptOwner").HasMaxLength(100);
-                b.Property<bool>("IsDeleted").IsRequired();
-                b.Property<DateTime>("CreationTime").IsRequired();
+                b.Property<DateTime?>("CreationTime");
                 b.HasKey("Id");
+
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
 
                 b.ToTable("Organizations");

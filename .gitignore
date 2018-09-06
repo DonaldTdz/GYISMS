@@ -4,6 +4,6 @@
 .vs/
 obj/
 bin/
-aspnet-core/src/AbpCoreBasic.Web.Host/App_Data/Logs/
-aspnet-core/src/AbpCoreBasic.Web.Mvc/App_Data/Logs/
-aspnet-core/src/AbpCoreBasic.Migrator/Logs/Logs.txt
+aspnet-core/src/GYISMS.Web.Host/App_Data/Logs/
+aspnet-core/src/GYISMS.Web.Mvc/App_Data/Logs/
+aspnet-core/src/GYISMS.Migrator/Logs/Logs.txt

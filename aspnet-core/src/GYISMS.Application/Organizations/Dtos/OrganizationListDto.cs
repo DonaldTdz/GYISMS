@@ -9,61 +9,50 @@ using GYISMS.Organizations;
 
 namespace GYISMS.Organizations.Dtos
 {
-    public class OrganizationListDto : EntityDto<int>,IHasCreationTime
+    public class OrganizationListDto : EntityDto<long>
     {
 
-/// <summary>
-/// DepartmentName
-/// </summary>
-[Required(ErrorMessage="DepartmentName不能为空")]
-public string DepartmentName { get; set; }
+        /// <summary>
+        /// DepartmentName
+        /// </summary>
+        [Required(ErrorMessage = "DepartmentName不能为空")]
+        public string DepartmentName { get; set; }
 
 
-/// <summary>
-/// ParentId
-/// </summary>
-[Required(ErrorMessage="ParentId不能为空")]
-public int ParentId { get; set; }
+        /// <summary>
+        /// ParentId
+        /// </summary>
+        public long? ParentId { get; set; }
 
 
-/// <summary>
-/// Order
-/// </summary>
-public int? Order { get; set; }
+        /// <summary>
+        /// Order
+        /// </summary>
+        public long? Order { get; set; }
 
 
-/// <summary>
-/// DeptHiding
-/// </summary>
-public bool? DeptHiding { get; set; }
+        /// <summary>
+        /// DeptHiding
+        /// </summary>
+        public bool? DeptHiding { get; set; }
 
 
-/// <summary>
-/// OrgDeptOwner
-/// </summary>
-public string OrgDeptOwner { get; set; }
+        /// <summary>
+        /// OrgDeptOwner
+        /// </summary>
+        public string OrgDeptOwner { get; set; }
 
 
-/// <summary>
-/// IsDeleted
-/// </summary>
-[Required(ErrorMessage="IsDeleted不能为空")]
-public bool IsDeleted { get; set; }
+        /// <summary>
+        /// CreationTime
+        /// </summary>
+        public DateTime? CreationTime { get; set; }
+    }
 
-
-/// <summary>
-/// CreationTime
-/// </summary>
-[Required(ErrorMessage="CreationTime不能为空")]
-public DateTime CreationTime { get; set; }
-
-
-
-
-
-
-		//// custom codes
- 
-        //// custom codes end
+    public class NzTreeNode
+    {
+        public string title { get; set; }
+        public string key { get; set; }
+        public NzTreeNode[] children {get;set;}
     }
 }
