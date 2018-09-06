@@ -15,7 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="TopSdk">
-      <HintPath>C:\Users\Perha\Desktop\SDK示例代码\钉钉SDK\TopSdk.dll</HintPath>
+      <HintPath>..\..\SDK\TopSdk.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>
