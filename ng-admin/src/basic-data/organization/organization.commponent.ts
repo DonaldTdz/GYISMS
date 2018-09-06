@@ -1,11 +1,11 @@
-import { Component, Injector, OnInit, ViewChild } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, HostListener } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { _HttpClient } from '@delon/theme';
 import { Organization, TreeNode } from '@shared/entity/basic-data';
 import { Router } from '@angular/router';
 import { PagedResultDtoOfOrganization, OrganizationServiceProxy } from '@shared/service-proxies/basic-data';
 import { Parameter } from '@shared/service-proxies/entity/parameter';
-import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
+import { NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent } from 'ng-zorro-antd';
 
 @Component({
     selector: 'organization',
@@ -14,29 +14,100 @@ import { NzFormatEmitEvent, NzTreeNode } from 'ng-zorro-antd';
 })
 
 export class OrganizationComponent extends AppComponentBase implements OnInit {
-    loading = false;
-    exportLoading = false;
+
     syncDataLoading = false;
+    exportLoading = false;
     search: any = {};
     searchValue;
-    organizationList: Organization[] = [];
-    x: NzTreeNode[] = [];
-    y: TreeNode[] = [];
-    treeNode: TreeNode = new TreeNode();
-    rootNode = [
+    loading = false;
+    dropdown: NzDropdownContextComponent;
+    // can active only one node
+    activedNode: NzTreeNode;
+    dragNodeElement;
+    nodes = [
         new NzTreeNode({
-            title: '',
-            key: ''
+            title: '成都和创科技有限公司',
+            key: '1',
+            expanded: true,
+            children: [
+                {
+                    title: '技术开发（4人）',
+                    key: '67209026',
+                    isLeaf: true
+                },
+                {
+                    title: '运营部（3人）',
+                    key: '67209027',
+                    isLeaf: true
+                },
+                {
+                    title: '销售（2人）',
+                    key: '67209029',
+                    isLeaf: true
+                }
+            ]
         })
     ];
+
     constructor(injector: Injector, private organizationService: OrganizationServiceProxy, private router: Router) {
         super(injector);
     }
 
     ngOnInit(): void {
         // this.refreshData();
-        this.getTree();
+        this.getTrees();
     }
+
+    /**
+     * important:
+     * if u want to custom event/node properties, u need to maintain the selectedNodesList/checkedNodesList yourself
+     * @param {} data
+     */
+    openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
+        // do something if u want
+        if (data instanceof NzTreeNode) {
+            // change node's expand status
+            if (!data.isExpanded) {
+                // close to open
+                data.origin.isLoading = true;
+                setTimeout(() => {
+                    data.isExpanded = !data.isExpanded;
+                    data.origin.isLoading = false;
+                }, 500);
+            } else {
+                data.isExpanded = !data.isExpanded;
+            }
+        } else {
+            // change node's expand status
+            if (!data.node.isExpanded) {
+                // close to open
+                data.node.origin.isLoading = true;
+                setTimeout(() => {
+                    data.node.isExpanded = !data.node.isExpanded;
+                    data.node.origin.isLoading = false;
+                }, 500);
+            } else {
+                data.node.isExpanded = !data.node.isExpanded;
+            }
+        }
+    }
+
+    // 选中节点
+    activeNode(data: NzFormatEmitEvent): void {
+        if (this.activedNode) {
+            this.activedNode = null;
+        }
+        data.node.isSelected = true;
+        this.activedNode = data.node;
+    }
+
+    selectDropdown(): void {
+        this.dropdown.close();
+        // do something
+        console.log('dropdown clicked');
+    }
+
+
 
     refreshData(reset = false, search?: boolean) {
         if (reset) {
@@ -47,11 +118,11 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
             this.query.pageIndex = 1;
         }
         this.loading = true;
-        this.organizationService.getAll(this.query.skipCount(), this.query.pageSize).subscribe((result: PagedResultDtoOfOrganization) => {
-            this.loading = false;
-            this.organizationList = result.items;
-            this.query.total = result.totalCount;
-        })
+        //this.organizationService.getAll(this.query.skipCount(), this.query.pageSize).subscribe((result: PagedResultDtoOfOrganization) => {
+        this.loading = false;
+        //this.organizationList = result.items;
+        //this.query.total = result.totalCount;
+        //})
 
     }
 
@@ -73,36 +144,9 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
         }, '1000');
     }
 
-    getTree() {
-        this.organizationService.getRootOrganization(1).subscribe((result: TreeNode) => {
-            this.treeNode = result;
-            this.rootNode[0].title = this.treeNode.title;
-            this.rootNode[0].key = this.treeNode.key;
+    getTrees() {
+        this.organizationService.GetTreesAsync().subscribe((data) => {
+            this.nodes = data;
         });
-    }
-
-    mouseAction(name: string, e: NzFormatEmitEvent): void {
-        if (name === 'expand') {
-            this.organizationService.getChildOrganization(e.node.key).subscribe((result: TreeNode[]) => {
-                this.y = result;
-                console.log(this.y);
-
-                // this.x.map(v => v.title = result.filter(v => v.title));
-                // this.x.title = this.treeNode.title;
-                // this.x.key = this.treeNode.key;
-            });
-            // if (e.node.getChildren().length === 0 && e.node.isExpanded) {
-            //     e.node.addChildren([
-            //         {
-            //             title: 'childAdd-1',
-            //             key: '10031-' + (new Date()).getTime()
-            //         },
-            //         {
-            //             title: 'childAdd-2',
-            //             key: '10032-' + (new Date()).getTime(),
-            //             isLeaf: true
-            //         }]);
-            // }
-        }
     }
 }

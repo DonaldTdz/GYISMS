@@ -67,7 +67,6 @@ namespace GYISMS.Organizations
         Task BatchDeleteOrganizationsAsync(List<long> input);
 
         Task<APIResultDto> SynchronousOrganizationAsync();
-        Task<List<NzTreeNode>> GetChildTree(string id);
-        Task<NzTreeNode> GetRootTree(long? id);
+        Task<List<OrganizationNzTreeNode>> GetTreesAsync();
     }
 }

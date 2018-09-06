@@ -286,36 +286,26 @@ namespace GYISMS.Organizations
             return response.AccessToken;
         }
 
-        /// <summary>
-        /// 获取根节点
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<NzTreeNode> GetRootTree(long? id)
-        {
-            var organiztion = await _organizationRepository.GetAll().Where(v => v.Id == id).FirstOrDefaultAsync();
-            NzTreeNode treeNode = new NzTreeNode();
-            treeNode.title = organiztion.DepartmentName;
-            treeNode.key = organiztion.Id.ToString();
-            return treeNode;
-        }
 
         /// <summary>
         /// 按需获取子节点
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        public async Task<List<NzTreeNode>> GetChildTree(string id)
+        public async Task<List<OrganizationNzTreeNode>> GetTreesAsync()
         {
-            var orgChild = await _organizationRepository.GetAll().Where(v => v.ParentId == Convert.ToInt32(id)).ToListAsync();
-            List<NzTreeNode> treeNodeList = new List<NzTreeNode>();
-            foreach (var item in orgChild)
+            var organizationList = await _organizationRepository.GetAll().ToListAsync();
+
+            return GetTrees(0, organizationList);
+        }
+
+        private List<OrganizationNzTreeNode> GetTrees(long? id, List<Organization> organizationList)
+        {
+            List<OrganizationNzTreeNode> treeNodeList = organizationList.Where(o => o.ParentId == id).Select(t => new OrganizationNzTreeNode()
             {
-                NzTreeNode treeNode = new NzTreeNode();
-                treeNode.title = item.DepartmentName;
-                treeNode.key = item.Id.ToString();
-                treeNodeList.Add(treeNode);
-            }
+                key = t.Id.ToString(),
+                title = t.DepartmentName,
+                children = GetTrees(t.Id, organizationList)
+            }).ToList();
+
             return treeNodeList;
         }
     }
