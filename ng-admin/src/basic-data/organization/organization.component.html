@@ -24,10 +24,52 @@
         </tbody>
     </nz-table>
 </nz-card> -->
-<nz-input-group [nzSuffix]="suffixIcon">
-    <input type="text" nz-input placeholder="Search Tree Node" [(ngModel)]="searchValue">
-</nz-input-group>
-<ng-template #suffixIcon>
-    <i class="anticon anticon-search"></i>
-</ng-template>
-<nz-tree [(ngModel)]="rootNode" [nzAsyncData]="true" (nzExpandChange)="mouseAction('expand',$event)"></nz-tree>
+<page-header [title]=""></page-header>
+<nz-card>
+
+    <!-- <ng-template #extraTpl>
+      
+    </ng-template> -->
+
+    <div nz-row>
+        <div nz-col nzSpan="6">
+            <div style="padding-left:10px; padding-right:10px;">
+                <nz-input-group [nzSuffix]="suffixIcon">
+                    <input type="text" nz-input placeholder="搜索" [(ngModel)]="searchValue">
+                </nz-input-group>
+                <ng-template #suffixIcon>
+                    <i class="anticon anticon-search"></i>
+                </ng-template>
+            </div>
+            <div style="padding:10px;">
+                <button nz-button (click)="syncData()" style="width:100%" [nzLoading]="syncDataLoading" nzType="primary">
+                    <i class="anticon anticon-reload"></i>
+                    <span>同步组织架构</span>
+                </button>
+            </div>
+            <div style="padding-left:10px; padding-right:10px;">
+                <nz-tree [(ngModel)]="nodes" [nzShowExpand]="true" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
+                    <ng-template #nzTreeTemplate let-node>
+                        <span class="custom-node" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
+                            <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading">
+                                <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
+                                <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
+                                <span class="folder-name">{{node.title}}</span>
+                                <!-- <span class="folder-desc">{{node?.origin?.author | lowercase}}</span> -->
+                            </span>
+                            <span *ngIf="node.isLeaf">
+                                <i class="anticon anticon-folder"></i>
+                                <span class="file-name">{{node.title}}</span>
+                                <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
+                            </span>
+                        </span>
+                    </ng-template>
+                </nz-tree>
+            </div>
+        </div>
+        <div nz-col nzSpan="18">
+
+
+        </div>
+    </div>
+</nz-card>

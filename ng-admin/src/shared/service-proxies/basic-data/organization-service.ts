@@ -1,4 +1,5 @@
 import 'rxjs/add/operator/finally';
+import 'rxjs/add/operator/map';
 import { mergeMap as _observableMergeMap, catchError as _observableCatch } from 'rxjs/operators';
 import { Observable, from as _observableFrom, throwError as _observableThrow, of as _observableOf } from 'rxjs';
 import { Injectable, Inject, Optional, InjectionToken } from '@angular/core';
@@ -8,16 +9,20 @@ import * as moment from 'moment';
 import { ApiResult } from '@shared/service-proxies/entity/parameter';
 import { Organization, TreeNode } from '@shared/entity/basic-data';
 import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
+import { NzTreeNode } from 'ng-zorro-antd';
+import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
 
 @Injectable()
 export class OrganizationServiceProxy {
     private http: HttpClient;
+    private _gyhttp: GyismsHttpClient;
     private baseUrl: string;
     protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
 
-    constructor(@Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
+    constructor(@Inject(HttpClient) http: HttpClient, @Inject(GyismsHttpClient) gyhttp: GyismsHttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : "";
+        this._gyhttp = gyhttp;
     }
 
     getAll(skipCount: number | null | undefined, maxResultCount: number | null | undefined): Observable<PagedResultDtoOfOrganization> {
@@ -249,6 +254,18 @@ export class OrganizationServiceProxy {
             }));
         }
         return _observableOf<TreeNode[]>(<any>null);
+    }
+
+    GetTreesAsync(): Observable<NzTreeNode[]> {
+        let url = "/api/services/app/Organization/GetTreesAsync";
+        return this._gyhttp.get(url).map(data => {
+            let arry = [];
+            data.map(d => {
+                let tree = new NzTreeNode(d);
+                arry.push(tree);
+            });
+            return arry;
+        });
     }
 }
 

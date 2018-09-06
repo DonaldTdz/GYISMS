@@ -51,8 +51,42 @@ namespace GYISMS.Organizations.Dtos
 
     public class NzTreeNode
     {
-        public string title { get; set; }
-        public string key { get; set; }
-        public NzTreeNode[] children {get;set;}
+        public virtual string title { get; set; }
+        public virtual string key { get; set; }
+
+        public virtual bool expanded { get; set; }//是否打开
+
+        public virtual bool isLeaf { get; set; } //是否是树叶
+
+        public virtual List<NzTreeNode> children { get; set; }
+    }
+
+    public class OrganizationNzTreeNode : NzTreeNode
+    {
+        public override bool expanded
+        {
+            get
+            {
+                if (key == "1")//总公司
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public override bool isLeaf
+        {
+            get
+            {
+                if (children.Count == 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        public new List<OrganizationNzTreeNode> children { get; set; }
     }
 }
