@@ -317,7 +317,7 @@ export class PagedResultDtoOfOrganization implements IPagedResultDtoOfOrganizati
         return result;
     }
 }
-export class SwaggerException extends Error {
+export class SwaggerException2 extends Error {
     message: string;
     status: number;
     response: string;
@@ -336,7 +336,7 @@ export class SwaggerException extends Error {
 
     protected isSwaggerException = true;
 
-    static isSwaggerException(obj: any): obj is SwaggerException {
+    static isSwaggerException(obj: any): obj is SwaggerException2 {
         return obj.isSwaggerException === true;
     }
 }
@@ -345,7 +345,7 @@ function throwException(message: string, status: number, response: string, heade
     if (result !== null && result !== undefined)
         return _observableThrow(result);
     else
-        return _observableThrow(new SwaggerException(message, status, response, headers, null));
+        return _observableThrow(new SwaggerException2(message, status, response, headers, null));
 }
 
 function blobToText(blob: any): Observable<string> {

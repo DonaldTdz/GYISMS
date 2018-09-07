@@ -60,12 +60,6 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '',
                 '/basic/employee',
-            ),
-            new MenuItem(
-                '零售客户',
-                '',
-                '',
-                '/basic/retail-customer',
             )]
         ),
 
