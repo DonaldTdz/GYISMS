@@ -8879,3 +8879,979 @@ INFO  2018-09-06 17:54:41,200 [47   ] ore.Mvc.Internal.ControllerActionInvoker -
 INFO  2018-09-06 17:54:41,209 [37   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
 INFO  2018-09-06 17:54:41,210 [37   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) in 361.219ms
 INFO  2018-09-06 17:54:41,212 [37   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 377.492ms 200 application/json; charset=utf-8
+DEBUG 2018-09-06 18:07:57,135 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2018-09-06 18:07:57,158 [1    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2018-09-06 18:07:57,171 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.Web.Host.Startup.GYISMSWebHostModule, GYISMS.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,173 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSWebCoreModule, GYISMS.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,173 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSApplicationModule, GYISMS.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,173 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSCoreModule, GYISMS.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,173 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,174 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,174 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,174 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,174 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.EntityFrameworkCore.GYISMSEntityFrameworkModule, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,175 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,175 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,175 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,175 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,175 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,175 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,178 [1    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2018-09-06 18:07:57,220 [1    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:07:57,220 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:07:57,220 [1    ] o.Configuration.LanguageManagementConfig - Converted GYISMS (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:07:57,220 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:07:57,416 [1    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: GYISMS.EntityFrameworkCore.GYISMSDbContext, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:07:57,691 [1    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2018-09-06 18:07:57,738 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2018-09-06 18:07:57,774 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2018-09-06 18:07:57,777 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: GYISMS
+DEBUG 2018-09-06 18:07:57,800 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2018-09-06 18:07:57,826 [1    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2018-09-06 18:07:57,859 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 10 classes define auto mapping attributes
+DEBUG 2018-09-06 18:07:57,859 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Models.TokenAuth.ExternalLoginProviderInfoModel
+DEBUG 2018-09-06 18:07:57,864 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.CreateUserDto
+DEBUG 2018-09-06 18:07:57,864 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.UserDto
+DEBUG 2018-09-06 18:07:57,864 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2018-09-06 18:07:57,865 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.UserLoginInfoDto
+DEBUG 2018-09-06 18:07:57,865 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.CreateRoleDto
+DEBUG 2018-09-06 18:07:57,865 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.PermissionDto
+DEBUG 2018-09-06 18:07:57,865 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.RoleDto
+DEBUG 2018-09-06 18:07:57,866 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2018-09-06 18:07:57,866 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.TenantDto
+INFO  2018-09-06 18:08:00,896 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 18:08:00,937 [15   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:08:00,972 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 80.7508ms 204 
+INFO  2018-09-06 18:08:00,980 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 18:08:00,980 [10   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+WARN  2018-09-06 18:08:01,043 [10   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:08:01,043 [10   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+INFO  2018-09-06 18:08:01,840 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 18:08:01,850 [10   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:08:01,897 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 18:08:02,393 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 495.1617ms.
+INFO  2018-09-06 18:08:02,566 [15   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:08:02,628 [15   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 784.2169ms
+INFO  2018-09-06 18:08:02,642 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1662.2046ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:08:02,649 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 18:08:02,649 [15   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:08:02,650 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 0.287ms 204 
+INFO  2018-09-06 18:08:02,654 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 18:08:02,654 [15   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:08:02,664 [15   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 18:08:02,664 [15   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:08:02,746 [15   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:08:02,790 [15   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 43.7421ms.
+INFO  2018-09-06 18:08:02,805 [15   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:08:02,820 [15   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 155.5303ms
+INFO  2018-09-06 18:08:02,820 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 166.0698ms 200 application/json; charset=utf-8
+DEBUG 2018-09-06 18:08:08,692 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2018-09-06 18:08:08,763 [1    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2018-09-06 18:08:08,776 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.Web.Host.Startup.GYISMSWebHostModule, GYISMS.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,778 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSWebCoreModule, GYISMS.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,779 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSApplicationModule, GYISMS.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,779 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSCoreModule, GYISMS.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,779 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,779 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,779 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,780 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,780 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.EntityFrameworkCore.GYISMSEntityFrameworkModule, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,780 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,780 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,781 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,781 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,781 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,781 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:08,784 [1    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2018-09-06 18:08:08,843 [1    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:08:08,843 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:08:08,843 [1    ] o.Configuration.LanguageManagementConfig - Converted GYISMS (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:08:08,843 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:08:09,091 [1    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: GYISMS.EntityFrameworkCore.GYISMSDbContext, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:08:09,782 [1    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2018-09-06 18:08:09,833 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2018-09-06 18:08:09,871 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2018-09-06 18:08:09,875 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: GYISMS
+DEBUG 2018-09-06 18:08:09,900 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2018-09-06 18:08:10,023 [1    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2018-09-06 18:08:10,060 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 10 classes define auto mapping attributes
+DEBUG 2018-09-06 18:08:10,060 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Models.TokenAuth.ExternalLoginProviderInfoModel
+DEBUG 2018-09-06 18:08:10,065 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.CreateUserDto
+DEBUG 2018-09-06 18:08:10,066 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.UserDto
+DEBUG 2018-09-06 18:08:10,066 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2018-09-06 18:08:10,066 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.UserLoginInfoDto
+DEBUG 2018-09-06 18:08:10,066 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.CreateRoleDto
+DEBUG 2018-09-06 18:08:10,066 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.PermissionDto
+DEBUG 2018-09-06 18:08:10,067 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.RoleDto
+DEBUG 2018-09-06 18:08:10,067 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2018-09-06 18:08:10,067 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.TenantDto
+INFO  2018-09-06 18:08:13,494 [14   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/  
+INFO  2018-09-06 18:08:13,494 [12   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 DEBUG http://localhost:21021/  0
+INFO  2018-09-06 18:08:13,559 [12   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 69.9803ms 200 
+INFO  2018-09-06 18:08:16,158 [14   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing action GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host)
+INFO  2018-09-06 18:08:16,936 [14   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host) - Validation state: Valid
+INFO  2018-09-06 18:08:16,941 [14   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host), returned result Microsoft.AspNetCore.Mvc.RedirectResult in 1.7726ms.
+INFO  2018-09-06 18:08:17,134 [10   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2018-09-06 18:08:17,147 [10   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host) in 983.833ms
+INFO  2018-09-06 18:08:17,168 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3680.4247ms 302 
+INFO  2018-09-06 18:08:17,169 [6    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/index.html  
+INFO  2018-09-06 18:08:17,200 [6    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 32.2175ms 200 text/html
+INFO  2018-09-06 18:08:17,220 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui.css  
+INFO  2018-09-06 18:08:17,222 [12   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui-standalone-preset.js  
+INFO  2018-09-06 18:08:17,224 [13   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui-bundle.js  
+INFO  2018-09-06 18:08:17,252 [12   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui-standalone-preset.js was not modified
+INFO  2018-09-06 18:08:17,254 [7    ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui.css was not modified
+INFO  2018-09-06 18:08:17,256 [13   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui-bundle.js was not modified
+INFO  2018-09-06 18:08:17,262 [12   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 40.777ms 304 application/javascript
+INFO  2018-09-06 18:08:17,264 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 42.6151ms 304 text/css
+INFO  2018-09-06 18:08:17,266 [13   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 36.6611ms 304 application/javascript
+INFO  2018-09-06 18:08:17,708 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/v1/swagger.json  
+INFO  2018-09-06 18:08:17,784 [7    ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-06 18:08:18,016 [12   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 310.0113ms 200 application/json;charset=utf-8
+WARN  2018-09-06 18:09:00,543 [6    ] Abp.BackgroundJobs.BackgroundJobManager  - System.Data.SqlClient.SqlException (0x80131904): Cannot open database "GYISMSDB" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenDbConnection(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.BeginTransaction(IsolationLevel isolationLevel)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransaction(DatabaseFacade databaseFacade, IsolationLevel isolationLevel)
+   at Abp.EntityFrameworkCore.Uow.DbContextEfCoreTransactionStrategy.CreateDbContext[TDbContext](String connectionString, IDbContextResolver dbContextResolver) in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\Uow\DbContextEfCoreTransactionStrategy.cs:line 38
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.GetOrCreateDbContext[TDbContext](Nullable`1 multiTenancySide, String name) in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\Uow\EfCoreUnitOfWork.cs:line 120
+   at Abp.EntityFrameworkCore.Repositories.EfCoreRepositoryBase`3.get_Table() in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\Repositories\EfCoreRepositoryBaseOfTEntityAndTPrimaryKey.cs:line 39
+   at Abp.EntityFrameworkCore.Repositories.EfCoreRepositoryBase`3.GetAllIncluding(Expression`1[] propertySelectors) in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\Repositories\EfCoreRepositoryBaseOfTEntityAndTPrimaryKey.cs:line 88
+   at Castle.Proxies.Invocations.IRepository`2_GetAll_3.InvokeMethodOnTarget()
+   at Castle.DynamicProxy.AbstractInvocation.Proceed()
+   at Abp.Domain.Uow.UnitOfWorkInterceptor.PerformSyncUow(IInvocation invocation, UnitOfWorkOptions options) in D:\Github\aspnetboilerplate\src\Abp\Domain\Uow\UnitOfWorkInterceptor.cs:line 68
+   at Castle.DynamicProxy.AbstractInvocation.Proceed()
+   at Castle.Proxies.IRepository`2Proxy_1.GetAll()
+   at Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(Int32 maxResultCount) in D:\Github\aspnetboilerplate\src\Abp.Zero.Common\BackgroundJobs\BackgroundJobStore.cs:line 36
+   at Castle.Proxies.Invocations.BackgroundJobStore_GetWaitingJobsAsync.InvokeMethodOnTarget()
+   at Castle.DynamicProxy.AbstractInvocation.Proceed()
+   at Abp.Domain.Uow.UnitOfWorkInterceptor.PerformAsyncUow(IInvocation invocation, UnitOfWorkOptions options) in D:\Github\aspnetboilerplate\src\Abp\Domain\Uow\UnitOfWorkInterceptor.cs:line 78
+   at Castle.DynamicProxy.AbstractInvocation.Proceed()
+   at Castle.Proxies.BackgroundJobStoreProxy.GetWaitingJobsAsync(Int32 maxResultCount)
+   at System.Threading.Tasks.Task`1.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Nito.AsyncEx.Synchronous.TaskExtensions.WaitAndUnwrapException[TResult](Task`1 task)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Nito.AsyncEx.Synchronous.TaskExtensions.WaitAndUnwrapException[TResult](Task`1 task)
+   at Nito.AsyncEx.AsyncContext.Run[TResult](Func`1 action)
+   at Abp.BackgroundJobs.BackgroundJobManager.DoWork() in D:\Github\aspnetboilerplate\src\Abp\BackgroundJobs\BackgroundJobManager.cs:line 93
+   at Abp.Threading.BackgroundWorkers.PeriodicBackgroundWorkerBase.Timer_Elapsed(Object sender, EventArgs e) in D:\Github\aspnetboilerplate\src\Abp\Threading\BackgroundWorkers\PeriodicBackgroundWorkerBase.cs:line 48
+ClientConnectionId:f80f8e2f-94a4-41f8-9406-9c3ca803ff2d
+Error Number:4060,State:1,Class:11
+System.Data.SqlClient.SqlException (0x80131904): Cannot open database "GYISMSDB" requested by the login. The login failed.
+Login failed for user 'sa'.
+   at System.Data.SqlClient.SqlInternalConnectionTds..ctor(DbConnectionPoolIdentity identity, SqlConnectionString connectionOptions, SqlCredential credential, Object providerInfo, String newPassword, SecureString newSecurePassword, Boolean redirectedUserInstance, SqlConnectionString userConnectionOptions, SessionData reconnectSessionData, Boolean applyTransientFaultHandling)
+   at System.Data.SqlClient.SqlConnectionFactory.CreateConnection(DbConnectionOptions options, DbConnectionPoolKey poolKey, Object poolGroupProviderInfo, DbConnectionPool pool, DbConnection owningConnection, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionFactory.CreatePooledConnection(DbConnectionPool pool, DbConnection owningObject, DbConnectionOptions options, DbConnectionPoolKey poolKey, DbConnectionOptions userOptions)
+   at System.Data.ProviderBase.DbConnectionPool.CreateObject(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.UserCreateRequest(DbConnection owningObject, DbConnectionOptions userOptions, DbConnectionInternal oldConnection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, UInt32 waitForMultipleObjectsTimeout, Boolean allowCreate, Boolean onlyOneCheckConnection, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionPool.TryGetConnection(DbConnection owningObject, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionFactory.TryGetConnection(DbConnection owningConnection, TaskCompletionSource`1 retry, DbConnectionOptions userOptions, DbConnectionInternal oldConnection, DbConnectionInternal& connection)
+   at System.Data.ProviderBase.DbConnectionInternal.TryOpenConnectionInternal(DbConnection outerConnection, DbConnectionFactory connectionFactory, TaskCompletionSource`1 retry, DbConnectionOptions userOptions)
+   at System.Data.SqlClient.SqlConnection.TryOpen(TaskCompletionSource`1 retry)
+   at System.Data.SqlClient.SqlConnection.Open()
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.OpenDbConnection(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.Open(Boolean errorsExpected)
+   at Microsoft.EntityFrameworkCore.Storage.RelationalConnection.BeginTransaction(IsolationLevel isolationLevel)
+   at Microsoft.EntityFrameworkCore.SqlServer.Storage.Internal.SqlServerExecutionStrategy.Execute[TState,TResult](TState state, Func`3 operation, Func`3 verifySucceeded)
+   at Microsoft.EntityFrameworkCore.RelationalDatabaseFacadeExtensions.BeginTransaction(DatabaseFacade databaseFacade, IsolationLevel isolationLevel)
+   at Abp.EntityFrameworkCore.Uow.DbContextEfCoreTransactionStrategy.CreateDbContext[TDbContext](String connectionString, IDbContextResolver dbContextResolver) in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\Uow\DbContextEfCoreTransactionStrategy.cs:line 38
+   at Abp.EntityFrameworkCore.Uow.EfCoreUnitOfWork.GetOrCreateDbContext[TDbContext](Nullable`1 multiTenancySide, String name) in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\Uow\EfCoreUnitOfWork.cs:line 120
+   at Abp.EntityFrameworkCore.Repositories.EfCoreRepositoryBase`3.get_Table() in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\Repositories\EfCoreRepositoryBaseOfTEntityAndTPrimaryKey.cs:line 39
+   at Abp.EntityFrameworkCore.Repositories.EfCoreRepositoryBase`3.GetAllIncluding(Expression`1[] propertySelectors) in D:\Github\aspnetboilerplate\src\Abp.EntityFrameworkCore\EntityFrameworkCore\Repositories\EfCoreRepositoryBaseOfTEntityAndTPrimaryKey.cs:line 88
+   at Castle.Proxies.Invocations.IRepository`2_GetAll_3.InvokeMethodOnTarget()
+   at Castle.DynamicProxy.AbstractInvocation.Proceed()
+   at Abp.Domain.Uow.UnitOfWorkInterceptor.PerformSyncUow(IInvocation invocation, UnitOfWorkOptions options) in D:\Github\aspnetboilerplate\src\Abp\Domain\Uow\UnitOfWorkInterceptor.cs:line 68
+   at Castle.DynamicProxy.AbstractInvocation.Proceed()
+   at Castle.Proxies.IRepository`2Proxy_1.GetAll()
+   at Abp.BackgroundJobs.BackgroundJobStore.GetWaitingJobsAsync(Int32 maxResultCount) in D:\Github\aspnetboilerplate\src\Abp.Zero.Common\BackgroundJobs\BackgroundJobStore.cs:line 36
+   at Castle.Proxies.Invocations.BackgroundJobStore_GetWaitingJobsAsync.InvokeMethodOnTarget()
+   at Castle.DynamicProxy.AbstractInvocation.Proceed()
+   at Abp.Domain.Uow.UnitOfWorkInterceptor.PerformAsyncUow(IInvocation invocation, UnitOfWorkOptions options) in D:\Github\aspnetboilerplate\src\Abp\Domain\Uow\UnitOfWorkInterceptor.cs:line 78
+   at Castle.DynamicProxy.AbstractInvocation.Proceed()
+   at Castle.Proxies.BackgroundJobStoreProxy.GetWaitingJobsAsync(Int32 maxResultCount)
+   at System.Threading.Tasks.Task`1.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Nito.AsyncEx.Synchronous.TaskExtensions.WaitAndUnwrapException[TResult](Task`1 task)
+   at System.Threading.Tasks.ContinuationResultTaskFromResultTask`2.InnerInvoke()
+   at System.Threading.ExecutionContext.RunInternal(ExecutionContext executionContext, ContextCallback callback, Object state)
+--- End of stack trace from previous location where exception was thrown ---
+   at System.Threading.Tasks.Task.ExecuteWithThreadLocal(Task& currentTaskSlot)
+--- End of stack trace from previous location where exception was thrown ---
+   at Nito.AsyncEx.Synchronous.TaskExtensions.WaitAndUnwrapException[TResult](Task`1 task)
+   at Nito.AsyncEx.AsyncContext.Run[TResult](Func`1 action)
+   at Abp.BackgroundJobs.BackgroundJobManager.DoWork() in D:\Github\aspnetboilerplate\src\Abp\BackgroundJobs\BackgroundJobManager.cs:line 93
+   at Abp.Threading.BackgroundWorkers.PeriodicBackgroundWorkerBase.Timer_Elapsed(Object sender, EventArgs e) in D:\Github\aspnetboilerplate\src\Abp\Threading\BackgroundWorkers\PeriodicBackgroundWorkerBase.cs:line 48
+ClientConnectionId:f80f8e2f-94a4-41f8-9406-9c3ca803ff2d
+Error Number:4060,State:1,Class:11
+DEBUG 2018-09-06 18:35:22,620 [1    ] Abp.Modules.AbpModuleManager             - Loading Abp modules...
+DEBUG 2018-09-06 18:35:22,691 [1    ] Abp.Modules.AbpModuleManager             - Found 15 ABP modules in total.
+DEBUG 2018-09-06 18:35:22,704 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.Web.Host.Startup.GYISMSWebHostModule, GYISMS.Web.Host, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,707 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSWebCoreModule, GYISMS.Web.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,707 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSApplicationModule, GYISMS.Application, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,708 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.GYISMSCoreModule, GYISMS.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,708 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCoreModule, Abp.ZeroCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,708 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.AbpZeroCommonModule, Abp.Zero.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,709 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AbpKernelModule, Abp, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,709 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AutoMapper.AbpAutoMapperModule, Abp.AutoMapper, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,709 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: GYISMS.EntityFrameworkCore.GYISMSEntityFrameworkModule, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,709 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Zero.EntityFrameworkCore.AbpZeroCoreEntityFrameworkCoreModule, Abp.ZeroCore.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,710 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFrameworkCore.AbpEntityFrameworkCoreModule, Abp.EntityFrameworkCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,710 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.EntityFramework.AbpEntityFrameworkCommonModule, Abp.EntityFramework.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,710 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.AbpAspNetCoreModule, Abp.AspNetCore, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,710 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.Web.AbpWebCommonModule, Abp.Web.Common, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,710 [1    ] Abp.Modules.AbpModuleManager             - Loaded module: Abp.AspNetCore.SignalR.AbpAspNetCoreSignalRModule, Abp.AspNetCore.SignalR, Version=3.8.1.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:22,713 [1    ] Abp.Modules.AbpModuleManager             - 15 modules loaded.
+DEBUG 2018-09-06 18:35:22,772 [1    ] o.Configuration.LanguageManagementConfig - Converted Abp (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:35:22,772 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpZero (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:35:22,772 [1    ] o.Configuration.LanguageManagementConfig - Converted GYISMS (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:35:22,772 [1    ] o.Configuration.LanguageManagementConfig - Converted AbpWeb (Abp.Localization.Dictionaries.DictionaryBasedLocalizationSource) to MultiTenantLocalizationSource
+DEBUG 2018-09-06 18:35:23,032 [1    ] ameworkCore.AbpEntityFrameworkCoreModule - Registering DbContext: GYISMS.EntityFrameworkCore.GYISMSDbContext, GYISMS.EntityFrameworkCore, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+DEBUG 2018-09-06 18:35:23,697 [1    ] Abp.Localization.LocalizationManager     - Initializing 4 localization sources.
+DEBUG 2018-09-06 18:35:23,747 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: Abp
+DEBUG 2018-09-06 18:35:23,783 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpZero
+DEBUG 2018-09-06 18:35:23,787 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: GYISMS
+DEBUG 2018-09-06 18:35:23,811 [1    ] Abp.Localization.LocalizationManager     - Initialized localization source: AbpWeb
+DEBUG 2018-09-06 18:35:23,938 [1    ] Abp.BackgroundJobs.BackgroundJobManager  - Start background worker: Abp.BackgroundJobs.BackgroundJobManager
+DEBUG 2018-09-06 18:35:23,977 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - Found 10 classes define auto mapping attributes
+DEBUG 2018-09-06 18:35:23,977 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Models.TokenAuth.ExternalLoginProviderInfoModel
+DEBUG 2018-09-06 18:35:23,983 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.CreateUserDto
+DEBUG 2018-09-06 18:35:23,983 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Users.Dto.UserDto
+DEBUG 2018-09-06 18:35:23,984 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.TenantLoginInfoDto
+DEBUG 2018-09-06 18:35:23,984 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Sessions.Dto.UserLoginInfoDto
+DEBUG 2018-09-06 18:35:23,984 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.CreateRoleDto
+DEBUG 2018-09-06 18:35:23,984 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.PermissionDto
+DEBUG 2018-09-06 18:35:23,984 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.Roles.Dto.RoleDto
+DEBUG 2018-09-06 18:35:23,984 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.CreateTenantDto
+DEBUG 2018-09-06 18:35:23,985 [1    ] Abp.AutoMapper.AbpAutoMapperModule       - GYISMS.MultiTenancy.Dto.TenantDto
+INFO  2018-09-06 18:35:28,367 [14   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/  
+INFO  2018-09-06 18:35:28,367 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 DEBUG http://localhost:21021/  0
+INFO  2018-09-06 18:35:28,434 [15   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 72.1501ms 200 
+INFO  2018-09-06 18:35:30,941 [14   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "Index", controller = "Home", area = ""}. Executing action GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host)
+INFO  2018-09-06 18:35:31,736 [14   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host) - Validation state: Valid
+INFO  2018-09-06 18:35:31,741 [14   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host), returned result Microsoft.AspNetCore.Mvc.RedirectResult in 1.9583ms.
+INFO  2018-09-06 18:35:31,836 [13   ] vc.Infrastructure.RedirectResultExecutor - Executing RedirectResult, redirecting to /swagger.
+INFO  2018-09-06 18:35:31,848 [13   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Web.Host.Controllers.HomeController.Index (GYISMS.Web.Host) in 902.8225ms
+INFO  2018-09-06 18:35:31,867 [13   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3508.012ms 302 
+INFO  2018-09-06 18:35:31,869 [6    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/index.html  
+INFO  2018-09-06 18:35:31,907 [6    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 38.4448ms 200 text/html
+INFO  2018-09-06 18:35:31,927 [11   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui.css  
+INFO  2018-09-06 18:35:31,928 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui-bundle.js  
+INFO  2018-09-06 18:35:31,931 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/swagger-ui-standalone-preset.js  
+INFO  2018-09-06 18:35:31,959 [11   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui.css was not modified
+INFO  2018-09-06 18:35:31,961 [7    ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui-standalone-preset.js was not modified
+INFO  2018-09-06 18:35:31,962 [10   ] NetCore.StaticFiles.StaticFileMiddleware - The file /swagger-ui-bundle.js was not modified
+INFO  2018-09-06 18:35:31,967 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 35.1922ms 304 application/javascript
+INFO  2018-09-06 18:35:31,969 [11   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 40.6314ms 304 text/css
+INFO  2018-09-06 18:35:31,970 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 39.7294ms 304 application/javascript
+INFO  2018-09-06 18:35:32,270 [10   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/swagger/v1/swagger.json  
+INFO  2018-09-06 18:35:32,346 [10   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+INFO  2018-09-06 18:35:32,585 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 315.0986ms 200 application/json;charset=utf-8
+INFO  2018-09-06 18:37:05,150 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/TokenAuth/Authenticate  
+INFO  2018-09-06 18:37:05,167 [25   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:05,175 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 25.2139ms 204 
+INFO  2018-09-06 18:37:05,183 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 POST http://localhost:21021/api/TokenAuth/Authenticate application/json 76
+INFO  2018-09-06 18:37:05,185 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:05,221 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "Authenticate", controller = "TokenAuth", area = ""}. Executing action GYISMS.Controllers.TokenAuthController.Authenticate (GYISMS.Web.Core)
+INFO  2018-09-06 18:37:05,223 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:05,617 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Controllers.TokenAuthController.Authenticate (GYISMS.Web.Core) with arguments (GYISMS.Models.TokenAuth.AuthenticateModel) - Validation state: Valid
+INFO  2018-09-06 18:37:06,343 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Controllers.TokenAuthController.Authenticate (GYISMS.Web.Core), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 724.798ms.
+INFO  2018-09-06 18:37:06,420 [22   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:06,439 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Controllers.TokenAuthController.Authenticate (GYISMS.Web.Core) in 1216.3905ms
+INFO  2018-09-06 18:37:06,441 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1258.0417ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:14,497 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 18:37:14,499 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:14,502 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.3621ms 204 
+INFO  2018-09-06 18:37:14,519 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 18:37:14,520 [7    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:14,522 [7    ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:14,589 [23   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:14,591 [23   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:14,592 [23   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:14,594 [23   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:14,603 [22   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:14,604 [22   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:14,616 [22   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:14,617 [22   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:14,626 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 18:37:14,628 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:14,633 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 18:37:15,073 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  0
+INFO  2018-09-06 18:37:15,074 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,075 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.1533ms 204 
+INFO  2018-09-06 18:37:15,079 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 18:37:15,081 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,083 [22   ] uthentication.JwtBearer.JwtBearerHandler - JwtBearer was not authenticated. Failure message: No SecurityTokenValidator available for token: null
+WARN  2018-09-06 18:37:15,084 [22   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:15,086 [22   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+INFO  2018-09-06 18:37:15,090 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 18:37:15,091 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,093 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 18:37:15,505 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 410.7492ms.
+INFO  2018-09-06 18:37:15,509 [23   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 874.0726ms.
+INFO  2018-09-06 18:37:15,525 [23   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:15,526 [22   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:15,558 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 466.069ms
+INFO  2018-09-06 18:37:15,561 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 481.3849ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:15,564 [23   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 932.389ms
+INFO  2018-09-06 18:37:15,567 [23   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 1047.4239ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:15,576 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  0
+INFO  2018-09-06 18:37:15,578 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,580 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.5148ms 204 
+INFO  2018-09-06 18:37:15,582 [23   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 18:37:15,584 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 18:37:15,586 [23   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,587 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,590 [23   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 7.2473ms 204 
+INFO  2018-09-06 18:37:15,592 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 18:37:15,594 [7    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,596 [7    ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:15,598 [7    ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:15,600 [7    ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:15,601 [7    ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:15,603 [7    ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:15,604 [7    ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:15,606 [7    ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:15,609 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 18:37:15,611 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,665 [7    ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 18:37:15,666 [7    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:15,668 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:37:15,670 [7    ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:37:15,716 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 44.3715ms.
+INFO  2018-09-06 18:37:15,718 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 48.6294ms.
+INFO  2018-09-06 18:37:15,720 [22   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:15,723 [17   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:15,729 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 62.9187ms
+INFO  2018-09-06 18:37:15,731 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 120.2732ms
+INFO  2018-09-06 18:37:15,733 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 139.6947ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:15,734 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 150.1756ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:33,966 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 18:37:33,968 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:33,969 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.3291ms 204 
+INFO  2018-09-06 18:37:33,988 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 18:37:33,990 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:33,992 [22   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:33,993 [22   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:33,994 [22   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:33,996 [22   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:33,997 [22   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:33,999 [22   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:34,000 [22   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:34,002 [22   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:34,003 [22   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:34,006 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 18:37:34,008 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:34,010 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 18:37:34,017 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.4946ms.
+INFO  2018-09-06 18:37:34,028 [7    ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:34,030 [7    ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 22.1903ms
+INFO  2018-09-06 18:37:34,032 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 43.5236ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:34,039 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 18:37:34,040 [25   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:34,041 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.73ms 204 
+INFO  2018-09-06 18:37:34,046 [23   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 18:37:34,047 [23   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:34,049 [23   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:34,050 [23   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:34,052 [23   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:34,053 [23   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:34,055 [23   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:34,056 [23   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:34,058 [23   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:34,061 [23   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 18:37:34,063 [23   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:34,066 [23   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:37:34,075 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 7.9803ms.
+INFO  2018-09-06 18:37:34,078 [22   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:34,079 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 16.3131ms
+INFO  2018-09-06 18:37:34,081 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 35.1444ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:37,578 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/TokenAuth/Authenticate  
+INFO  2018-09-06 18:37:37,580 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:37,581 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.6743ms 204 
+INFO  2018-09-06 18:37:37,585 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 POST http://localhost:21021/api/TokenAuth/Authenticate application/json 76
+INFO  2018-09-06 18:37:37,586 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:37,587 [22   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:37,589 [22   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:37,590 [22   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:37,591 [22   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:37,592 [22   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:37,593 [22   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:37,594 [22   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:37,597 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "Authenticate", controller = "TokenAuth", area = ""}. Executing action GYISMS.Controllers.TokenAuthController.Authenticate (GYISMS.Web.Core)
+INFO  2018-09-06 18:37:37,599 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:37,603 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Controllers.TokenAuthController.Authenticate (GYISMS.Web.Core) with arguments (GYISMS.Models.TokenAuth.AuthenticateModel) - Validation state: Valid
+INFO  2018-09-06 18:37:37,670 [23   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Controllers.TokenAuthController.Authenticate (GYISMS.Web.Core), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 64.8558ms.
+INFO  2018-09-06 18:37:37,690 [23   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:37,691 [23   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Controllers.TokenAuthController.Authenticate (GYISMS.Web.Core) in 92.3581ms
+INFO  2018-09-06 18:37:37,693 [23   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 107.9058ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:40,058 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 18:37:40,059 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:40,061 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.9724ms 204 
+INFO  2018-09-06 18:37:40,066 [28   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 18:37:40,068 [28   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:40,069 [28   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:40,071 [28   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:40,072 [28   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:40,074 [28   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:40,075 [28   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:40,077 [28   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:40,078 [28   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:40,080 [28   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:40,081 [28   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:40,085 [28   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 18:37:40,086 [28   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:40,088 [28   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 18:37:40,094 [28   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 4.6318ms.
+INFO  2018-09-06 18:37:40,101 [28   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:40,103 [28   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 16.411ms
+INFO  2018-09-06 18:37:40,104 [28   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 38.5555ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:40,112 [28   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 18:37:40,113 [28   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:40,115 [28   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.9047ms 204 
+INFO  2018-09-06 18:37:40,119 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 18:37:40,120 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:40,122 [27   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:40,123 [27   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:40,125 [27   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:40,126 [27   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:40,128 [27   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:40,129 [27   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:40,130 [27   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:40,134 [27   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 18:37:40,135 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:40,138 [27   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:37:40,147 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 7.3375ms.
+INFO  2018-09-06 18:37:40,150 [22   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:40,152 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 16.335ms
+INFO  2018-09-06 18:37:40,154 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 34.373ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:47,539 [23   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-06 18:37:47,540 [23   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:47,542 [23   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.6012ms 204 
+INFO  2018-09-06 18:37:47,565 [28   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-06 18:37:47,567 [28   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:47,568 [28   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:47,573 [28   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:47,575 [28   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:47,577 [28   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:47,579 [28   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:47,581 [28   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:47,583 [28   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:47,601 [28   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "Role"}. Executing action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application)
+INFO  2018-09-06 18:37:47,603 [28   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:47,773 [28   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-06 18:37:47,990 [25   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 215.0113ms.
+INFO  2018-09-06 18:37:48,000 [25   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:48,005 [25   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) in 402.5527ms
+INFO  2018-09-06 18:37:48,006 [25   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 441.9101ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:52,438 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetTreesAsync  
+INFO  2018-09-06 18:37:52,439 [7    ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:52,441 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.8498ms 204 
+INFO  2018-09-06 18:37:52,488 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetTreesAsync application/json 
+INFO  2018-09-06 18:37:52,490 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:52,492 [17   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:52,493 [17   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:52,494 [17   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:52,496 [17   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:52,497 [17   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:52,498 [17   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:52,500 [17   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:52,505 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetTreesAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application)
+INFO  2018-09-06 18:37:52,506 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:52,745 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:37:52,763 [7    ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 16.2016ms.
+INFO  2018-09-06 18:37:52,772 [7    ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:52,774 [7    ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) in 266.8808ms
+INFO  2018-09-06 18:37:52,776 [7    ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 288.2363ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:37:56,215 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync  
+INFO  2018-09-06 18:37:56,216 [22   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:56,218 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.0845ms 204 
+INFO  2018-09-06 18:37:56,223 [23   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 POST http://localhost:21021/api/services/app/Organization/SynchronousOrganizationAsync application/json 0
+INFO  2018-09-06 18:37:56,225 [23   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:56,227 [23   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:37:56,228 [23   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:56,229 [23   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:56,231 [23   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:37:56,232 [23   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:37:56,233 [23   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:37:56,234 [23   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:37:56,241 [23   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "SynchronousOrganizationAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application)
+INFO  2018-09-06 18:37:56,242 [23   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:37:56,247 [23   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:37:57,051 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 802.6131ms.
+INFO  2018-09-06 18:37:57,060 [17   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:37:57,063 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.SynchronousOrganizationAsync (GYISMS.Application) in 820.6338ms
+INFO  2018-09-06 18:37:57,065 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 841.7168ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:38:05,627 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetTreesAsync  
+INFO  2018-09-06 18:38:05,629 [27   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:38:05,631 [27   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.6189ms 204 
+INFO  2018-09-06 18:38:05,649 [17   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetTreesAsync application/json 
+INFO  2018-09-06 18:38:05,651 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:38:05,653 [17   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:38:05,655 [17   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:38:05,656 [17   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:38:05,658 [17   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:38:05,660 [17   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:38:05,661 [17   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:38:05,663 [17   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:38:05,666 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetTreesAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application)
+INFO  2018-09-06 18:38:05,668 [17   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:38:05,671 [17   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:38:05,677 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 4.9905ms.
+INFO  2018-09-06 18:38:05,686 [22   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:38:05,690 [22   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) in 21.2983ms
+INFO  2018-09-06 18:38:05,691 [22   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 42.4595ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:47:14,149 [47   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 18:47:14,151 [47   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,156 [47   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 7.6913ms 204 
+INFO  2018-09-06 18:47:14,168 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 18:47:14,170 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,172 [45   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:47:14,173 [45   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:14,175 [45   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:14,178 [45   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:14,179 [45   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:14,181 [45   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:14,182 [45   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:14,184 [45   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:47:14,185 [45   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:47:14,188 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 18:47:14,189 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,191 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 18:47:14,203 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 10.1663ms.
+INFO  2018-09-06 18:47:14,214 [45   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:47:14,216 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 26.129ms
+INFO  2018-09-06 18:47:14,218 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 49.7393ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:47:14,226 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 18:47:14,228 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,230 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.5896ms 204 
+INFO  2018-09-06 18:47:14,235 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 18:47:14,237 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,238 [45   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:47:14,239 [45   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:14,241 [45   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:14,242 [45   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:14,244 [45   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:14,246 [45   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:47:14,247 [45   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:47:14,251 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 18:47:14,253 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,256 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:47:14,265 [50   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 7.9243ms.
+INFO  2018-09-06 18:47:14,268 [50   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:47:14,270 [50   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 16.9335ms
+INFO  2018-09-06 18:47:14,274 [50   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 36.4486ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:47:14,404 [47   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetTreesAsync  
+INFO  2018-09-06 18:47:14,406 [47   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,408 [47   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.3516ms 204 
+INFO  2018-09-06 18:47:14,487 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetTreesAsync application/json 
+INFO  2018-09-06 18:47:14,489 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,491 [49   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:47:14,493 [49   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:14,496 [49   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:14,499 [49   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:14,501 [49   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:14,502 [49   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:47:14,505 [49   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:47:14,512 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetTreesAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application)
+INFO  2018-09-06 18:47:14,516 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:14,525 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:47:14,532 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 5.6755ms.
+INFO  2018-09-06 18:47:14,545 [49   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:47:14,548 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) in 33.0495ms
+INFO  2018-09-06 18:47:14,554 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 65.5219ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:47:25,633 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-06 18:47:25,634 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:25,636 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 5.0733ms 204 
+INFO  2018-09-06 18:47:25,663 [50   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-06 18:47:25,665 [50   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:25,666 [50   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:47:25,668 [50   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:25,669 [50   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:25,671 [50   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:25,672 [50   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:25,674 [50   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:47:25,675 [50   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:47:25,678 [50   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "Role"}. Executing action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application)
+INFO  2018-09-06 18:47:25,680 [50   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:25,682 [50   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-06 18:47:25,699 [52   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 15.3784ms.
+INFO  2018-09-06 18:47:25,710 [47   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:47:25,711 [47   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) in 31.2205ms
+INFO  2018-09-06 18:47:25,713 [47   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 50.2928ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:47:28,125 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-06 18:47:28,127 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:28,128 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.1863ms 204 
+INFO  2018-09-06 18:47:28,142 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-06 18:47:28,143 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:28,145 [45   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:47:28,147 [45   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:28,149 [45   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:28,151 [45   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:47:28,152 [45   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:47:28,154 [45   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:47:28,155 [45   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:47:28,163 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "User"}. Executing action GYISMS.Users.UserAppService.GetAll (GYISMS.Application)
+INFO  2018-09-06 18:47:28,164 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:47:28,308 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-06 18:47:28,414 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 104.9536ms.
+INFO  2018-09-06 18:47:28,423 [53   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:47:28,430 [53   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Users.UserAppService.GetAll (GYISMS.Application) in 265.7612ms
+INFO  2018-09-06 18:47:28,431 [53   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 289.8149ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:55:23,317 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 18:55:23,322 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,323 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 7.6839ms 204 
+INFO  2018-09-06 18:55:23,350 [77   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 18:55:23,352 [77   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,354 [77   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:55:23,355 [77   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:23,357 [77   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:23,359 [77   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:23,360 [77   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:23,362 [77   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:23,364 [77   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:23,366 [77   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:55:23,368 [77   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:55:23,373 [77   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 18:55:23,374 [77   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,377 [77   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 18:55:23,394 [77   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 15.2655ms.
+INFO  2018-09-06 18:55:23,401 [74   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:55:23,404 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 29.0406ms
+INFO  2018-09-06 18:55:23,406 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 69.0883ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:55:23,423 [79   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 18:55:23,424 [79   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,426 [79   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.3663ms 204 
+INFO  2018-09-06 18:55:23,431 [78   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 18:55:23,432 [78   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,434 [78   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:55:23,436 [78   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:23,437 [78   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:23,439 [78   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:23,441 [78   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:23,443 [78   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:55:23,444 [78   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:55:23,448 [78   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 18:55:23,450 [78   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,453 [78   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:55:23,464 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 9.7387ms.
+INFO  2018-09-06 18:55:23,467 [74   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:55:23,469 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 19.4369ms
+INFO  2018-09-06 18:55:23,472 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 39.8585ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:55:23,574 [77   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-06 18:55:23,576 [77   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,577 [77   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.8174ms 204 
+INFO  2018-09-06 18:55:23,654 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-06 18:55:23,656 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,658 [74   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:55:23,659 [74   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:23,661 [74   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:23,663 [74   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:23,664 [74   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:23,666 [74   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:55:23,669 [74   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:55:23,672 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "User"}. Executing action GYISMS.Users.UserAppService.GetAll (GYISMS.Application)
+INFO  2018-09-06 18:55:23,674 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:23,676 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-06 18:55:23,692 [78   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 14.4565ms.
+INFO  2018-09-06 18:55:23,702 [78   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:55:23,703 [78   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Users.UserAppService.GetAll (GYISMS.Application) in 29.6831ms
+INFO  2018-09-06 18:55:23,705 [78   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 50.8679ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:55:53,041 [81   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 18:55:53,044 [81   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,046 [81   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 6.3271ms 204 
+INFO  2018-09-06 18:55:53,052 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 18:55:53,054 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,056 [74   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:55:53,058 [74   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:53,060 [74   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:53,061 [74   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:53,062 [74   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:53,063 [74   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:53,064 [74   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:53,066 [74   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:55:53,067 [74   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:55:53,070 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 18:55:53,072 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,075 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 18:55:53,082 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 5.2852ms.
+INFO  2018-09-06 18:55:53,090 [81   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:55:53,091 [81   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 19.5051ms
+INFO  2018-09-06 18:55:53,093 [81   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 40.7247ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:55:53,105 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 18:55:53,106 [74   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,108 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.5475ms 204 
+INFO  2018-09-06 18:55:53,112 [78   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 18:55:53,116 [78   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,117 [78   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:55:53,119 [78   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:53,121 [78   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:53,123 [78   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:53,124 [78   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:53,125 [78   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:55:53,126 [78   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:55:53,130 [78   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 18:55:53,131 [78   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,134 [78   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 18:55:53,141 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 6.6338ms.
+INFO  2018-09-06 18:55:53,144 [74   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:55:53,146 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 14.6244ms
+INFO  2018-09-06 18:55:53,148 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 35.715ms 200 application/json; charset=utf-8
+INFO  2018-09-06 18:55:53,251 [81   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-06 18:55:53,253 [81   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,255 [81   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.2199ms 204 
+INFO  2018-09-06 18:55:53,331 [78   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-06 18:55:53,336 [78   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,339 [78   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 18:55:53,342 [78   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:53,343 [78   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:53,347 [78   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 18:55:53,349 [78   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 18:55:53,352 [78   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 18:55:53,354 [78   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 18:55:53,360 [78   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "User"}. Executing action GYISMS.Users.UserAppService.GetAll (GYISMS.Application)
+INFO  2018-09-06 18:55:53,362 [78   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 18:55:53,367 [78   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-06 18:55:53,383 [81   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 15.0126ms.
+INFO  2018-09-06 18:55:53,406 [74   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 18:55:53,408 [74   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Users.UserAppService.GetAll (GYISMS.Application) in 45.8373ms
+INFO  2018-09-06 18:55:53,412 [74   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 78.7665ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:02:10,128 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 20:02:10,133 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,136 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 7.5989ms 204 
+INFO  2018-09-06 20:02:10,148 [45   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 20:02:10,150 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,152 [45   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:02:10,163 [45   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:02:10,165 [45   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:02:10,167 [45   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:02:10,168 [45   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:02:10,169 [45   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:02:10,170 [45   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:02:10,172 [45   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:02:10,173 [45   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:02:10,179 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 20:02:10,180 [45   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,183 [45   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 20:02:10,251 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 66.0777ms.
+INFO  2018-09-06 20:02:10,263 [52   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:02:10,265 [52   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 84.3271ms
+INFO  2018-09-06 20:02:10,268 [52   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 117.9265ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:02:10,279 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 20:02:10,281 [49   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,283 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.8677ms 204 
+INFO  2018-09-06 20:02:10,289 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 20:02:10,291 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,293 [51   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:02:10,294 [51   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:02:10,296 [51   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:02:10,297 [51   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:02:10,299 [51   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:02:10,300 [51   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:02:10,302 [51   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:02:10,305 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 20:02:10,306 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,309 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 20:02:10,318 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 6.7319ms.
+INFO  2018-09-06 20:02:10,330 [48   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:02:10,331 [48   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 25.167ms
+INFO  2018-09-06 20:02:10,333 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 44.3727ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:02:10,425 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-06 20:02:10,426 [48   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,428 [48   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.5782ms 204 
+INFO  2018-09-06 20:02:10,498 [51   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-06 20:02:10,500 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,501 [51   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:02:10,503 [51   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:02:10,504 [51   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:02:10,505 [51   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:02:10,506 [51   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:02:10,508 [51   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:02:10,509 [51   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:02:10,514 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "User"}. Executing action GYISMS.Users.UserAppService.GetAll (GYISMS.Application)
+INFO  2018-09-06 20:02:10,516 [51   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:02:10,519 [51   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-06 20:02:10,535 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 13.8217ms.
+INFO  2018-09-06 20:02:10,546 [49   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:02:10,550 [49   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Users.UserAppService.GetAll (GYISMS.Application) in 32.267ms
+INFO  2018-09-06 20:02:10,555 [49   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 55.5729ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:04:39,978 [62   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetTreesAsync  
+INFO  2018-09-06 20:04:39,980 [62   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:04:39,981 [62   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 4.629ms 204 
+INFO  2018-09-06 20:04:40,037 [56   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetTreesAsync application/json 
+INFO  2018-09-06 20:04:40,038 [56   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:04:40,040 [56   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:04:40,041 [56   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:04:40,043 [56   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:04:40,044 [56   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:04:40,046 [56   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:04:40,047 [56   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:04:40,048 [56   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:04:40,053 [56   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetTreesAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application)
+INFO  2018-09-06 20:04:40,054 [56   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:04:40,058 [56   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 20:04:40,063 [62   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.539ms.
+INFO  2018-09-06 20:04:40,075 [62   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:04:40,076 [62   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) in 22.5416ms
+INFO  2018-09-06 20:04:40,081 [62   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 41.1084ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:15:36,131 [88   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 20:15:36,132 [88   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:15:36,134 [88   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.6222ms 204 
+INFO  2018-09-06 20:15:36,143 [88   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 20:15:36,144 [88   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:15:36,145 [88   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:15:36,147 [88   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:15:36,148 [88   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:15:36,149 [88   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:15:36,150 [88   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:15:36,151 [88   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:15:36,152 [88   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:15:36,153 [88   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:15:36,154 [88   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:15:36,158 [88   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 20:15:36,159 [88   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:15:36,161 [88   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 20:15:36,170 [88   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 8.2645ms.
+INFO  2018-09-06 20:15:36,180 [91   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:15:36,182 [91   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 23.0129ms
+INFO  2018-09-06 20:15:36,183 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 41.9114ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:15:36,194 [90   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 20:15:36,195 [90   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:15:36,197 [90   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.7696ms 204 
+INFO  2018-09-06 20:15:36,201 [88   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 20:15:36,202 [88   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:15:36,204 [88   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:15:36,206 [88   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:15:36,207 [88   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:15:36,209 [88   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:15:36,210 [88   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:15:36,211 [88   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:15:36,212 [88   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:15:36,215 [88   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 20:15:36,217 [88   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:15:36,219 [88   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 20:15:36,228 [92   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 7.0544ms.
+INFO  2018-09-06 20:15:36,230 [92   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:15:36,231 [92   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 14.7845ms
+INFO  2018-09-06 20:15:36,233 [92   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 31.6014ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:20:33,153 [96   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/AbpUserConfiguration/GetAll  
+INFO  2018-09-06 20:20:33,155 [96   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:33,158 [96   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.7102ms 204 
+INFO  2018-09-06 20:20:33,174 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/AbpUserConfiguration/GetAll application/json 
+INFO  2018-09-06 20:20:33,176 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:33,177 [95   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:20:33,182 [95   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:33,183 [95   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:33,185 [95   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:33,186 [95   ] calization.RequestLocalizationMiddleware - AbpLocalizationHeaderRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:33,187 [95   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:33,188 [95   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:33,189 [95   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:20:33,191 [95   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:20:33,196 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {action = "GetAll", controller = "AbpUserConfiguration", area = ""}. Executing action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore)
+INFO  2018-09-06 20:20:33,199 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:33,202 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) - Validation state: Valid
+INFO  2018-09-06 20:20:33,210 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore), returned result Microsoft.AspNetCore.Mvc.JsonResult in 6.3803ms.
+INFO  2018-09-06 20:20:33,216 [95   ] matters.Json.Internal.JsonResultExecutor - Executing JsonResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:20:33,219 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action Abp.AspNetCore.Mvc.Controllers.AbpUserConfigurationController.GetAll (Abp.AspNetCore) in 20.5579ms
+INFO  2018-09-06 20:20:33,221 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 49.0688ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:20:33,230 [90   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations  
+INFO  2018-09-06 20:20:33,231 [90   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:33,232 [90   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.2087ms 204 
+INFO  2018-09-06 20:20:33,235 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Session/GetCurrentLoginInformations application/json 
+INFO  2018-09-06 20:20:33,236 [91   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:33,238 [91   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:20:33,239 [91   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:33,240 [91   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:33,241 [91   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:33,242 [91   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:33,243 [91   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:20:33,244 [91   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:20:33,247 [91   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetCurrentLoginInformations", controller = "Session"}. Executing action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application)
+INFO  2018-09-06 20:20:33,248 [91   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:33,250 [91   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 20:20:33,258 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 6.4025ms.
+INFO  2018-09-06 20:20:33,261 [93   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:20:33,262 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Sessions.SessionAppService.GetCurrentLoginInformations (GYISMS.Application) in 14.0057ms
+INFO  2018-09-06 20:20:33,263 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 27.4767ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:20:53,262 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-06 20:20:53,263 [91   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:53,264 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 3.0489ms 204 
+INFO  2018-09-06 20:20:53,287 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Role/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-06 20:20:53,289 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:53,291 [95   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:20:53,293 [95   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:53,295 [95   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:53,296 [95   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:53,299 [95   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:53,300 [95   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:20:53,302 [95   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:20:53,306 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "Role"}. Executing action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application)
+INFO  2018-09-06 20:20:53,307 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:53,310 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-06 20:20:53,322 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 10.7548ms.
+INFO  2018-09-06 20:20:53,331 [93   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:20:53,332 [93   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Roles.RoleAppService.GetAll (GYISMS.Application) in 25.3277ms
+INFO  2018-09-06 20:20:53,334 [93   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 46.7313ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:20:58,490 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10  
+INFO  2018-09-06 20:20:58,491 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:58,492 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.8745ms 204 
+INFO  2018-09-06 20:20:58,506 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/User/GetAll?SkipCount=0&MaxResultCount=10 application/json 
+INFO  2018-09-06 20:20:58,507 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:58,509 [95   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:20:58,511 [95   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:58,513 [95   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:58,514 [95   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:20:58,516 [95   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:20:58,517 [95   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:20:58,519 [95   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:20:58,522 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetAll", controller = "User"}. Executing action GYISMS.Users.UserAppService.GetAll (GYISMS.Application)
+INFO  2018-09-06 20:20:58,523 [95   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:20:58,526 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application) with arguments (Abp.Application.Services.Dto.PagedResultRequestDto) - Validation state: Valid
+INFO  2018-09-06 20:20:58,540 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Users.UserAppService.GetAll (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 12.3423ms.
+INFO  2018-09-06 20:20:58,551 [95   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:20:58,553 [95   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Users.UserAppService.GetAll (GYISMS.Application) in 29.1228ms
+INFO  2018-09-06 20:20:58,555 [95   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 49.155ms 200 application/json; charset=utf-8
+INFO  2018-09-06 20:21:04,313 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 OPTIONS http://localhost:21021/api/services/app/Organization/GetTreesAsync  
+INFO  2018-09-06 20:21:04,315 [91   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:21:04,316 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 2.7667ms 204 
+INFO  2018-09-06 20:21:04,357 [91   ] soft.AspNetCore.Hosting.Internal.WebHost - Request starting HTTP/1.1 GET http://localhost:21021/api/services/app/Organization/GetTreesAsync application/json 
+INFO  2018-09-06 20:21:04,359 [91   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:21:04,361 [91   ] uthentication.JwtBearer.JwtBearerHandler - Successfully validated the token.
+WARN  2018-09-06 20:21:04,362 [91   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:21:04,364 [91   ] calization.RequestLocalizationMiddleware - AbpUserRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:21:04,365 [91   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported cultures 'null'.
+WARN  2018-09-06 20:21:04,366 [91   ] calization.RequestLocalizationMiddleware - AbpDefaultRequestCultureProvider returned the following unsupported UI Cultures 'null'.
+WARN  2018-09-06 20:21:04,368 [91   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported cultures 'zh-CN, zh'.
+WARN  2018-09-06 20:21:04,369 [91   ] calization.RequestLocalizationMiddleware - AcceptLanguageHeaderRequestCultureProvider returned the following unsupported UI Cultures 'zh-CN, zh'.
+INFO  2018-09-06 20:21:04,373 [91   ] ore.Mvc.Internal.ControllerActionInvoker - Route matched with {area = "app", action = "GetTreesAsync", controller = "Organization"}. Executing action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application)
+INFO  2018-09-06 20:21:04,375 [91   ] pNetCore.Cors.Infrastructure.CorsService - Policy execution successful.
+INFO  2018-09-06 20:21:04,378 [91   ] ore.Mvc.Internal.ControllerActionInvoker - Executing action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) - Validation state: Valid
+INFO  2018-09-06 20:21:04,383 [96   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action method GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application), returned result Microsoft.AspNetCore.Mvc.ObjectResult in 3.913ms.
+INFO  2018-09-06 20:21:04,395 [96   ] .Mvc.Infrastructure.ObjectResultExecutor - Executing ObjectResult, writing value of type 'Abp.Web.Models.AjaxResponse'.
+INFO  2018-09-06 20:21:04,397 [96   ] ore.Mvc.Internal.ControllerActionInvoker - Executed action GYISMS.Organizations.OrganizationAppService.GetTreesAsync (GYISMS.Application) in 22.2071ms
+INFO  2018-09-06 20:21:04,398 [96   ] soft.AspNetCore.Hosting.Internal.WebHost - Request finished in 41.6477ms 200 application/json; charset=utf-8

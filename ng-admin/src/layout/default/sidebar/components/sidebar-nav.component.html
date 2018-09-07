@@ -7,10 +7,10 @@
       </a>
     </li>
 
-    <li *ngIf="canShow(menuItem)&&hasChildren(menuItem)" nz-submenu>
+    <li *ngIf="canShow(menuItem)&&hasChildren(menuItem)" nz-submenu [(nzOpen)]="menuItem.isopen" (nzOpenChange)="openHandler(menuItem)">
       <span title>
         <i *ngIf="menuItem.icon" class="{{menuItem.icon}}"></i>
-        <span>{{menuItem.text}}</span>
+        <span>{{menuItem.text + ' | ' + menuItem.isopen}}</span>
       </span>
       <ul>
         <ng-template ngFor let-subMenuItem [ngForOf]="menuItem.children" let-mainMenuItemIndex="index">
@@ -21,10 +21,10 @@
             </a>
           </li>
 
-          <li *ngIf="canShow(subMenuItem)&&hasChildren(subMenuItem)" nz-submenu>
+          <li *ngIf="canShow(subMenuItem)&&hasChildren(subMenuItem)" nz-submenu [(nzOpen)]="subMenuItem.isopen" (nzOpenChange)="openHandler(subMenuItem)">
             <span title>
               <i *ngIf="subMenuItem.icon" class="{{subMenuItem.icon}}"></i>
-              <span>{{subMenuItem.text}}</span>
+              <span>{{subMenuItem.text + ' | ' + subMenuItem.isopen}}</span>
             </span>
 
             <ul>

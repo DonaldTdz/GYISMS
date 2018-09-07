@@ -16,6 +16,7 @@ export class SideBarNavComponent extends AppComponentBase implements OnInit {
     list: Menu[];
     collapsed: boolean = false;
     themeValue: string = 'light';
+    openmenu: boolean = true;
 
     constructor(
         injector: Injector,
@@ -72,4 +73,13 @@ export class SideBarNavComponent extends AppComponentBase implements OnInit {
     canShow(item: Menu): boolean {
         return !item.hide;
     }
+
+    openHandler(menu: Menu): void {
+        for (let m of this.list) {
+            if (m.text != menu.text) {
+                m.isopen = false;
+            }
+        }
+    }
+
 }

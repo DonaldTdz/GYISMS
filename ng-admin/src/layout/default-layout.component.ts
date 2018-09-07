@@ -71,7 +71,7 @@ export class DefaultLayoutComponent extends AppComponentBase
 
         // 烟叶管理
         new MenuItem(
-            '烟叶管理',
+            '烟叶服务',
             '',
             'anticon anticon-select',
             '',
@@ -110,7 +110,7 @@ export class DefaultLayoutComponent extends AppComponentBase
 
         // 会议管理
         new MenuItem(
-            '会议管理',
+            '会议申请',
             '',
             'anticon anticon-laptop',
             '',
