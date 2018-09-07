@@ -33,15 +33,15 @@
 
     <div nz-row>
         <div nz-col nzSpan="6">
-            <div style="padding-left:10px; padding-right:10px;">
+            <!-- <div style="padding-left:10px; padding-right:10px;">
                 <nz-input-group [nzSuffix]="suffixIcon">
                     <input type="text" nz-input placeholder="搜索" [(ngModel)]="searchValue">
                 </nz-input-group>
                 <ng-template #suffixIcon>
                     <i class="anticon anticon-search"></i>
                 </ng-template>
-            </div>
-            <div style="padding:10px;">
+            </div> -->
+            <div style="padding-bottom: 10px;border-right-width: 10px;padding-right: 10px; padding-left: 10px;">
                 <button nz-button (click)="syncData()" style="width:100%" [nzLoading]="syncDataLoading" nzType="primary">
                     <i class="anticon anticon-reload"></i>
                     <span>同步组织架构</span>
@@ -55,21 +55,68 @@
                                 <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
                                 <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
                                 <span class="folder-name">{{node.title}}</span>
-                                <!-- <span class="folder-desc">{{node?.origin?.author | lowercase}}</span> -->
-                            </span>
-                            <span *ngIf="node.isLeaf">
+                        <!-- <span class="folder-desc">{{node?.origin?.author | lowercase}}</span> -->
+                        </span>
+                        <span *ngIf="node.isLeaf">
                                 <i class="anticon anticon-folder"></i>
                                 <span class="file-name">{{node.title}}</span>
-                                <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
-                            </span>
+                        <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
+                        </span>
                         </span>
                     </ng-template>
                 </nz-tree>
             </div>
         </div>
         <div nz-col nzSpan="18">
-
-
+            <form nz-form (ngSubmit)="refreshData(tempNode,false,true)" [nzLayout]="'inline'">
+                <div nz-row [nzGutter]="18">
+                    <div nz-col [nzSpan]="8" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <nz-form-label nzFor="name">用户名</nz-form-label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入用户名" nzSize="default">
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="8" class="mb-md">
+                        <div nz-form-item class="d-flex">
+                            <div nz-form-label>
+                                <nz-form-label nzFor="mobile">电话号码</nz-form-label>
+                            </div>
+                            <div nz-form-control class="flex-1">
+                                <input nz-input [(ngModel)]="search.mobile" name="mobile" placeholder="请输入电话号码" nzSize="default">
+                            </div>
+                        </div>
+                    </div>
+                    <div nz-col [nzSpan]="8" class="mb-md" style="text-align: right;">
+                        <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
+                        <button nz-button type="reset" (click)="refreshData(tempNode,true)" class="mx-sm">重置</button>
+                    </div>
+                </div>
+            </form>
+            <nz-table #nzTable [nzFrontPagination]="false" [nzTotal]="query.total" [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
+                (nzPageSizeChange)="refreshData(tempNode)">
+                <thead>
+                    <tr>
+                        <th>姓名</th>
+                        <th>职位</th>
+                        <th>电话号码</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of nzTable.data">
+                        <td>{{item.name}}</td>
+                        <td>{{item.position}}</td>
+                        <td>{{item.mobile}}</td>
+                        <td>
+                            <a (click)="goDetail(item.id)">查看详情</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
         </div>
     </div>
 </nz-card>

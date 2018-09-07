@@ -21,6 +21,8 @@ using DingTalk.Api.Request;
 using DingTalk.Api.Response;
 using GYISMS.Dtos;
 using GYISMS.Authorization;
+using GYISMS.Employees;
+using GYISMS.Employees.Dtos;
 
 namespace GYISMS.Organizations
 {
@@ -30,23 +32,21 @@ namespace GYISMS.Organizations
     [AbpAuthorize(AppPermissions.Pages)]
     public class OrganizationAppService : GYISMSAppServiceBase, IOrganizationAppService
     {
-        private readonly IRepository<Organization, long>
-        _organizationRepository;
-
-
+        private readonly IRepository<Organization, long> _organizationRepository;
         private readonly IOrganizationManager _organizationManager;
+        private readonly IRepository<Employee, string> _employeeRepository;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
-        public OrganizationAppService(
-        IRepository<Organization, long>
-    organizationRepository
+        public OrganizationAppService(IRepository<Organization, long> organizationRepository
             , IOrganizationManager organizationManager
+            , IRepository<Employee, string> employeeRepository
             )
         {
             _organizationRepository = organizationRepository;
             _organizationManager = organizationManager;
+            _employeeRepository = employeeRepository;
         }
 
 
@@ -135,7 +135,7 @@ namespace GYISMS.Organizations
         /// <summary>
         /// 新增Organization
         /// </summary>
-        [AbpAuthorize(OrganizationAppPermissions.Organization_Create)]
+        //[AbpAuthorize(OrganizationAppPermissions.Organization_Create)]
         protected virtual async Task<OrganizationEditDto> CreateOrganizationAsync(OrganizationEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -213,26 +213,24 @@ namespace GYISMS.Organizations
 
 
         /// <summary>
-        /// 同步组织架构
+        /// 同步组织架构&内部员工
         /// </summary>
         /// <returns></returns>
         public async Task<APIResultDto> SynchronousOrganizationAsync()
         {
             string accessToken = GetAccessToken();
-            //string accessToken = "0929f705e9c93c3ba237c984b8522177";
             IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
             OapiDepartmentListRequest request = new OapiDepartmentListRequest();
-            //request.Id = "1";
             request.SetHttpMethod("GET");
             OapiDepartmentListResponse response = client.Execute(request, accessToken);
             var entityByDD = (from o in response.Department
-                              select new Organization()
+                              select new OrganizationListDto()
                               {
                                   Id = o.Id,
                                   DepartmentName = o.Name,
                                   ParentId = o.Parentid,
                                   CreationTime = DateTime.Now
-                              }).ToList();
+                              });
 
             var originEntity = await _organizationRepository.GetAll().ToListAsync();
             foreach (var item in entityByDD)
@@ -240,19 +238,26 @@ namespace GYISMS.Organizations
                 var o = originEntity.Where(r => r.Id == item.Id).FirstOrDefault();
                 if (o != null)
                 {
-                    o.Id = item.Id;
                     o.DepartmentName = item.DepartmentName;
                     o.ParentId = item.ParentId;
                     o.CreationTime = DateTime.Now;
+                    if (o.Id != 1)
+                    {
+                        await SynchronousEmployeeAsync(o.Id, accessToken);
+                    }
                 }
                 else
                 {
-                    var organization = new Organization();
+                    var organization = new OrganizationListDto();
                     organization.Id = item.Id;
                     organization.DepartmentName = item.DepartmentName;
                     organization.ParentId = item.ParentId;
                     organization.CreationTime = DateTime.Now;
-                    await CreateOrganizationAsync(organization);
+                    await CreateSyncOrganizationAsync(organization);
+                    if (organization.Id != 1)
+                    {
+                        await SynchronousEmployeeAsync(organization.Id, accessToken);
+                    }
                 }
             }
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -260,19 +265,100 @@ namespace GYISMS.Organizations
         }
 
         /// <summary>
+        /// 同步内部员工
+        /// </summary>
+        /// <param name="departId"></param>
+        /// <param name="accessToken"></param>
+        /// <returns></returns>
+        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken)
+        {
+            try
+            {
+                IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/list");
+                OapiUserListRequest request = new OapiUserListRequest();
+                request.DepartmentId = departId;
+                request.SetHttpMethod("GET");
+                OapiUserListResponse response = client.Execute(request, accessToken);
+                var entityByDD = (from e in response.Userlist
+                                  select new EmployeeListDto()
+                                  {
+                                      Id = e.Userid,
+                                      Name = e.Name,
+                                      Mobile = e.Mobile,
+                                      Position = e.Position,
+                                      Department = e.Department,
+                                      IsAdmin = e.IsAdmin,
+                                      IsBoss = e.IsBoss,
+                                      Email = e.Email,
+                                      HiredDate = e.HiredDate,
+                                      Avatar = e.Avatar,
+                                      Active = e.Active
+                                  });
+                var originEntity = await _employeeRepository.GetAll().ToListAsync();
+                foreach (var item in entityByDD)
+                {
+                    var e = originEntity.Where(r => r.Id == item.Id).FirstOrDefault();
+                    if (e != null)
+                    {
+                        e.Name = item.Name;
+                        e.Mobile = item.Mobile;
+                        e.Position = item.Position;
+                        e.Department = item.Department;
+                        e.IsAdmin = item.IsAdmin;
+                        e.IsBoss = item.IsBoss;
+                        e.Email = item.Email;
+                        e.HiredDate = item.HiredDate;
+                        e.Avatar = item.Avatar;
+                        e.Active = item.Active;
+                    }
+                    else
+                    {
+                        var employee = new EmployeeListDto();
+                        employee.Id = item.Id;
+                        employee.Name = item.Name;
+                        employee.Mobile = item.Mobile;
+                        employee.Position = item.Position;
+                        employee.Department = item.Department;
+                        employee.IsAdmin = item.IsAdmin;
+                        employee.IsBoss = item.IsBoss;
+                        employee.Email = item.Email;
+                        employee.HiredDate = item.HiredDate;
+                        employee.Avatar = item.Avatar;
+                        employee.Active = item.Active;
+                        await CreateSyncEmployeeAsync(employee);
+                    }
+                }
+                await CurrentUnitOfWork.SaveChangesAsync();
+                return new APIResultDto() { Code = 0, Msg = "同步内部员工成功" };
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("SynchronousEmployeeAsync errormsg{0} Exception{1}", ex.Message, ex);
+                return new APIResultDto() { Code = 901, Msg = "同步内部员工失败" };
+            }
+        }
+
+        /// <summary>
         /// 插入组织架构
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private async Task<Organization> CreateOrganizationAsync(Organization input)
+        private async Task<Organization> CreateSyncOrganizationAsync(OrganizationListDto input)
         {
             var entity = ObjectMapper.Map<Organization>(input);
             entity = await _organizationRepository.InsertAsync(entity);
             return entity.MapTo<Organization>();
         }
 
+        private async Task<Employee> CreateSyncEmployeeAsync(EmployeeListDto input)
+        {
+            var entity = ObjectMapper.Map<Employee>(input);
+            entity = await _employeeRepository.InsertAsync(entity);
+            return entity.MapTo<Employee>();
+        }
+
         /// <summary>
-        /// 获取AccessToken
+        /// 获取AccessToken ToDo钉钉配置
         /// </summary>
         /// <returns></returns>
         private string GetAccessToken()

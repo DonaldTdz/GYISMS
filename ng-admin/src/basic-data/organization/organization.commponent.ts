@@ -1,13 +1,15 @@
 import { Component, Injector, OnInit, ViewChild, HostListener } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { _HttpClient } from '@delon/theme';
-import { Organization, TreeNode } from '@shared/entity/basic-data';
+import { Organization, TreeNode, Employee } from '@shared/entity/basic-data';
 import { Router } from '@angular/router';
 import { PagedResultDtoOfOrganization, OrganizationServiceProxy } from '@shared/service-proxies/basic-data';
 import { Parameter } from '@shared/service-proxies/entity/parameter';
 import { NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent } from 'ng-zorro-antd';
+import { PagedResultDtoOfEmployee, EmployeeServiceProxy } from '@shared/service-proxies/basic-data/employee-service';
 
 @Component({
+    moduleId: module.id,
     selector: 'organization',
     templateUrl: './organization.component.html',
     styleUrls: ['./organization.component.scss']
@@ -23,38 +25,41 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
     dropdown: NzDropdownContextComponent;
     // can active only one node
     activedNode: NzTreeNode;
+    employeeList: Employee[] = [];
     dragNodeElement;
+    tempNode: string;
     nodes = [
-        new NzTreeNode({
-            title: '成都和创科技有限公司',
-            key: '1',
-            expanded: true,
-            children: [
-                {
-                    title: '技术开发（4人）',
-                    key: '67209026',
-                    isLeaf: true
-                },
-                {
-                    title: '运营部（3人）',
-                    key: '67209027',
-                    isLeaf: true
-                },
-                {
-                    title: '销售（2人）',
-                    key: '67209029',
-                    isLeaf: true
-                }
-            ]
-        })
+        // new NzTreeNode({
+        //     title: '成都和创科技有限公司',
+        //     key: '1',
+        //     expanded: true,
+        //     children: [
+        //         {
+        //             title: '技术开发（4人）',
+        //             key: '67209026',
+        //             isLeaf: true
+        //         },
+        //         {
+        //             title: '运营部（3人）',
+        //             key: '67209027',
+        //             isLeaf: true
+        //         },
+        //         {
+        //             title: '销售（2人）',
+        //             key: '67209029',
+        //             isLeaf: true
+        //         }
+        //     ]
+        // })
     ];
 
-    constructor(injector: Injector, private organizationService: OrganizationServiceProxy, private router: Router) {
+    constructor(injector: Injector, private organizationService: OrganizationServiceProxy,
+        private employeeService: EmployeeServiceProxy, private router: Router) {
         super(injector);
     }
 
     ngOnInit(): void {
-        // this.refreshData();
+        this.refreshData(null);
         this.getTrees();
     }
 
@@ -98,7 +103,13 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
             this.activedNode = null;
         }
         data.node.isSelected = true;
+
         this.activedNode = data.node;
+        this.query.pageIndex = 1;
+        this.query.pageSize = 10;
+        this.tempNode = data.node.key;
+
+        this.refreshData(data.node.key);
     }
 
     selectDropdown(): void {
@@ -109,7 +120,7 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
 
 
 
-    refreshData(reset = false, search?: boolean) {
+    refreshData(departId: string, reset = false, search?: boolean) {
         if (reset) {
             this.query.pageIndex = 1;
             this.search = {};
@@ -118,19 +129,19 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
             this.query.pageIndex = 1;
         }
         this.loading = true;
-        //this.organizationService.getAll(this.query.skipCount(), this.query.pageSize).subscribe((result: PagedResultDtoOfOrganization) => {
-        this.loading = false;
-        //this.organizationList = result.items;
-        //this.query.total = result.totalCount;
-        //})
-
+        this.employeeService.getAll(this.query.skipCount(), this.query.pageSize, this.getParameter(departId)).subscribe((result: PagedResultDtoOfEmployee) => {
+            this.loading = false;
+            this.employeeList = result.items;
+            this.query.total = result.totalCount;
+        })
     }
 
-    getParameter(): Parameter[] {
+    getParameter(departId: string): Parameter[] {
         var arry = [];
-        // arry.push(Parameter.fromJS({ key: 'Name', value: this.search.name }));
+        arry.push(Parameter.fromJS({ key: 'DepartId', value: departId }));
+        arry.push(Parameter.fromJS({ key: 'Name', value: this.search.name }));
+        arry.push(Parameter.fromJS({ key: 'Mobile', value: this.search.mobile }));
         return arry;
-
     }
 
     syncData() {
@@ -140,7 +151,7 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
             this.syncDataLoading = false;
         });
         setTimeout(() => {
-            this.refreshData();
+            this.getTrees();
         }, '1000');
     }
 
@@ -149,4 +160,13 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
             this.nodes = data;
         });
     }
+
+    // getEmoloyee(departId: string) {
+    //     this.loading = true;
+    //     this.employeeService.getAll(this.query.skipCount(), this.query.pageSize, this.getParameter(departId)).subscribe((result: PagedResultDtoOfEmployee) => {
+    //         this.loading = false;
+    //         this.employeeList = result.items;
+    //         this.query.total = result.totalCount;
+    //     })
+    // }
 }

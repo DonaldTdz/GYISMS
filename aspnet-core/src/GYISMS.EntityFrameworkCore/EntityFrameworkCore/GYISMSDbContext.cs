@@ -17,6 +17,7 @@ using GYISMS.TaskExamines;
 using GYISMS.VisitRecords;
 using GYISMS.VisitExamines;
 using GYISMS.VisitTasks;
+using GYISMS.Employees;
 
 namespace GYISMS.EntityFrameworkCore
 {
@@ -31,6 +32,7 @@ namespace GYISMS.EntityFrameworkCore
 
         public virtual DbSet<Organization> Organizations { get; set; }
         public virtual DbSet<SystemData> SystemDatas { get; set; }
+        public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<Meeting> Meetings { get; set; }
         public virtual DbSet<MeetingMaterial> MeetingMaterials { get; set; }
         public virtual DbSet<MeetingParticipant> MeetingParticipants { get; set; }

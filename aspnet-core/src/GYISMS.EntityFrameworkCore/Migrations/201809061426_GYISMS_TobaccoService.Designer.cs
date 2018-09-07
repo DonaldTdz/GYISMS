@@ -1269,6 +1269,30 @@ namespace GYISMS.Migrations
                 b.ToTable("Organizations");
             });
 
+            modelBuilder.Entity("GYISMS.Employees.Employee", b =>
+            {
+                b.Property<string>("Id").ValueGeneratedOnAdd();
+                b.Property<string>("OpenId").HasMaxLength(200);
+                b.Property<string>("Name").HasMaxLength(50);
+                b.Property<string>("Mobile").HasMaxLength(11);
+                b.Property<string>("Email").HasMaxLength(100);
+                b.Property<bool?>("Active");
+                b.Property<bool?>("IsAdmin");
+                b.Property<bool?>("IsBoss");
+                b.Property<string>("Department").HasMaxLength(300);
+                b.Property<string>("Position").HasMaxLength(100);
+                b.Property<string>("Avatar").HasMaxLength(200);
+                b.Property<string>("HiredDate").HasMaxLength(100);
+                b.Property<string>("Roles").HasMaxLength(300);
+                b.Property<long?>("RoleId");
+                b.Property<string>("Remark").HasMaxLength(500);
+                b.HasKey("Id");
+
+                //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
+
+                b.ToTable("Employees");
+            });
+
             modelBuilder.Entity("GYISMS.SystemDatas.SystemData", b =>
             {
                 b.Property<int>("Id").ValueGeneratedOnAdd();

@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AbpHttpInterceptor } from 'abp-ng2-module/dist/src/abpHttpInterceptor';
 
 import * as ApiServiceProxies from '@shared/service-proxies/service-proxies';
-import { OrganizationServiceProxy } from '@shared/service-proxies/basic-data';
+import { OrganizationServiceProxy, EmployeeServiceProxy } from '@shared/service-proxies/basic-data';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
 
 @NgModule({
@@ -17,6 +17,7 @@ import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
     ApiServiceProxies.AccountServiceProxy,
     ApiServiceProxies.ConfigurationServiceProxy,
     OrganizationServiceProxy,
+    EmployeeServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
   ],
 })
