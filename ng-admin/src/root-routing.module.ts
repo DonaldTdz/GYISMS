@@ -8,12 +8,7 @@ const routes: Routes = [
     path: 'account',
     loadChildren: 'account/account.module#AccountModule', // Lazy load account module
     data: { preload: true },
-  },
-  {
-    path: 'basic',
-    loadChildren: 'basic-data/basic-data.module#BasicDataModule', // Lazy load account module
-    data: { preload: true },
-  },
+  }
 ];
 
 @NgModule({

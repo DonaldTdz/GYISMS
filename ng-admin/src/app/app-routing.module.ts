@@ -41,6 +41,11 @@ const routes: Routes = [
         canActivate: [AppRouteGuard],
       },
       {
+        path: 'basic',
+        loadChildren: 'basic-data/basic-data.module#BasicDataModule', // Lazy load account module
+        data: { preload: true },
+      },
+      {
         path: '**',
         redirectTo: 'home',
       },

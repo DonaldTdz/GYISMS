@@ -35,7 +35,7 @@ export class DefaultLayoutComponent extends AppComponentBase
     // 全局的菜单
     Menums = [
         // 首页
-        new MenuItem(this.l('HomePage'), '', 'anticon anticon-home', '/app/home'),
+        new MenuItem('主页', '', 'anticon anticon-home', '/app/home'),
         // 组织架构
         // new MenuItem(
         //     '组织架构管理',
@@ -53,13 +53,13 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '组织架构',
                 '',
                 '',
-                '/basic/organization',
+                '/app/basic/organization',
             ),
             new MenuItem(
                 '内部员工',
                 '',
                 '',
-                '/basic/employee',
+                '/app/basic/employee',
             )]
         ),
 
@@ -158,21 +158,21 @@ export class DefaultLayoutComponent extends AppComponentBase
             [
                 //租户
                 new MenuItem(
-                    this.l('Tenants'),
+                    '租户管理',
                     'Pages.Tenants',
                     '',
                     '/app/tenants',
                 ),
                 // 角色
                 new MenuItem(
-                    this.l('Roles'),
+                    '角色管理',
                     'Pages.Roles',
                     '',
                     '/app/roles',
                 ),
                 // 用户
                 new MenuItem(
-                    this.l('Users'),
+                    '用户管理',
                     'Pages.Users',
                     '',
                     '/app/users',

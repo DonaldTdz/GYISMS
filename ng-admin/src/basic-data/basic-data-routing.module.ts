@@ -7,28 +7,20 @@ import { EmployeeComponent } from './employee/employee.component';
 import { RetailCustomerComponent } from './retail-customer/retail-customer.component';
 const routes: Routes = [
     {
-        path: '',
-        component: DefaultLayoutComponent,
+        path: 'organization',
+        component: OrganizationComponent,
         canActivate: [AppRouteGuard],
-        canActivateChild: [AppRouteGuard],
-        children: [
-            {
-                path: 'organization',
-                component: OrganizationComponent,
-                canActivate: [AppRouteGuard],
-            },
-            {
-                path: 'employee',
-                component: EmployeeComponent,
-                canActivate: [AppRouteGuard],
-            },
-            {
-                path: 'retail-customer',
-                component: RetailCustomerComponent,
-                canActivate: [AppRouteGuard],
-            },
-        ],
     },
+    {
+        path: 'employee',
+        component: EmployeeComponent,
+        canActivate: [AppRouteGuard],
+    },
+    {
+        path: 'retail-customer',
+        component: RetailCustomerComponent,
+        canActivate: [AppRouteGuard],
+    }
 ];
 
 @NgModule({
