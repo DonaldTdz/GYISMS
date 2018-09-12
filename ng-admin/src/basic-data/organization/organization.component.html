@@ -96,7 +96,8 @@
                     </div>
                 </div>
             </form>
-            <nz-table #nzTable [nzFrontPagination]="false" [nzTotal]="query.total" [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
+            <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
+            <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total" [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
                 (nzPageSizeChange)="refreshData(tempNode)">
                 <thead>
                     <tr>

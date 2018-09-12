@@ -112,7 +112,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '会议室管理',
                 '',
                 '',
-                '',
+                '/app/meeting/meeting-room',
             ),
             new MenuItem(
                 '会议室预定',

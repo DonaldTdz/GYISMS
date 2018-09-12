@@ -24,23 +24,19 @@ export class EmployeeServiceProxy {
         this._gyhttp = gyhttp;
     }
 
-    // getAll(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfEmployee> {
-    //     let url_ = this.baseUrl + "/api/services/app/Employee/GetEmployeeListByIdAsync?";
-
-    //     if (skipCount !== undefined)
-    //         url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-    //     if (maxResultCount !== undefined)
-    //         url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
-
-    //     if (parameter.length > 0) {
-    //         parameter.forEach(element => {
-    //             if (element.value !== undefined && element.value !== null) {
-    //                 url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&";
-    //             }
-    //         });
-    //     }
-    //     url_ = url_.replace(/[?&]$/, "");
-    //     return this._gyhttp.get(url_).map(data => {
+    getAll(params: any): Observable<PagedResultDtoOfEmployee> {
+        let url_ = "/api/services/app/Employee/GetEmployeeListByIdAsync";
+        return this._gyhttp.get(url_, params).map(data => {
+            if (data) {
+                return PagedResultDtoOfEmployee.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
+    // getEmployee(params: any): Observable<PagedResultDtoOfEmployee> {
+    //     let url_ = "/api/services/app/Employee/GetPagedEmployeeAsync";
+    //     return this._gyhttp.get(url_, params).map(data => {
     //         if (data) {
     //             return PagedResultDtoOfEmployee.fromJS(data);
     //         } else {
@@ -48,144 +44,6 @@ export class EmployeeServiceProxy {
     //         }
     //     });
     // }
-
-    getAll(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfEmployee> {
-        let url_ = this.baseUrl + "/api/services/app/Employee/GetEmployeeListByIdAsync?";
-        if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-        if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
-
-        if (parameter.length > 0) {
-            parameter.forEach(element => {
-                if (element.value !== undefined && element.value !== null) {
-                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&";
-                }
-            });
-        }
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
-            return this.processGetAll(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetAll(<any>response_);
-                } catch (e) {
-                    return <Observable<PagedResultDtoOfEmployee>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<PagedResultDtoOfEmployee>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetAll(response: HttpResponseBase): Observable<PagedResultDtoOfEmployee> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } };
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                let result200: any = null;
-                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfEmployee.fromJS(resultData200) : new PagedResultDtoOfEmployee();
-                return _observableOf(result200);
-            }));
-        } else if (status === 401) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("A server error occurred.", status, _responseText, _headers);
-            }));
-        } else if (status === 403) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("A server error occurred.", status, _responseText, _headers);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<PagedResultDtoOfEmployee>(<any>null);
-    }
-
-    getEmployee(skipCount: number, maxResultCount: number, parameter: Parameter[]): Observable<PagedResultDtoOfEmployee> {
-        let url_ = this.baseUrl + "/api/services/app/Employee/GetPagedEmployeeAsync?";
-        if (skipCount !== undefined)
-            url_ += "SkipCount=" + encodeURIComponent("" + skipCount) + "&";
-        if (maxResultCount !== undefined)
-            url_ += "MaxResultCount=" + encodeURIComponent("" + maxResultCount) + "&";
-
-        if (parameter.length > 0) {
-            parameter.forEach(element => {
-                if (element.value !== undefined && element.value !== null) {
-                    url_ += element.key + "=" + encodeURIComponent("" + element.value) + "&";
-                }
-            });
-        }
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: any = {
-            observe: "response",
-            responseType: "blob",
-            headers: new HttpHeaders({
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            })
-        };
-
-        return this.http.request("get", url_, options_).pipe(_observableMergeMap((response_: any) => {
-            return this.processGetEmployee(response_);
-        })).pipe(_observableCatch((response_: any) => {
-            if (response_ instanceof HttpResponseBase) {
-                try {
-                    return this.processGetEmployee(<any>response_);
-                } catch (e) {
-                    return <Observable<PagedResultDtoOfEmployee>><any>_observableThrow(e);
-                }
-            } else
-                return <Observable<PagedResultDtoOfEmployee>><any>_observableThrow(response_);
-        }));
-    }
-
-    protected processGetEmployee(response: HttpResponseBase): Observable<PagedResultDtoOfEmployee> {
-        const status = response.status;
-        const responseBlob =
-            response instanceof HttpResponse ? response.body :
-                (<any>response).error instanceof Blob ? (<any>response).error : undefined;
-
-        let _headers: any = {}; if (response.headers) { for (let key of response.headers.keys()) { _headers[key] = response.headers.get(key); } };
-        if (status === 200) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                let result200: any = null;
-                let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-                result200 = resultData200 ? PagedResultDtoOfEmployee.fromJS(resultData200) : new PagedResultDtoOfEmployee();
-                return _observableOf(result200);
-            }));
-        } else if (status === 401) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("A server error occurred.", status, _responseText, _headers);
-            }));
-        } else if (status === 403) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("A server error occurred.", status, _responseText, _headers);
-            }));
-        } else if (status !== 200 && status !== 204) {
-            return blobToText(responseBlob).pipe(_observableMergeMap(_responseText => {
-                return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            }));
-        }
-        return _observableOf<PagedResultDtoOfEmployee>(<any>null);
-    }
 }
 
 export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {
@@ -216,6 +74,15 @@ export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {
         let result = new PagedResultDtoOfEmployee();
         result.init(data);
         return result;
+    }
+    static fromJSArray(dataArray: any[]): PagedResultDtoOfEmployee[] {
+        let array = [];
+        dataArray.forEach(result => {
+            let item = new PagedResultDtoOfEmployee();
+            item.init(result);
+            array.push(item);
+        });
+        return array;
     }
 
     toJSON(data?: any) {

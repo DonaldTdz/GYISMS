@@ -46,6 +46,11 @@ const routes: Routes = [
         data: { preload: true },
       },
       {
+        path: 'meeting',
+        loadChildren: 'meeting-management/meeting-management-module#MeetingManagementModule', // Lazy load account module
+        data: { preload: true },
+      },
+      {
         path: '**',
         redirectTo: 'home',
       },

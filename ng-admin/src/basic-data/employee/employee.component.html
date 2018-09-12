@@ -6,10 +6,10 @@
             <div nz-col [nzSpan]="6" class="mb-md">
                 <div nz-form-item class="d-flex">
                     <div nz-form-label>
-                        <nz-form-label nzFor="name">用户名</nz-form-label>
+                        <nz-form-label nzFor="name">姓名</nz-form-label>
                     </div>
                     <div nz-form-control class="flex-1">
-                        <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入用户名" nzSize="default">
+                        <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入姓名" nzSize="default">
                     </div>
                 </div>
             </div>
@@ -42,7 +42,9 @@
             </div>
         </div>
     </form>
-    <nz-table #nzTable [nzFrontPagination]="false" [nzData]="employeeList" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
+    <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
+    <nz-table #nzTable [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate" [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()"
+        (nzPageSizeChange)="refreshData()">
         <thead>
             <tr>
                 <th>用户名</th>

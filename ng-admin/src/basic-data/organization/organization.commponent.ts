@@ -107,6 +107,7 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
         this.activedNode = data.node;
         this.query.pageIndex = 1;
         this.query.pageSize = 10;
+        this.search = {};
         this.tempNode = data.node.key;
 
         this.refreshData(data.node.key);
@@ -129,7 +130,13 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
             this.query.pageIndex = 1;
         }
         this.loading = true;
-        this.employeeService.getAll(this.query.skipCount(), this.query.pageSize, this.getParameter(departId)).subscribe((result: PagedResultDtoOfEmployee) => {
+        let params: any = {};
+        params.SkipCount = this.query.skipCount();
+        params.MaxResultCount = this.query.pageSize;
+        params.departId = departId;
+        params.Name = this.search.name;
+        params.Mobile = this.search.mobile;
+        this.employeeService.getAll(params).subscribe((result: PagedResultDtoOfEmployee) => {
             this.loading = false;
             this.employeeList = result.items;
             this.query.total = result.totalCount;

@@ -20,12 +20,7 @@ namespace GYISMS.MeetingRooms
     ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PagedResultDto<MeetingRoomListDto>> GetPagedMeetingRooms(GetMeetingRoomsInput input);
-
-		/// <summary>
-		/// 通过指定id获取MeetingRoomListDto信息
-		/// </summary>
-		Task<MeetingRoomListDto> GetMeetingRoomByIdAsync(EntityDto<int> input);
+        Task<PagedResultDto<MeetingRoomListDto>> GetPagedMeetingRoomsAsync(GetMeetingRoomsInput input);
 
 
         /// <summary>
@@ -64,10 +59,7 @@ namespace GYISMS.MeetingRooms
         /// 批量删除MeetingRoom
         /// </summary>
         Task BatchDeleteMeetingRoomsAsync(List<int> input);
-
-
-		//// custom codes
-		 
-        //// custom codes end
+        Task CreateOrUpdateMeetingRoomAsycn(MeetingRoomEditDto input);
+        Task<MeetingRoomListDto> GetMeetingRoomByIdAsync(int id);
     }
 }

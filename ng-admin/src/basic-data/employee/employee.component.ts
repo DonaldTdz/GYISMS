@@ -34,20 +34,15 @@ export class EmployeeComponent extends AppComponentBase implements OnInit {
             this.query.pageIndex = 1;
         }
         this.loading = true;
-        this.employeeService.getEmployee(this.query.skipCount(), this.query.pageSize, this.getParameter()).subscribe((result: PagedResultDtoOfEmployee) => {
+        let params: any = {};
+        params.SkipCount = this.query.skipCount();
+        params.MaxResultCount = this.query.pageSize;
+        this.employeeService.getAll(params).subscribe((result: PagedResultDtoOfEmployee) => {
             this.loading = false;
             this.employeeList = result.items;
             this.query.total = result.totalCount;
             console.log(result);
 
         })
-    }
-
-    getParameter(): Parameter[] {
-        var arry = [];
-        arry.push(Parameter.fromJS({ key: 'DepartId', value: this.search.departId }));
-        arry.push(Parameter.fromJS({ key: 'Name', value: this.search.name }));
-        arry.push(Parameter.fromJS({ key: 'Mobile', value: this.search.mobile }));
-        return arry;
     }
 }

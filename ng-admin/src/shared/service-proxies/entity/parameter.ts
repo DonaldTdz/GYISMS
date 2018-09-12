@@ -22,6 +22,17 @@ export class Parameter {
 
         return data;
     }
+
+    static toJSONArray(array: Parameter[]) {
+        let dataArray = [];
+        array.forEach(para => {
+            let data = typeof para === 'object' ? para : {};
+            data["key"] = para.key;
+            data["value"] = para.value;
+        });
+
+        return dataArray;
+    }
 }
 
 export class ApiResult {
