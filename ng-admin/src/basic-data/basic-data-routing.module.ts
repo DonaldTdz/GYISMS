@@ -5,6 +5,8 @@ import { DefaultLayoutComponent } from 'layout/default-layout.component';
 import { OrganizationComponent } from './organization/organization.commponent';
 import { EmployeeComponent } from './employee/employee.component';
 import { RetailCustomerComponent } from './retail-customer/retail-customer.component';
+import { GrowerComponent } from './grower/grower.component';
+import { GrowerDetailComponent } from './grower/grower-detail/grower-detail.component';
 const routes: Routes = [
     {
         path: 'organization',
@@ -20,7 +22,22 @@ const routes: Routes = [
         path: 'retail-customer',
         component: RetailCustomerComponent,
         canActivate: [AppRouteGuard],
-    }
+    },
+    {
+        path: 'grower',
+        component: GrowerComponent,
+        canActivate: [AppRouteGuard],
+    },
+    {
+        path: 'grower-detail',
+        component: GrowerDetailComponent,
+        canActivate: [AppRouteGuard],
+    },
+    {
+        path: 'grower-detail/:id',
+        component: GrowerDetailComponent,
+        canActivate: [AppRouteGuard],
+    },
 ];
 
 @NgModule({

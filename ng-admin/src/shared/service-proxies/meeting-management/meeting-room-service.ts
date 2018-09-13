@@ -44,8 +44,15 @@ export class MeetingRoomServiceProxy {
         });
     }
 
-    updateRoomInfo(input: any): Observable<MeetingRoom> {
+    updateRoomInfo(room: any): Observable<MeetingRoom> {
         let url_ = "/api/services/app/MeetingRoom/CreateOrUpdateMeetingRoomAsycn";
+        return this._gyhttp.post(url_, room).map(data => {
+            return data;
+        });
+    }
+
+    deleteMeetingRoom(input: any): Observable<any> {
+        let url_ = "/api/services/app/MeetingRoom/MeetingRoomDeleteByIdAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data.result;
         });

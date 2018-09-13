@@ -2,17 +2,18 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.MeetingRooms;
 
 namespace GYISMS.MeetingRooms.Dtos
 {
-    public class MeetingRoomEditDto
+    public class MeetingRoomEditDto : AuditedEntityDto<int?>
     {
         /// <summary>
         /// Id
         /// </summary>
-        public int? Id { get; set; }
+        //public int? Id { get; set; }
 
 
         /// <summary>
@@ -117,25 +118,25 @@ namespace GYISMS.MeetingRooms.Dtos
         /// <summary>
         /// CreationTime
         /// </summary>
-        public DateTime? CreationTime { get; set; }
+        //public DateTime? CreationTime { get; set; }
 
 
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public long? CreatorUserId { get; set; }
+        ///// <summary>
+        ///// CreatorUserId
+        ///// </summary>
+        //public long? CreatorUserId { get; set; }
 
 
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public DateTime? LastModificationTime { get; set; }
+        ///// <summary>
+        ///// LastModificationTime
+        ///// </summary>
+        //public DateTime? LastModificationTime { get; set; }
 
 
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public long? LastModifierUserId { get; set; }
+        ///// <summary>
+        ///// LastModifierUserId
+        ///// </summary>
+        //public long? LastModifierUserId { get; set; }
 
 
         /// <summary>

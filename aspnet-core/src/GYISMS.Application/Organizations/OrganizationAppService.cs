@@ -57,7 +57,8 @@ namespace GYISMS.Organizations
         /// <returns></returns>
         public async Task<PagedResultDto<OrganizationListDto>> GetPagedOrganizationsAsync(GetOrganizationsInput input)
         {
-            var query = _organizationRepository.GetAll();
+            var query = _organizationRepository.GetAll()
+                                .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.DepartmentName.Contains(input.Name)); ;
             // TODO:根据传入的参数添加过滤条件
 
             var organizationCount = await query.CountAsync();

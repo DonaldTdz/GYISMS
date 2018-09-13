@@ -2,17 +2,18 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.Growers;
 
 namespace GYISMS.Growers.Dtos
 {
-    public class GrowerEditDto
+    public class GrowerEditDto: AuditedEntityDto<string>
     {
         /// <summary>
         /// Id
         /// </summary>
-        public string Id { get; set; }
+        //public string Id { get; set; }
 
 
         /// <summary>
@@ -110,30 +111,6 @@ namespace GYISMS.Growers.Dtos
         /// IsDeleted
         /// </summary>
         public bool? IsDeleted { get; set; }
-
-
-        /// <summary>
-        /// CreationTime
-        /// </summary>
-        public DateTime? CreationTime { get; set; }
-
-
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public long? CreatorUserId { get; set; }
-
-
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public DateTime? LastModificationTime { get; set; }
-
-
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public long? LastModifierUserId { get; set; }
 
 
         /// <summary>

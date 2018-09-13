@@ -27,8 +27,7 @@ namespace GYISMS.MeetingRooms
     [AbpAuthorize(AppPermissions.Pages)]
     public class MeetingRoomAppService : GYISMSAppServiceBase, IMeetingRoomAppService
     {
-        private readonly IRepository<MeetingRoom, int>
-        _meetingroomRepository;
+        private readonly IRepository<MeetingRoom, int>_meetingroomRepository;
 
 
         private readonly IMeetingRoomManager _meetingroomManager;
@@ -37,8 +36,7 @@ namespace GYISMS.MeetingRooms
         /// 构造函数 
         ///</summary>
         public MeetingRoomAppService(
-        IRepository<MeetingRoom, int>
-    meetingroomRepository
+        IRepository<MeetingRoom, int> meetingroomRepository
             , IMeetingRoomManager meetingroomManager
             )
         {
@@ -54,7 +52,7 @@ namespace GYISMS.MeetingRooms
         /// <returns></returns>
         public async Task<PagedResultDto<MeetingRoomListDto>> GetPagedMeetingRoomsAsync(GetMeetingRoomsInput input)
         {
-            var query = _meetingroomRepository.GetAll()
+            var query = _meetingroomRepository.GetAll().Where(v=>v.IsDeleted==false)
                 .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
             // TODO:根据传入的参数添加过滤条件
 
@@ -129,33 +127,35 @@ namespace GYISMS.MeetingRooms
             //TODO:新增前的逻辑判断，是否允许新增
 
             var entity = ObjectMapper.Map<MeetingRoom>(input);
-
-            entity = await _meetingroomRepository.InsertAsync(entity);
+            entity.IsDeleted = false;
+            if (entity.Photo.Length==0)
+            {
+                entity.Photo = "DefaultPhoto";
+            }
+            //entity = await _meetingroomRepository.InsertAsync(entity);
+            var id = await _meetingroomRepository.InsertAndGetIdAsync(entity);
             return entity.MapTo<MeetingRoomEditDto>();
         }
 
         /// <summary>
         /// 编辑MeetingRoom
         /// </summary>
-        protected virtual async Task UpdateMeetingRoomAsync(MeetingRoomEditDto input)
+        protected virtual async Task<MeetingRoomEditDto> UpdateMeetingRoomAsync(MeetingRoomEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
-
             var entity = await _meetingroomRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
 
             // ObjectMapper.Map(input, entity);
-            await _meetingroomRepository.UpdateAsync(entity);
+            var result = await _meetingroomRepository.UpdateAsync(entity);
+            return result.MapTo<MeetingRoomEditDto>();
         }
-
-
 
         /// <summary>
         /// 删除MeetingRoom信息的方法
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(MeetingRoomAppPermissions.MeetingRoom_Delete)]
         public async Task DeleteMeetingRoom(EntityDto<int> input)
         {
             //TODO:删除前的逻辑判断，是否允许删除
@@ -179,16 +179,16 @@ namespace GYISMS.MeetingRooms
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task CreateOrUpdateMeetingRoomAsycn(MeetingRoomEditDto input)
+        public async Task<MeetingRoomEditDto> CreateOrUpdateMeetingRoomAsycn(MeetingRoomEditDto input)
         {
 
             if (input.Id.HasValue)
             {
-                await UpdateMeetingRoomAsync(input);
+               return await UpdateMeetingRoomAsync(input);
             }
             else
             {
-                await CreateMeetingRoomAsync(input);
+                return await CreateMeetingRoomAsync(input);
             }
         }
 
@@ -202,6 +202,19 @@ namespace GYISMS.MeetingRooms
             var entity = await _meetingroomRepository.GetAsync(id);
             return entity.MapTo<MeetingRoomListDto>();
         }
+
+        /// <summary>
+        /// 删除会议室
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task MeetingRoomDeleteByIdAsync(MeetingRoomEditDto input)
+        {
+            var entity = await _meetingroomRepository.GetAsync(input.Id.Value);
+            input.MapTo(entity);
+            entity.IsDeleted = true;
+            await _meetingroomRepository.UpdateAsync(entity);
+        }       
     }
 }
 

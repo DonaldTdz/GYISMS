@@ -59,7 +59,8 @@ namespace GYISMS.MeetingRooms
         /// 批量删除MeetingRoom
         /// </summary>
         Task BatchDeleteMeetingRoomsAsync(List<int> input);
-        Task CreateOrUpdateMeetingRoomAsycn(MeetingRoomEditDto input);
+        Task<MeetingRoomEditDto> CreateOrUpdateMeetingRoomAsycn(MeetingRoomEditDto input);
         Task<MeetingRoomListDto> GetMeetingRoomByIdAsync(int id);
+        Task MeetingRoomDeleteByIdAsync(MeetingRoomEditDto input);
     }
 }

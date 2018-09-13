@@ -68,4 +68,33 @@ export abstract class AppComponentBase {
   isGranted(permissionName: string): boolean {
     return this.permission.isGranted(permissionName);
   }
+
+  dateFormat(date: any): string {
+    if (date === null) {
+      return null;
+    }
+    let d = new Date(date);
+    let y = d.getFullYear().toString();
+    let m = (d.getMonth() + 1).toString();
+    let day = d.getDate().toString();
+    return y + '-' + m + '-' + day;
+    //let dateStr:string = this.datePipe.transform(d,'yyyy-MM-dd');
+    //return dateStr;
+  }
+  dateFormatHH(date: any): string {
+    if (date === null) {
+      return null;
+    }
+    let d = new Date(date);
+    let y = d.getFullYear().toString();
+    let m = (d.getMonth() + 1).toString();
+    let day = d.getDate().toString();
+    let h = d.getHours();
+    let ms = d.getMinutes();
+    let hh = h > 10 ? h.toString() : '0' + h.toString();
+    let mm = ms > 10 ? ms.toString() : '0' + ms.toString();
+    return y + '-' + m + '-' + day + ' ' + hh + ':' + mm;
+    // let dateStr:string = this.datePipe.transform(d,'yyyy-MM-dd');
+    //return dateStr;
+  }
 }

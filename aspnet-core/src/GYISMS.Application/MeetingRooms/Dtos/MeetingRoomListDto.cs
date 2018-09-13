@@ -6,6 +6,7 @@ using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.MeetingRooms;
+using GYISMS.GYEnums;
 
 namespace GYISMS.MeetingRooms.Dtos
 {
@@ -36,9 +37,15 @@ namespace GYISMS.MeetingRooms.Dtos
         /// <summary>
         /// RoomType
         /// </summary>
-        public int? RoomType { get; set; }
+        public RoomType? RoomType { get; set; }
 
-
+        public string TypeName
+        {
+            get
+            {
+                return RoomType.ToString();
+            }
+        }
         /// <summary>
         /// Address
         /// </summary>
@@ -84,8 +91,14 @@ namespace GYISMS.MeetingRooms.Dtos
         /// <summary>
         /// LayoutPattern
         /// </summary>
-        public int? LayoutPattern { get; set; }
-
+        public LayoutPattern? LayoutPattern { get; set; }
+        public string LayoutName
+        {
+            get
+            {
+                return LayoutPattern.ToString();
+            }
+        }
 
         /// <summary>
         /// PlanPath

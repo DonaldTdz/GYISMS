@@ -60,6 +60,12 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '',
                 '/app/basic/employee',
+            ),
+            new MenuItem(
+                '烟农管理',
+                '',
+                '',
+                '/app/basic/grower',
             )]
         ),
 
@@ -70,12 +76,6 @@ export class DefaultLayoutComponent extends AppComponentBase
             'anticon anticon-select',
             '',
             [new MenuItem(
-                '烟农管理',
-                '',
-                '',
-                '',
-            ),
-            new MenuItem(
                 '任务管理',
                 '',
                 '',
@@ -125,7 +125,23 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '',
                 '',
-            )
+            ),
+            new MenuItem(
+                '会议室详情',
+                '',
+                '',
+                '/app/meeting/room-detail',
+                null,
+                true
+            ),
+            new MenuItem(
+                '会议室详情',
+                '',
+                '',
+                '/app/meeting/room-detail/:id',
+                null,
+                true
+            ),
             ]
         ),
 

@@ -29,7 +29,6 @@ namespace GYISMS.SystemDatas
     public class SystemDataAppService : GYISMSAppServiceBase, ISystemDataAppService
     {
         private readonly IRepository<SystemData, int> _systemdataRepository;
-
         private readonly ISystemDataManager _systemdataManager;
 
         /// <summary>
@@ -193,8 +192,6 @@ systemdataListDtos
             if (entity != null)
             {
                 List<CheckBoxGroup> list = new List<CheckBoxGroup>();
-                //if (entity.Contains(','))
-                //{
                     string[] arry = entity.Split(',');
                     foreach (var item in arry)
                     {
@@ -203,7 +200,6 @@ systemdataListDtos
                         checkboxGroup.Value = item;
                         list.Add(checkboxGroup);
                     }
-                //}
                 return list;
             }
             else

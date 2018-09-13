@@ -20,12 +20,7 @@ namespace GYISMS.Growers
     ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PagedResultDto<GrowerListDto>> GetPagedGrowers(GetGrowersInput input);
-
-		/// <summary>
-		/// 通过指定id获取GrowerListDto信息
-		/// </summary>
-		Task<GrowerListDto> GetGrowerByIdAsync(EntityDto<string> input);
+        Task<PagedResultDto<GrowerListDto>> GetPagedGrowersAsync(GetGrowersInput input);
 
 
         /// <summary>
@@ -57,8 +52,8 @@ namespace GYISMS.Growers
         Task BatchDeleteGrowersAsync(List<string> input);
 
 
-		//// custom codes
-		 
-        //// custom codes end
+        Task<GrowerEditDto> CreateOrUpdateGrowerAsycn(GrowerEditDto input);
+        Task GrowerDeleteByIdAsync(GrowerEditDto input);
+        Task<GrowerListDto> GetGrowerByIdAsync(string id);
     }
 }

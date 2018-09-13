@@ -52,10 +52,11 @@ namespace GYISMS.Growers
         ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<PagedResultDto<GrowerListDto>> GetPagedGrowers(GetGrowersInput input)
+        public async Task<PagedResultDto<GrowerListDto>> GetPagedGrowersAsync(GetGrowersInput input)
         {
 
-            var query = _growerRepository.GetAll();
+            var query = _growerRepository.GetAll().Where(v => v.IsDeleted == false)
+                .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
             // TODO:根据传入的参数添加过滤条件
 
             var growerCount = await query.CountAsync();
@@ -69,20 +70,9 @@ namespace GYISMS.Growers
             var growerListDtos = growers.MapTo<List<GrowerListDto>>();
 
             return new PagedResultDto<GrowerListDto>(
-growerCount,
-growerListDtos
+                        growerCount,
+                        growerListDtos
                 );
-        }
-
-
-        /// <summary>
-        /// 通过指定id获取GrowerListDto信息
-        /// </summary>
-        public async Task<GrowerListDto> GetGrowerByIdAsync(EntityDto<string> input)
-        {
-            var entity = await _growerRepository.GetAsync(input.Id);
-
-            return entity.MapTo<GrowerListDto>();
         }
 
 
@@ -94,7 +84,7 @@ growerListDtos
         public async Task CreateOrUpdateGrower(CreateOrUpdateGrowerInput input)
         {
 
-            if (input.Grower.Id !=null)
+            if (input.Grower.Id != null)
             {
                 await UpdateGrowerAsync(input.Grower);
             }
@@ -108,30 +98,28 @@ growerListDtos
         /// <summary>
         /// 新增Grower
         /// </summary>
-        [AbpAuthorize(GrowerAppPermissions.Grower_Create)]
         protected virtual async Task<GrowerEditDto> CreateGrowerAsync(GrowerEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
 
             var entity = ObjectMapper.Map<Grower>(input);
+            entity.IsDeleted = false;
 
-            entity = await _growerRepository.InsertAsync(entity);
+            var id = await _growerRepository.InsertAndGetIdAsync(entity);
             return entity.MapTo<GrowerEditDto>();
         }
 
         /// <summary>
         /// 编辑Grower
         /// </summary>
-        [AbpAuthorize(GrowerAppPermissions.Grower_Edit)]
-        protected virtual async Task UpdateGrowerAsync(GrowerEditDto input)
+        protected virtual async Task<GrowerEditDto> UpdateGrowerAsync(GrowerEditDto input)
         {
-            //TODO:更新前的逻辑判断，是否允许更新
-
+            //TODO:更新前的逻辑判断，是否允许更新      
             var entity = await _growerRepository.GetAsync(input.Id);
             input.MapTo(entity);
-
             // ObjectMapper.Map(input, entity);
-            await _growerRepository.UpdateAsync(entity);
+            var result = await _growerRepository.UpdateAsync(entity);
+            return result.MapTo<GrowerEditDto>();
         }
 
 
@@ -160,25 +148,46 @@ growerListDtos
             await _growerRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        /// <summary>
+        /// 新增或修改烟农信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<GrowerEditDto> CreateOrUpdateGrowerAsycn(GrowerEditDto input)
+        {
+            if (input.Id!=null)
+            {
+                return await UpdateGrowerAsync(input);
+            }
+            else
+            {
+                return await CreateGrowerAsync(input);
+            }
+        }
 
         /// <summary>
-        /// 导出Grower为excel表,等待开发。
+        /// 根据id获取烟农信息
         /// </summary>
+        /// <param name="id"></param>
         /// <returns></returns>
-        //public async Task<FileDto> GetGrowersToExcel()
-        //{
-        //	var users = await UserManager.Users.ToListAsync();
-        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-        //	await FillRoleNames(userListDtos);
-        //	return _userListExcelExporter.ExportToFile(userListDtos);
-        //}
+        public async Task<GrowerListDto> GetGrowerByIdAsync(string id)
+        {
+            var entity = await _growerRepository.GetAsync(id);
+            return entity.MapTo<GrowerListDto>();
+        }
 
-
-
-        //// custom codes
-
-        //// custom codes end
-
+        /// <summary>
+        /// 删除烟农信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task GrowerDeleteByIdAsync(GrowerEditDto input)
+        {
+            var entity = await _growerRepository.GetAsync(input.Id);
+            input.MapTo(entity);
+            entity.IsDeleted = true;
+            await _growerRepository.UpdateAsync(entity);
+        }
     }
 }
 

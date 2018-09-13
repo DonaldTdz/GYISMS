@@ -18,4 +18,16 @@ namespace GYISMS.GYEnums
         会议管理 = 1,
         烟叶服务 = 2
     }
+
+    public enum RoomType
+    {
+        固定会议室 = 1,
+        临时会议室 = 2
+    }
+
+    public enum LayoutPattern
+    {
+        中心模式 = 1,
+        矩阵莫事 = 2
+    }
 }

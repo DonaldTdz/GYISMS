@@ -57,11 +57,11 @@ export class MessageEmployeeModalComponent implements OnInit {
     /**
      * 取消按钮事件
      */
-    // handleCancel = (e) => {
-    //     this.isVisible = false;
-    //     this.eloading = false;
-    //     this.q.name = '';
-    // }
+    handleCancel = (e) => {
+        this.isVisible = false;
+        this.eloading = false;
+        this.q.name = '';
+    }
     /**
      * 
      * @param employee 选择事件（对选择的数据进行回传）

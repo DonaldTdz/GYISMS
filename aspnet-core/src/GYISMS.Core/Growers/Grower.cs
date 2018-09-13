@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ namespace GYISMS.Growers
     /// 烟农
     /// </summary>
     [Table("Growers")]
-    public class Grower : Entity<string>
+    public class Grower : AuditedEntity<string>
     {
         /// <summary>
         /// 业务年度
@@ -103,22 +104,22 @@ namespace GYISMS.Growers
         /// <summary>
         /// CreationTime
         /// </summary>
-        public virtual DateTime? CreationTime { get; set; }
+        //public virtual DateTime? CreationTime { get; set; }
 
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public virtual long? CreatorUserId { get; set; }
+        ///// <summary>
+        ///// CreatorUserId
+        ///// </summary>
+        //public virtual long? CreatorUserId { get; set; }
 
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public virtual DateTime? LastModificationTime { get; set; }
+        ///// <summary>
+        ///// LastModificationTime
+        ///// </summary>
+        //public virtual DateTime? LastModificationTime { get; set; }
 
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public virtual long? LastModifierUserId { get; set; }
+        ///// <summary>
+        ///// LastModifierUserId
+        ///// </summary>
+        //public virtual long? LastModifierUserId { get; set; }
 
         /// <summary>
         /// DeletionTime

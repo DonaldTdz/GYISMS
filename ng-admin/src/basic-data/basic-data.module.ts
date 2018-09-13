@@ -9,6 +9,9 @@ import { OrganizationComponent } from './organization/organization.commponent';
 import { BasicRoutingModule } from './basic-data-routing.module';
 import { RetailCustomerComponent } from './retail-customer/retail-customer.component';
 import { EmployeeComponent } from './employee/employee.component';
+import { GrowerComponent } from './grower/grower.component';
+import { GrowerDetailComponent } from './grower/grower-detail/grower-detail.component';
+import { MessageOrganizationModalComponent } from './grower/grower-detail/message-organization-modal/message-organization-modal.component';
 
 
 @NgModule({
@@ -23,7 +26,10 @@ import { EmployeeComponent } from './employee/employee.component';
     declarations: [
         OrganizationComponent,
         RetailCustomerComponent,
-        EmployeeComponent
+        EmployeeComponent,
+        GrowerComponent,
+        GrowerDetailComponent,
+        MessageOrganizationModalComponent
     ],
     entryComponents: [
     ],

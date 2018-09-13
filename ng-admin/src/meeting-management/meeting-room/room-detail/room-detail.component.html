@@ -1,12 +1,13 @@
 <!-- <pro-header></pro-header> -->
 <nz-card [nzBordered]="false">
     <nz-card [nzBordered]="false">
-        <form nz-form [formGroup]="validateForm">
+        <!-- <form nz-form [formGroup]="validateForm" (ngSubmit)="save()" *ngIf="room"> -->
+        <form nz-form [formGroup]="validateForm" *ngIf="room">
             <div nz-row>
                 <div nz-col [nzSpan]="16">
                     <nz-form-item nz-row>
                         <nz-form-label nz-col [nzSm]="4" nzRequired>会议室名称</nz-form-label>
-                        <nz-form-control [nzSm]="20">
+                        <nz-form-control [nzSm]="20" nzHasFeedback>
                             <input nz-input formControlName="name" [(ngModel)]="room.name" id="name">
                             <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">字符长度小于等于50</nz-form-explain>
                             <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">请输入会议室名称</nz-form-explain>
@@ -15,22 +16,24 @@
 
                     <nz-form-item nz-row style="margin-bottom: 0px;">
                         <nz-form-label nz-col [nzSm]="4" nzRequired nzFor="roomType">会议室类型</nz-form-label>
-                        <nz-form-control nz-col [nzSm]="20">
+                        <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
                             <nz-radio-group formControlName="roomType" [(ngModel)]="room.roomType" class="mb-md">
                                 <label nz-radio [nzValue]="o.value" *ngFor="let o of roomTypes">
                                     <span>{{o.text}}</span>
                                 </label>
                             </nz-radio-group>
+                            <nz-form-explain *ngIf="validateForm.get('roomType').dirty&&validateForm.get('roomType').hasError('required')">请选择会议室类型</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row style="margin-bottom: 0px;">
                         <nz-form-label nz-col [nzSm]="4" nzRequired nzFor="layoutPattern">会议室布局</nz-form-label>
-                        <nz-form-control nz-col [nzSm]="20">
+                        <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
                             <nz-radio-group formControlName="layoutPattern" [(ngModel)]="room.layoutPattern" class="mb-md">
                                 <label nz-radio [nzValue]="o.value" *ngFor="let o of layoutPatterns">
                                     <span>{{o.text}}</span>
                                 </label>
                             </nz-radio-group>
+                            <nz-form-explain *ngIf="validateForm.get('layoutPattern').dirty&&validateForm.get('layoutPattern').hasError('required')">请选择会议室布局</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row>
@@ -46,12 +49,13 @@
                     </nz-form-item>
                     <nz-form-item nz-row style="margin-bottom: 0px;">
                         <nz-form-label nz-col [nzSm]="4" nzRequired nzFor="isApprove">是否需要审批</nz-form-label>
-                        <nz-form-control div nz-col [nzSm]="20">
+                        <nz-form-control div nz-col [nzSm]="20" nzHasFeedback>
                             <nz-radio-group formControlName="isApprove" [(ngModel)]="room.isApprove" class="mb-md">
                                 <label nz-radio [nzValue]="o.value" *ngFor="let o of isApproves">
                                     <span>{{o.text}}</span>
                                 </label>
                             </nz-radio-group>
+                            <nz-form-explain *ngIf="validateForm.get('isApprove').dirty&&validateForm.get('isApprove').hasError('required')">请选择审批类型</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row *ngIf="room.isApprove == true">
@@ -69,6 +73,7 @@
                         <nz-form-control [nzSm]="20" nzHasFeedback>
                             <input nz-input formControlName="num" id="num" [(ngModel)]="room.num">
                             <nz-form-explain *ngIf="validateForm.get('num').dirty&&validateForm.get('num').hasError('required')">请输入坐席人数</nz-form-explain>
+                            <nz-form-explain *ngIf="validateForm.get('num').dirty&&validateForm.get('num').hasError('pattern')">请输入正整数</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row>
@@ -90,7 +95,6 @@
                         <nz-form-control [nzSm]="20" nzHasFeedback>
                             <input nz-input formControlName="address" id="address" [(ngModel)]="room.address">
                             <nz-form-explain *ngIf="validateForm.get('address').dirty&&validateForm.get('address').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
-                            <nz-form-explain *ngIf="validateForm.get('address').dirty&&validateForm.get('address').hasError('required')">请输入地址</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row>
@@ -98,7 +102,6 @@
                         <nz-form-control [nzSm]="20" nzHasFeedback>
                             <input nz-input formControlName="buildDesc" id="buildDesc" [(ngModel)]="room.buildDesc">
                             <nz-form-explain *ngIf="validateForm.get('buildDesc').dirty&&validateForm.get('buildDesc').hasError('maxlength')">字符长度小于等于200</nz-form-explain>
-                            <nz-form-explain *ngIf="validateForm.get('buildDesc').dirty&&validateForm.get('buildDesc').hasError('required')">请输入楼层信息</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row>
@@ -118,14 +121,28 @@
 
                 </div>
             </div>
+            <!-- <div class="custom-modal-footer">
+                <div class="custom-modal-footter-group">
+                    <button nz-button [nzType]="'default'" (click)="return()">
+                    {{l("返回")}}
+                </button>
+
+                    <button nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+                    {{l("保存")}}
+                  </button>
+                </div>
+            </div> -->
         </form>
         <footer-toolbar errorCollect>
             <button nz-button [nzType]="'default'" (click)="return()">
                 {{l("返回")}}
             </button>
-            <button nz-button [nzType]="'primary'" (click)="save()" [nzLoading]="isConfirmLoading">
-                {{l("保存")}}
+            <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading">
+                {{l("删除")}}
             </button>
+            <button nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+                {{l("保存")}}
+              </button>
         </footer-toolbar>
     </nz-card>
 </nz-card>

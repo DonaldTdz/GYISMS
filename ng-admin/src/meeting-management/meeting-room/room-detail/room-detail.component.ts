@@ -5,7 +5,7 @@ import { MeetingRoomServiceProxy } from '@shared/service-proxies/meeting-managem
 import { MeetingRoom, CheckBoxList } from '@shared/entity/meeting-management';
 import { FormGroup, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { AppConsts } from '@shared/AppConsts';
-import { UploadFile, NzModalService } from 'ng-zorro-antd';
+import { UploadFile, NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { config } from 'rxjs';
 import { Employee } from '@shared/entity/basic-data';
 import { PagedResultDtoOfEmployee, EmployeeServiceProxy } from '@shared/service-proxies/basic-data';
@@ -35,6 +35,8 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
     roomTypes: any[] = [{ text: '固定会议室', value: 1 }, { text: '临时会议室', value: 2 }];
     layoutPatterns: any[] = [{ text: '中心模式', value: 1 }, { text: '矩阵模式', value: 2 }];
     isApproves: any[] = [{ text: '是', value: true }, { text: '否', value: false }];
+    confirmModal: NzModalRef;
+    isDelete = false;
 
     constructor(injector: Injector, private fb: FormBuilder
         , private meetingService: MeetingRoomServiceProxy
@@ -47,18 +49,18 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
     ngOnInit(): void {
         this.validateForm = this.fb.group({
             name: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
-            address: [null, Validators.compose([Validators.required, Validators.maxLength(500)])],
-            buildDesc: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
+            address: [null, Validators.compose([Validators.maxLength(500)])],
+            buildDesc: [null, Validators.compose([Validators.maxLength(200)])],
             remark: [null, Validators.compose([Validators.maxLength(500)])],
-            coverPhoto: [null],
+            coverPhoto: null,
             roomType: [null, Validators.compose([Validators.required])],
             layoutPattern: [null, Validators.compose([Validators.required])],
             isApprove: [null, Validators.compose([Validators.required])],
-            num: [null, Validators.compose([Validators.required])],
+            num: [null, Validators.compose([Validators.required, Validators.pattern(/^\+?[1-9][0-9]*$/)])],
             managerName: null,
-            row: [null, [Validators.compose([Validators.required, Validators.pattern(/^\+?[1-9][0-9]*$/)])]],
-            column: [null, [Validators.compose([Validators.required, Validators.pattern(/^\+?[1-9][0-9]*$/)])]],
-            devices: [null]
+            row: [null, [Validators.compose([Validators.pattern(/^\+?[1-9][0-9]*$/)])]],
+            column: [null, [Validators.compose([Validators.pattern(/^\+?[1-9][0-9]*$/)])]],
+            devices: null
         });
         this.getRoomDevices();
         this.getMeetingRoom();
@@ -77,6 +79,7 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
             params.id = this.id;
             this.meetingService.getMeetingRoomById(params).subscribe((result: MeetingRoom) => {
                 this.room = result;
+                this.isDelete = true;
                 if (result.photo) {
                     this.room.showPhoto = this.host + this.room.photo;
                 }
@@ -142,24 +145,23 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
                 this.room = result;
                 if (result.photo) {
                     this.room.showPhoto = this.host + this.room.photo;
-                    // alert(this.room.showPhoto);
                 }
+                this.isDelete = true;
                 this.notify.info(this.l(this.successMsg));
             });
     }
-    delete(TplContent) {
-        // this.modal.confirm({
-        //     content: TplContent,
-        //     cancelText: '否',
-        //     okText: '是',
-        //     onOk: () => {
-        //         // this.activityService.delete(this.article.id).subscribe(() => {
-        //         //     this.notify.info(this.l('删除成功！'));
-        //         //     this.return();
-        //         // });
-        //     }
-        // })
+    delete(): void {
+        this.confirmModal = this.modal.confirm({
+            nzContent: '是否删除会议室信息?',
+            nzOnOk: () => {
+                this.meetingService.deleteMeetingRoom(this.room).subscribe(() => {
+                    this.notify.info(this.l('删除成功！'));
+                    this.return();
+                });
+            }
+        });
     }
+
     return() {
         this.router.navigate(['app/meeting/meeting-room']);
     }
@@ -169,8 +171,8 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
     }
 
     /**
- * 模态框返回
- */
+     * 模态框返回
+     */
     getSelectData = (employee?: Employee) => {
         if (employee) {
             this.room.managerName = employee.name;

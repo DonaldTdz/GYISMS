@@ -23,6 +23,9 @@ export class MeetingRoom implements IMeetingRoom {
     deletionTime: Date;
     deleterUserId: number;
     showPhoto: string;
+    layoutName: string;
+    typeName: string;
+
     constructor(data?: IMeetingRoom) {
         if (data) {
             for (var property in data) {
@@ -57,6 +60,8 @@ export class MeetingRoom implements IMeetingRoom {
             this.lastModifierUserId = data["lastModifierUserId"];
             this.deletionTime = data["deletionTime"];
             this.deleterUserId = data["deleterUserId"];
+            this.layoutName = data["layoutName"];
+            this.typeName = data["typeName"];
         }
     }
 
@@ -102,7 +107,8 @@ export class MeetingRoom implements IMeetingRoom {
         data["lastModifierUserId"] = this.lastModifierUserId;
         data["deletionTime"] = this.deletionTime;
         data["deleterUserId"] = this.deleterUserId;
-
+        data["layoutName"] = this.layoutName;
+        data["typeName"] = this.typeName;
         return data;
     }
 
@@ -138,6 +144,8 @@ export interface IMeetingRoom {
     deletionTime: Date;
     deleterUserId: number;
     showPhoto: string;
+    layoutName: string;
+    typeName: string;
 }
 
 export class CheckBoxList implements ICheckBoxList {
