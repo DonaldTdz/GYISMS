@@ -54,6 +54,11 @@ namespace GYISMS.Employees
         /// </summary>
         [StringLength(300)]
         public virtual string Department { get; set; }
+        /// <summary>
+        /// 所属部门列表(名称)
+        /// </summary>
+        [StringLength(300)]
+        public virtual string DepartmentName { get; set; }
 
         /// <summary>
         /// 职位

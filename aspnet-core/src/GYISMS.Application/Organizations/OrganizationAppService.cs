@@ -379,12 +379,28 @@ namespace GYISMS.Organizations
         /// </summary>
         public async Task<List<OrganizationNzTreeNode>> GetTreesAsync()
         {
-            var organizationList = await _organizationRepository.GetAll().ToListAsync();
-
+            int? count = 0;
+            var organizationList =await (from o in _organizationRepository.GetAll()
+                                   select new OrganizationListDto()
+                                   {
+                                       Id = o.Id,
+                                       DepartmentName = o.DepartmentName,
+                                       ParentId = o.ParentId
+                                   }).ToListAsync();
+            foreach (var item in organizationList)
+            {
+                if (item.Id == 1)
+                    count = await _employeeRepository.GetAll().CountAsync();
+                else
+                    count = await _employeeRepository.GetAll().Where(v => v.Department.Contains(item.Id.ToString())).CountAsync();
+                item.Id = item.Id;
+                item.ParentId = item.ParentId;
+                item.DepartmentName = item.DepartmentName + $"({count}人)";
+            }
             return GetTrees(0, organizationList);
         }
 
-        private List<OrganizationNzTreeNode> GetTrees(long? id, List<Organization> organizationList)
+        private List<OrganizationNzTreeNode> GetTrees(long? id, List<OrganizationListDto> organizationList)
         {
             List<OrganizationNzTreeNode> treeNodeList = organizationList.Where(o => o.ParentId == id).Select(t => new OrganizationNzTreeNode()
             {
@@ -392,10 +408,7 @@ namespace GYISMS.Organizations
                 title = t.DepartmentName,
                 children = GetTrees(t.Id, organizationList)
             }).ToList();
-
             return treeNodeList;
         }
     }
 }
-
-

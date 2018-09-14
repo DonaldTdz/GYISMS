@@ -11,8 +11,7 @@ import { RetailCustomerComponent } from './retail-customer/retail-customer.compo
 import { EmployeeComponent } from './employee/employee.component';
 import { GrowerComponent } from './grower/grower.component';
 import { GrowerDetailComponent } from './grower/grower-detail/grower-detail.component';
-import { MessageOrganizationModalComponent } from './grower/grower-detail/message-organization-modal/message-organization-modal.component';
-
+import { GrowerEmployeeModalComponent } from './grower/grower-detail/grower-employee-modal/grower-employee-modal.component';
 
 @NgModule({
     imports: [
@@ -29,7 +28,7 @@ import { MessageOrganizationModalComponent } from './grower/grower-detail/messag
         EmployeeComponent,
         GrowerComponent,
         GrowerDetailComponent,
-        MessageOrganizationModalComponent
+        GrowerEmployeeModalComponent
     ],
     entryComponents: [
     ],

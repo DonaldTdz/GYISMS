@@ -186,6 +186,8 @@ namespace GYISMS.Growers
             var entity = await _growerRepository.GetAsync(input.Id);
             input.MapTo(entity);
             entity.IsDeleted = true;
+            entity.DeletionTime = DateTime.Now;
+            entity.DeleterUserId = AbpSession.UserId;
             await _growerRepository.UpdateAsync(entity);
         }
     }

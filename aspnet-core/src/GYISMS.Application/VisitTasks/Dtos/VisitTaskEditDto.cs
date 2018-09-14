@@ -2,93 +2,56 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.VisitTasks;
 
-namespace  GYISMS.VisitTasks.Dtos
+namespace GYISMS.VisitTasks.Dtos
 {
-    public class VisitTaskEditDto
+    public class VisitTaskEditDto : AuditedEntityDto<int?>
     {
-/// <summary>
-/// Id
-/// </summary>
-public int? Id { get; set; }
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        [Required(ErrorMessage = "Name不能为空")]
+        public string Name { get; set; }
 
 
-/// <summary>
-/// Name
-/// </summary>
-[Required(ErrorMessage="Name不能为空")]
-public string Name { get; set; }
+        /// <summary>
+        /// Type
+        /// </summary>
+        [Required(ErrorMessage = "Type不能为空")]
+        public int Type { get; set; }
 
 
-/// <summary>
-/// Type
-/// </summary>
-[Required(ErrorMessage="Type不能为空")]
-public int Type { get; set; }
+        /// <summary>
+        /// IsExamine
+        /// </summary>
+        public bool? IsExamine { get; set; }
 
 
-/// <summary>
-/// IsExamine
-/// </summary>
-public bool? IsExamine { get; set; }
+        /// <summary>
+        /// Desc
+        /// </summary>
+        public string Desc { get; set; }
 
 
-/// <summary>
-/// Desc
-/// </summary>
-public string Desc { get; set; }
+        /// <summary>
+        /// IsDeleted
+        /// </summary>
+        public bool? IsDeleted { get; set; }
 
 
-/// <summary>
-/// IsDeleted
-/// </summary>
-public bool? IsDeleted { get; set; }
+        /// <summary>
+        /// DeletionTime
+        /// </summary>
+        public DateTime? DeletionTime { get; set; }
 
 
-/// <summary>
-/// CreationTime
-/// </summary>
-public DateTime? CreationTime { get; set; }
-
-
-/// <summary>
-/// CreatorUserId
-/// </summary>
-public long? CreatorUserId { get; set; }
-
-
-/// <summary>
-/// LastModificationTime
-/// </summary>
-public DateTime? LastModificationTime { get; set; }
-
-
-/// <summary>
-/// LastModifierUserId
-/// </summary>
-public long? LastModifierUserId { get; set; }
-
-
-/// <summary>
-/// DeletionTime
-/// </summary>
-public DateTime? DeletionTime { get; set; }
-
-
-/// <summary>
-/// DeleterUserId
-/// </summary>
-public long? DeleterUserId { get; set; }
-
-
-
-
-
-
-		//// custom codes
- 
-        //// custom codes end
+        /// <summary>
+        /// DeleterUserId
+        /// </summary>
+        public long? DeleterUserId { get; set; }
     }
 }

@@ -1295,6 +1295,7 @@ namespace GYISMS.Migrations
                 b.Property<bool?>("IsAdmin");
                 b.Property<bool?>("IsBoss");
                 b.Property<string>("Department").HasMaxLength(300);
+                b.Property<string>("DepartmentName").HasMaxLength(300);
                 b.Property<string>("Position").HasMaxLength(100);
                 b.Property<string>("Avatar").HasMaxLength(200);
                 b.Property<string>("HiredDate").HasMaxLength(100);

@@ -47,6 +47,7 @@ namespace GYISMS.Growers.Dtos
         /// EmployeeId
         /// </summary>
         public string EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
 
 
         /// <summary>

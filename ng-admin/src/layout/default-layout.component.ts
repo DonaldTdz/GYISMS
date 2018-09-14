@@ -79,7 +79,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '任务管理',
                 '',
                 '',
-                '',
+                '/app/task/visit-task',
             ),
             new MenuItem(
                 '走访计划',

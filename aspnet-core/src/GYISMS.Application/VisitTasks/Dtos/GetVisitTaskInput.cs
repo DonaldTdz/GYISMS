@@ -11,7 +11,7 @@ namespace GYISMS.VisitTasks.Dtos
           /// <summary>
 		 /// 模糊搜索使用的关键字
 		 ///</summary>
-        public string Filter { get; set; }
+        public string Name { get; set; }
 
 
 		//// custom codes

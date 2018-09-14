@@ -14,23 +14,45 @@
                     </nz-form-item>
 
                     <nz-form-item nz-row>
-                        <nz-form-label nz-col [nzSm]="4" nzRequired nzFor="unitName">单位名称</nz-form-label>
-                        <nz-form-control [nzSm]="16" nzHasFeedback>
-                            <input nz-input readonly="readonly" placeholder="请选择单位" formControlName="unitName" id="unitName" [(ngModel)]="grower.unitName">
-                            <nz-form-explain *ngIf="validateForm.get('unitName').dirty&&validateForm.get('unitName').hasError('maxlength')">字符长度小于等于50</nz-form-explain>
-                            <nz-form-explain *ngIf="validateForm.get('unitName').dirty&&validateForm.get('unitName').hasError('required')">请选择单位</nz-form-explain>
-                        </nz-form-control>
-                        <nz-form-control [nzSm]="4" style="float: right;">
-                            <button nz-button type="button" nzType="primary" (click)="showModal()" style="margin-left: 20px">请选择单位</button>
+                        <nz-form-label nz-col [nzSm]="4" nzRequired nzFor="unitCode">单位名称</nz-form-label>
+                        <nz-form-control [nzSm]="20" nzHasFeedback>
+                            <nz-select formControlName="unitCode" [nzPlaceHolder]="'请选择单位名称'" name="unitCode" [(ngModel)]="grower.unitCode" (ngModelChange)="getText($event)" [nzShowSearch]="true">
+                                <nz-option *ngFor="let i of unitTypes" [nzLabel]="i.text" [nzValue]="i.value">
+                                </nz-option>
+                            </nz-select>
+                            <nz-form-explain *ngIf="validateForm.get('unitCode').dirty&&validateForm.get('unitCode').hasError('maxlength')">字符长度小于等于50</nz-form-explain>
+                            <nz-form-explain *ngIf="validateForm.get('unitCode').dirty&&validateForm.get('unitCode').hasError('required')">请选择单位</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row style="margin-bottom: 0px;">
                         <nz-form-label nz-col [nzSm]="4" nzFor="countyCode">所属区县</nz-form-label>
-                        <nz-form-control nz-col [nzSm]="20" nzHasFeedback>
+                        <nz-form-control nz-col [nzSm]="20">
                             <nz-radio-group formControlName="countyCode" [(ngModel)]="grower.countyCode" class="mb-md">
                                 <label nz-radio [nzValue]="o.value" *ngFor="let o of countyCodes">
-                                            <span>{{o.text}}</span>
-                                        </label>
+                                    <span>{{o.text}}</span>
+                                </label>
+                            </nz-radio-group>
+                        </nz-form-control>
+                    </nz-form-item>
+
+                    <nz-form-item nz-row>
+                        <nz-form-label nz-col [nzSm]="4" nzFor="employeeName">所属烟技员</nz-form-label>
+                        <nz-form-control [nzSm]="16" nzHasFeedback>
+                            <input nz-input readonly="readonly" placeholder="请选择烟技员" formControlName="employeeName" id="employeeName" [(ngModel)]="grower.employeeName">
+                            <nz-form-explain *ngIf="validateForm.get('employeeName').dirty&&validateForm.get('employeeName').hasError('maxlength')">字符长度小于等于200</nz-form-explain>
+                        </nz-form-control>
+                        <nz-form-control [nzSm]="4" style="float: right;">
+                            <button nz-button type="button" nzType="primary" (click)="showModal()" style="margin-left: 20px">选择烟技员</button>
+                        </nz-form-control>
+                    </nz-form-item>
+
+                    <nz-form-item nz-row style="margin-bottom: 0px;">
+                        <nz-form-label nz-col [nzSm]="4" nzFor="type">种植主体类型</nz-form-label>
+                        <nz-form-control nz-col [nzSm]="20">
+                            <nz-radio-group formControlName="type" [(ngModel)]="grower.type" class="mb-md">
+                                <label nz-radio [nzValue]="o.value" *ngFor="let o of types">
+                                    <span>{{o.text}}</span>
+                                </label>
                             </nz-radio-group>
                         </nz-form-control>
                     </nz-form-item>
@@ -54,6 +76,14 @@
                         <nz-form-control [nzSm]="20" nzHasFeedback>
                             <input nz-input formControlName="tel" id="tel" [(ngModel)]="grower.tel">
                             <nz-form-explain *ngIf="validateForm.get('tel').dirty&&validateForm.get('tel').hasError('maxlength')">字符长度小于等于11</nz-form-explain>
+                            <nz-form-explain *ngIf="validateForm.get('tel').dirty&&validateForm.get('tel').hasError('pattern')">请输入纯数字</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row>
+                        <nz-form-label nz-col [nzSm]="4" nzFor="villageGroup">村组</nz-form-label>
+                        <nz-form-control [nzSm]="20" nzHasFeedback>
+                            <input nz-input formControlName="villageGroup" id="villageGroup" [(ngModel)]="grower.villageGroup">
+                            <nz-form-explain *ngIf="validateForm.get('villageGroup').dirty&&validateForm.get('villageGroup').hasError('maxlength')">字符长度小于等于50</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row>
@@ -63,16 +93,29 @@
                             <nz-form-explain *ngIf="validateForm.get('address').dirty&&validateForm.get('address').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
+                    <!-- <nz-form-item nz-row>
+                        <nz-form-label nz-col [nzSm]="4" nzFor="plantingArea">种植面积</nz-form-label>
+                        <nz-form-control [nzSm]="20" nzHasFeedback>
+                            <input nz-input formControlName="plantingArea" placeholder="亩" id="plantingArea"
+                                [(ngModel)]="grower.plantingArea">
+                            <nz-form-explain *ngIf="validateForm.get('plantingArea').dirty&&validateForm.get('plantingArea').hasError('pattern')">请输入两位精度正数，如50.00</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item> -->
                     <nz-form-item nz-row>
                         <nz-form-label nz-col [nzSm]="4" nzFor="plantingArea">种植面积</nz-form-label>
                         <nz-form-control [nzSm]="20" nzHasFeedback>
-                            <input nz-input formControlName="plantingArea" id="plantingArea" [(ngModel)]="grower.plantingArea">
-                            <nz-form-explain *ngIf="validateForm.get('plantingArea').dirty&&validateForm.get('plantingArea').hasError('pattern')">请输入两位精度正数，如50.00</nz-form-explain>
+                            <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+                                <input nz-input formControlName="plantingArea" id="plantingArea" [(ngModel)]="grower.plantingArea">
+                                <ng-template #suffixIconButton>
+                                    <button nz-button nzType="primary" disabled nzSearch>亩</button>
+                                </ng-template>
+                            </nz-input-group>
+                            <nz-form-explain *ngIf="validateForm.get('plantingArea').dirty&&validateForm.get('plantingArea').hasError('pattern')">请输入正数(两位精度)，如50.00</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row>
                         <nz-form-label nz-col [nzSm]="4" nzFor="contractTime">合同签订时间</nz-form-label>
-                        <nz-form-control [nzSm]="20" nzHasFeedback>
+                        <nz-form-control [nzSm]="20">
                             <nz-date-picker formControlName="contractTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="grower.contractTime" [nzPlaceHolder]="'请选择日期'"></nz-date-picker>
                         </nz-form-control>
                     </nz-form-item>
@@ -106,4 +149,4 @@
         </footer-toolbar>
     </nz-card>
 </nz-card>
-<message-organization-modal #selectsOrganizationModal (modalSelect)="getSelectData($event)"></message-organization-modal>
+<grower-employee-modal #selectsEmployeeModal (modalSelect)="getSelectData($event)"></grower-employee-modal>

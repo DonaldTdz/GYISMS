@@ -46,6 +46,11 @@ namespace GYISMS.Growers
         /// </summary>
         [StringLength(200)]
         public virtual string EmployeeId { get; set; }
+        /// <summary>
+        /// 烟技员姓名(快照)
+        /// </summary>
+        [StringLength(200)]
+        public virtual string EmployeeName { get; set; }
 
         /// <summary>
         /// 合同编号

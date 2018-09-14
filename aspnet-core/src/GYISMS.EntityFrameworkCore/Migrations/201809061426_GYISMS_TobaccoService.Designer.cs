@@ -1422,6 +1422,7 @@ namespace GYISMS.Migrations
                 b.Property<string>("Name").IsRequired().HasMaxLength(50);
                 b.Property<int?>("CountyCode");
                 b.Property<string>("EmployeeId").HasMaxLength(200);
+                b.Property<string>("EmployeeName").HasMaxLength(200);
                 b.Property<string>("ContractNo").HasMaxLength(50);
                 b.Property<string>("VillageGroup").HasMaxLength(50);
                 b.Property<string>("Tel").HasMaxLength(20);

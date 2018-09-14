@@ -6,6 +6,7 @@ import * as ApiServiceProxies from '@shared/service-proxies/service-proxies';
 import { OrganizationServiceProxy, EmployeeServiceProxy, GrowerServiceProxy } from '@shared/service-proxies/basic-data';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
 import { MeetingRoomServiceProxy } from '@shared/service-proxies/meeting-management';
+import { VisitTaskServiceProxy } from '@shared/service-proxies/tobacco-management';
 
 @NgModule({
   providers: [
@@ -21,6 +22,7 @@ import { MeetingRoomServiceProxy } from '@shared/service-proxies/meeting-managem
     EmployeeServiceProxy,
     MeetingRoomServiceProxy,
     GrowerServiceProxy,
+    VisitTaskServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
   ],
 })

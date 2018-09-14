@@ -213,6 +213,8 @@ namespace GYISMS.MeetingRooms
             var entity = await _meetingroomRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
             entity.IsDeleted = true;
+            entity.DeletionTime = DateTime.Now;
+            entity.DeleterUserId = AbpSession.UserId;
             await _meetingroomRepository.UpdateAsync(entity);
         }       
     }

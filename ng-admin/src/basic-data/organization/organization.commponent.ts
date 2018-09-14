@@ -159,7 +159,7 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
         });
         setTimeout(() => {
             this.getTrees();
-        }, '1000');
+        }, 1000);
     }
 
     getTrees() {

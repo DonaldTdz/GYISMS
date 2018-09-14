@@ -19,6 +19,7 @@ namespace GYISMS.Migrations
                      Name = table.Column<string>(maxLength: 50, nullable: false),
                      CountyCode = table.Column<int>(nullable: true),
                      EmployeeId = table.Column<string>(maxLength: 200, nullable: true),
+                     EmployeeName = table.Column<string>(maxLength: 200, nullable: true),
                      ContractNo = table.Column<string>(maxLength: 50, nullable: true),
                      VillageGroup = table.Column<string>(maxLength: 50, nullable: true),
                      Tel = table.Column<string>(maxLength: 20, nullable: true),

@@ -1,4 +1,4 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="选择单位名称" [nzContent]="modalContent" (nzOnCancel)="handleCancel()" style="width: 520px;" [nzFooter]="modalFooter">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="选择烟技员" [nzContent]="modalContent" (nzOnCancel)="handleCancel()" style="width: 520px;" [nzFooter]="modalFooter">
     <ng-template #modalContent>
         <nz-card [nzBordered]="false" *ngIf="isVisible">
             <form nz-form (ngSubmit)="refreshData()" [nzLayout]="'inline'">
@@ -8,7 +8,7 @@
 
                             <div nz-form-control class="flex-1">
                                 <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
-                                    <input nz-input type="text" [(ngModel)]="q.name" name="name" (nzOnSearch)="refreshData()" placeholder="请输入管理员姓名" style="width: 420px;">
+                                    <input nz-input type="text" [(ngModel)]="q.name" name="name" (nzOnSearch)="refreshData()" placeholder="请输入烟技员姓名" style="width: 420px;">
                                 </nz-input-group>
                                 <ng-template #suffixIconButton>
                                     <button nz-button nzType="primary" nzSearch><i class="anticon anticon-search"></i></button>

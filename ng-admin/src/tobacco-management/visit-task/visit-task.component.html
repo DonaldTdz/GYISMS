@@ -5,9 +5,9 @@
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="8" class="mb-md">
                 <nz-form-item class="d-flex">
-                    <nz-form-label nzFor="name">姓名</nz-form-label>
+                    <nz-form-label nzFor="name">任务名称</nz-form-label>
                     <nz-form-control class="flex-1">
-                        <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入烟农姓名" nzSize="default">
+                        <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入任务名称" nzSize="default">
                     </nz-form-control>
                 </nz-form-item>
             </div>
@@ -22,26 +22,23 @@
         </div>
     </form>
     <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-    <nz-table #nzTable [nzData]="growerList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()"
+    <nz-table #nzTable [nzData]="taskList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()"
         (nzPageSizeChange)="refreshData()">
         <thead>
             <tr>
-                <th>用户名</th>
-                <th>单位名称</th>
-                <th>联系方式</th>
-                <th>所属烟技员</th>
-                <!-- <th>地理位置</th> -->
+                <th>任务名称</th>
+                <th>任务类型</th>
+                <th>是否考核</th>
                 <th>操作</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let data of nzTable.data">
                 <td>{{data.name}}</td>
-                <td>{{data.unitName}}</td>
-                <td>{{data.tel}}</td>
-                <td>{{data.employeeName}}</td>
+                <td>{{data.typeName}}</td>
+                <td>{{data.isExamine == true?"是":"否"}}</td>
                 <td>
-                    <a (click)="goDetail(data.id)">信息维护</a>
+                    <a (click)="goDetail(data.id)">查看详情</a>
                 </td>
             </tr>
         </tbody>

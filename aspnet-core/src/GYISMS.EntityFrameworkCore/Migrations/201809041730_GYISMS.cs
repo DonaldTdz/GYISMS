@@ -54,6 +54,7 @@ namespace GYISMS.Migrations
                     IsAdmin = table.Column<bool>(nullable: true),
                     IsBoss = table.Column<bool>(nullable: true),
                     Department = table.Column<string>(maxLength: 300, nullable: true),
+                    DepartmentName = table.Column<string>(maxLength: 300, nullable: true),
                     Position = table.Column<string>(maxLength: 100, nullable: true),
                     Avatar = table.Column<string>(maxLength: 200, nullable: true),
                     HiredDate = table.Column<string>(maxLength: 100, nullable: true),

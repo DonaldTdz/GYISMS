@@ -8,6 +8,7 @@ export class Employee implements IEmployee {
     isAdmin: boolean;
     isBoss: boolean;
     department: string;
+    departmentName: string;
     position: string;
     avatar: string;
     hiredDate: string;
@@ -35,6 +36,7 @@ export class Employee implements IEmployee {
             this.isAdmin = data["isAdmin"];
             this.isBoss = data["isBoss"];
             this.department = data["department"];
+            this.departmentName = data["departmentName"];
             this.position = data["position"];
             this.avatar = data["avatar"];
             this.hiredDate = data["hiredDate"];
@@ -72,6 +74,7 @@ export class Employee implements IEmployee {
         data["isAdmin"] = this.isAdmin;
         data["isBoss"] = this.isBoss;
         data["department"] = this.department;
+        data["departmentName"] = this.departmentName;
         data["position"] = this.position;
         data["avatar"] = this.avatar;
         data["hiredDate"] = this.hiredDate;
@@ -99,6 +102,7 @@ export interface IEmployee {
     isAdmin: boolean;
     isBoss: boolean;
     department: string;
+    departmentName: string;
     position: string;
     avatar: string;
     hiredDate: string;

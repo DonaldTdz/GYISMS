@@ -30,4 +30,11 @@ namespace GYISMS.GYEnums
         中心模式 = 1,
         矩阵莫事 = 2
     }
+    public enum TaskType
+    {
+        技术服务 = 1,
+        生产管理 = 2,
+        政策宣传 = 3,
+        临时任务 = 4
+    }
 }

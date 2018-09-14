@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ namespace GYISMS.VisitTasks
     /// 拜访任务
     /// </summary>
     [Table("VisitTasks")]
-    public class VisitTask : Entity<int>
+    public class VisitTask : AuditedEntity<int>
     {
 
         /// <summary>
@@ -40,26 +41,6 @@ namespace GYISMS.VisitTasks
         /// 是否删除
         /// </summary>
         public virtual bool? IsDeleted { get; set; }
-
-        /// <summary>
-        /// CreationTime
-        /// </summary>
-        public virtual DateTime? CreationTime { get; set; }
-
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public virtual long? CreatorUserId { get; set; }
-
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public virtual DateTime? LastModificationTime { get; set; }
-
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public virtual long? LastModifierUserId { get; set; }
 
         /// <summary>
         /// DeletionTime

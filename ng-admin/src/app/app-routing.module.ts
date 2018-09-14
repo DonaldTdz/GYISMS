@@ -51,6 +51,11 @@ const routes: Routes = [
         data: { preload: true },
       },
       {
+        path: 'task',
+        loadChildren: 'tobacco-management/tobacco-management-module#TobaccoManagementModule', // Lazy load account module
+        data: { preload: true },
+      },
+      {
         path: '**',
         redirectTo: 'home',
       },

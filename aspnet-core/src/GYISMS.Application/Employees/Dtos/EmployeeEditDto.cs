@@ -61,6 +61,7 @@ namespace GYISMS.Employees.Dtos
         /// Department
         /// </summary>
         public string Department { get; set; }
+        public string DepartmentName { get; set; }
 
 
         /// <summary>

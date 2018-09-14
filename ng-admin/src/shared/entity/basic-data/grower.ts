@@ -6,6 +6,7 @@ export class Grower implements IGrower {
     name: string;
     countyCode: number;
     employeeId: string;
+    employeeName: string;
     contractNo: string;
     villageGroup: string;
     tel: string;
@@ -40,6 +41,7 @@ export class Grower implements IGrower {
             this.name = data["name"];
             this.countyCode = data["countyCode"];
             this.employeeId = data["employeeId"];
+            this.employeeName = data["employeeName"];
             this.contractNo = data["contractNo"];
             this.villageGroup = data["villageGroup"];
             this.tel = data["tel"];
@@ -85,6 +87,7 @@ export class Grower implements IGrower {
         data["name"] = this.name;
         data["countyCode"] = this.countyCode;
         data["employeeId"] = this.employeeId;
+        data["employeeName"] = this.employeeName;
         data["contractNo"] = this.contractNo;
         data["villageGroup"] = this.villageGroup;
         data["tel"] = this.tel;
@@ -120,6 +123,7 @@ export interface IGrower {
     name: string;
     countyCode: number;
     employeeId: string;
+    employeeName: string;
     contractNo: string;
     villageGroup: string;
     tel: string;

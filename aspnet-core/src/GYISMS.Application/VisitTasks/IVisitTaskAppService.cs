@@ -20,19 +20,7 @@ namespace GYISMS.VisitTasks
     ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PagedResultDto<VisitTaskListDto>> GetPagedVisitTasks(GetVisitTasksInput input);
-
-		/// <summary>
-		/// 通过指定id获取VisitTaskListDto信息
-		/// </summary>
-		Task<VisitTaskListDto> GetVisitTaskByIdAsync(EntityDto<int> input);
-
-
-        /// <summary>
-        /// 导出VisitTask为excel表
-        /// </summary>
-        /// <returns></returns>
-		//Task<FileDto> GetVisitTasksToExcel();
+        Task<PagedResultDto<VisitTaskListDto>> GetPagedVisitTasksAsync(GetVisitTasksInput input);
 
         /// <summary>
         /// 返回实体的EditDto
@@ -64,10 +52,13 @@ namespace GYISMS.VisitTasks
         /// 批量删除VisitTask
         /// </summary>
         Task BatchDeleteVisitTasksAsync(List<int> input);
+        Task VisitTaskDeleteByIdAsync(VisitTaskEditDto input);
+        Task<VisitTaskListDto> GetVisitTaskByIdAsync(int id);
+        Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsycn(VisitTaskEditDto input);
 
 
-		//// custom codes
-		 
+        //// custom codes
+
         //// custom codes end
     }
 }
