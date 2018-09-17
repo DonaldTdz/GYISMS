@@ -96,12 +96,19 @@ namespace GYISMS.Employees.Dtos
         public string Remark { get; set; }
 
 
-
-
-
-
         //// custom codes
 
         //// custom codes end
+    }
+
+    public class DingDingUserDto
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Position { get; set; }
+
+        public string Avatar { get; set; }
     }
 }
