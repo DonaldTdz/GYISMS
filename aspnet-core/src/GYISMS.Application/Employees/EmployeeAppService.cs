@@ -18,6 +18,7 @@ using GYISMS.Employees.Authorization;
 using GYISMS.Employees.Dtos;
 using GYISMS.Employees;
 using GYISMS.Authorization;
+using GYISMS.DingDing;
 
 namespace GYISMS.Employees
 {
@@ -29,16 +30,19 @@ namespace GYISMS.Employees
     {
         private readonly IRepository<Employee, string> _employeeRepository;
         private readonly IEmployeeManager _employeeManager;
+        private readonly IDingDingAppService _dingDingAppService;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
         public EmployeeAppService(IRepository<Employee, string> employeeRepository
             , IEmployeeManager employeeManager
+            , IDingDingAppService dingDingAppService
             )
         {
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;
+            _dingDingAppService = dingDingAppService;
         }
 
 
@@ -229,6 +233,14 @@ namespace GYISMS.Employees
         //    }).ToList();
         //    return treeNodeList;
         //}
+        [AbpAllowAnonymous]
+        public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code)
+        {
+            var assessToken = _dingDingAppService.GetAccessToken("ding7xespi5yumrzraaq", "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3");
+            var userId = _dingDingAppService.GetUserId(assessToken, code);
+            var query = await _employeeRepository.GetAsync(userId);
+            return query.MapTo<DingDingUserDto>();
+        }
     }
 }
 

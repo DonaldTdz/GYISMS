@@ -100,9 +100,9 @@ namespace GYISMS.Employees.Dtos
         public virtual string title { get; set; }
         public virtual string key { get; set; }
 
-        public virtual bool expanded { get; set; }//ÊÇ·ñ´ò¿ª
+        public virtual bool expanded { get; set; }//ï¿½Ç·ï¿½ï¿½
 
-        public virtual bool isLeaf { get; set; } //ÊÇ·ñÊÇÊ÷Ò¶
+        public virtual bool isLeaf { get; set; } //ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶
 
         public virtual List<NzTreeNode> children { get; set; }
     }
@@ -113,7 +113,7 @@ namespace GYISMS.Employees.Dtos
         {
             get
             {
-                if (key == "1")//×Ü¹«Ë¾
+                if (key == "1")//ï¿½Ü¹ï¿½Ë¾
                 {
                     return true;
                 }
@@ -134,5 +134,19 @@ namespace GYISMS.Employees.Dtos
         }
 
         public new List<EmployeeNzTreeNode> children { get; set; }
+        //// custom codes
+
+        //// custom codes end
+    }
+
+    public class DingDingUserDto
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Position { get; set; }
+
+        public string Avatar { get; set; }
     }
 }
