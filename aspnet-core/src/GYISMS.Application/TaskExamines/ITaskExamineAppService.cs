@@ -22,10 +22,10 @@ namespace GYISMS.TaskExamines
         /// <returns></returns>
         Task<PagedResultDto<TaskExamineListDto>> GetPagedTaskExamines(GetTaskExaminesInput input);
 
-		/// <summary>
-		/// 通过指定id获取TaskExamineListDto信息
-		/// </summary>
-		Task<TaskExamineListDto> GetTaskExamineByIdAsync(EntityDto<int> input);
+        /// <summary>
+        /// 通过指定id获取TaskExamineListDto信息
+        /// </summary>
+        Task<TaskExamineListDto> GetTaskExamineByIdAsync(int id);
 
 
         /// <summary>
@@ -49,7 +49,7 @@ namespace GYISMS.TaskExamines
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task CreateOrUpdateTaskExamine(CreateOrUpdateTaskExamineInput input);
+        Task<TaskExamineEditDto> CreateOrUpdateTaskExamineAsync(TaskExamineEditDto input);
 
 
         /// <summary>

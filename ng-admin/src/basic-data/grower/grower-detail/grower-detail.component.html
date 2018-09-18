@@ -93,14 +93,6 @@
                             <nz-form-explain *ngIf="validateForm.get('address').dirty&&validateForm.get('address').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
-                    <!-- <nz-form-item nz-row>
-                        <nz-form-label nz-col [nzSm]="4" nzFor="plantingArea">种植面积</nz-form-label>
-                        <nz-form-control [nzSm]="20" nzHasFeedback>
-                            <input nz-input formControlName="plantingArea" placeholder="亩" id="plantingArea"
-                                [(ngModel)]="grower.plantingArea">
-                            <nz-form-explain *ngIf="validateForm.get('plantingArea').dirty&&validateForm.get('plantingArea').hasError('pattern')">请输入两位精度正数，如50.00</nz-form-explain>
-                        </nz-form-control>
-                    </nz-form-item> -->
                     <nz-form-item nz-row>
                         <nz-form-label nz-col [nzSm]="4" nzFor="plantingArea">种植面积</nz-form-label>
                         <nz-form-control [nzSm]="20" nzHasFeedback>
@@ -110,7 +102,7 @@
                                     <button nz-button nzType="primary" disabled nzSearch>亩</button>
                                 </ng-template>
                             </nz-input-group>
-                            <nz-form-explain *ngIf="validateForm.get('plantingArea').dirty&&validateForm.get('plantingArea').hasError('pattern')">请输入正数(两位精度)，如50.00</nz-form-explain>
+                            <nz-form-explain *ngIf="validateForm.get('plantingArea').dirty&&validateForm.get('plantingArea').hasError('pattern')">请输入整数(两位精度)，如50.00</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row>

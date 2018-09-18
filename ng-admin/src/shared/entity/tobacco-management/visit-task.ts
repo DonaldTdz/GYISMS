@@ -1,4 +1,4 @@
-export class VisitTask implements IMeetingRoom {
+export class VisitTask implements IVisitTask {
     id: number;
     name: string;
     type: number;
@@ -12,7 +12,10 @@ export class VisitTask implements IMeetingRoom {
     deletionTime: Date;
     deleterUserId: number;
     typeName: string;
-    constructor(data?: IMeetingRoom) {
+    teName: string;
+    teDesc: string;
+    teSeq: number;
+    constructor(data?: IVisitTask) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -36,6 +39,9 @@ export class VisitTask implements IMeetingRoom {
             this.lastModifierUserId = data["lastModifierUserId"];
             this.deletionTime = data["deletionTime"];
             this.deleterUserId = data["deleterUserId"];
+            this.teName = data["teName"];
+            this.teDesc = data["teDesc"];
+            this.teSeq = data["teSeq"];
         }
     }
 
@@ -71,6 +77,9 @@ export class VisitTask implements IMeetingRoom {
         data["lastModifierUserId"] = this.lastModifierUserId;
         data["deletionTime"] = this.deletionTime;
         data["deleterUserId"] = this.deleterUserId;
+        data["teName"] = this.teName;
+        data["teDesc"] = this.teDesc;
+        data["teSeq"] = this.teSeq;
         return data;
     }
 
@@ -81,7 +90,7 @@ export class VisitTask implements IMeetingRoom {
         return result;
     }
 }
-export interface IMeetingRoom {
+export interface IVisitTask {
     id: number;
     name: string;
     type: number;
@@ -95,4 +104,7 @@ export interface IMeetingRoom {
     lastModifierUserId: number;
     deletionTime: Date;
     deleterUserId: number;
+    teName: string;
+    teDesc: string;
+    teSeq: number;
 }

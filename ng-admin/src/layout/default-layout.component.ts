@@ -85,7 +85,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '走访计划',
                 '',
                 '',
-                '',
+                '/app/task/schedule',
             ),
             new MenuItem(
                 '统计报表',

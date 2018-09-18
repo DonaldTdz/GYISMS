@@ -7,6 +7,7 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GYISMS.VisitTasks.Dtos;
 using GYISMS.VisitTasks;
+using GYISMS.TaskExamines.Dtos;
 
 namespace GYISMS.VisitTasks
 {
@@ -29,16 +30,6 @@ namespace GYISMS.VisitTasks
         /// <returns></returns>
         Task<GetVisitTaskForEditOutput> GetVisitTaskForEdit(NullableIdDto<int> input);
 
-        //todo:缺少Dto的生成GetVisitTaskForEditOutput
-
-
-        /// <summary>
-        /// 添加或者修改VisitTask的公共方法
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        Task CreateOrUpdateVisitTask(CreateOrUpdateVisitTaskInput input);
-
 
         /// <summary>
         /// 删除VisitTask信息的方法
@@ -55,10 +46,5 @@ namespace GYISMS.VisitTasks
         Task VisitTaskDeleteByIdAsync(VisitTaskEditDto input);
         Task<VisitTaskListDto> GetVisitTaskByIdAsync(int id);
         Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsycn(VisitTaskEditDto input);
-
-
-        //// custom codes
-
-        //// custom codes end
     }
 }

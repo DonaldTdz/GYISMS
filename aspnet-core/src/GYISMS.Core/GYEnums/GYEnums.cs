@@ -37,4 +37,10 @@ namespace GYISMS.GYEnums
         政策宣传 = 3,
         临时任务 = 4
     }
+    public enum ScheduleType
+    {
+        每日 = 1,
+        每周 = 2,
+        每月 = 3
+    }  
 }

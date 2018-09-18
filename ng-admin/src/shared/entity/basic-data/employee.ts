@@ -16,6 +16,7 @@ export class Employee implements IEmployee {
     roleId: number;
     remark: string;
     selected: string;
+    checked: boolean;
     constructor(data?: IEmployee) {
         if (data) {
             for (var property in data) {
@@ -110,4 +111,5 @@ export interface IEmployee {
     roleId: number;
     remark: string;
     selected: string;
+    checked: boolean;
 }

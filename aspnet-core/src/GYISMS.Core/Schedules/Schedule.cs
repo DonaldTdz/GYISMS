@@ -1,4 +1,6 @@
-﻿using Abp.Domain.Entities;
+﻿using Abp.Application.Services.Dto;
+using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +10,7 @@ namespace GYISMS.Schedules
     /// 计划表
     /// </summary>
     [Table("Schedules")]
-    public class Schedule : Entity<Guid>
+    public class Schedule : AuditedEntity<Guid>
     {
         /// <summary>
         /// 计划说明
@@ -46,26 +48,6 @@ namespace GYISMS.Schedules
         /// IsDeleted
         /// </summary>
         public virtual bool? IsDeleted { get; set; }
-
-        /// <summary>
-        /// CreationTime
-        /// </summary>
-        public virtual DateTime? CreationTime { get; set; }
-
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public virtual long? CreatorUserId { get; set; }
-
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public virtual DateTime? LastModificationTime { get; set; }
-
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public virtual long? LastModifierUserId { get; set; }
 
         /// <summary>
         /// DeletionTime

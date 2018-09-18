@@ -1490,6 +1490,7 @@ namespace GYISMS.Migrations
             {
                 b.Property<Guid>("Id").ValueGeneratedOnAdd();
                 b.Property<int>("TaskId").IsRequired();
+                b.Property<string>("TaskName").HasMaxLength(200);
                 b.Property<Guid>("ScheduleId").IsRequired();
                 b.Property<int?>("VisitNum");
                 b.Property<DateTime?>("CreationTime");

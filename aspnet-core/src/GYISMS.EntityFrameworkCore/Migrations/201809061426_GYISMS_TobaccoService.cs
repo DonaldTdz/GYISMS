@@ -90,6 +90,7 @@ namespace GYISMS.Migrations
                 {
                     Id = table.Column<Guid>(nullable: false),
                     TaskId = table.Column<int>(nullable: false),
+                    TaskName = table.Column<string>(maxLength: 200, nullable: true),
                     ScheduleId = table.Column<Guid>(nullable: false),
                     VisitNum = table.Column<int>(nullable: true),
                     CreationTime = table.Column<DateTime>(nullable: true)

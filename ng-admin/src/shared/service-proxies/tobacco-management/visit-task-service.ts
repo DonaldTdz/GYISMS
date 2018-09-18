@@ -9,7 +9,7 @@ import { ApiResult } from '@shared/service-proxies/entity/parameter';
 import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
-import { VisitTask } from '@shared/entity/tobacco-management';
+import { VisitTask, TaskExamine } from '@shared/entity/tobacco-management';
 
 @Injectable()
 export class VisitTaskServiceProxy {
@@ -44,9 +44,27 @@ export class VisitTaskServiceProxy {
         });
     }
 
-    updateTaskInfo(room: any): Observable<VisitTask> {
+    getTaskExamineById(id: number): Observable<TaskExamine> {
+        let url_ = "/api/services/app/TaskExamine/GetTaskExamineByIdAsync?id=" + id;
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return TaskExamine.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
+    updateTaskInfo(input: VisitTask): Observable<VisitTask> {
         let url_ = "/api/services/app/VisitTask/CreateOrUpdateVisitTaskAsycn";
-        return this._gyhttp.post(url_, room).map(data => {
+        return this._gyhttp.post(url_, input).map(data => {
+            return data;
+        });
+    }
+
+    updateTaskExamineInfo(input: any): Observable<TaskExamine> {
+        let url_ = "/api/services/app/TaskExamine/CreateOrUpdateTaskExamineAsync";
+        return this._gyhttp.post(url_, input).map(data => {
             return data;
         });
     }

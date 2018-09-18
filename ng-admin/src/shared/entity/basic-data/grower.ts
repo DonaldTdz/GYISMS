@@ -12,7 +12,7 @@ export class Grower implements IGrower {
     tel: string;
     address: string;
     type: number;
-    plantingArea: number;
+    plantingArea: string;
     longitude: number;
     latitude: number;
     contractTime: string;
@@ -129,7 +129,7 @@ export interface IGrower {
     tel: string;
     address: string;
     type: number;
-    plantingArea: number;
+    plantingArea: string;
     longitude: number;
     latitude: number;
     contractTime: string;

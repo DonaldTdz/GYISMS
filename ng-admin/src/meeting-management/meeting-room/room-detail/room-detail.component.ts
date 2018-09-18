@@ -68,7 +68,7 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
     }
 
     getRoomDevices() {
-        this.meetingService.getRoomDevices().subscribe((result: CheckBoxList[]) => {
+        this.meetingService.getRoomDevices(this.id).subscribe((result: CheckBoxList[]) => {
             this.deviceList = result;
         });
     }
@@ -83,18 +83,18 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
                 if (result.photo) {
                     this.room.showPhoto = this.host + this.room.photo;
                 }
-                if (result.devices) {
-                    this.deviceArry = this.room.devices.split(',');
-                    let i: number = 0;
-                    this.deviceList.map(v => {
-                        if (v.label == this.deviceArry[i]) {
-                            v.checked = true;
-                            if (i < this.deviceArry.length) {
-                                i++;
-                            }
-                        }
-                    });
-                }
+                // if (result.devices) {
+                //     this.deviceArry = this.room.devices.split(',');
+                //     let i: number = 0;
+                //     this.deviceList.map(v => {
+                //         if (v.label == this.deviceArry[i]) {
+                //             v.checked = true;
+                //             if (i < this.deviceArry.length) {
+                //                 i++;
+                //             }
+                //         }
+                //     });
+                // }
             });
         } else {
             //新增

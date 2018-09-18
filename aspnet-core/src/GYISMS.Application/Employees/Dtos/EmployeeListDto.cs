@@ -94,14 +94,45 @@ namespace GYISMS.Employees.Dtos
         /// Remark
         /// </summary>
         public string Remark { get; set; }
+    }
+    public class NzTreeNode
+    {
+        public virtual string title { get; set; }
+        public virtual string key { get; set; }
 
+        public virtual bool expanded { get; set; }//是否打开
 
+        public virtual bool isLeaf { get; set; } //是否是树叶
 
+        public virtual List<NzTreeNode> children { get; set; }
+    }
 
+    public class EmployeeNzTreeNode : NzTreeNode
+    {
+        public override bool expanded
+        {
+            get
+            {
+                if (key == "1")//总公司
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
 
+        public override bool isLeaf
+        {
+            get
+            {
+                if (children.Count == 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
 
-        //// custom codes
-
-        //// custom codes end
+        public new List<EmployeeNzTreeNode> children { get; set; }
     }
 }

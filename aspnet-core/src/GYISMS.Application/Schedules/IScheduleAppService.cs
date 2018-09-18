@@ -7,6 +7,7 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GYISMS.Schedules.Dtos;
 using GYISMS.Schedules;
+using GYISMS.VisitTasks.Dtos;
 
 namespace GYISMS.Schedules
 {
@@ -20,12 +21,7 @@ namespace GYISMS.Schedules
     ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PagedResultDto<ScheduleListDto>> GetPagedSchedules(GetSchedulesInput input);
-
-		/// <summary>
-		/// 通过指定id获取ScheduleListDto信息
-		/// </summary>
-		Task<ScheduleListDto> GetScheduleByIdAsync(EntityDto<Guid> input);
+        Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input);
 
 
         /// <summary>
@@ -45,14 +41,6 @@ namespace GYISMS.Schedules
 
 
         /// <summary>
-        /// 添加或者修改Schedule的公共方法
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        Task CreateOrUpdateSchedule(CreateOrUpdateScheduleInput input);
-
-
-        /// <summary>
         /// 删除Schedule信息的方法
         /// </summary>
         /// <param name="input"></param>
@@ -64,10 +52,10 @@ namespace GYISMS.Schedules
         /// 批量删除Schedule
         /// </summary>
         Task BatchDeleteSchedulesAsync(List<Guid> input);
+        Task<ScheduleEditDto> CreateOrUpdateScheduleAsycn(ScheduleEditDto input);
 
+        Task<ScheduleListDto> GetScheduleByIdAsync(Guid id);
+        Task ScheduleDeleteByIdAsync(ScheduleEditDto input);
 
-		//// custom codes
-		 
-        //// custom codes end
     }
 }

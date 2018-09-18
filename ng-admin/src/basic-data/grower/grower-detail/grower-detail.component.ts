@@ -60,7 +60,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             // longitude: [null, Validators.compose([Validators.pattern(/^[\-\+]?(0?\d{1,2}\.\d{1,5}|1[0-7]?\d{1}\.\d{1,5}|180\.0{1,5})$/)])],
             longitude: null,
             latitude: null,
-            plantingArea: [null, Validators.compose([Validators.pattern(/(?!0\.00)(\d+\.\d{2}$)/)])],
+            plantingArea: [null, Validators.compose([Validators.pattern(/(?!\.00)(\d+\.\d{2}$)/)])],
             countyCode: null,
             contractTime: null,
             type: null
@@ -74,12 +74,14 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             params.id = this.id;
             this.growerService.getGrowerById(params).subscribe((result: Grower) => {
                 this.grower = result;
+                this.grower.plantingArea = Number(this.grower.plantingArea).toFixed(2);
                 this.isDelete = true;
             });
         } else {
             //新增
             this.grower.countyCode = 1;
             this.grower.type = 1;
+            this.grower.plantingArea = Number(0).toFixed(2);
             var currentdate = new Date();
             var y = currentdate.getFullYear();
             var m = currentdate.getMonth() + 1;
@@ -116,6 +118,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
         this.growerService.updateGrowerInfo(this.grower).finally(() => { this.isConfirmLoading = false; })
             .subscribe((result: Grower) => {
                 this.grower = result;
+                this.grower.plantingArea = Number(this.grower.plantingArea).toFixed(2);
                 this.isDelete = true;
                 this.notify.info(this.l(this.successMsg));
             });

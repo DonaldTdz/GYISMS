@@ -10,7 +10,6 @@ namespace GYISMS.VisitTasks.Dtos
 {
     public class VisitTaskEditDto : AuditedEntityDto<int?>
     {
-
         /// <summary>
         /// Name
         /// </summary>

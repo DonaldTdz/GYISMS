@@ -43,7 +43,7 @@ export class VisitTaskComponent extends AppComponentBase implements OnInit {
         })
     }
 
-    createRoom() {
+    createTask() {
         this.router.navigate(['app/task/task-detail'])
     }
 

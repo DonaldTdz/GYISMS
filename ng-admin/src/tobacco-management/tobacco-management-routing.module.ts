@@ -3,6 +3,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppRouteGuard } from '@shared/auth/auth-route-guard';
 import { VisitTaskComponent } from './visit-task/visit-task.component';
 import { TaskDetailComponent } from './visit-task/task-detail/task-detail.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { ScheduleDetailComponent } from './schedule/schedule-detail/schedule-detail.component';
 const routes: Routes = [
     {
         path: 'visit-task',
@@ -17,6 +19,21 @@ const routes: Routes = [
     {
         path: 'task-detail/:id',
         component: TaskDetailComponent,
+        canActivate: [AppRouteGuard],
+    },
+    {
+        path: 'schedule',
+        component: ScheduleComponent,
+        canActivate: [AppRouteGuard],
+    },
+    {
+        path: 'schedule-detail',
+        component: ScheduleDetailComponent,
+        canActivate: [AppRouteGuard],
+    },
+    {
+        path: 'schedule-detail/:id',
+        component: ScheduleDetailComponent,
         canActivate: [AppRouteGuard],
     },
 ];

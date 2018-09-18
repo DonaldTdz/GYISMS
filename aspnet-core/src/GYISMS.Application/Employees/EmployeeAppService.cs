@@ -203,6 +203,32 @@ namespace GYISMS.Employees
                     );
             }
         }
+
+        /// <summary>
+        /// 按需获取子节点
+        /// </summary>
+        //public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
+        //{
+        //    var employeeList = await (from o in _employeeRepository.GetAll()
+        //                                  select new EmployeeListDto()
+        //                                  {
+        //                                      Id = o.Id,
+        //                                      Name = o.Name,
+        //                                  }).ToListAsync();
+        //    return GetTrees(0
+        //        , employeeList);
+        //}
+
+        //private List<EmployeeNzTreeNode> GetTrees(long? id, List<EmployeeListDto> employeeList)
+        //{
+        //    List<EmployeeNzTreeNode> treeNodeList = employeeList.Where(o => o.Department.Contains("1")).Select(t => new EmployeeNzTreeNode()
+        //    {
+        //        key = t.Id,
+        //        title = t.Name,
+        //        children = GetTrees(t.Id, employeeList)
+        //    }).ToList();
+        //    return treeNodeList;
+        //}
     }
 }
 

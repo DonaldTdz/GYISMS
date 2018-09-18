@@ -1,4 +1,4 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="选择会议室管理员" [nzContent]="modalContent" (nzOnCancel)="handleCancel()" style="width: 520px;" [nzFooter]="modalFooter">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="选择任务" [nzContent]="modalContent" (nzOnCancel)="handleCancel()" style="width: 520px;" [nzFooter]="modalFooter">
     <ng-template #modalContent>
         <nz-card [nzBordered]="false" *ngIf="isVisible">
             <form nz-form (ngSubmit)="refreshData()" [nzLayout]="'inline'">
@@ -8,7 +8,7 @@
 
                             <div nz-form-control class="flex-1">
                                 <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
-                                    <input nz-input type="text" [(ngModel)]="q.name" name="name" (nzOnSearch)="refreshData()" placeholder="请输入管理员姓名" style="width: 420px;">
+                                    <input nz-input type="text" [(ngModel)]="q.name" name="name" (nzOnSearch)="refreshData()" placeholder="请输入任务名称" style="width: 420px;">
                                 </nz-input-group>
                                 <ng-template #suffixIconButton>
                                     <button nz-button nzType="primary" nzSearch><i class="anticon anticon-search"></i></button>
@@ -18,23 +18,27 @@
                     </div>
                 </div>
             </form>
-            <nz-table #nzTable [nzShowSizeChanger]="true" [nzData]="organizationList" [nzShowPagination]="false" [nzLoading]="eloading" [nzShowSizeChanger]="true">
+            <nz-table #nzTable [nzShowSizeChanger]="true" [nzData]="taskList" [nzShowPagination]="false" [nzLoading]="eloading" [nzShowSizeChanger]="true">
                 <thead>
                     <tr>
                         <th nz-th>
-                            <span>单位编码</span>
+                            <span>任务名称</span>
                         </th>
                         <th nz-th>
-                            <span>单位名称</span>
+                            <span>任务类型</span>
+                        </th>
+                        <th nz-th>
+                            <span>是否考核</span>
                         </th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr nz-tbody-tr *ngFor="let organization of nzTable.data">
+                    <tr nz-tbody-tr *ngFor="let item of nzTable.data">
                         <td nz-td>
-                            <a (click)="SelectOrganization(organization)">{{organization.id}}</a>
+                            <a (click)="SelectOrganization(item)">{{item.name | lengthLimit:8}}</a>
                         </td>
-                        <td nz-td>{{organization.departmentName}}</td>
+                        <td>{{item.typeName}}</td>
+                        <td>{{item.isExamine == true?"是":"否"}}</td>
                     </tr>
                 </tbody>
             </nz-table>
@@ -42,10 +46,10 @@
     </ng-template>
     <ng-template #modalFooter>
         <!-- <button nz-button [nzType]="'default'" type="button" (click)="handleCancel($event)">
-            取消
-        </button>
-        <button nz-button [nzType]="'primary'" type="button" (click)="SelectOrganization()" [nzLoading]="eloading">
-                选择返回
-            </button> -->
+                取消
+            </button>
+            <button nz-button [nzType]="'primary'" type="button" (click)="SelectOrganization()" [nzLoading]="eloading">
+                    选择返回
+                </button> -->
     </ng-template>
 </nz-modal>

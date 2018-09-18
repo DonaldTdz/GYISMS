@@ -8,6 +8,10 @@ import { HttpClientModule } from '@angular/common/http';
 import { TobaccoManagementRoutingModule } from './tobacco-management-routing.module';
 import { VisitTaskComponent } from './visit-task/visit-task.component';
 import { TaskDetailComponent } from './visit-task/task-detail/task-detail.component';
+import { ScheduleComponent } from './schedule/schedule.component';
+import { ScheduleDetailComponent } from './schedule/schedule-detail/schedule-detail.component';
+import { ChooseTaskModalComponent } from './schedule/schedule-detail/choose-task-modal/choose-task-modal.component';
+import { ChooseEmployeeModalComponent } from './schedule/schedule-detail/choose-employee-modal/choose-employee-modal.component';
 
 
 @NgModule({
@@ -21,7 +25,11 @@ import { TaskDetailComponent } from './visit-task/task-detail/task-detail.compon
     ],
     declarations: [
         VisitTaskComponent,
-        TaskDetailComponent
+        TaskDetailComponent,
+        ScheduleComponent,
+        ScheduleDetailComponent,
+        ChooseTaskModalComponent,
+        ChooseEmployeeModalComponent
     ],
     entryComponents: [
     ],

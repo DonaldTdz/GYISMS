@@ -84,6 +84,5 @@ namespace GYISMS.VisitTasks.Dtos
         /// <summary>
         /// DeleterUserId
         /// </summary>
-        public long? DeleterUserId { get; set; }
     }
 }

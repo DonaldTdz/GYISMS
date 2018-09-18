@@ -12,7 +12,7 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 
 using System.Linq.Dynamic.Core;
- using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 
 using GYISMS.Schedules.Authorization;
 using GYISMS.Schedules.Dtos;
@@ -28,186 +28,201 @@ namespace GYISMS.Schedules
 
     public class ScheduleAppService : GYISMSAppServiceBase, IScheduleAppService
     {
-    private readonly IRepository<Schedule, Guid>
-    _scheduleRepository;
-    
-       
-       private readonly IScheduleManager _scheduleManager;
+        private readonly IRepository<Schedule, Guid>
+        _scheduleRepository;
 
-    /// <summary>
+
+        private readonly IScheduleManager _scheduleManager;
+
+        /// <summary>
         /// 构造函数 
         ///</summary>
-    public ScheduleAppService(
-    IRepository<Schedule, Guid>
-scheduleRepository
-        ,IScheduleManager scheduleManager
-        )
+        public ScheduleAppService(
+        IRepository<Schedule, Guid>
+    scheduleRepository
+            , IScheduleManager scheduleManager
+            )
         {
-        _scheduleRepository = scheduleRepository;
-  _scheduleManager=scheduleManager;
+            _scheduleRepository = scheduleRepository;
+            _scheduleManager = scheduleManager;
         }
 
 
         /// <summary>
-            /// 获取Schedule的分页列表信息
-            ///</summary>
+        /// 获取Schedule的分页列表信息
+        ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public  async  Task<PagedResultDto<ScheduleListDto>> GetPagedSchedules(GetSchedulesInput input)
-		{
+        public async Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
+        {
 
-		    var query = _scheduleRepository.GetAll();
-			// TODO:根据传入的参数添加过滤条件
+            var query = _scheduleRepository.GetAll().Where(v => v.IsDeleted == false)
+                     .WhereIf(!string.IsNullOrEmpty(input.Desc), u => u.Desc.Contains(input.Desc));
+            // TODO:根据传入的参数添加过滤条件
 
-			var scheduleCount = await query.CountAsync();
+            var scheduleCount = await query.CountAsync();
 
-			var schedules = await query
-					.OrderBy(input.Sorting).AsNoTracking()
-					.PageBy(input)
-					.ToListAsync();
+            var schedules = await query
+                    .OrderBy(input.Sorting).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
 
-				// var scheduleListDtos = ObjectMapper.Map<List <ScheduleListDto>>(schedules);
-				var scheduleListDtos =schedules.MapTo<List<ScheduleListDto>>();
+            // var scheduleListDtos = ObjectMapper.Map<List <ScheduleListDto>>(schedules);
+            var scheduleListDtos = schedules.MapTo<List<ScheduleListDto>>();
 
-				return new PagedResultDto<ScheduleListDto>(
-scheduleCount,
-scheduleListDtos
-					);
-		}
+            return new PagedResultDto<ScheduleListDto>(
+                    scheduleCount,
+                    scheduleListDtos
+                );
+        }
 
+        /// <summary>
+        /// MPA版本才会用到的方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<GetScheduleForEditOutput> GetScheduleForEdit(NullableIdDto<Guid> input)
+        {
+            var output = new GetScheduleForEditOutput();
+            ScheduleEditDto scheduleEditDto;
 
-		/// <summary>
-		/// 通过指定id获取ScheduleListDto信息
-		/// </summary>
-		public async Task<ScheduleListDto> GetScheduleByIdAsync(EntityDto<Guid> input)
-		{
-			var entity = await _scheduleRepository.GetAsync(input.Id);
+            if (input.Id.HasValue)
+            {
+                var entity = await _scheduleRepository.GetAsync(input.Id.Value);
 
-		    return entity.MapTo<ScheduleListDto>();
-		}
+                scheduleEditDto = entity.MapTo<ScheduleEditDto>();
 
-		/// <summary>
-		/// MPA版本才会用到的方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		public async  Task<GetScheduleForEditOutput> GetScheduleForEdit(NullableIdDto<Guid> input)
-		{
-			var output = new GetScheduleForEditOutput();
-ScheduleEditDto scheduleEditDto;
+                //scheduleEditDto = ObjectMapper.Map<List <scheduleEditDto>>(entity);
+            }
+            else
+            {
+                scheduleEditDto = new ScheduleEditDto();
+            }
 
-			if (input.Id.HasValue)
-			{
-				var entity = await _scheduleRepository.GetAsync(input.Id.Value);
-
-scheduleEditDto = entity.MapTo<ScheduleEditDto>();
-
-				//scheduleEditDto = ObjectMapper.Map<List <scheduleEditDto>>(entity);
-			}
-			else
-			{
-scheduleEditDto = new ScheduleEditDto();
-			}
-
-			output.Schedule = scheduleEditDto;
-			return output;
-		}
+            output.Schedule = scheduleEditDto;
+            return output;
+        }
 
 
-		/// <summary>
-		/// 添加或者修改Schedule的公共方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		public async Task CreateOrUpdateSchedule(CreateOrUpdateScheduleInput input)
-		{
+        /// <summary>
+        /// 添加或者修改Schedule的公共方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateSchedule(CreateOrUpdateScheduleInput input)
+        {
 
-			if (input.Schedule.Id.HasValue)
-			{
-				await UpdateScheduleAsync(input.Schedule);
-			}
-			else
-			{
-				await CreateScheduleAsync(input.Schedule);
-			}
-		}
+            if (input.Schedule.Id.HasValue)
+            {
+                await UpdateScheduleAsync(input.Schedule);
+            }
+            else
+            {
+                await CreateScheduleAsync(input.Schedule);
+            }
+        }
 
 
-		/// <summary>
-		/// 新增Schedule
-		/// </summary>
-		[AbpAuthorize(ScheduleAppPermissions.Schedule_Create)]
-		protected virtual async Task<ScheduleEditDto> CreateScheduleAsync(ScheduleEditDto input)
-		{
-			//TODO:新增前的逻辑判断，是否允许新增
+        /// <summary>
+        /// 新增Schedule
+        /// </summary>
+        protected virtual async Task<ScheduleEditDto> CreateScheduleAsync(ScheduleEditDto input)
+        {
+            //TODO:新增前的逻辑判断，是否允许新增
 
-			var entity = ObjectMapper.Map <Schedule>(input);
+            var entity = ObjectMapper.Map<Schedule>(input);
+            entity.IsDeleted = false;
+            var id = await _scheduleRepository.InsertAndGetIdAsync(entity);
+            return entity.MapTo<ScheduleEditDto>();
+        }
 
-			entity = await _scheduleRepository.InsertAsync(entity);
-			return entity.MapTo<ScheduleEditDto>();
-		}
+        /// <summary>
+        /// 编辑Schedule
+        /// </summary>
+        protected virtual async Task<ScheduleEditDto> UpdateScheduleAsync(ScheduleEditDto input)
+        {
+            //TODO:更新前的逻辑判断，是否允许更新
 
-		/// <summary>
-		/// 编辑Schedule
-		/// </summary>
-		[AbpAuthorize(ScheduleAppPermissions.Schedule_Edit)]
-		protected virtual async Task UpdateScheduleAsync(ScheduleEditDto input)
-		{
-			//TODO:更新前的逻辑判断，是否允许更新
+            var entity = await _scheduleRepository.GetAsync(input.Id.Value);
+            input.MapTo(entity);
 
-			var entity = await _scheduleRepository.GetAsync(input.Id.Value);
-			input.MapTo(entity);
-
-			// ObjectMapper.Map(input, entity);
-		    await _scheduleRepository.UpdateAsync(entity);
-		}
+            // ObjectMapper.Map(input, entity);
+            var result = await _scheduleRepository.UpdateAsync(entity);
+            return result.MapTo<ScheduleEditDto>();
+        }
 
 
 
-		/// <summary>
-		/// 删除Schedule信息的方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[AbpAuthorize(ScheduleAppPermissions.Schedule_Delete)]
-		public async Task DeleteSchedule(EntityDto<Guid> input)
-		{
-			//TODO:删除前的逻辑判断，是否允许删除
-			await _scheduleRepository.DeleteAsync(input.Id);
-		}
+        /// <summary>
+        /// 删除Schedule信息的方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAuthorize(ScheduleAppPermissions.Schedule_Delete)]
+        public async Task DeleteSchedule(EntityDto<Guid> input)
+        {
+            //TODO:删除前的逻辑判断，是否允许删除
+            await _scheduleRepository.DeleteAsync(input.Id);
+        }
 
 
 
-		/// <summary>
-		/// 批量删除Schedule的方法
-		/// </summary>
-		          [AbpAuthorize(ScheduleAppPermissions.Schedule_BatchDelete)]
-		public async Task BatchDeleteSchedulesAsync(List<Guid> input)
-		{
-			//TODO:批量删除前的逻辑判断，是否允许删除
-			await _scheduleRepository.DeleteAsync(s => input.Contains(s.Id));
-		}
+        /// <summary>
+        /// 批量删除Schedule的方法
+        /// </summary>
+        [AbpAuthorize(ScheduleAppPermissions.Schedule_BatchDelete)]
+        public async Task BatchDeleteSchedulesAsync(List<Guid> input)
+        {
+            //TODO:批量删除前的逻辑判断，是否允许删除
+            await _scheduleRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
 
 
-		/// <summary>
-		/// 导出Schedule为excel表,等待开发。
-		/// </summary>
-		/// <returns></returns>
-		//public async Task<FileDto> GetSchedulesToExcel()
-		//{
-		//	var users = await UserManager.Users.ToListAsync();
-		//	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-		//	await FillRoleNames(userListDtos);
-		//	return _userListExcelExporter.ExportToFile(userListDtos);
-		//}
+        /// <summary>
+        /// 新增或修改计划信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<ScheduleEditDto> CreateOrUpdateScheduleAsycn(ScheduleEditDto input)
+        {
+            if (input.Status==1)
+            {
+                input.PublishTime = DateTime.Now;
+            }
+            if (input.Id.HasValue)
+            {
+                return await UpdateScheduleAsync(input);
+            }
+            else
+            {
+                return await CreateScheduleAsync(input);
+            }
+        }
 
+        /// <summary>
+        /// 根据id获取计划信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<ScheduleListDto> GetScheduleByIdAsync(Guid id)
+        {
+            var entity = await _scheduleRepository.GetAsync(id);
+            return entity.MapTo<ScheduleListDto>();
+        }
 
-
-		//// custom codes
-		 
-        //// custom codes end
-
+        /// <summary>
+        /// 删除计划信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task ScheduleDeleteByIdAsync(ScheduleEditDto input)
+        {
+            var entity = await _scheduleRepository.GetAsync(input.Id.Value);
+            input.MapTo(entity);
+            entity.IsDeleted = true;
+            entity.DeletionTime = DateTime.Now;
+            entity.DeleterUserId = AbpSession.UserId;
+            await _scheduleRepository.UpdateAsync(entity);
+        }  
     }
 }
-
-

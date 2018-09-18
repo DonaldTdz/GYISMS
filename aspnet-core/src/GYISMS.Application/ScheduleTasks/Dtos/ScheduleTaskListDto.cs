@@ -12,38 +12,39 @@ namespace GYISMS.ScheduleTasks.Dtos
     public class ScheduleTaskListDto : EntityDto<Guid>
     {
 
-/// <summary>
-/// TaskId
-/// </summary>
-[Required(ErrorMessage="TaskId不能为空")]
-public int TaskId { get; set; }
+        /// <summary>
+        /// TaskId
+        /// </summary>
+        [Required(ErrorMessage = "TaskId不能为空")]
+        public int TaskId { get; set; }
+
+        public string TaskName { get; set; }
+
+        /// <summary>
+        /// ScheduleId
+        /// </summary>
+        [Required(ErrorMessage = "ScheduleId不能为空")]
+        public Guid ScheduleId { get; set; }
 
 
-/// <summary>
-/// ScheduleId
-/// </summary>
-[Required(ErrorMessage="ScheduleId不能为空")]
-public Guid ScheduleId { get; set; }
+        /// <summary>
+        /// VisitNum
+        /// </summary>
+        public int? VisitNum { get; set; }
 
 
-/// <summary>
-/// VisitNum
-/// </summary>
-public int? VisitNum { get; set; }
-
-
-/// <summary>
-/// CreationTime
-/// </summary>
-public DateTime? CreationTime { get; set; }
+        /// <summary>
+        /// CreationTime
+        /// </summary>
+        public DateTime? CreationTime { get; set; }
 
 
 
 
 
 
-		//// custom codes
- 
+        //// custom codes
+
         //// custom codes end
     }
 }

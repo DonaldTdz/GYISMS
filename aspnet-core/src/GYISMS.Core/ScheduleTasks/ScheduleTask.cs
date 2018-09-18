@@ -16,7 +16,7 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         [Required]
         public virtual int TaskId { get; set; }
-
+        public virtual string TaskName { get; set; }
         /// <summary>
         /// 计划Id 外键
         /// </summary>

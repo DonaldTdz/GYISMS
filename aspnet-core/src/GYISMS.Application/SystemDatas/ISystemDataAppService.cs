@@ -66,6 +66,7 @@ namespace GYISMS.SystemDatas
         Task BatchDeleteSystemDatasAsync(List<int> input);
 
 
+        //Task<List<CheckBoxGroup>> GetRoomDevicesAsync(int? id);
         Task<List<CheckBoxGroup>> GetRoomDevicesAsync();
     }
 }

@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VisitTaskServiceProxy } from '@shared/service-proxies/tobacco-management';
 import { AppComponentBase } from '@shared/app-component-base';
-import { VisitTask } from '@shared/entity/tobacco-management';
+import { VisitTask, TaskExamine } from '@shared/entity/tobacco-management';
 
 @Component({
     moduleId: module.id,
@@ -16,6 +16,7 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
     id: number;
     validateForm: FormGroup;
     task: VisitTask = new VisitTask();
+    taskExamine: TaskExamine = new TaskExamine();
     types: any[] = [{ text: '技术服务', value: 1 }, { text: '生产管理', value: 2 }, { text: '政策宣传', value: 3 }, { text: '临时任务', value: 4 }];
     isExamines: any[] = [{ text: '是', value: true }, { text: '否', value: false }];
     isConfirmLoading = false;
@@ -34,9 +35,13 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
     ngOnInit(): void {
         this.validateForm = this.fb.group({
             name: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
-            type: [null, Validators.compose([Validators.required])],
             desc: [null, Validators.compose([Validators.maxLength(500)])],
+            type: null,
             isExamine: null,
+            teName: [null, Validators.compose([Validators.maxLength(50)])],
+            // teName: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
+            teDesc: [null, Validators.compose([Validators.maxLength(500)])],
+            teSeq: [null, Validators.compose([Validators.pattern(/^\+?[1-9][0-9]*$/)])]
         });
         this.getTaskInfo();
     }
@@ -47,16 +52,27 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
             params.id = this.id;
             this.taskService.getVisitTaskById(params).subscribe((result: VisitTask) => {
                 this.task = result;
+                if (this.task.isExamine == true) {
+                    this.taskService.getTaskExamineById(this.task.id).subscribe((res: TaskExamine) => {
+                        this.taskExamine = res;
+                    });
+                }
                 this.isDelete = true;
             });
         } else {
             //新增
-            this.task.isExamine = true;
+            this.task.isExamine = false;
             this.task.type = 1;
         }
     }
 
     save() {
+        if (this.task.isExamine == true && this.taskExamine.name == null) {
+            this.task.isExamine = false;
+            this.taskExamine.name = null;
+            this.taskExamine.desc = null;
+            this.taskExamine.seq = null;
+        }
         for (const i in this.validateForm.controls) {
             this.validateForm.controls[i].markAsDirty();
         }
@@ -69,10 +85,19 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
 
     saveTaskInfo() {
         this.taskService.updateTaskInfo(this.task).finally(() => { this.isConfirmLoading = false; })
-            .subscribe((result: VisitTask) => {
+            .subscribe((result: any) => {
                 this.task = result;
-                this.isDelete = true;
-                this.notify.info(this.l(this.successMsg));
+                if (this.task.isExamine == true) {
+                    this.taskExamine.taskId = this.task.id;
+                    this.taskService.updateTaskExamineInfo(this.taskExamine).subscribe((res: TaskExamine) => {
+                        this.taskExamine = res;
+                        this.isDelete = true;
+                        this.notify.info(this.l(this.successMsg));
+                    });
+                } else {
+                    this.isDelete = true;
+                    this.notify.info(this.l(this.successMsg));
+                }
             });
     }
 

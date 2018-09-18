@@ -20,36 +20,7 @@ namespace GYISMS.ScheduleTasks
     ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PagedResultDto<ScheduleTaskListDto>> GetPagedScheduleTasks(GetScheduleTasksInput input);
-
-		/// <summary>
-		/// 通过指定id获取ScheduleTaskListDto信息
-		/// </summary>
-		Task<ScheduleTaskListDto> GetScheduleTaskByIdAsync(EntityDto<Guid> input);
-
-
-        /// <summary>
-        /// 导出ScheduleTask为excel表
-        /// </summary>
-        /// <returns></returns>
-		//Task<FileDto> GetScheduleTasksToExcel();
-
-        /// <summary>
-        /// 返回实体的EditDto
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        Task<GetScheduleTaskForEditOutput> GetScheduleTaskForEdit(NullableIdDto<Guid> input);
-
-        //todo:缺少Dto的生成GetScheduleTaskForEditOutput
-
-
-        /// <summary>
-        /// 添加或者修改ScheduleTask的公共方法
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        Task CreateOrUpdateScheduleTask(CreateOrUpdateScheduleTaskInput input);
+        Task<PagedResultDto<ScheduleTaskListDto>> GetPagedScheduleTasksAsync(GetScheduleTasksInput input);
 
 
         /// <summary>
@@ -65,9 +36,6 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         Task BatchDeleteScheduleTasksAsync(List<Guid> input);
 
-
-		//// custom codes
-		 
-        //// custom codes end
+        Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input);
     }
 }

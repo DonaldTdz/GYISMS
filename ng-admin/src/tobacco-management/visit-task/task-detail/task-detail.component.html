@@ -23,7 +23,7 @@
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row style="margin-bottom: 0px;">
-                        <nz-form-label nz-col [nzSm]="4" nzFor="isExamine">是否需要考核</nz-form-label>
+                        <nz-form-label nz-col [nzSm]="4" nzFor="isExamine" nzRequired>是否需要考核</nz-form-label>
                         <nz-form-control nz-col [nzSm]="20">
                             <nz-radio-group formControlName="isExamine" [(ngModel)]="task.isExamine" class="mb-md">
                                 <label nz-radio [nzValue]="o.value" *ngFor="let o of isExamines">
@@ -32,10 +32,32 @@
                             </nz-radio-group>
                         </nz-form-control>
                     </nz-form-item>
+                    <nz-form-item nz-row *ngIf="task.isExamine == true">
+                        <nz-form-label nz-col [nzSm]="4" nzFor="teName" nzRequired>考核项名称</nz-form-label>
+                        <nz-form-control [nzSm]="20" nzHasFeedback>
+                            <input nz-input formControlName="teName" placeholder="请输入考核项名称，若为空则自动设置为非考核项" id="teName" [(ngModel)]="taskExamine.name">
+                            <nz-form-explain *ngIf="validateForm.get('teName').dirty&&validateForm.get('teName').hasError('maxlength')">字符长度小于等于50</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row *ngIf="task.isExamine == true">
+                        <nz-form-label nz-col [nzSm]="4" nzFor="teDesc">考核项描述</nz-form-label>
+                        <nz-form-control [nzSm]="20" nzHasFeedback>
+                            <textarea nz-input row="3" formControlName="teDesc" id="teDesc" [(ngModel)]="taskExamine.desc"></textarea>
+                            <nz-form-explain *ngIf="validateForm.get('teDesc').dirty&&validateForm.get('teDesc').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+                    <nz-form-item nz-row *ngIf="task.isExamine == true">
+                        <nz-form-label nz-col [nzSm]="4" nzFor="teSeq">考核项序号</nz-form-label>
+                        <nz-form-control [nzSm]="20" nzHasFeedback>
+                            <input nz-input formControlName="teSeq" id="teSeq" [(ngModel)]="taskExamine.seq">
+                            <nz-form-explain *ngIf="validateForm.get('teSeq').dirty&&validateForm.get('teSeq').hasError('pattern')">请输入正整数</nz-form-explain>
+                        </nz-form-control>
+                    </nz-form-item>
+
                     <nz-form-item nz-row>
                         <nz-form-label nz-col [nzSm]="4" nzFor="desc">任务描述</nz-form-label>
                         <nz-form-control [nzSm]="20" nzHasFeedback>
-                            <input nz-input formControlName="desc" id="desc" [(ngModel)]="task.desc">
+                            <textarea nz-input row="3" formControlName="desc" id="desc" [(ngModel)]="task.desc"></textarea>
                             <nz-form-explain *ngIf="validateForm.get('desc').dirty&&validateForm.get('desc').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>

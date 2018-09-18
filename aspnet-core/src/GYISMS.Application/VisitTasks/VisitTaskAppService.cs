@@ -18,6 +18,8 @@ using GYISMS.VisitTasks.Authorization;
 using GYISMS.VisitTasks.Dtos;
 using GYISMS.VisitTasks;
 using GYISMS.Authorization;
+using GYISMS.TaskExamines;
+using GYISMS.TaskExamines.Dtos;
 
 namespace GYISMS.VisitTasks
 {
@@ -29,16 +31,19 @@ namespace GYISMS.VisitTasks
     {
         private readonly IRepository<VisitTask, int> _visittaskRepository;
         private readonly IVisitTaskManager _visittaskManager;
+        private readonly IRepository<TaskExamine, int> _taskexamineRepository;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
         public VisitTaskAppService(IRepository<VisitTask, int> visittaskRepository
             , IVisitTaskManager visittaskManager
+            , IRepository<TaskExamine, int> taskexamineRepository
             )
         {
             _visittaskRepository = visittaskRepository;
             _visittaskManager = visittaskManager;
+            _taskexamineRepository = taskexamineRepository;
         }
 
 
@@ -49,7 +54,7 @@ namespace GYISMS.VisitTasks
         /// <returns></returns>
         public async Task<PagedResultDto<VisitTaskListDto>> GetPagedVisitTasksAsync(GetVisitTasksInput input)
         {
-            var query = _visittaskRepository.GetAll().Where(v=>v.IsDeleted == false)
+            var query = _visittaskRepository.GetAll().Where(v => v.IsDeleted == false)
                      .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
 
             // TODO:根据传入的参数添加过滤条件
@@ -57,7 +62,7 @@ namespace GYISMS.VisitTasks
             var visittaskCount = await query.CountAsync();
 
             var visittasks = await query
-                    .OrderBy(input.Sorting).AsNoTracking()
+                    .OrderBy(v=>v.Type).AsNoTracking()
                     .PageBy(input)
                     .ToListAsync();
 
@@ -99,25 +104,6 @@ namespace GYISMS.VisitTasks
 
 
         /// <summary>
-        /// 添加或者修改VisitTask的公共方法
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        public async Task CreateOrUpdateVisitTask(CreateOrUpdateVisitTaskInput input)
-        {
-
-            if (input.VisitTask.Id.HasValue)
-            {
-                await UpdateVisitTaskAsync(input.VisitTask);
-            }
-            else
-            {
-                await CreateVisitTaskAsync(input.VisitTask);
-            }
-        }
-
-
-        /// <summary>
         /// 新增VisitTask
         /// </summary>
         protected virtual async Task<VisitTaskEditDto> CreateVisitTaskAsync(VisitTaskEditDto input)
@@ -126,7 +112,6 @@ namespace GYISMS.VisitTasks
 
             var entity = ObjectMapper.Map<VisitTask>(input);
             entity.IsDeleted = false;
-
             var id = await _visittaskRepository.InsertAndGetIdAsync(entity);
             return entity.MapTo<VisitTaskEditDto>();
         }
@@ -140,14 +125,10 @@ namespace GYISMS.VisitTasks
 
             var entity = await _visittaskRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
-
             // ObjectMapper.Map(input, entity);
-            var result= await _visittaskRepository.UpdateAsync(entity);
+            var result = await _visittaskRepository.UpdateAsync(entity);
             return result.MapTo<VisitTaskEditDto>();
-
         }
-
-
 
         /// <summary>
         /// 删除VisitTask信息的方法
@@ -217,5 +198,3 @@ namespace GYISMS.VisitTasks
         }
     }
 }
-
-

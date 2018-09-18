@@ -207,6 +207,47 @@ systemdataListDtos
                 return new List<CheckBoxGroup>();
             }
         }
+
+        //public async Task<List<CheckBoxGroup>> GetRoomDevicesAsync(int? id)
+        //{
+        //    string[] deviceArry = null;
+        //    string entity = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.会议物资 && v.ModelId == ConfigModel.会议管理).Select(v => v.Code).FirstOrDefaultAsync();
+        //    if (entity != null)
+        //    {
+        //        string roomDevice = await _meetingroomRepository.GetAll().Where(v => v.Id == id).Select(v => v.Devices).FirstOrDefaultAsync();
+        //        if (roomDevice != null)
+        //        {
+        //            deviceArry = roomDevice.Split(',');
+        //        }
+        //        List<CheckBoxGroup> list = new List<CheckBoxGroup>();
+        //        string[] arry = entity.Split(',');
+        //        int i = 0;
+        //        foreach (var item in arry)
+        //        {
+        //            CheckBoxGroup checkboxGroup = new CheckBoxGroup();
+        //            checkboxGroup.Label = item;
+        //            checkboxGroup.Value = item;
+        //            if (roomDevice != null)
+        //            {
+        //                if (checkboxGroup.Label == deviceArry[i])
+        //                {
+        //                    checkboxGroup.Checked = true;
+        //                }
+        //                if (i < deviceArry.Length)
+        //                {
+        //                    i++;
+        //                }
+        //            }
+
+        //            list.Add(checkboxGroup);
+        //        }
+        //        return list;
+        //    }
+        //    else
+        //    {
+        //        return new List<CheckBoxGroup>();
+        //    }
+        //}
     }
 }
 

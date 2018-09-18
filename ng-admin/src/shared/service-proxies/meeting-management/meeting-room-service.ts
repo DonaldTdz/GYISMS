@@ -80,8 +80,8 @@ export class MeetingRoomServiceProxy {
     /**
      * 获取会议配置
      */
-    getRoomDevices(): Observable<CheckBoxList[]> {
-        let url_ = "/api/services/app/SystemData/GetRoomDevicesAsync";
+    getRoomDevices(id: number): Observable<CheckBoxList[]> {
+        let url_ = "/api/services/app/SystemData/GetRoomDevicesAsync?id=" + id;
         return this._gyhttp.get(url_).map(data => {
             if (data) {
                 return CheckBoxList.fromJSArray(data);
