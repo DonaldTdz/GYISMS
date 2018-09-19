@@ -1,16 +1,14 @@
 
 
 using AutoMapper;
-using GYISMS.VisitTasks;
-using GYISMS.VisitTasks;
 
 namespace GYISMS.VisitTasks.Dtos.CustomMapper
 {
 
-	/// <summary>
+    /// <summary>
     /// 配置VisitTask的AutoMapper
     ///</summary>
-	internal static class CustomerVisitTaskMapper
+    internal static class CustomerVisitTaskMapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {

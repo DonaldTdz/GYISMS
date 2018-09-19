@@ -8,14 +8,8 @@ using GYISMS.TaskExamines;
 
 namespace GYISMS.TaskExamines.Dtos
 {
-    public class TaskExamineEditDto : AuditedEntityDto<int?>
+    public class TaskExamineEditDto : AuditedEntityDto
     {
-        /// <summary>
-        /// Id
-        /// </summary>
-        public int? Id { get; set; }
-
-
         /// <summary>
         /// TaskId
         /// </summary>

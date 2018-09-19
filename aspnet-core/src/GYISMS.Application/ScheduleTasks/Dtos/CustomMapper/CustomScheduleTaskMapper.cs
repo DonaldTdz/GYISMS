@@ -1,16 +1,14 @@
 
 
 using AutoMapper;
-using GYISMS.ScheduleTasks;
-using GYISMS.ScheduleTasks;
 
 namespace GYISMS.ScheduleTasks.Dtos.CustomMapper
 {
 
-	/// <summary>
+    /// <summary>
     /// 配置ScheduleTask的AutoMapper
     ///</summary>
-	internal static class CustomerScheduleTaskMapper
+    internal static class CustomerScheduleTaskMapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {

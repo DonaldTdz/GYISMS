@@ -1,16 +1,14 @@
 
 
 using AutoMapper;
-using GYISMS.Growers;
-using GYISMS.Growers;
 
 namespace GYISMS.Growers.Dtos.CustomMapper
 {
 
-	/// <summary>
+    /// <summary>
     /// 配置Grower的AutoMapper
     ///</summary>
-	internal static class CustomerGrowerMapper
+    internal static class CustomerGrowerMapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
