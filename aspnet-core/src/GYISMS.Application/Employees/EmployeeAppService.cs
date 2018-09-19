@@ -236,8 +236,10 @@ namespace GYISMS.Employees
         [AbpAllowAnonymous]
         public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code)
         {
-            var assessToken = _dingDingAppService.GetAccessToken("ding7xespi5yumrzraaq", "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3");
-            var userId = _dingDingAppService.GetUserId(assessToken, code);
+            //测试环境注释
+            //var assessToken = _dingDingAppService.GetAccessToken("ding7xespi5yumrzraaq", "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3");
+            //var userId = _dingDingAppService.GetUserId(assessToken, code);
+            var userId = "165500493321719640";
             var query = await _employeeRepository.GetAsync(userId);
             return query.MapTo<DingDingUserDto>();
         }
