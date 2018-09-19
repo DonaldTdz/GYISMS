@@ -2,19 +2,16 @@
 
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using GYISMS.TaskExamines.Dtos;
 using GYISMS.VisitTasks;
 
 namespace GYISMS.VisitTasks.Dtos
 {
     public class CreateOrUpdateVisitTaskInput
     {
-        [Required]
+        //[Required]
         public VisitTaskEditDto VisitTask { get; set; }
 
-
-
-		//// custom codes
- 
-        //// custom codes end
+        //public List<TaskExamineEditDto> TaskExamineList { get; set; }
     }
 }

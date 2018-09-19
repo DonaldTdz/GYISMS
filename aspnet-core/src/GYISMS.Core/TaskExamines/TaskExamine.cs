@@ -1,4 +1,6 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
+using GYISMS.VisitTasks;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +11,7 @@ namespace GYISMS.TaskExamines
     /// 任务考核项
     /// </summary>
     [Table("TaskExamines")]
-    public class TaskExamine : Entity<int>
+    public class TaskExamine : AuditedEntity<int>
     {
         /// <summary>
         /// 任务Id
@@ -35,8 +37,14 @@ namespace GYISMS.TaskExamines
         public virtual int? Seq { get; set; }
 
         /// <summary>
-        /// CreationTime
+        /// DeletionTime
         /// </summary>
-        public virtual DateTime? CreationTime { get; set; }
+        public virtual DateTime? DeletionTime { get; set; }
+
+        /// <summary>
+        /// DeleterUserId
+        /// </summary>
+        public virtual long? DeleterUserId { get; set; }
+        public virtual bool? IsDeleted { get; set; }
     }
 }

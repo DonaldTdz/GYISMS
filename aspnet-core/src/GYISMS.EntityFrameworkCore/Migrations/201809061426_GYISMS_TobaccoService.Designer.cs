@@ -1479,6 +1479,7 @@ namespace GYISMS.Migrations
                 b.Property<int?>("VisitNum");
                 b.Property<int?>("CompleteNum");
                 b.Property<DateTime?>("CreationTime");
+                b.Property<int?>("Status");
                 b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
@@ -1530,6 +1531,12 @@ namespace GYISMS.Migrations
                 b.Property<string>("Desc").HasMaxLength(500);
                 b.Property<int?>("Seq");
                 b.Property<DateTime?>("CreationTime");
+                b.Property<bool?>("IsDeleted");
+                b.Property<long?>("CreatorUserId");
+                b.Property<DateTime?>("LastModificationTime");
+                b.Property<long?>("LastModifierUserId");
+                b.Property<DateTime?>("DeletionTime");
+                b.Property<long?>("DeleterUserId");
                 b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");

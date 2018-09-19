@@ -8,7 +8,7 @@ namespace GYISMS.Growers.Dtos
 {
     public class CreateOrUpdateGrowerInput
     {
-        [Required]
+        //[Required]
         public GrowerEditDto Grower { get; set; }
 
 

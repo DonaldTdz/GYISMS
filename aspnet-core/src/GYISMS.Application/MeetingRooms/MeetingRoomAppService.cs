@@ -216,7 +216,13 @@ namespace GYISMS.MeetingRooms
             entity.DeletionTime = DateTime.Now;
             entity.DeleterUserId = AbpSession.UserId;
             await _meetingroomRepository.UpdateAsync(entity);
-        }       
+        }
+
+        public async Task DeleteMeetingRoom2(int id)
+        {
+            //TODO:删除前的逻辑判断，是否允许删除
+            await _meetingroomRepository.DeleteAsync(id);
+        }
     }
 }
 

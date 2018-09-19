@@ -5,6 +5,12 @@ export class TaskExamine implements ITaskExamineom {
     desc: string;
     seq: number;
     creationTime: Date;
+    creatorUserId: number;
+    lastModificationTime: Date;
+    lastModifierUserId: number;
+    deletionTime: Date;
+    deleterUserId: number;
+    isDeleted: boolean;
     constructor(data?: ITaskExamineom) {
         if (data) {
             for (var property in data) {
@@ -22,6 +28,12 @@ export class TaskExamine implements ITaskExamineom {
             this.desc = data["desc"];
             this.seq = data["seq"];
             this.creationTime = data["creationTime"];
+            this.creatorUserId = data["creatorUserId"];
+            this.lastModificationTime = data["lastModificationTime"];
+            this.lastModifierUserId = data["lastModifierUserId"];
+            this.deletionTime = data["deletionTime"];
+            this.deleterUserId = data["deleterUserId"];
+            this.isDeleted = data["isDeleted"];
         }
     }
 
@@ -50,6 +62,12 @@ export class TaskExamine implements ITaskExamineom {
         data["desc"] = this.desc;
         data["seq"] = this.seq;
         data["creationTime"] = this.creationTime;
+        data["creatorUserId"] = this.creatorUserId;
+        data["lastModificationTime"] = this.lastModificationTime;
+        data["lastModifierUserId"] = this.lastModifierUserId;
+        data["deletionTime"] = this.deletionTime;
+        data["deleterUserId"] = this.deleterUserId;
+        data["isDeleted"] = this.isDeleted;
         return data;
     }
 
@@ -67,4 +85,10 @@ export interface ITaskExamineom {
     desc: string;
     seq: number;
     creationTime: Date;
+    creatorUserId: number;
+    lastModificationTime: Date;
+    lastModifierUserId: number;
+    deletionTime: Date;
+    deleterUserId: number;
+    isDeleted: boolean;
 }

@@ -46,6 +46,10 @@ namespace GYISMS.ScheduleDetails
         public virtual int? CompleteNum { get; set; }
 
         /// <summary>
+        /// 任务进行状态
+        /// </summary>
+        public virtual int? Status { get; set; }
+        /// <summary>
         /// CreationTime
         /// </summary>
         public virtual DateTime? CreationTime { get; set; }

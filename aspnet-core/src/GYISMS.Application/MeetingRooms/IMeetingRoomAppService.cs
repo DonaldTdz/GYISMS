@@ -62,5 +62,6 @@ namespace GYISMS.MeetingRooms
         Task<MeetingRoomEditDto> CreateOrUpdateMeetingRoomAsycn(MeetingRoomEditDto input);
         Task<MeetingRoomListDto> GetMeetingRoomByIdAsync(int id);
         Task MeetingRoomDeleteByIdAsync(MeetingRoomEditDto input);
+        Task DeleteMeetingRoom2(int id);
     }
 }

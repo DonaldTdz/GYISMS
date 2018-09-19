@@ -33,6 +33,18 @@ export class VisitTaskServiceProxy {
             }
         });
     }
+
+    getTaskExamineList(params: any): Observable<PagedResultDtoOfTaskExamine> {
+        let url_ = "/api/services/app/TaskExamine/GetPagedTaskExaminesAsync";
+        return this._gyhttp.get(url_, params).map(data => {
+            if (data) {
+                return PagedResultDtoOfTaskExamine.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
     getVisitTaskById(params: any): Observable<VisitTask> {
         let url_ = "/api/services/app/VisitTask/GetVisitTaskByIdAsync";
         return this._gyhttp.get(url_, params).map(data => {
@@ -55,7 +67,9 @@ export class VisitTaskServiceProxy {
         });
     }
 
-    updateTaskInfo(input: VisitTask): Observable<VisitTask> {
+    updateTaskInfo(input: any): Observable<any> {
+        console.log(input);
+
         let url_ = "/api/services/app/VisitTask/CreateOrUpdateVisitTaskAsycn";
         return this._gyhttp.post(url_, input).map(data => {
             return data;
@@ -129,4 +143,58 @@ export class PagedResultDtoOfVisitTask implements IPagedResultDtoOfVisitTask {
 export interface IPagedResultDtoOfVisitTask {
     totalCount: number;
     items: VisitTask[];
+}
+
+export class PagedResultDtoOfTaskExamine implements IPagedResultDtoOfTaskExamine {
+    totalCount: number;
+    items: TaskExamine[];
+
+    constructor(data?: IPagedResultDtoOfTaskExamine) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(TaskExamine.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfTaskExamine {
+        let result = new PagedResultDtoOfTaskExamine();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfTaskExamine();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfTaskExamine {
+    totalCount: number;
+    items: TaskExamine[];
 }

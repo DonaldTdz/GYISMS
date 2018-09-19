@@ -32,6 +32,11 @@ export class GyismsHttpClient {
         return this.request(url, "post", body, showLoading);
     }
 
+    delete(url: string, params?: { [key: string]: string }, showLoading?: boolean): Observable<any> {
+        url = this.baseUrl + url;
+        return this.request(url + this._formatUrl(params), "delete", null, showLoading);
+    }
+
     request(url_: string, method: string, body?: any, showLoading?: boolean): Observable<any> {
         url_ = url_.replace(/[?&]$/, "");
         let options_: any = {

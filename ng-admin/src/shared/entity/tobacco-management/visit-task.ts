@@ -1,3 +1,5 @@
+import { TaskExamine } from "@shared/entity/tobacco-management";
+
 export class VisitTask implements IVisitTask {
     id: number;
     name: string;
@@ -12,9 +14,8 @@ export class VisitTask implements IVisitTask {
     deletionTime: Date;
     deleterUserId: number;
     typeName: string;
-    teName: string;
-    teDesc: string;
-    teSeq: number;
+    taskExamineList: TaskExamine[];
+
     constructor(data?: IVisitTask) {
         if (data) {
             for (var property in data) {
@@ -39,9 +40,7 @@ export class VisitTask implements IVisitTask {
             this.lastModifierUserId = data["lastModifierUserId"];
             this.deletionTime = data["deletionTime"];
             this.deleterUserId = data["deleterUserId"];
-            this.teName = data["teName"];
-            this.teDesc = data["teDesc"];
-            this.teSeq = data["teSeq"];
+            this.taskExamineList = data["taskExamineList"];
         }
     }
 
@@ -77,9 +76,7 @@ export class VisitTask implements IVisitTask {
         data["lastModifierUserId"] = this.lastModifierUserId;
         data["deletionTime"] = this.deletionTime;
         data["deleterUserId"] = this.deleterUserId;
-        data["teName"] = this.teName;
-        data["teDesc"] = this.teDesc;
-        data["teSeq"] = this.teSeq;
+        data["taskExamineList"] = this.taskExamineList;
         return data;
     }
 
@@ -104,7 +101,5 @@ export interface IVisitTask {
     lastModifierUserId: number;
     deletionTime: Date;
     deleterUserId: number;
-    teName: string;
-    teDesc: string;
-    teSeq: number;
+    taskExamineList: TaskExamine[];
 }

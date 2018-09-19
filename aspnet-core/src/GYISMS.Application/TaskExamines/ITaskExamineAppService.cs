@@ -20,7 +20,7 @@ namespace GYISMS.TaskExamines
     ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PagedResultDto<TaskExamineListDto>> GetPagedTaskExamines(GetTaskExaminesInput input);
+        Task<PagedResultDto<TaskExamineListDto>> GetPagedTaskExaminesAsync(GetTaskExaminesInput input);
 
         /// <summary>
         /// 通过指定id获取TaskExamineListDto信息

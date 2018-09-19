@@ -49,10 +49,10 @@ namespace GYISMS.TaskExamines
         ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<PagedResultDto<TaskExamineListDto>> GetPagedTaskExamines(GetTaskExaminesInput input)
+        public async Task<PagedResultDto<TaskExamineListDto>> GetPagedTaskExaminesAsync(GetTaskExaminesInput input)
         {
 
-            var query = _taskexamineRepository.GetAll();
+            var query = _taskexamineRepository.GetAll().Where(v=>v.IsDeleted ==false && v.TaskId ==input.TaskId);
             // TODO:根据传入的参数添加过滤条件
 
             var taskexamineCount = await query.CountAsync();
@@ -66,8 +66,8 @@ namespace GYISMS.TaskExamines
             var taskexamineListDtos = taskexamines.MapTo<List<TaskExamineListDto>>();
 
             return new PagedResultDto<TaskExamineListDto>(
-taskexamineCount,
-taskexamineListDtos
+                    taskexamineCount,
+                    taskexamineListDtos
                 );
         }
 
@@ -136,7 +136,6 @@ taskexamineListDtos
             //TODO:新增前的逻辑判断，是否允许新增
 
             var entity = ObjectMapper.Map<TaskExamine>(input);
-            entity.CreationTime = DateTime.Now;
             var id = await _taskexamineRepository.InsertAndGetIdAsync(entity);
             return entity.MapTo<TaskExamineEditDto>();
         }

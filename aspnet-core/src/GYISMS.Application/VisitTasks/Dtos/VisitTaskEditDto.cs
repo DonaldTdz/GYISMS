@@ -1,9 +1,11 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.TaskExamines.Dtos;
 using GYISMS.VisitTasks;
 
 namespace GYISMS.VisitTasks.Dtos
@@ -52,5 +54,7 @@ namespace GYISMS.VisitTasks.Dtos
         /// DeleterUserId
         /// </summary>
         public long? DeleterUserId { get; set; }
+
+        public List<TaskExamineEditDto> TaskExamineList { get; set; }
     }
 }

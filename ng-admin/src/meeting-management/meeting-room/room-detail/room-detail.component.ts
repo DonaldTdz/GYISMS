@@ -154,7 +154,7 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
         this.confirmModal = this.modal.confirm({
             nzContent: '是否删除会议室信息?',
             nzOnOk: () => {
-                this.meetingService.deleteMeetingRoom(this.room).subscribe(() => {
+                this.meetingService.deleteMeetingRoom(this.room.id).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.return();
                 });

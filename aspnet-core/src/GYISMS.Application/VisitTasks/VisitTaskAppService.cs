@@ -62,7 +62,7 @@ namespace GYISMS.VisitTasks
             var visittaskCount = await query.CountAsync();
 
             var visittasks = await query
-                    .OrderBy(v=>v.Type).AsNoTracking()
+                    .OrderBy(v => v.Type).AsNoTracking()
                     .PageBy(input)
                     .ToListAsync();
 
@@ -106,20 +106,27 @@ namespace GYISMS.VisitTasks
         /// <summary>
         /// 新增VisitTask
         /// </summary>
-        protected virtual async Task<VisitTaskEditDto> CreateVisitTaskAsync(VisitTaskEditDto input)
+        protected virtual async Task<VisitTaskListDto> CreateVisitTaskAsync(VisitTaskEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
 
             var entity = ObjectMapper.Map<VisitTask>(input);
             entity.IsDeleted = false;
             var id = await _visittaskRepository.InsertAndGetIdAsync(entity);
-            return entity.MapTo<VisitTaskEditDto>();
+            await CurrentUnitOfWork.SaveChangesAsync();
+            foreach (var item in input.TaskExamineList)
+            {
+                item.TaskId = id;
+                var examEntity = ObjectMapper.Map<TaskExamine>(item);
+                await _taskexamineRepository.InsertAndGetIdAsync(examEntity);
+            }
+            return entity.MapTo<VisitTaskListDto>();
         }
 
         /// <summary>
         /// 编辑VisitTask
         /// </summary>
-        protected virtual async Task<VisitTaskEditDto> UpdateVisitTaskAsync(VisitTaskEditDto input)
+        protected virtual async Task<VisitTaskListDto> UpdateVisitTaskAsync(VisitTaskEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
 
@@ -127,7 +134,72 @@ namespace GYISMS.VisitTasks
             input.MapTo(entity);
             // ObjectMapper.Map(input, entity);
             var result = await _visittaskRepository.UpdateAsync(entity);
-            return result.MapTo<VisitTaskEditDto>();
+            if (entity.IsExamine ==true)
+            {
+                foreach (var item in input.TaskExamineList)
+                {
+                    if (item.Id.HasValue)
+                    {
+                        await UpdateTaskExamineAsync(item);
+                    }
+                    else
+                    {
+                        await CreateTaskExamineAsync(item);
+                    }
+                }
+                
+                //var examEntity = await _taskexamineRepository.GetAll().Where(v => v.TaskId == entity.Id).ToListAsync();
+                //foreach (var item in examEntity)
+                //{
+                //    var xentity = await _visittaskRepository.GetAsync(item.Id);
+                //    input.MapTo(entity);
+                //    // ObjectMapper.Map(input, entity);
+                //    var xresult = await _visittaskRepository.UpdateAsync(entity);
+                //}
+            }
+            return result.MapTo<VisitTaskListDto>();
+        }
+
+        /// <summary>
+        /// 添加或者修改TaskExamine的公共方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private async Task CreateOrUpdateTaskExamineAsync(TaskExamineEditDto input)
+        {
+
+            if (input.Id.HasValue)
+            {
+                await UpdateTaskExamineAsync(input);
+            }
+            else
+            {
+                await CreateTaskExamineAsync(input);
+            }
+        }
+
+        /// <summary>
+        /// 新增TaskExamine
+        /// </summary>
+        protected virtual async Task CreateTaskExamineAsync(TaskExamineEditDto input)
+        {
+            //TODO:新增前的逻辑判断，是否允许新增
+
+            var entity = ObjectMapper.Map<TaskExamine>(input);
+            entity.IsDeleted = false;
+            await _taskexamineRepository.InsertAndGetIdAsync(entity);
+        }
+
+        /// <summary>
+        /// 编辑TaskExamine
+        /// </summary>
+        protected virtual async Task UpdateTaskExamineAsync(TaskExamineEditDto input)
+        {
+            //TODO:更新前的逻辑判断，是否允许更新
+
+            var entity = await _taskexamineRepository.GetAsync(input.Id.Value);
+            input.MapTo(entity);
+            await _taskexamineRepository.UpdateAsync(entity);
         }
 
         /// <summary>
@@ -159,7 +231,7 @@ namespace GYISMS.VisitTasks
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsycn(VisitTaskEditDto input)
+        public async Task<VisitTaskListDto> CreateOrUpdateVisitTaskAsycn(VisitTaskEditDto input)
         {
             if (input.Id.HasValue)
             {

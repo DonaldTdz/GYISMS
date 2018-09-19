@@ -51,9 +51,13 @@ export class MeetingRoomServiceProxy {
         });
     }
 
-    deleteMeetingRoom(input: any): Observable<any> {
-        let url_ = "/api/services/app/MeetingRoom/MeetingRoomDeleteByIdAsync";
-        return this._gyhttp.post(url_, input).map(data => {
+    deleteMeetingRoom(id: number): Observable<any> {
+        // let url_ = "/api/services/app/MeetingRoom/MeetingRoomDeleteByIdAsync";
+        // return this._gyhttp.post(url_, input).map(data => {
+        //     return data.result;
+        // });
+        let url_ = "/api/services/app/MeetingRoom/MeetingRoomDeleteByIdAsync?id=" + id;
+        return this._gyhttp.delete(url_).map(data => {
             return data.result;
         });
     }

@@ -77,7 +77,8 @@ namespace GYISMS.Migrations
                     GrowerId = table.Column<int>(nullable: false),
                     VisitNum = table.Column<int>(nullable: true),
                     CompleteNum = table.Column<int>(nullable: true),
-                    CreationTime = table.Column<DateTime>(nullable: true)
+                    CreationTime = table.Column<DateTime>(nullable: true),
+                    Status = table.Column<int?>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -131,7 +132,13 @@ namespace GYISMS.Migrations
                     Name = table.Column<string>(maxLength: 50, nullable: false),
                     Desc = table.Column<string>(maxLength: 500, nullable: true),
                     Seq = table.Column<int>(nullable: true),
-                    CreationTime = table.Column<DateTime>(nullable: true)
+                    CreationTime = table.Column<DateTime>(nullable: true),
+                    IsDeleted = table.Column<bool>(nullable: true),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    DeleterUserId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {
