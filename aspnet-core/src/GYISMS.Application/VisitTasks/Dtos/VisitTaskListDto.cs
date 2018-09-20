@@ -85,4 +85,6 @@ namespace GYISMS.VisitTasks.Dtos
         /// DeleterUserId
         /// </summary>
     }
+
+    
 }

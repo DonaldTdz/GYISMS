@@ -6,6 +6,7 @@ using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.ScheduleDetails;
+using GYISMS.GYEnums;
 
 namespace GYISMS.ScheduleDetails.Dtos
 {
@@ -58,6 +59,13 @@ namespace GYISMS.ScheduleDetails.Dtos
         public DateTime? CreationTime { get; set; }
 
 
-        public int? Status { get; set; }
+        public ScheduleStatusEnum Status { get; set; }
+
+
+        public Guid ScheduleTaskId { get; set; }
+
+        public string EmployeeName { get; set; }
+
+        public string GrowerName { get; set; }
     }
 }

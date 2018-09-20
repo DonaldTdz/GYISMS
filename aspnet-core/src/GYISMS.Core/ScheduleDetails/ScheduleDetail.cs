@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using GYISMS.GYEnums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -48,10 +49,17 @@ namespace GYISMS.ScheduleDetails
         /// <summary>
         /// 任务进行状态
         /// </summary>
-        public virtual int? Status { get; set; }
+        public virtual ScheduleStatusEnum Status { get; set; }
         /// <summary>
         /// CreationTime
         /// </summary>
         public virtual DateTime? CreationTime { get; set; }
+
+        [Required]
+        public virtual Guid ScheduleTaskId { get; set; }
+
+        public virtual string EmployeeName { get; set; }
+
+        public virtual string GrowerName { get; set; }
     }
 }

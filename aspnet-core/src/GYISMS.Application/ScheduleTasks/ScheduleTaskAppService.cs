@@ -18,6 +18,8 @@ using GYISMS.ScheduleTasks.Authorization;
 using GYISMS.ScheduleTasks.Dtos;
 using GYISMS.ScheduleTasks;
 using GYISMS.Authorization;
+using GYISMS.Schedules;
+using GYISMS.ScheduleDetails;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -28,6 +30,8 @@ namespace GYISMS.ScheduleTasks
     public class ScheduleTaskAppService : GYISMSAppServiceBase, IScheduleTaskAppService
     {
         private readonly IRepository<ScheduleTask, Guid> _scheduletaskRepository;
+        private readonly IRepository<Schedule, Guid> _scheduleRepository;
+        private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
         private readonly IScheduleTaskManager _scheduletaskManager;
 
         /// <summary>
@@ -35,9 +39,13 @@ namespace GYISMS.ScheduleTasks
         ///</summary>
         public ScheduleTaskAppService(IRepository<ScheduleTask, Guid> scheduletaskRepository
             , IScheduleTaskManager scheduletaskManager
+            , IRepository<Schedule, Guid> scheduleRepository
+            , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
             )
         {
             _scheduletaskRepository = scheduletaskRepository;
+            _scheduleRepository = scheduleRepository;
+            _scheduleDetailRepository = scheduleDetailRepository;
             _scheduletaskManager = scheduletaskManager;
         }
 
@@ -175,12 +183,27 @@ namespace GYISMS.ScheduleTasks
         /// <summary>
         /// 根据id获取计划任务信息
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public async Task<ScheduleTaskListDto> GetScheduleTaskByIdAsync(Guid id)
         {
             var entity = await _scheduletaskRepository.GetAsync(id);
             return entity.MapTo<ScheduleTaskListDto>();
+        }
+
+        /// <summary>
+        /// 获取钉钉用户任务列表
+        /// </summary>
+        public Task<DingDingScheduleTaskDto> GetDingDingScheduleTaskListAsycn(string userId)
+        {
+            //var query = from st in _scheduleDetailRepository.GetAll()
+            //            join s in _scheduleRepository.GetAll() on st.ScheduleId equals s.Id
+            //            join sd in _scheduleDetailRepository.GetAll() on st.Id equals sd.ScheduleTaskId
+            //            select new
+            //            {
+            //                st.Id,
+            //                st.
+            //            };
+
+            return Task.FromResult(new DingDingScheduleTaskDto());
         }
     }
 }
