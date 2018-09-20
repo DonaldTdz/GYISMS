@@ -97,13 +97,7 @@ namespace GYISMS.Schedules.Dtos
         /// </summary>
         public long? DeleterUserId { get; set; }
 
-
-
-
-
-
-        //// custom codes
-
-        //// custom codes end
+        [Required(ErrorMessage = "Name不能为空")]
+        public string Name { get; set; }
     }
 }

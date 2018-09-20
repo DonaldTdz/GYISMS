@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.VisitTasks;
 using GYISMS.GYEnums;
+using GYISMS.TaskExamines.Dtos;
 
 namespace GYISMS.VisitTasks.Dtos
 {
@@ -80,7 +81,6 @@ namespace GYISMS.VisitTasks.Dtos
         /// DeletionTime
         /// </summary>
         public DateTime? DeletionTime { get; set; }
-
 
         /// <summary>
         /// DeleterUserId

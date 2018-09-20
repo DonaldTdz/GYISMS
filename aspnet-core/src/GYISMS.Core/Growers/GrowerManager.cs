@@ -16,12 +16,12 @@ namespace GYISMS.Growers
     ///</summary>
     public class GrowerManager :GYISMSDomainServiceBase, IGrowerManager
     {
-    private readonly IRepository<Grower,string> _growerRepository;
+    private readonly IRepository<Grower,int> _growerRepository;
 
         /// <summary>
             /// Grower的构造方法
             ///</summary>
-        public GrowerManager(IRepository<Grower, string>
+        public GrowerManager(IRepository<Grower, int>
 growerRepository)
             {
             _growerRepository =  growerRepository;

@@ -17,6 +17,9 @@ namespace GYISMS.Schedules.Dtos
         /// </summary>
         public string Desc { get; set; }
 
+        [Required(ErrorMessage = "Name不能为空")]
+        public string Name { get; set; }
+
 
         /// <summary>
         /// Type

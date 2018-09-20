@@ -5,6 +5,7 @@ import { VisitTaskComponent } from './visit-task/visit-task.component';
 import { TaskDetailComponent } from './visit-task/task-detail/task-detail.component';
 import { ScheduleComponent } from './schedule/schedule.component';
 import { ScheduleDetailComponent } from './schedule/schedule-detail/schedule-detail.component';
+import { AssignTaskComponent } from './schedule/schedule-detail/assign-task/assign-task.component';
 const routes: Routes = [
     {
         path: 'visit-task',
@@ -34,6 +35,11 @@ const routes: Routes = [
     {
         path: 'schedule-detail/:id',
         component: ScheduleDetailComponent,
+        canActivate: [AppRouteGuard],
+    },
+    {
+        path: 'assign-task',
+        component: AssignTaskComponent,
         canActivate: [AppRouteGuard],
     },
 ];

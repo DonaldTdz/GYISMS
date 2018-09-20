@@ -27,7 +27,7 @@ namespace GYISMS.Growers
     [AbpAuthorize(AppPermissions.Pages)]
     public class GrowerAppService : GYISMSAppServiceBase, IGrowerAppService
     {
-        private readonly IRepository<Grower, string>
+        private readonly IRepository<Grower, int>
         _growerRepository;
 
 
@@ -37,7 +37,7 @@ namespace GYISMS.Growers
         /// 构造函数 
         ///</summary>
         public GrowerAppService(
-        IRepository<Grower, string>
+        IRepository<Grower, int>
     growerRepository
             , IGrowerManager growerManager
             )
@@ -115,7 +115,7 @@ namespace GYISMS.Growers
         protected virtual async Task<GrowerEditDto> UpdateGrowerAsync(GrowerEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新      
-            var entity = await _growerRepository.GetAsync(input.Id);
+            var entity = await _growerRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
             // ObjectMapper.Map(input, entity);
             var result = await _growerRepository.UpdateAsync(entity);
@@ -130,7 +130,7 @@ namespace GYISMS.Growers
         /// <param name="input"></param>
         /// <returns></returns>
         [AbpAuthorize(GrowerAppPermissions.Grower_Delete)]
-        public async Task DeleteGrower(EntityDto<string> input)
+        public async Task DeleteGrower(EntityDto<int> input)
         {
             //TODO:删除前的逻辑判断，是否允许删除
             await _growerRepository.DeleteAsync(input.Id);
@@ -142,7 +142,7 @@ namespace GYISMS.Growers
         /// 批量删除Grower的方法
         /// </summary>
         [AbpAuthorize(GrowerAppPermissions.Grower_BatchDelete)]
-        public async Task BatchDeleteGrowersAsync(List<string> input)
+        public async Task BatchDeleteGrowersAsync(List<int> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _growerRepository.DeleteAsync(s => input.Contains(s.Id));
@@ -170,7 +170,7 @@ namespace GYISMS.Growers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public async Task<GrowerListDto> GetGrowerByIdAsync(string id)
+        public async Task<GrowerListDto> GetGrowerByIdAsync(int id)
         {
             var entity = await _growerRepository.GetAsync(id);
             return entity.MapTo<GrowerListDto>();
@@ -183,7 +183,7 @@ namespace GYISMS.Growers
         /// <returns></returns>
         public async Task GrowerDeleteByIdAsync(GrowerEditDto input)
         {
-            var entity = await _growerRepository.GetAsync(input.Id);
+            var entity = await _growerRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
             entity.IsDeleted = true;
             entity.DeletionTime = DateTime.Now;

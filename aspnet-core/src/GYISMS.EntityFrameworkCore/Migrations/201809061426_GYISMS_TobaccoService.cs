@@ -12,7 +12,7 @@ namespace GYISMS.Migrations
                  name: "Growers",
                  columns: table => new
                  {
-                     Id = table.Column<string>(maxLength: 200, nullable: false),
+                     Id = table.Column<int>(nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                      Year = table.Column<int>(nullable: true),
                      UnitCode = table.Column<string>(maxLength: 20, nullable: true),
                      UnitName = table.Column<string>(maxLength: 50, nullable: true),
@@ -59,7 +59,8 @@ namespace GYISMS.Migrations
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierUserId = table.Column<long>(nullable: true),
                     DeletionTime = table.Column<DateTime>(nullable: true),
-                    DeleterUserId = table.Column<long>(nullable: true)
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    Name = table.Column<string>(maxLength: 200, nullable: false),
                 },
                 constraints: table =>
                 {

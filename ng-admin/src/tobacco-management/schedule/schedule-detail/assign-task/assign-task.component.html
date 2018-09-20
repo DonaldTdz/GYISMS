@@ -1,0 +1,70 @@
+<page-header [title]=""></page-header>
+<nz-card [nzBordered]="false">
+    <div nz-row>
+        <div nz-col nzSpan="8">
+            <div style="padding-left:10px; padding-right:10px;">
+                <!-- <nz-tree [(ngModel)]="nodes" [nzCheckable]="true" [nzMultiple]="true" [nzShowExpand]="true" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)" [nzDefaultExpandedKeys]="expandKeys" [nzDefaultCheckedKeys]="checkedKeys" [nzDefaultSelectedKeys]="selectedKeys"
+                                [nzDefaultExpandAll]="expandDefault">
+                            </nz-tree> -->
+                <ul nz-menu [nzMode]="'inline'" style="width: 240px;height: 30px;">
+                    <li nz-submenu [nzOpen]="true">
+                        <span title>烟技员</span>
+                        <ul>
+                            <li nz-submenu>
+                                <span title>
+                                                <label nz-checkbox [(ngModel)]="checked">昭化区</label>
+                                            </span>
+                                <ul>
+                                    <li nz-menu-item>
+                                        <label nz-checkbox [(ngModel)]="checked">Option 1</label></li>
+                                    <li nz-menu-item>Option 2</li>
+                                </ul>
+                            </li>
+                            <li nz-submenu>
+                                <span title>剑阁县</span>
+                                <ul>
+                                    <li nz-menu-item>Option 3</li>
+                                    <li nz-menu-item>Option 4</li>
+                                </ul>
+                            </li>
+                            <li nz-submenu>
+                                <span title>旺苍县</span>
+                                <ul>
+                                    <li nz-menu-item>Option 5</li>
+                                    <li nz-menu-item>Option 6</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div nz-col nzSpan="16">
+            <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
+            <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total" [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
+                (nzPageSizeChange)="refreshData(tempNode)">
+                <thead>
+                    <tr>
+                        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+                        <th>姓名</th>
+                        <th>职位</th>
+                        <th>电话号码</th>
+                        <th>拜访次数</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of nzTable.data">
+                        <td nzShowCheckbox (nzCheckedChange)="refreshStatus($event)"></td>
+
+                        <td>{{item.name}}</td>
+                        <td>{{item.position}}</td>
+                        <td>{{item.mobile}}</td>
+                        <td>
+                            <input nz-input style="width:55px;">
+                        </td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+</nz-card>

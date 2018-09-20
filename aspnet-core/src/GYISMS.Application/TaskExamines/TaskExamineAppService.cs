@@ -180,6 +180,21 @@ namespace GYISMS.TaskExamines
             await _taskexamineRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        /// <summary>
+        /// 删除任务信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task TaskExaminesDeleteByIdAsync(TaskExamineEditDto input)
+        {
+            var entity = await _taskexamineRepository.GetAsync(input.Id);
+            input.MapTo(entity);
+            entity.IsDeleted = true;
+            entity.DeletionTime = DateTime.Now;
+            entity.DeleterUserId = AbpSession.UserId;
+            await _taskexamineRepository.UpdateAsync(entity);
+        }
+
     }
 }
 

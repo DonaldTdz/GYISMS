@@ -11,7 +11,7 @@ namespace GYISMS.Schedules.Dtos
           /// <summary>
 		 /// 模糊搜索使用的关键字
 		 ///</summary>
-        public string Desc { get; set; }
+        public string Name { get; set; }
 
 
 		//// custom codes

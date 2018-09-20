@@ -13,6 +13,7 @@ import { ScheduleDetailComponent } from './schedule/schedule-detail/schedule-det
 import { ChooseTaskModalComponent } from './schedule/schedule-detail/choose-task-modal/choose-task-modal.component';
 import { ChooseEmployeeModalComponent } from './schedule/schedule-detail/choose-employee-modal/choose-employee-modal.component';
 import { ExamineDetailModalComponent } from './visit-task/task-detail/examine-detail-modal/examine-detail-modal.component';
+import { AssignTaskComponent } from './schedule/schedule-detail/assign-task/assign-task.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { ExamineDetailModalComponent } from './visit-task/task-detail/examine-de
         ScheduleDetailComponent,
         ChooseTaskModalComponent,
         ChooseEmployeeModalComponent,
-        ExamineDetailModalComponent
+        ExamineDetailModalComponent,
+        AssignTaskComponent
     ],
     entryComponents: [
     ],

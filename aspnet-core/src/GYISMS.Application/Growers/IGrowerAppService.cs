@@ -43,17 +43,17 @@ namespace GYISMS.Growers
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task DeleteGrower(EntityDto<string> input);
+        Task DeleteGrower(EntityDto<int> input);
 
 
         /// <summary>
         /// 批量删除Grower
         /// </summary>
-        Task BatchDeleteGrowersAsync(List<string> input);
+        Task BatchDeleteGrowersAsync(List<int> input);
 
 
         Task<GrowerEditDto> CreateOrUpdateGrowerAsycn(GrowerEditDto input);
         Task GrowerDeleteByIdAsync(GrowerEditDto input);
-        Task<GrowerListDto> GetGrowerByIdAsync(string id);
+        Task<GrowerListDto> GetGrowerByIdAsync(int id);
     }
 }
