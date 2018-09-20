@@ -110,5 +110,13 @@ namespace GYISMS.ScheduleTasks.Dtos
                 return 0;
             }
         }
+
+        public string EndTimeFormat
+        {
+            get
+            {
+                return EndTime.HasValue ? EndTime.Value.ToString("yyyy-MM-dd") : string.Empty;
+            }
+        }
     }
 }

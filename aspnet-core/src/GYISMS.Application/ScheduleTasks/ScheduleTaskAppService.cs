@@ -200,7 +200,7 @@ namespace GYISMS.ScheduleTasks
         [AbpAllowAnonymous]
         public async Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsycn(string userId)
         {
-            var query = from st in _scheduleDetailRepository.GetAll()
+            var query = from st in _scheduletaskRepository.GetAll()
                         join sd in _scheduleDetailRepository.GetAll() on st.Id equals sd.ScheduleTaskId
                         join t in _visitTaskRepository.GetAll() on st.TaskId equals t.Id
                         join s in _scheduleRepository.GetAll() on st.ScheduleId equals s.Id
@@ -216,6 +216,7 @@ namespace GYISMS.ScheduleTasks
                             sd.VisitNum,
                             sd.CompleteNum
                         };
+            
             var taskList = from ts in (from q in query
                                        group q by new { q.Id, q.ScheduleId, q.Type, q.Name } into qg
                                        select new
