@@ -42,5 +42,12 @@ namespace GYISMS.GYEnums
         每日 = 1,
         每周 = 2,
         每月 = 3
-    }  
+    }
+
+    public enum ScheduleStatusEnum
+    {
+        未开始 = 1,
+        进行中 = 2,
+        已完成 = 3
+    }
 }

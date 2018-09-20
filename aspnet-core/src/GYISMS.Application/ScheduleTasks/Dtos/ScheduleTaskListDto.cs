@@ -38,13 +38,39 @@ namespace GYISMS.ScheduleTasks.Dtos
         /// </summary>
         public DateTime? CreationTime { get; set; }
 
-
-
-
-
-
         //// custom codes
 
         //// custom codes end
+    }
+
+    public class DingDingScheduleTaskDto
+    {
+        public Guid Id { get; set; }
+
+        public string Thumb { get; set; }
+
+        public string TaskName { get; set; }
+
+        public DateTime? EndTime { get; set; }
+
+        public string Extra { get; set; }
+
+        public string Desc { get; set; }
+
+        public int NumTotal { get; set; }
+
+        public int CompleteNum { get; set; }
+
+        public int EndDay
+        {
+            get
+            {
+                if (EndTime.HasValue)
+                {
+                    return (EndTime - DateTime.Today).Value.Days;
+                }
+                return 0;
+            }
+        }
     }
 }

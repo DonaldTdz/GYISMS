@@ -1,16 +1,14 @@
 
 
 using AutoMapper;
-using GYISMS.TaskExamines;
-using GYISMS.TaskExamines;
 
 namespace GYISMS.TaskExamines.Dtos.CustomMapper
 {
 
-	/// <summary>
+    /// <summary>
     /// 配置TaskExamine的AutoMapper
     ///</summary>
-	internal static class CustomerTaskExamineMapper
+    internal static class CustomerTaskExamineMapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {

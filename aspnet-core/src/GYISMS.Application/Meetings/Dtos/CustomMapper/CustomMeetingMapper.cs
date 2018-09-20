@@ -1,16 +1,14 @@
 
 
 using AutoMapper;
-using GYISMS.Meetings;
-using GYISMS.Meetings;
 
 namespace GYISMS.Meetings.Dtos.CustomMapper
 {
 
-	/// <summary>
+    /// <summary>
     /// 配置Meeting的AutoMapper
     ///</summary>
-	internal static class CustomerMeetingMapper
+    internal static class CustomerMeetingMapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {

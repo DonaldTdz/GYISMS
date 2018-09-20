@@ -172,7 +172,7 @@ namespace GYISMS.VisitTasks
             {
                 foreach (var item in input.TaskExamineList)
                 {
-                    if (item.Id.HasValue)
+                    if (item.Id == 0)
                     {
                         var temp = await UpdateTaskExamineAsync(item);
                         list.TaskExamineList.Add(temp);
@@ -196,7 +196,7 @@ namespace GYISMS.VisitTasks
         private async Task CreateOrUpdateTaskExamineAsync(TaskExamineEditDto input)
         {
 
-            if (input.Id.HasValue)
+            if (input.Id == 0)
             {
                 await UpdateTaskExamineAsync(input);
             }
@@ -225,7 +225,7 @@ namespace GYISMS.VisitTasks
         {
             //TODO:更新前的逻辑判断，是否允许更新
 
-            var entity = await _taskexamineRepository.GetAsync(input.Id.Value);
+            var entity = await _taskexamineRepository.GetAsync(input.Id);
             input.MapTo(entity);
             var result = await _taskexamineRepository.UpdateAsync(entity);
             return entity.MapTo<TaskExamineEditDto>();

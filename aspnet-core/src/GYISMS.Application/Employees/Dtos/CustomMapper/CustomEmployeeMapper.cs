@@ -1,16 +1,14 @@
 
 
 using AutoMapper;
-using GYISMS.Employees;
-using GYISMS.Employees;
 
 namespace GYISMS.Employees.Dtos.CustomMapper
 {
 
-	/// <summary>
+    /// <summary>
     /// 配置Employee的AutoMapper
     ///</summary>
-	internal static class CustomerEmployeeMapper
+    internal static class CustomerEmployeeMapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {

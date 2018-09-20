@@ -43,9 +43,6 @@ namespace GYISMS.ScheduleTasks.Dtos
 
 
 
-
-
-
         //// custom codes
 
         //// custom codes end

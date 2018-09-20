@@ -1,16 +1,14 @@
 
 
 using AutoMapper;
-using GYISMS.Organizations;
-using GYISMS.Organizations;
 
 namespace GYISMS.Organizations.Dtos.CustomMapper
 {
 
-	/// <summary>
+    /// <summary>
     /// 配置Organization的AutoMapper
     ///</summary>
-	internal static class CustomerOrganizationMapper
+    internal static class CustomerOrganizationMapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {

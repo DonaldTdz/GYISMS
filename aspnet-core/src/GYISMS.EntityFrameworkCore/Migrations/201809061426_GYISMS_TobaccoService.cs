@@ -79,7 +79,10 @@ namespace GYISMS.Migrations
                     VisitNum = table.Column<int>(nullable: true),
                     CompleteNum = table.Column<int>(nullable: true),
                     CreationTime = table.Column<DateTime>(nullable: true),
-                    Status = table.Column<int?>(nullable: true)
+                    Status = table.Column<int?>(nullable: true),
+                    ScheduleTaskId = table.Column<Guid>(nullable: false),
+                    EmployeeName = table.Column<string>(nullable: true),
+                    GrowerName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
