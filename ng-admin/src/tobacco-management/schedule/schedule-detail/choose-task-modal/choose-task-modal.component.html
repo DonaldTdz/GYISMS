@@ -21,6 +21,8 @@
             <nz-table #nzTable [nzShowSizeChanger]="true" [nzData]="taskList" [nzShowPagination]="false" [nzLoading]="eloading" [nzShowSizeChanger]="true">
                 <thead>
                     <tr>
+                        <th nzShowCheckbox nzShowRowSelection [nzSelections]="listOfSelection" [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+
                         <th nz-th>
                             <span>任务名称</span>
                         </th>
@@ -30,15 +32,23 @@
                         <th nz-th>
                             <span>是否考核</span>
                         </th>
+                        <th nz-th>
+                            <span>默认拜访次数</span>
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr nz-tbody-tr *ngFor="let item of nzTable.data">
+                        <td nzShowCheckbox [(nzChecked)]="data.checked" (nzCheckedChange)="refreshStatus($event)"></td>
+
                         <td nz-td>
                             <a (click)="SelectOrganization(item)">{{item.name | lengthLimit:8}}</a>
                         </td>
                         <td>{{item.typeName}}</td>
                         <td>{{item.isExamine == true?"是":"否"}}</td>
+                        <td>
+                            <input nz-input style="width:55px;">
+                        </td>
                     </tr>
                 </tbody>
             </nz-table>
@@ -52,4 +62,4 @@
                     选择返回
                 </button> -->
     </ng-template>
-</nz-modal>
+</nz-modal>】、

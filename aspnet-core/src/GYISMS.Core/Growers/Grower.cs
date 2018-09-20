@@ -10,7 +10,7 @@ namespace GYISMS.Growers
     /// 烟农
     /// </summary>
     [Table("Growers")]
-    public class Grower : AuditedEntity<string>
+    public class Grower : AuditedEntity<int>
     {
         /// <summary>
         /// 业务年度

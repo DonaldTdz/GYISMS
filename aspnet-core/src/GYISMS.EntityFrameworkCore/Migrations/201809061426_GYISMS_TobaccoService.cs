@@ -12,7 +12,7 @@ namespace GYISMS.Migrations
                  name: "Growers",
                  columns: table => new
                  {
-                     Id = table.Column<string>(maxLength: 200, nullable: false),
+                     Id = table.Column<int>(nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                      Year = table.Column<int>(nullable: true),
                      UnitCode = table.Column<string>(maxLength: 20, nullable: true),
                      UnitName = table.Column<string>(maxLength: 50, nullable: true),

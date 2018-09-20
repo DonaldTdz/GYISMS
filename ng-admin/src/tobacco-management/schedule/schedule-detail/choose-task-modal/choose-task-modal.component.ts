@@ -18,6 +18,7 @@ export class ChooseTaskModalComponent implements OnInit {
     eloading = false;
     isVisible = false;
     taskList: VisitTask[] = [];
+    allChecked = false;
 
     constructor(private taskService: VisitTaskServiceProxy) {
     }

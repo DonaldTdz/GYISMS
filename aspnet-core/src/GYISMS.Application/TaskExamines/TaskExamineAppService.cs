@@ -187,7 +187,7 @@ namespace GYISMS.TaskExamines
         /// <returns></returns>
         public async Task TaskExaminesDeleteByIdAsync(TaskExamineEditDto input)
         {
-            var entity = await _taskexamineRepository.GetAsync(input.Id.Value);
+            var entity = await _taskexamineRepository.GetAsync(input.Id);
             input.MapTo(entity);
             entity.IsDeleted = true;
             entity.DeletionTime = DateTime.Now;

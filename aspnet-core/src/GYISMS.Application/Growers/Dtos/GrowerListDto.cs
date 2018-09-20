@@ -9,7 +9,7 @@ using GYISMS.Growers;
 
 namespace GYISMS.Growers.Dtos
 {
-    public class GrowerListDto : EntityDto<string>
+    public class GrowerListDto : EntityDto<int>
     {
 
         /// <summary>

@@ -1415,7 +1415,7 @@ namespace GYISMS.Migrations
 
             modelBuilder.Entity("HC.WeChat.Growers.Grower", b =>
             {
-                b.Property<string>("Id").ValueGeneratedOnAdd();
+                b.Property<int>("Id").ValueGeneratedOnAdd();
                 b.Property<int?>("Year");
                 b.Property<string>("UnitCode").HasMaxLength(20);
                 b.Property<string>("UnitName").HasMaxLength(50);

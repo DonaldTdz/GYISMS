@@ -80,16 +80,16 @@
             </div>
         </form>
 
-        <!-- <form *ngIf="isPush" nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
+        <form *ngIf="isPush" nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
             <div nz-row [nzGutter]="24">
                 <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                     <button nz-button type="button" (click)="showModal(null)" nzType="primary">
                         <i class="anticon anticon-plus"></i>
-                        <span>新增考核项</span>
+                        <span>新增任务</span>
                     </button>
                 </div>
             </div>
-        </form> -->
+        </form>
         <!-- <ng-template *ngIf="isPush" #totalTemplate let-total>共 {{query.total}} 条</ng-template> -->
         <nz-table *ngIf="isPush" #nzTable [nzData]="taskList" [nzShowPagination]="false" [nzFrontPagination]="false" [nzLoading]="loading">
             <thead>
@@ -106,7 +106,7 @@
                     <td>{{data.typeName}}</td>
                     <td>{{data.isExamine == true?"是":"否"}}</td>
                     <td>
-                        <a (click)="deleteExamine(data)">指派任务</a>
+                        <a (click)="assignTask(data.id)">指派任务</a>
                     </td>
                 </tr>
             </tbody>

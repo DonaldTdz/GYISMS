@@ -165,4 +165,9 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     return() {
         this.router.navigate(['app/task/schedule']);
     }
+
+    assignTask(id: number) {
+        console.log(id);
+        this.router.navigate(['app/task/assign-task']);
+    }
 }

@@ -8,7 +8,7 @@ using GYISMS.Growers;
 
 namespace GYISMS.Growers.Dtos
 {
-    public class GrowerEditDto: AuditedEntityDto<string>
+    public class GrowerEditDto: AuditedEntityDto<int?>
     {
         /// <summary>
         /// Id
