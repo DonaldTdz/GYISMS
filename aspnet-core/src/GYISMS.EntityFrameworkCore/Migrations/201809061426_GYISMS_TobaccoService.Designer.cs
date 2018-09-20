@@ -1462,6 +1462,7 @@ namespace GYISMS.Migrations
                 b.Property<long?>("LastModifierUserId");
                 b.Property<DateTime?>("DeletionTime");
                 b.Property<long?>("DeleterUserId");
+                b.Property<string>("Name").IsRequired().HasMaxLength(200);
                 b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");

@@ -58,5 +58,9 @@ namespace GYISMS.Schedules
         /// DeleterUserId
         /// </summary>
         public virtual long? DeleterUserId { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public virtual string Name { get; set; }
     }
 }

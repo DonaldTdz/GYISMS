@@ -81,16 +81,7 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
                 this.task = result;
                 if (this.task.isExamine == true) {
                     this.loading = true;
-                    let params: any = {};
-                    params.SkipCount = this.query.skipCount();
-                    params.MaxResultCount = this.query.pageSize;
-                    params.Name = this.search.name;
-                    params.TaskId = this.task.id;
-                    this.taskService.getTaskExamineList(params).subscribe((result: PagedResultDtoOfTaskExamine) => {
-                        this.loading = false;
-                        this.taskExamineList = result.items;
-                        this.query.total = result.totalCount;
-                    })
+                    this.getTaskExamineList();
                 }
                 this.isDelete = true;
             });
@@ -100,7 +91,18 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
             this.task.type = 1;
         }
     }
-
+    getTaskExamineList() {
+        let params: any = {};
+        params.SkipCount = this.query.skipCount();
+        params.MaxResultCount = this.query.pageSize;
+        params.Name = this.search.name;
+        params.TaskId = this.task.id;
+        this.taskService.getTaskExamineList(params).subscribe((result: PagedResultDtoOfTaskExamine) => {
+            this.loading = false;
+            this.taskExamineList = result.items;
+            this.query.total = result.totalCount;
+        })
+    }
     save() {
         for (const i in this.validateForm.controls) {
             this.validateForm.controls[i].markAsDirty();
@@ -126,6 +128,7 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
                 //     });
                 // } else {
                 this.isDelete = true;
+                this.taskExamineList = this.task.taskExamineList;
                 this.notify.info(this.l(this.successMsg));
                 // }
             });
@@ -157,7 +160,6 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
     getSelectData = (examine?: TaskExamine) => {
         if (examine) {
             this.taskExamineList.push(examine);
-            console.log(this.taskExamineList);
         }
     }
 
@@ -166,13 +168,25 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
     }
 
     deleteExamine(examine: TaskExamine) {
-        let i = 0;
-        this.taskExamineList.forEach(v => {
-            if (v.name == examine.name && v.desc == examine.desc && v.seq == examine.seq) {
-                this.taskExamineList.splice(i, 1);
-                return;
-            }
-            i++;
-        });
+        if (examine.id) {
+            this.confirmModal = this.modal.confirm({
+                nzContent: '是否删除考核项目?',
+                nzOnOk: () => {
+                    this.taskService.deleteTaskExamine(examine).subscribe(() => {
+                        this.notify.info(this.l('删除成功！'));
+                        this.getTaskExamineList();
+                    });
+                }
+            });
+        } else {
+            let i = 0;
+            this.taskExamineList.forEach(v => {
+                if (v.name == examine.name && v.desc == examine.desc && v.seq == examine.seq) {
+                    this.taskExamineList.splice(i, 1);
+                    return;
+                }
+                i++;
+            });
+        }
     }
 }

@@ -65,9 +65,9 @@ namespace GYISMS.TaskExamines
         /// </summary>
         Task BatchDeleteTaskExaminesAsync(List<int> input);
 
+        Task TaskExaminesDeleteByIdAsync(TaskExamineEditDto input);
+        //// custom codes
 
-		//// custom codes
-		 
         //// custom codes end
     }
 }

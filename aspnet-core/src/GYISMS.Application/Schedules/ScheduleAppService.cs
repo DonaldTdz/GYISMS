@@ -57,7 +57,7 @@ namespace GYISMS.Schedules
         {
 
             var query = _scheduleRepository.GetAll().Where(v => v.IsDeleted == false)
-                     .WhereIf(!string.IsNullOrEmpty(input.Desc), u => u.Desc.Contains(input.Desc));
+                     .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Desc.Contains(input.Name));
             // TODO:根据传入的参数添加过滤条件
 
             var scheduleCount = await query.CountAsync();

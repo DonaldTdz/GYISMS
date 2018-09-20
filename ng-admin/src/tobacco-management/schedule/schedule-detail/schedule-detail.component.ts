@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { Schedule, VisitTask, ScheduleTask } from '@shared/entity/tobacco-management';
-import { ScheduleServiceProxy } from '@shared/service-proxies/tobacco-management';
+import { ScheduleServiceProxy, VisitTaskServiceProxy } from '@shared/service-proxies/tobacco-management';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -23,28 +23,42 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     validateForm: FormGroup;
     schedule: Schedule = new Schedule();
     scheduleTask: ScheduleTask = new ScheduleTask();
-    types: any[] = [{ text: '每日', value: 1 }, { text: '每周', value: 2 }, { text: '每月', value: 3 }];
+    types: any[] = [{ text: '每月', value: 1 }, { text: '每周', value: 2 }, { text: '每日', value: 3 }];
     isConfirmLoading = false;
     successMsg = '';
     confirmModal: NzModalRef;
     isDelete = false;
     isPush = true;
+    taskList: VisitTask[] = [];
+    loading = false;
 
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
+        private taskService: VisitTaskServiceProxy,
         private router: Router, private fb: FormBuilder, private actRouter: ActivatedRoute, private modal: NzModalService) {
         super(injector);
         this.id = this.actRouter.snapshot.params['id'];
     }
     ngOnInit(): void {
         this.validateForm = this.fb.group({
+            name: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
             desc: [null, Validators.compose([Validators.maxLength(500)])],
             type: null,
             beginTime: null,
             endTime: null,
-            taskName: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
-            visitNum: [null, Validators.compose([Validators.pattern("^\\d+$")])]
+            // taskName: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
+            // visitNum: [null, Validators.compose([Validators.pattern("^\\d+$")])]
         });
         this.getScheduleInfo();
+    }
+
+    getTaskList() {
+        let params: any = {};
+        params.SkipCount = this.query.skipCount();
+        params.MaxResultCount = this.query.pageSize;
+        this.taskService.getVisitTaskListNoPage(params).subscribe((result: VisitTask[]) => {
+            this.loading = false;
+            this.taskList = result;
+        })
     }
 
     getScheduleInfo() {
@@ -55,10 +69,13 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 this.schedule = result;
                 this.isPush = result.status == 1 ? false : true;
                 this.isDelete = true;
+                if (this.isPush) {
+                    this.getTaskList();
+                }
             });
         } else {
             //新增
-            this.schedule.type = 1;
+            this.schedule.type = 3;
         }
     }
 
@@ -68,8 +85,13 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         }
         if (this.validateForm.valid) {
             this.isConfirmLoading = true;
-            this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
-            this.schedule.endTime = this.dateFormat(this.schedule.endTime);
+            if (this.schedule.type == 3) {
+                this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
+                this.schedule.endTime = this.dateFormat(this.schedule.beginTime);
+            } else {
+                this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
+                this.schedule.endTime = this.dateFormat(this.schedule.endTime);
+            }
             this.successMsg = isPulish == false ? '保存成功！' : '发布成功！';
             if (!this.schedule.beginTime) {
                 this.schedule.beginTime = null;
@@ -85,16 +107,19 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         this.scheduleService.updateScheduleInfo(this.schedule).finally(() => { this.isConfirmLoading = false; })
             .subscribe((result: any) => {
                 this.schedule = result;
-                if (this.schedule.id) {
-                    this.scheduleTask.scheduleId = this.schedule.id;
-                    this.scheduleService.updateScheduleTaskInfo(this.scheduleTask).subscribe((res: any) => {
-                        this.scheduleTask = res;
-                    })
-                }
+                // if (this.schedule.id) {
+                //     this.scheduleTask.scheduleId = this.schedule.id;
+                //     this.scheduleService.updateScheduleTaskInfo(this.scheduleTask).subscribe((res: any) => {
+                //         this.scheduleTask = res;
+                //     })
+                // }
                 this.isDelete = true;
                 this.isPush = result.status == 1 ? false : true;
                 this.notify.info(this.l(this.successMsg));
             });
+        if (!this.isPush) {
+            this.getTaskList();
+        }
     }
     push() {
         this.confirmModal = this.modal.confirm({

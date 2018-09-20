@@ -59,7 +59,8 @@ namespace GYISMS.Migrations
                     LastModificationTime = table.Column<DateTime>(nullable: true),
                     LastModifierUserId = table.Column<long>(nullable: true),
                     DeletionTime = table.Column<DateTime>(nullable: true),
-                    DeleterUserId = table.Column<long>(nullable: true)
+                    DeleterUserId = table.Column<long>(nullable: true),
+                    Name = table.Column<string>(maxLength: 200, nullable: false),
                 },
                 constraints: table =>
                 {

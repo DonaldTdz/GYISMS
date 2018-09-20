@@ -33,6 +33,16 @@ export class VisitTaskServiceProxy {
             }
         });
     }
+    getVisitTaskListNoPage(params: any): Observable<VisitTask[]> {
+        let url_ = "/api/services/app/VisitTask/GetVisitTasksListAsync";
+        return this._gyhttp.get(url_, params).map(data => {
+            if (data) {
+                return VisitTask.fromJSArray(data);
+            } else {
+                return null;
+            }
+        });
+    }
 
     getTaskExamineList(params: any): Observable<PagedResultDtoOfTaskExamine> {
         let url_ = "/api/services/app/TaskExamine/GetPagedTaskExaminesAsync";
@@ -85,6 +95,13 @@ export class VisitTaskServiceProxy {
 
     deleteVisitTask(input: any): Observable<any> {
         let url_ = "/api/services/app/VisitTask/VisitTaskDeleteByIdAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data.result;
+        });
+    }
+
+    deleteTaskExamine(input: any): Observable<any> {
+        let url_ = "/api/services/app/TaskExamine/TaskExaminesDeleteByIdAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data.result;
         });
