@@ -1,6 +1,7 @@
 ﻿using Abp.Application.Services.Dto;
 using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -37,7 +38,7 @@ namespace GYISMS.Schedules
         /// <summary>
         /// 计划状态（草稿、已发布）
         /// </summary>
-        public virtual int? Status { get; set; }
+        public virtual ScheduleMasterStatusEnum Status { get; set; }
 
         /// <summary>
         /// 发布时间

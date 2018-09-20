@@ -30,13 +30,7 @@ namespace GYISMS.GYEnums
         中心模式 = 1,
         矩阵莫事 = 2
     }
-    public enum TaskType
-    {
-        技术服务 = 1,
-        生产管理 = 2,
-        政策宣传 = 3,
-        临时任务 = 4
-    }
+
     public enum ScheduleType
     {
         每日 = 1,
@@ -44,10 +38,25 @@ namespace GYISMS.GYEnums
         每月 = 3
     }
 
+    public enum ScheduleMasterStatusEnum
+    {
+        草稿 = 0,
+        已发布 = 1
+    }
+
     public enum ScheduleStatusEnum
     {
+        已逾期 = 0,
         未开始 = 1,
         进行中 = 2,
         已完成 = 3
+    }
+
+    public enum TaskTypeEnum
+    {
+        技术服务 = 1,
+        生产管理 = 2,
+        政策宣传 = 3,
+        临时任务 = 4
     }
 }

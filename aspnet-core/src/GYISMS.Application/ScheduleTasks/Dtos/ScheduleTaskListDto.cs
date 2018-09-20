@@ -6,6 +6,7 @@ using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.ScheduleTasks;
+using GYISMS.GYEnums;
 
 namespace GYISMS.ScheduleTasks.Dtos
 {
@@ -47,19 +48,56 @@ namespace GYISMS.ScheduleTasks.Dtos
     {
         public Guid Id { get; set; }
 
-        public string Thumb { get; set; }
+        public string Thumb
+        {
+            get
+            {
+                if (EndDay == 1)
+                {
+                    return "../../image/warn.png";
+                }
+
+                if (EndDay < 5)
+                {
+                    return "../../image/warn_y.png";
+                }
+                return "../../image/icon-tasknor.png";
+            }
+        }
+
+        public TaskTypeEnum TaskType { get; set; }
 
         public string TaskName { get; set; }
 
         public DateTime? EndTime { get; set; }
 
-        public string Extra { get; set; }
+        public string Extra
+        {
+            get
+            {
+                return string.Format("剩余{0}天", EndDay);
+            }
+        }
 
-        public string Desc { get; set; }
+        public string Desc
+        {
+            get
+            {
+                return string.Format("已拜访{0}次共{1}次", CompleteNum, NumTotal);
+            }
+        }
 
-        public int NumTotal { get; set; }
+        public string Title
+        {
+            get
+            {
+                return TaskName + "（" + TaskType.ToString() + "）";
+            }
+        }
 
-        public int CompleteNum { get; set; }
+        public int? NumTotal { get; set; }
+
+        public int? CompleteNum { get; set; }
 
         public int EndDay
         {
