@@ -1475,7 +1475,7 @@ namespace GYISMS.Migrations
                 b.Property<Guid>("Id").ValueGeneratedOnAdd();
                 b.Property<int>("TaskId").IsRequired();
                 b.Property<Guid>("ScheduleId").IsRequired();
-                b.Property<string>("EmployeeId").IsRequired().HasMaxLength(200);
+                b.Property<string>("EmployeeId").IsRequired().HasMaxLength(50);
                 b.Property<int>("GrowerId").IsRequired();
                 b.Property<int?>("VisitNum");
                 b.Property<int?>("CompleteNum");
