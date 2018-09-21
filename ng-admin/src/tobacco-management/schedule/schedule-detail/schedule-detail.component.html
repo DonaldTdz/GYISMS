@@ -107,6 +107,8 @@
                     <td>{{data.isExamine == true?"是":"否"}}</td>
                     <td>
                         <a (click)="assignTask(data.id)">指派任务</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a (click)="deleteTask(data.id)">移除任务</a>
                     </td>
                 </tr>
             </tbody>

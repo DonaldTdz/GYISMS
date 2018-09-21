@@ -168,16 +168,21 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input)
+        public async Task<List<ScheduleTaskEditDto>> CreateOrUpdateScheduleTaskAsycn(List<ScheduleTaskEditDto> input)
         {
-            if (input.Id.HasValue)
+            List<ScheduleTaskEditDto> list = new List<ScheduleTaskEditDto>();
+            foreach (var item in input)
             {
-                return await UpdateScheduleTaskAsync(input);
+                if (item.Id.HasValue)
+                {
+                    list.Add(await UpdateScheduleTaskAsync(item));
+                }
+                else
+                {
+                    list.Add(await CreateScheduleTaskAsync(item));
+                }
             }
-            else
-            {
-                return await CreateScheduleTaskAsync(input);
-            }
+            return list;
         }
 
         /// <summary>

@@ -70,7 +70,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 this.isPush = result.status == 1 ? false : true;
                 this.isDelete = true;
                 if (this.isPush) {
-                    this.getTaskList();
+                    // this.getTaskList();
                 }
             });
         } else {
@@ -147,19 +147,42 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     /**
      * 模态框返回
      */
-    getSelectData = (visitTask?: VisitTask) => {
-        if (visitTask) {
-            this.scheduleTask.taskId = visitTask.id;
-            this.scheduleTask.taskName = visitTask.name;
-        }
+    getSelectData = (visitTask?: VisitTask[]) => {
+        visitTask.forEach(v => {
+            if (!this.existsTask(v.id)) {
+                this.taskList.push(...visitTask);
+            }
+        });
+    }
+
+    existsTask(id: number): boolean {
+        let bo = false;
+        this.taskList.forEach(v => {
+            if (v.id == id) {
+                bo = true;
+                return;
+            }
+        });
+        return bo;
     }
 
     showModal(): void {
-        this.selectTaskModal.show();
+        this.selectTaskModal.show(this.schedule.id);
     }
 
     showEmployeeModal(): void {
         this.selectEmployeeModal.show();
+    }
+
+    deleteTask(id: number) {
+        let i = 0;
+        this.taskList.forEach(v => {
+            if (v.id == id) {
+                this.taskList.splice(i, 1);
+                return;
+            }
+            i++;
+        });
     }
 
     return() {

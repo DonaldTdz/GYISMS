@@ -31,11 +31,16 @@ export class ScheduleTask implements IScheduleTaskom {
         return result;
     }
 
-    static fromJSArray(dataArray: any[]): ScheduleTask[] {
+    static fromVisitTaskJSArray(dataArray: any[], sid?: string): ScheduleTask[] {
         let array = [];
         dataArray.forEach(result => {
             let item = new ScheduleTask();
             item.init(result);
+            if (sid) {
+                item.scheduleId = sid;
+            }
+            item.taskId = result.id;
+            item.id = null;
             array.push(item);
         });
 

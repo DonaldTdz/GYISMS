@@ -15,7 +15,8 @@ export class VisitTask implements IVisitTask {
     deleterUserId: number;
     typeName: string;
     taskExamineList: TaskExamine[];
-
+    checked: boolean;
+    visitNum: number;
     constructor(data?: IVisitTask) {
         if (data) {
             for (var property in data) {
@@ -23,6 +24,10 @@ export class VisitTask implements IVisitTask {
                     (<any>this)[property] = (<any>data)[property];
             }
         }
+    }
+
+    get taskName() {
+        return this.name;
     }
 
     init(data?: any) {
@@ -102,4 +107,6 @@ export interface IVisitTask {
     deletionTime: Date;
     deleterUserId: number;
     taskExamineList: TaskExamine[];
+    checked: boolean;
+    visitNum: number;
 }

@@ -36,7 +36,8 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         Task BatchDeleteScheduleTasksAsync(List<Guid> input);
 
-        Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input);
+        //Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input);
+        Task<List<ScheduleTaskEditDto>> CreateOrUpdateScheduleTaskAsycn(List<ScheduleTaskEditDto> input);
 
         Task<DingDingScheduleTaskDto> GetDingDingScheduleTaskListAsycn(string userId);
     }

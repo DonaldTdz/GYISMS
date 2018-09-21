@@ -78,9 +78,14 @@ export class VisitTaskServiceProxy {
     }
 
     updateTaskInfo(input: any): Observable<any> {
-        console.log(input);
-
         let url_ = "/api/services/app/VisitTask/CreateOrUpdateVisitTaskAsycn";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data;
+        });
+    }
+
+    updateScheduleTask(input: any): Observable<any> {
+        let url_ = "/api/services/app/ScheduleTask/CreateOrUpdateScheduleTaskAsycn";
         return this._gyhttp.post(url_, input).map(data => {
             return data;
         });
