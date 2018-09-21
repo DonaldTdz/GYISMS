@@ -47,7 +47,7 @@ namespace GYISMS.Schedules.Dtos
         /// <summary>
         /// Status
         /// </summary>
-        public int? Status { get; set; }
+        public ScheduleMasterStatusEnum Status { get; set; }
 
 
         /// <summary>

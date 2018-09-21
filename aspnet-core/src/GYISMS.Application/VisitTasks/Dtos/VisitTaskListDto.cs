@@ -25,7 +25,8 @@ namespace GYISMS.VisitTasks.Dtos
         /// Type
         /// </summary>
         [Required(ErrorMessage = "Type不能为空")]
-        public TaskType Type { get; set; }
+        public TaskTypeEnum Type { get; set; }
+
         public string TypeName
         {
             get

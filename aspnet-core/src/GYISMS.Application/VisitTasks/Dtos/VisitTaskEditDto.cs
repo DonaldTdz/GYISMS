@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using GYISMS.TaskExamines.Dtos;
 using GYISMS.VisitTasks;
 
@@ -23,7 +24,7 @@ namespace GYISMS.VisitTasks.Dtos
         /// Type
         /// </summary>
         [Required(ErrorMessage = "Type不能为空")]
-        public int Type { get; set; }
+        public TaskTypeEnum Type { get; set; }
 
 
         /// <summary>

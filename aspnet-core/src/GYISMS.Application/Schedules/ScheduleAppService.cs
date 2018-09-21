@@ -18,6 +18,7 @@ using GYISMS.Schedules.Authorization;
 using GYISMS.Schedules.Dtos;
 using GYISMS.Schedules;
 using GYISMS.Authorization;
+using GYISMS.GYEnums;
 
 namespace GYISMS.Schedules
 {
@@ -185,7 +186,7 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         public async Task<ScheduleEditDto> CreateOrUpdateScheduleAsycn(ScheduleEditDto input)
         {
-            if (input.Status==1)
+            if (input.Status == ScheduleMasterStatusEnum.已发布)
             {
                 input.PublishTime = DateTime.Now;
             }

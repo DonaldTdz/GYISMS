@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using GYISMS.Schedules;
 
 namespace GYISMS.Schedules.Dtos
@@ -42,7 +43,7 @@ namespace GYISMS.Schedules.Dtos
         /// <summary>
         /// Status
         /// </summary>
-        public int? Status { get; set; }
+        public ScheduleMasterStatusEnum Status { get; set; }
 
 
         /// <summary>

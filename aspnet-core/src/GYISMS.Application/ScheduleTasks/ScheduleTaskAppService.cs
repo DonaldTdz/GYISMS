@@ -20,6 +20,8 @@ using GYISMS.ScheduleTasks;
 using GYISMS.Authorization;
 using GYISMS.Schedules;
 using GYISMS.ScheduleDetails;
+using GYISMS.VisitTasks;
+using GYISMS.GYEnums;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -32,6 +34,7 @@ namespace GYISMS.ScheduleTasks
         private readonly IRepository<ScheduleTask, Guid> _scheduletaskRepository;
         private readonly IRepository<Schedule, Guid> _scheduleRepository;
         private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
+        private readonly IRepository<VisitTask> _visitTaskRepository;
         private readonly IScheduleTaskManager _scheduletaskManager;
 
         /// <summary>
@@ -40,6 +43,7 @@ namespace GYISMS.ScheduleTasks
         public ScheduleTaskAppService(IRepository<ScheduleTask, Guid> scheduletaskRepository
             , IScheduleTaskManager scheduletaskManager
             , IRepository<Schedule, Guid> scheduleRepository
+            , IRepository<VisitTask> visitTaskRepository
             , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
             )
         {
@@ -47,6 +51,7 @@ namespace GYISMS.ScheduleTasks
             _scheduleRepository = scheduleRepository;
             _scheduleDetailRepository = scheduleDetailRepository;
             _scheduletaskManager = scheduletaskManager;
+            _visitTaskRepository = visitTaskRepository;
         }
 
 
@@ -197,18 +202,51 @@ namespace GYISMS.ScheduleTasks
         /// <summary>
         /// 获取钉钉用户任务列表
         /// </summary>
-        public Task<DingDingScheduleTaskDto> GetDingDingScheduleTaskListAsycn(string userId)
+        [AbpAllowAnonymous]
+        public async Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsycn(string userId)
         {
-            //var query = from st in _scheduleDetailRepository.GetAll()
-            //            join s in _scheduleRepository.GetAll() on st.ScheduleId equals s.Id
-            //            join sd in _scheduleDetailRepository.GetAll() on st.Id equals sd.ScheduleTaskId
-            //            select new
-            //            {
-            //                st.Id,
-            //                st.
-            //            };
+            var query = from st in _scheduletaskRepository.GetAll()
+                        join sd in _scheduleDetailRepository.GetAll() on st.Id equals sd.ScheduleTaskId
+                        join t in _visitTaskRepository.GetAll() on st.TaskId equals t.Id
+                        join s in _scheduleRepository.GetAll() on st.ScheduleId equals s.Id
+                        where sd.EmployeeId == userId
+                        && (sd.Status == ScheduleStatusEnum.未开始 || sd.Status == ScheduleStatusEnum.进行中)
+                        && s.Status == ScheduleMasterStatusEnum.已发布
+                        select new
+                        {
+                            st.Id,
+                            st.ScheduleId,
+                            t.Type,
+                            t.Name,
+                            sd.VisitNum,
+                            sd.CompleteNum
+                        };
+            
+            var taskList = from ts in (from q in query
+                                       group q by new { q.Id, q.ScheduleId, q.Type, q.Name } into qg
+                                       select new
+                                       {
+                                           qg.Key.Id,
+                                           qg.Key.ScheduleId,
+                                           TaskName = qg.Key.Name,
+                                           TaskType = qg.Key.Type,
+                                           NumTotal = qg.Sum(q => q.VisitNum),
+                                           CompleteNum = qg.Sum(q => q.CompleteNum)
+                                       })
+                           join s in _scheduleRepository.GetAll()
+                           on ts.ScheduleId equals s.Id
+                           select new DingDingScheduleTaskDto()
+                           {
+                               Id = ts.Id,
+                               TaskName = ts.TaskName,
+                               TaskType = ts.TaskType,
+                               CompleteNum = ts.CompleteNum,
+                               NumTotal = ts.NumTotal,
+                               EndTime = s.EndTime
+                           };
 
-            return Task.FromResult(new DingDingScheduleTaskDto());
+            var dataList = taskList.ToList();
+            return await Task.FromResult(dataList.OrderBy(d => d.EndDay).ToList());
         }
     }
 }

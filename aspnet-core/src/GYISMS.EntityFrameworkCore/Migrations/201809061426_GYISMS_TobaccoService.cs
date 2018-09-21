@@ -74,7 +74,7 @@ namespace GYISMS.Migrations
                     Id = table.Column<Guid>(nullable: false),
                     TaskId = table.Column<int>(nullable: false),
                     ScheduleId = table.Column<Guid>(nullable: false),
-                    EmployeeId = table.Column<string>(nullable: false),
+                    EmployeeId = table.Column<string>(nullable: false, maxLength:50),
                     GrowerId = table.Column<int>(nullable: false),
                     VisitNum = table.Column<int>(nullable: true),
                     CompleteNum = table.Column<int>(nullable: true),

@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using GYISMS.TaskExamines;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace GYISMS.VisitTasks
         /// 任务类型（技术服务、生产管理、政策宣传、临时任务）
         /// </summary>
         [Required]
-        public virtual int Type { get; set; }
+        public virtual TaskTypeEnum Type { get; set; }
 
         /// <summary>
         /// 是否需要考核
