@@ -8,9 +8,11 @@ using System.Collections.Generic;
 using GYISMS.VisitTasks;
 using GYISMS.GYEnums;
 using GYISMS.TaskExamines.Dtos;
+using Abp.AutoMapper;
 
 namespace GYISMS.VisitTasks.Dtos
 {
+    [AutoMapFrom(typeof(VisitTask))]
     public class VisitTaskListDto : EntityDto<int>
     {
 
@@ -35,6 +37,7 @@ namespace GYISMS.VisitTasks.Dtos
             }
         }
 
+        public Guid? ScheduleTaskId { get; set; }
         /// <summary>
         /// IsExamine
         /// </summary>
@@ -82,10 +85,12 @@ namespace GYISMS.VisitTasks.Dtos
         /// </summary>
         public DateTime? DeletionTime { get; set; }
 
+        public bool IsChecked { get; set; }
+        public int? VisitNum { get; set; }
         /// <summary>
         /// DeleterUserId
         /// </summary>
     }
 
-    
+
 }

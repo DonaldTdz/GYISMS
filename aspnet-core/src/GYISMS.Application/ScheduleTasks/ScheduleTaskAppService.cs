@@ -23,6 +23,7 @@ using GYISMS.ScheduleDetails;
 using GYISMS.VisitTasks;
 using GYISMS.GYEnums;
 using GYISMS.Growers;
+using GYISMS.TaskExamines;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -56,6 +57,7 @@ namespace GYISMS.ScheduleTasks
             _scheduletaskManager = scheduletaskManager;
             _visitTaskRepository = visitTaskRepository;
             _growerRepository = growerRepository;
+
         }
 
 
@@ -120,13 +122,9 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         protected virtual async Task<ScheduleTaskEditDto> CreateScheduleTaskAsync(ScheduleTaskEditDto input)
         {
-            //TODO:新增前的逻辑判断，是否允许新增
-            if (input.VisitNum == null)
-            {
-                input.VisitNum = 5;
-            }
             var entity = ObjectMapper.Map<ScheduleTask>(input);
-            entity.CreationTime = DateTime.Now;
+            entity.IsDeleted = false;
+            //entity.CreationTime = DateTime.Now;
             entity = await _scheduletaskRepository.InsertAsync(entity);
             return entity.MapTo<ScheduleTaskEditDto>();
         }
@@ -140,7 +138,7 @@ namespace GYISMS.ScheduleTasks
 
             var entity = await _scheduletaskRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
-
+            entity.IsDeleted = false;
             // ObjectMapper.Map(input, entity);
             var result = await _scheduletaskRepository.UpdateAsync(entity);
             return result.MapTo<ScheduleTaskEditDto>();
@@ -177,16 +175,21 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input)
+        public async Task<List<ScheduleTaskEditDto>> CreateOrUpdateScheduleTaskAsycn(List<ScheduleTaskEditDto> input)
         {
-            if (input.Id.HasValue)
+            List<ScheduleTaskEditDto> list = new List<ScheduleTaskEditDto>();
+            foreach (var item in input)
             {
-                return await UpdateScheduleTaskAsync(input);
+                if (item.Id.HasValue)
+                {
+                    list.Add(await UpdateScheduleTaskAsync(item));
+                }
+                else
+                {
+                    list.Add(await CreateScheduleTaskAsync(item));
+                }
             }
-            else
-            {
-                return await CreateScheduleTaskAsync(input);
-            }
+            return list;
         }
 
         /// <summary>
@@ -196,6 +199,48 @@ namespace GYISMS.ScheduleTasks
         {
             var entity = await _scheduletaskRepository.GetAsync(id);
             return entity.MapTo<ScheduleTaskListDto>();
+        }
+
+        /// 计划任务列表不分页
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<ScheduleTaskListDto>> GetScheduleTasksNoPageAsync(Guid id)
+        {
+            var scheduleTask = _scheduletaskRepository.GetAll().Where(v => v.ScheduleId == id && v.IsDeleted == false);
+            var visitTask = _visitTaskRepository.GetAll();
+            var query = await (from st in scheduleTask
+                               join vt in visitTask on st.TaskId equals vt.Id
+                               select new ScheduleTaskListDto()
+                               {
+                                   Id = st.Id,
+                                   TaskName = st.TaskName,
+                                   IsExamine = vt.IsExamine,
+                                   TypeName = vt.Type.ToString(),
+                                   TaskId = vt.Id,
+                                   ScheduleId = st.ScheduleId,
+                                   VisitNum = st.VisitNum,
+                                   IsDeleted = st.IsDeleted,
+                                   CreationTime = st.CreationTime,
+                                   CreatorUserId = st.CreatorUserId,
+                                   LastModificationTime = st.LastModificationTime,
+                                   LastModifierUserId = st.LastModifierUserId,
+                               }).OrderByDescending(v => v.TypeName).ThenByDescending(v => v.IsExamine).AsNoTracking().ToListAsync();
+            return query;
+        }
+
+        /// <summary>
+        /// 删除指派任务
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task VisitTaskDeleteByIdAsync(ScheduleTaskEditDto input)
+        {
+            var entity = await _scheduletaskRepository.GetAsync(input.Id.Value);
+            entity.IsDeleted = true;
+            entity.DeletionTime = DateTime.Now;
+            entity.DeleterUserId = AbpSession.UserId;
+            await _scheduletaskRepository.UpdateAsync(entity);
         }
 
         #region 钉钉客户端
@@ -222,7 +267,7 @@ namespace GYISMS.ScheduleTasks
                             sd.VisitNum,
                             sd.CompleteNum
                         };
-            
+
             var taskList = from ts in (from q in query
                                        group q by new { q.Id, q.ScheduleId, q.Type, q.Name } into qg
                                        select new
@@ -298,6 +343,8 @@ namespace GYISMS.ScheduleTasks
         }
 
         #endregion
+
+        
     }
 }
 

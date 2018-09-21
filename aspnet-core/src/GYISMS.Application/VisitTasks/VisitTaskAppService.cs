@@ -20,6 +20,7 @@ using GYISMS.VisitTasks;
 using GYISMS.Authorization;
 using GYISMS.TaskExamines;
 using GYISMS.TaskExamines.Dtos;
+using GYISMS.ScheduleTasks;
 
 namespace GYISMS.VisitTasks
 {
@@ -32,6 +33,7 @@ namespace GYISMS.VisitTasks
         private readonly IRepository<VisitTask, int> _visittaskRepository;
         private readonly IVisitTaskManager _visittaskManager;
         private readonly IRepository<TaskExamine, int> _taskexamineRepository;
+        private readonly IRepository<ScheduleTask, Guid> _scheduletaskRepository;
 
         /// <summary>
         /// 构造函数 
@@ -39,11 +41,13 @@ namespace GYISMS.VisitTasks
         public VisitTaskAppService(IRepository<VisitTask, int> visittaskRepository
             , IVisitTaskManager visittaskManager
             , IRepository<TaskExamine, int> taskexamineRepository
+            , IRepository<ScheduleTask, Guid> scheduletaskRepository
             )
         {
             _visittaskRepository = visittaskRepository;
             _visittaskManager = visittaskManager;
             _taskexamineRepository = taskexamineRepository;
+            _scheduletaskRepository = scheduletaskRepository;
         }
 
 
@@ -73,6 +77,44 @@ namespace GYISMS.VisitTasks
                     visittaskCount,
                     visittaskListDtos
                 );
+        }
+
+        /// <summary>
+        /// 新增任务查询Checbox状态
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<List<VisitTaskListDto>> GetVisitTasksWithStatusAsync(GetVisitTasksInput input)
+        {
+            var visitList = _visittaskRepository.GetAll().Where(v => v.IsDeleted == false);
+            var taskList = _scheduletaskRepository.GetAll().Where(v =>v.IsDeleted ==false&& v.ScheduleId == input.ScheduleId);
+            var query = await (from v in visitList
+                               select new VisitTaskListDto
+                               {
+                                   Id = v.Id,
+                                   Name = v.Name,
+                                   Type = v.Type,
+                               }).AsNoTracking().ToListAsync();
+            var taskDto = from t in taskList
+                          select new
+                          {
+                              t.TaskId,
+                              t.VisitNum,
+                              t.Id
+                          };
+            foreach (var taskItem in taskDto)
+            {
+                foreach (var item in query)
+                {
+                    if (item.Id == taskItem.TaskId)
+                    {
+                        item.IsChecked = true;
+                        item.VisitNum = taskItem.VisitNum;
+                        item.ScheduleTaskId = taskItem.Id;
+                    }
+                }
+            }
+            return query.OrderByDescending(v => v.IsChecked).ThenBy(v => v.TypeName).ToList();
         }
 
         /// <summary>
@@ -172,7 +214,7 @@ namespace GYISMS.VisitTasks
             {
                 foreach (var item in input.TaskExamineList)
                 {
-                    if (item.Id == 0)
+                    if (item.Id != 0)
                     {
                         var temp = await UpdateTaskExamineAsync(item);
                         list.TaskExamineList.Add(temp);

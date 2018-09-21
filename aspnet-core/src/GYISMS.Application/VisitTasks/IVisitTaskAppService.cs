@@ -47,5 +47,6 @@ namespace GYISMS.VisitTasks
         Task<VisitTaskListDto> GetVisitTaskByIdAsync(int id);
         Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsycn(VisitTaskEditDto input);
         Task<List<VisitTaskListDto>> GetVisitTasksListAsync(GetVisitTasksInput input);
+        Task<List<VisitTaskListDto>> GetVisitTasksWithStatusAsync(GetVisitTasksInput input);
     }
 }

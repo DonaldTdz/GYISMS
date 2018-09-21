@@ -52,8 +52,7 @@ namespace GYISMS.MeetingRooms
         /// <returns></returns>
         public async Task<PagedResultDto<MeetingRoomListDto>> GetPagedMeetingRoomsAsync(GetMeetingRoomsInput input)
         {
-            var query = _meetingroomRepository.GetAll().Where(v=>v.IsDeleted==false)
-                .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
+            var query = _meetingroomRepository.GetAll().WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
             // TODO:根据传入的参数添加过滤条件
 
             var meetingroomCount = await query.CountAsync();

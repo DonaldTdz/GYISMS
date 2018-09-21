@@ -1,6 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { VisitTaskServiceProxy, PagedResultDtoOfVisitTask } from '@shared/service-proxies/tobacco-management';
-import { VisitTask } from '@shared/entity/tobacco-management';
+import { VisitTask, ScheduleTask } from '@shared/entity/tobacco-management';
+import { NzModalRef } from 'ng-zorro-antd';
 @Component({
     moduleId: module.id,
     selector: 'choose-task-modal',
@@ -18,17 +19,51 @@ export class ChooseTaskModalComponent implements OnInit {
     eloading = false;
     isVisible = false;
     taskList: VisitTask[] = [];
-    allChecked = false;
-
+    scheduleTaskList: ScheduleTask[] = [];
+    scheduleTask: ScheduleTask = new ScheduleTask();
+    checkedNumber = 0;
+    scheduleId: string;
+    isSelectedAll: boolean = false; // 是否全选
+    checkboxCount: number = 0; // 所有Checkbox数量
+    checkedLength: number = 0; // 已选中的数量
+    successMsg = '';
+    confirmModal: NzModalRef;
     constructor(private taskService: VisitTaskServiceProxy) {
     }
 
     ngOnInit(): void {
+
     }
-    show() {
+    isCancelCheck(x: any) {
+        this.checkedLength = this.taskList.filter(v => v.checked).length;
+        this.checkboxCount = this.taskList.length;
+        if (this.checkboxCount - this.checkedLength > 0) {
+            this.isSelectedAll = false;
+        } else {
+            this.isSelectedAll = true;
+        }
+    }
+
+    checkAll(e) {
+        var v = this.isSelectedAll;
+        this.taskList.forEach(u => {
+            u.checked = v;
+        });
+        if (this.isSelectedAll == false) {
+            this.checkedLength == 0;
+        } else {
+            this.checkedLength == this.taskList.filter(v => v.checked).length;
+        }
+    }
+
+    show(id?: string) {
+        if (id) {
+            this.scheduleId = id;
+        }
         this.taskList = new Array<VisitTask>();
         this.isVisible = true;
         this.refreshData();
+        this.isSelectedAll = false;
     }
 
     /**
@@ -38,12 +73,18 @@ export class ChooseTaskModalComponent implements OnInit {
         this.eloading = true;
         let params: any = {};
         params.SkipCount = this.q.pi;
-        params.MaxResultCount = this.q.ps;
-        params.Name = this.q.name;
-        this.taskService.getVisitTaskList(params).subscribe((result: PagedResultDtoOfVisitTask) => {
+        params.ScheduleId = this.scheduleId;
+        this.taskService.getVisitTaskListWithStatus(params).subscribe((result: VisitTask[]) => {
             this.eloading = false;
-            this.taskList = result.items;
-            this.q.total = result.totalCount;
+            this.taskList = result;
+            this.taskList.map(v => {
+                if (!v.visitNum) {
+                    v.visitNum = 1;
+                }
+                if (v.isChecked == false)
+                    v.checked = false;
+                else v.checked = true;
+            });
         });
     }
 
@@ -53,15 +94,36 @@ export class ChooseTaskModalComponent implements OnInit {
     handleCancel = (e) => {
         this.isVisible = false;
         this.eloading = false;
-        this.q.name = '';
     }
-    /**
-     * 
-     * @param organization 选择事件（对选择的数据进行回传）
-     */
-    SelectOrganization(visitTask: VisitTask): void {
-        this.q.name = '';
-        this.modalSelect.emit(visitTask);
-        this.isVisible = false;
+
+    SelectTask(): void {
+        var visitTaskList = this.taskList.filter(v => v.checked);
+        if (visitTaskList) {
+            //visitTaskList.forEach(v => {
+            //this.scheduleTask.taskId = v.id;
+            //this.scheduleTask.visitNum = v.visitNum;
+            //this.scheduleTask.taskName = v.name;
+            //this.scheduleTask.scheduleId = this.scheduleId;
+            //this.scheduleTaskList.push(ScheduleTask.fromJS(v));
+            //});
+            console.log(visitTaskList);
+
+            this.scheduleTaskList = ScheduleTask.fromVisitTaskJSArray(visitTaskList, this.scheduleId);
+            this.eloading = true;
+            this.successMsg = '保存成功';
+            this.saveTaskInfo();
+        }
+        // this.modalSelect.emit(visitTaskList);
+    }
+
+    saveTaskInfo() {
+        console.log(this.scheduleTaskList);
+
+        this.taskService.updateScheduleTask(this.scheduleTaskList).finally(() => { this.eloading = false; })
+            .subscribe((result: any) => {
+                this.scheduleTaskList = result;
+                this.modalSelect.emit();
+                this.isVisible = false;
+            });
     }
 }
