@@ -6,9 +6,11 @@ using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.Growers;
+using Abp.AutoMapper;
 
 namespace GYISMS.Growers.Dtos
 {
+    [AutoMapFrom(typeof(Grower))]
     public class GrowerListDto : EntityDto<int>
     {
 

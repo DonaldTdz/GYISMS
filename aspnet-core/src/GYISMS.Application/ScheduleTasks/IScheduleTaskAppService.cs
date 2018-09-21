@@ -38,6 +38,10 @@ namespace GYISMS.ScheduleTasks
 
         Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input);
 
-        Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsycn(string userId);
+        Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsync(string userId);
+
+        Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId);
+
+        Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleTaskId);
     }
 }
