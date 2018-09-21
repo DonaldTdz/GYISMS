@@ -1481,6 +1481,9 @@ namespace GYISMS.Migrations
                 b.Property<int?>("CompleteNum");
                 b.Property<DateTime?>("CreationTime");
                 b.Property<int?>("Status");
+                b.Property<Guid>("ScheduleTaskId");
+                b.Property<string>("EmployeeName").HasMaxLength(50);
+                b.Property<string>("GrowerName").HasMaxLength(50);
                 b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");

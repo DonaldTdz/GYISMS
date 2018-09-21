@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using GYISMS.ScheduleTasks;
 using GYISMS.GYEnums;
 using GYISMS.Growers.Dtos;
+using Abp.AutoMapper;
+using GYISMS.VisitRecords;
 
 namespace GYISMS.ScheduleTasks.Dtos
 {
@@ -319,11 +321,22 @@ namespace GYISMS.ScheduleTasks.Dtos
 
         public int? CompleteNum { get; set; }
 
+        public int? GrowerId { get; set; }
+
+        public string Footer
+        {
+            get
+            {
+                return string.Format("已完成{0}次拜访共{1}次拜访", CompleteNum, VisitNum);
+            }
+        }
+
         public GrowerListDto GrowerInfo { get; set; }
 
         public List<DingDingVisitRecordDto> VisitRecords { get; set; }
     }
 
+    [AutoMapFrom(typeof(VisitRecord))]
     public class DingDingVisitRecordDto
     {
         public Guid Id { get; set; }

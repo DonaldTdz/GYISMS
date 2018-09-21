@@ -24,6 +24,8 @@ using GYISMS.VisitTasks;
 using GYISMS.GYEnums;
 using GYISMS.Growers;
 using GYISMS.TaskExamines;
+using GYISMS.VisitRecords;
+using GYISMS.Growers.Dtos;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -38,6 +40,7 @@ namespace GYISMS.ScheduleTasks
         private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
         private readonly IRepository<VisitTask> _visitTaskRepository;
         private readonly IRepository<Grower> _growerRepository;
+        private readonly IRepository<VisitRecord, Guid> _visitRecordRepository;
         private readonly IScheduleTaskManager _scheduletaskManager;
 
         /// <summary>
@@ -49,6 +52,7 @@ namespace GYISMS.ScheduleTasks
             , IRepository<VisitTask> visitTaskRepository
             , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
             , IRepository<Grower> growerRepository
+            , IRepository<VisitRecord, Guid> visitRecordRepository
             )
         {
             _scheduletaskRepository = scheduletaskRepository;
@@ -57,6 +61,7 @@ namespace GYISMS.ScheduleTasks
             _scheduletaskManager = scheduletaskManager;
             _visitTaskRepository = visitTaskRepository;
             _growerRepository = growerRepository;
+            _visitRecordRepository = visitRecordRepository;
 
         }
 
@@ -337,9 +342,30 @@ namespace GYISMS.ScheduleTasks
             return taskDto;
         }
 
-        public Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleTaskId)
+        [AbpAllowAnonymous]
+        public async Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleDetailId)
         {
-            throw new NotImplementedException();
+            //详情
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        where sd.Id == scheduleDetailId
+                        select new DingDingVisitGrowerDetailDto()
+                        {
+                            Id = sd.Id,
+                            TaskNam = t.Name,
+                            TaskType = t.Type,
+                            GrowerId = sd.GrowerId,
+                            VisitNum = sd.VisitNum,
+                            CompleteNum = sd.CompleteNum
+                        };
+
+            var taskDetailDto = await query.FirstOrDefaultAsync();
+            taskDetailDto.GrowerInfo = (await _growerRepository.GetAsync(taskDetailDto.GrowerId.Value)).MapTo<GrowerListDto>();
+            taskDetailDto.VisitRecords = (await _visitRecordRepository.GetAll()
+                                              .Where(v => v.ScheduleDetailId == scheduleDetailId)
+                                              .OrderBy(v => v.CreationTime)
+                                              .ToListAsync()).MapTo<List<DingDingVisitRecordDto>>();
+            return taskDetailDto;
         }
 
         #endregion

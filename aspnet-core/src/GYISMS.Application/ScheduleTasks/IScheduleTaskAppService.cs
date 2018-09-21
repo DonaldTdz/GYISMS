@@ -44,7 +44,7 @@ namespace GYISMS.ScheduleTasks
 
         Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId);
 
-        Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleTaskId);
+        Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleDetailId);
 
         Task<List<ScheduleTaskListDto>> GetScheduleTasksNoPageAsync(Guid id);
         Task VisitTaskDeleteByIdAsync(ScheduleTaskEditDto input);
