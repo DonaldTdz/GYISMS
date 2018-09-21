@@ -10,7 +10,7 @@ namespace GYISMS.MeetingRooms
     /// 会议室
     /// </summary>
     [Table("MeetingRooms")]
-    public class MeetingRoom : AuditedEntity<int>
+    public class MeetingRoom : AuditedEntity, ISoftDelete
     {
         /// <summary>
         /// 会议室名称
@@ -99,7 +99,7 @@ namespace GYISMS.MeetingRooms
         /// <summary>
         /// 是否删除
         /// </summary>
-        public virtual bool? IsDeleted { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
         ///// <summary>
         ///// CreationTime

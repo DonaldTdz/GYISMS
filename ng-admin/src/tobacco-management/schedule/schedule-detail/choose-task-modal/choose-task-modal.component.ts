@@ -73,17 +73,18 @@ export class ChooseTaskModalComponent implements OnInit {
         this.eloading = true;
         let params: any = {};
         params.SkipCount = this.q.pi;
-        params.MaxResultCount = this.q.ps;
-        params.Name = this.q.name;
-        this.taskService.getVisitTaskList(params).subscribe((result: PagedResultDtoOfVisitTask) => {
+        params.ScheduleId = this.scheduleId;
+        this.taskService.getVisitTaskListWithStatus(params).subscribe((result: VisitTask[]) => {
             this.eloading = false;
-            this.taskList = result.items;
+            this.taskList = result;
             this.taskList.map(v => {
-                v.checked = false;
+                if (!v.visitNum) {
+                    v.visitNum = 1;
+                }
+                if (v.isChecked == false)
+                    v.checked = false;
+                else v.checked = true;
             });
-            // console.log(this.taskList);
-
-            this.q.total = result.totalCount;
         });
     }
 
@@ -105,19 +106,24 @@ export class ChooseTaskModalComponent implements OnInit {
             //this.scheduleTask.scheduleId = this.scheduleId;
             //this.scheduleTaskList.push(ScheduleTask.fromJS(v));
             //});
+            console.log(visitTaskList);
+
             this.scheduleTaskList = ScheduleTask.fromVisitTaskJSArray(visitTaskList, this.scheduleId);
             this.eloading = true;
             this.successMsg = '保存成功';
             this.saveTaskInfo();
         }
-        this.modalSelect.emit(visitTaskList);
-        this.isVisible = false;
+        // this.modalSelect.emit(visitTaskList);
     }
 
     saveTaskInfo() {
+        console.log(this.scheduleTaskList);
+
         this.taskService.updateScheduleTask(this.scheduleTaskList).finally(() => { this.eloading = false; })
             .subscribe((result: any) => {
                 this.scheduleTaskList = result;
+                this.modalSelect.emit();
+                this.isVisible = false;
             });
     }
 }

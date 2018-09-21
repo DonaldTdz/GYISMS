@@ -23,12 +23,14 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     validateForm: FormGroup;
     schedule: Schedule = new Schedule();
     scheduleTask: ScheduleTask = new ScheduleTask();
+    scheduleTaskList: ScheduleTask[] = [];
     types: any[] = [{ text: '每月', value: 1 }, { text: '每周', value: 2 }, { text: '每日', value: 3 }];
     isConfirmLoading = false;
     successMsg = '';
     confirmModal: NzModalRef;
     isDelete = false;
     isPush = true;
+    isSaved = false;
     taskList: VisitTask[] = [];
     loading = false;
 
@@ -52,13 +54,15 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     }
 
     getTaskList() {
-        let params: any = {};
-        params.SkipCount = this.query.skipCount();
-        params.MaxResultCount = this.query.pageSize;
-        this.taskService.getVisitTaskListNoPage(params).subscribe((result: VisitTask[]) => {
+        // let params: any = {};
+        // params.SkipCount = this.query.skipCount();
+        // params.MaxResultCount = this.query.pageSize;
+        this.taskService.getScheduleTaskListNoPage(this.schedule.id).subscribe((result: ScheduleTask[]) => {
             this.loading = false;
-            this.taskList = result;
-        })
+            this.scheduleTaskList = result;
+            console.log(this.scheduleTaskList);
+
+        });
     }
 
     getScheduleInfo() {
@@ -69,13 +73,14 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 this.schedule = result;
                 this.isPush = result.status == 1 ? false : true;
                 this.isDelete = true;
-                if (this.isPush) {
-                    // this.getTaskList();
-                }
+                // if (!this.isPush) {
+                this.getTaskList();
+                this.isSaved = true;
+                // }
             });
         } else {
             //新增
-            this.schedule.type = 3;
+            this.schedule.type = 1;
         }
     }
 
@@ -86,11 +91,21 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         if (this.validateForm.valid) {
             this.isConfirmLoading = true;
             if (this.schedule.type == 3) {
-                this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
-                this.schedule.endTime = this.dateFormat(this.schedule.beginTime);
-            } else {
-                this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
-                this.schedule.endTime = this.dateFormat(this.schedule.endTime);
+                if (this.schedule.beginTime)
+                    this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
+                else
+                    this.schedule.beginTime = null;
+                this.schedule.endTime = this.schedule.beginTime;
+            } else {// type =1
+                if (this.schedule.beginTime)
+                    this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
+                else
+                    this.schedule.beginTime = null;
+                if (this.schedule.endTime)
+                    this.schedule.endTime = this.dateFormat(this.schedule.endTime);
+                else
+                    this.schedule.endTime = null;
+
             }
             this.successMsg = isPulish == false ? '保存成功！' : '发布成功！';
             if (!this.schedule.beginTime) {
@@ -99,11 +114,14 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             if (!this.schedule.endTime) {
                 this.schedule.endTime = null;
             }
-            this.saveScheduleInfo();
+            this.saveScheduleInfo(isPulish);
         }
     }
 
-    saveScheduleInfo() {
+    saveScheduleInfo(isPulish: boolean) {
+        if (isPulish == false) {
+            this.schedule.status = 0;
+        }
         this.scheduleService.updateScheduleInfo(this.schedule).finally(() => { this.isConfirmLoading = false; })
             .subscribe((result: any) => {
                 this.schedule = result;
@@ -116,10 +134,9 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 this.isDelete = true;
                 this.isPush = result.status == 1 ? false : true;
                 this.notify.info(this.l(this.successMsg));
+                this.isSaved = true;
+                this.getTaskList();
             });
-        if (!this.isPush) {
-            this.getTaskList();
-        }
     }
     push() {
         this.confirmModal = this.modal.confirm({
@@ -147,24 +164,26 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     /**
      * 模态框返回
      */
-    getSelectData = (visitTask?: VisitTask[]) => {
-        visitTask.forEach(v => {
-            if (!this.existsTask(v.id)) {
-                this.taskList.push(...visitTask);
-            }
-        });
+    // getSelectData = (visitTask?: VisitTask[]) => {
+    getSelectData = () => {
+        // visitTask.forEach(v => {
+        //     if (!this.existsTask(v.id)) {
+        //         this.taskList.push(...visitTask);
+        //     }
+        // });
+        this.getTaskList();
     }
 
-    existsTask(id: number): boolean {
-        let bo = false;
-        this.taskList.forEach(v => {
-            if (v.id == id) {
-                bo = true;
-                return;
-            }
-        });
-        return bo;
-    }
+    // existsTask(id: number): boolean {
+    //     let bo = false;
+    //     this.taskList.forEach(v => {
+    //         if (v.id == id) {
+    //             bo = true;
+    //             return;
+    //         }
+    //     });
+    //     return bo;
+    // }
 
     showModal(): void {
         this.selectTaskModal.show(this.schedule.id);
@@ -174,14 +193,23 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         this.selectEmployeeModal.show();
     }
 
-    deleteTask(id: number) {
-        let i = 0;
-        this.taskList.forEach(v => {
-            if (v.id == id) {
-                this.taskList.splice(i, 1);
-                return;
+    deleteTask(data: ScheduleTask) {
+        // let i = 0;
+        // this.taskList.forEach(v => {
+        //     if (v.id == id) {
+        //         this.taskList.splice(i, 1);
+        //         return;
+        //     }
+        //     i++;
+        // });
+        this.confirmModal = this.modal.confirm({
+            nzContent: '是否删除指派任务?',
+            nzOnOk: () => {
+                this.taskService.deleteScheduleTask(data).subscribe(() => {
+                    this.notify.info(this.l('删除成功！'));
+                    this.getTaskList();
+                });
             }
-            i++;
         });
     }
 

@@ -80,7 +80,7 @@
             </div>
         </form>
 
-        <form *ngIf="isPush" nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
+        <form *ngIf="isSaved" nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
             <div nz-row [nzGutter]="24">
                 <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                     <button nz-button type="button" (click)="showModal(null)" nzType="primary">
@@ -91,24 +91,26 @@
             </div>
         </form>
         <!-- <ng-template *ngIf="isPush" #totalTemplate let-total>共 {{query.total}} 条</ng-template> -->
-        <nz-table *ngIf="isPush" #nzTable [nzData]="taskList" [nzShowPagination]="false" [nzFrontPagination]="false" [nzLoading]="loading">
+        <nz-table *ngIf="isSaved" #nzTable [nzData]="scheduleTaskList" [nzShowPagination]="false" [nzFrontPagination]="false" [nzLoading]="loading">
             <thead>
                 <tr>
                     <th>任务名称</th>
                     <th>任务类型</th>
                     <th>是否考核</th>
+                    <th>默认拜访次数</th>
                     <th>操作</th>
                 </tr>
             </thead>
             <tbody>
                 <tr *ngFor="let data of nzTable.data">
-                    <td>{{data.name}}</td>
+                    <td>{{data.taskName}}</td>
                     <td>{{data.typeName}}</td>
                     <td>{{data.isExamine == true?"是":"否"}}</td>
+                    <td>{{data.visitNum}}</td>
                     <td>
                         <a (click)="assignTask(data.id)">指派任务</a>
                         <nz-divider nzType="vertical"></nz-divider>
-                        <a (click)="deleteTask(data.id)">移除任务</a>
+                        <a (click)="deleteTask(data)">移除任务</a>
                     </td>
                 </tr>
             </tbody>

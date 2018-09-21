@@ -3,6 +3,7 @@
 using Abp.Runtime.Validation;
 using GYISMS.Dtos;
 using GYISMS.VisitTasks;
+using System;
 
 namespace GYISMS.VisitTasks.Dtos
 {
@@ -12,8 +13,8 @@ namespace GYISMS.VisitTasks.Dtos
 		 /// 模糊搜索使用的关键字
 		 ///</summary>
         public string Name { get; set; }
-
-
+        public string[] Ids { get; set; }
+        public Guid ScheduleId { get; set; }
 		//// custom codes
  
         //// custom codes end
