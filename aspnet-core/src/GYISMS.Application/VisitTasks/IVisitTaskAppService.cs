@@ -45,7 +45,7 @@ namespace GYISMS.VisitTasks
         Task BatchDeleteVisitTasksAsync(List<int> input);
         Task VisitTaskDeleteByIdAsync(VisitTaskEditDto input);
         Task<VisitTaskListDto> GetVisitTaskByIdAsync(int id);
-        Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsycn(VisitTaskEditDto input);
+        Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsync(VisitTaskEditDto input);
         Task<List<VisitTaskListDto>> GetVisitTasksListAsync(GetVisitTasksInput input);
         Task<List<VisitTaskListDto>> GetVisitTasksWithStatusAsync(GetVisitTasksInput input);
     }

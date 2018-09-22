@@ -34,6 +34,17 @@ export class GrowerServiceProxy {
         });
     }
 
+    getGrowerListNoPageAsync(params: any): Observable<Grower[]> {
+        let url_ = "/api/services/app/Grower/GetGrowersNoPageAsync";
+        return this._gyhttp.get(url_, params).map(data => {
+            if (data) {
+                return Grower.fromJSArray(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
     updateGrowerInfo(room: any): Observable<Grower> {
         let url_ = "/api/services/app/Grower/CreateOrUpdateGrowerAsycn";
         return this._gyhttp.post(url_, room).map(data => {

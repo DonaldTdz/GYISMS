@@ -12,8 +12,8 @@
                         <ul>
                             <li nz-submenu>
                                 <span title>
-                                                <label nz-checkbox [(ngModel)]="checked">昭化区</label>
-                                            </span>
+                                    <label nz-checkbox [(ngModel)]="checked">昭化区</label>
+                                </span>
                                 <ul>
                                     <li nz-menu-item>
                                         <label nz-checkbox [(ngModel)]="checked">Option 1</label></li>
@@ -40,27 +40,36 @@
             </div>
         </div>
         <div nz-col nzSpan="16">
-            <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-            <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total" [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
-                (nzPageSizeChange)="refreshData(tempNode)">
+            <!-- <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
+            <nz-table #nzTable [nzFrontPagination]="true" [nzShowTotal]="totalTemplate" [nzTotal]="query.total" [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
+                (nzPageSizeChange)="refreshData(tempNode)"> -->
+            <nz-table #nzTable [nzData]="growerList" [nzShowPagination]="false" [nzScroll]="{ y: '700px' }">
+
                 <thead>
                     <tr>
-                        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th>
+                        <!-- <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate" (nzCheckedChange)="checkAll($event)"></th> -->
+                        <th nz-th>
+                            <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">
+                                </label>
+                        </th>
                         <th>姓名</th>
-                        <th>职位</th>
+                        <th>单位名称</th>
                         <th>电话号码</th>
                         <th>拜访次数</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of nzTable.data">
-                        <td nzShowCheckbox (nzCheckedChange)="refreshStatus($event)"></td>
-
+                        <!-- <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshData($event)"></td> -->
+                        <td nz-td>
+                            <label nz-checkbox [(ngModel)]="item.checked" (ngModelChange)="isCancelCheck($event)">
+                                </label>
+                        </td>
                         <td>{{item.name}}</td>
-                        <td>{{item.position}}</td>
-                        <td>{{item.mobile}}</td>
+                        <td>{{item.unitName}}</td>
+                        <td>{{item.tel}}</td>
                         <td>
-                            <input nz-input style="width:55px;">
+                            <nz-input-number [nzPrecision]="0" [(ngModel)]="item.visitNum" [nzMin]="0"></nz-input-number>
                         </td>
                     </tr>
                 </tbody>
@@ -68,3 +77,11 @@
         </div>
     </div>
 </nz-card>
+<footer-toolbar>
+    <button nz-button [nzType]="'default'" (click)="return()">
+            {{l("返回")}}
+        </button>
+    <button nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading">
+            {{l("保存")}}
+        </button>
+</footer-toolbar>

@@ -23,8 +23,7 @@
             <nz-table #nzTable [nzShowSizeChanger]="true" [nzData]="taskList" [nzShowPagination]="false" [nzLoading]="eloading" [nzShowSizeChanger]="true">
                 <thead>
                     <tr>
-                        <th nz-th>
-                            <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">
+                        <th nz-th> <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">
                             </label>
                         </th>
                         <th nz-th>
@@ -43,27 +42,30 @@
                 </thead>
                 <tbody>
                     <tr nz-tbody-tr *ngFor="let item of nzTable.data">
-                        <td nz-td>
+                        <td>
                             <label nz-checkbox [(ngModel)]="item.checked" (ngModelChange)="isCancelCheck($event)">
-                                </label>
+                            </label>
                         </td>
-                        <td nz-td>{{item.name | lengthLimit:8}}</td>
+                        <td>{{item.name | lengthLimit:8}}</td>
                         <td>{{item.typeName}}</td>
                         <td>{{item.isExamine == true?"是":"否"}}</td>
                         <td>
-                            <input nz-input style="width:85px;" [(ngModel)]="item.visitNum">
+                            <nz-input-number [nzPrecision]="0" [(ngModel)]="item.visitNum" [nzMin]="0"></nz-input-number>
                         </td>
                     </tr>
                 </tbody>
             </nz-table>
+            <div style="float: right;margin-top: 5px;">
+                共{{taskList.length}}条
+            </div>
         </nz-card>
     </ng-template>
     <ng-template #modalFooter>
         <button nz-button [nzType]="'default'" type="button" (click)="handleCancel($event)">
-                取消
-            </button>
+            取消
+        </button>
         <button nz-button [nzType]="'primary'" type="button" (click)="SelectTask()" [nzLoading]="eloading">
-                    选择返回
-                </button>
+            选择返回
+        </button>
     </ng-template>
 </nz-modal>

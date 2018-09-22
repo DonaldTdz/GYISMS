@@ -45,14 +45,6 @@ namespace GYISMS.ScheduleDetails
 
 
         /// <summary>
-        /// 添加或者修改ScheduleDetail的公共方法
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        Task CreateOrUpdateScheduleDetail(CreateOrUpdateScheduleDetailInput input);
-
-
-        /// <summary>
         /// 删除ScheduleDetail信息的方法
         /// </summary>
         /// <param name="input"></param>
@@ -65,9 +57,6 @@ namespace GYISMS.ScheduleDetails
         /// </summary>
         Task BatchDeleteScheduleDetailsAsync(List<Guid> input);
 
-
-		//// custom codes
-		 
-        //// custom codes end
+        Task<List<ScheduleDetailEditDto>> CreateOrUpdateScheduleTaskAsync(List<ScheduleDetailEditDto> input);
     }
 }

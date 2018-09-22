@@ -19,7 +19,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     @ViewChild('selectTaskModal') selectTaskModal: ChooseTaskModalComponent;
     @ViewChild('selectEmployeeModal') selectEmployeeModal: ChooseEmployeeModalComponent;
 
-    id: number;
+    id: string;
     validateForm: FormGroup;
     schedule: Schedule = new Schedule();
     scheduleTask: ScheduleTask = new ScheduleTask();
@@ -60,8 +60,6 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         this.taskService.getScheduleTaskListNoPage(this.schedule.id).subscribe((result: ScheduleTask[]) => {
             this.loading = false;
             this.scheduleTaskList = result;
-            console.log(this.scheduleTaskList);
-
         });
     }
 
@@ -105,7 +103,6 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                     this.schedule.endTime = this.dateFormat(this.schedule.endTime);
                 else
                     this.schedule.endTime = null;
-
             }
             this.successMsg = isPulish == false ? '保存成功！' : '发布成功！';
             if (!this.schedule.beginTime) {
@@ -217,8 +214,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         this.router.navigate(['app/task/schedule']);
     }
 
-    assignTask(id: number) {
-        console.log(id);
-        this.router.navigate(['app/task/assign-task']);
+    assignTask(id: number, taskId: string, visitNum: number) {
+        let scheduleId: string = this.id;            //计划Id
+        this.router.navigate(['app/task/assign-task', id, taskId, visitNum, scheduleId]);
     }
 }

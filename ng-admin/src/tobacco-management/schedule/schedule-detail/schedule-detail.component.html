@@ -108,13 +108,16 @@
                     <td>{{data.isExamine == true?"是":"否"}}</td>
                     <td>{{data.visitNum}}</td>
                     <td>
-                        <a (click)="assignTask(data.id)">指派任务</a>
+                        <a (click)="assignTask(data.id,data.taskId,data.visitNum)">指派任务</a>
                         <nz-divider nzType="vertical"></nz-divider>
                         <a (click)="deleteTask(data)">移除任务</a>
                     </td>
                 </tr>
             </tbody>
         </nz-table>
+        <div *ngIf="isSaved" style="float: right;margin-top: 5px;">
+            共{{scheduleTaskList.length}}条
+        </div>
         <footer-toolbar errorCollect>
             <button nz-button [nzType]="'default'" (click)="return()">
                 {{l("返回")}}
@@ -132,4 +135,4 @@
     </nz-card>
 </nz-card>
 <choose-task-modal #selectTaskModal (modalSelect)="getSelectData($event)"></choose-task-modal>
-<choose-employee-modal #selectEmployeeModal (modalSelect)="getSelectData($event)"></choose-employee-modal>
+<!-- <choose-employee-modal #selectEmployeeModal (modalSelect)="getSelectData($event)"></choose-employee-modal> -->
