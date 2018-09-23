@@ -22,6 +22,10 @@ using GYISMS.Schedules;
 using GYISMS.ScheduleDetails;
 using GYISMS.VisitTasks;
 using GYISMS.GYEnums;
+using GYISMS.Growers;
+using GYISMS.TaskExamines;
+using GYISMS.VisitRecords;
+using GYISMS.Growers.Dtos;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -35,6 +39,8 @@ namespace GYISMS.ScheduleTasks
         private readonly IRepository<Schedule, Guid> _scheduleRepository;
         private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
         private readonly IRepository<VisitTask> _visitTaskRepository;
+        private readonly IRepository<Grower> _growerRepository;
+        private readonly IRepository<VisitRecord, Guid> _visitRecordRepository;
         private readonly IScheduleTaskManager _scheduletaskManager;
 
         /// <summary>
@@ -45,6 +51,8 @@ namespace GYISMS.ScheduleTasks
             , IRepository<Schedule, Guid> scheduleRepository
             , IRepository<VisitTask> visitTaskRepository
             , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
+            , IRepository<Grower> growerRepository
+            , IRepository<VisitRecord, Guid> visitRecordRepository
             )
         {
             _scheduletaskRepository = scheduletaskRepository;
@@ -52,6 +60,9 @@ namespace GYISMS.ScheduleTasks
             _scheduleDetailRepository = scheduleDetailRepository;
             _scheduletaskManager = scheduletaskManager;
             _visitTaskRepository = visitTaskRepository;
+            _growerRepository = growerRepository;
+            _visitRecordRepository = visitRecordRepository;
+
         }
 
 
@@ -116,13 +127,9 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         protected virtual async Task<ScheduleTaskEditDto> CreateScheduleTaskAsync(ScheduleTaskEditDto input)
         {
-            //TODO:新增前的逻辑判断，是否允许新增
-            if (input.VisitNum == null)
-            {
-                input.VisitNum = 5;
-            }
             var entity = ObjectMapper.Map<ScheduleTask>(input);
-            entity.CreationTime = DateTime.Now;
+            entity.IsDeleted = false;
+            //entity.CreationTime = DateTime.Now;
             entity = await _scheduletaskRepository.InsertAsync(entity);
             return entity.MapTo<ScheduleTaskEditDto>();
         }
@@ -136,7 +143,7 @@ namespace GYISMS.ScheduleTasks
 
             var entity = await _scheduletaskRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
-
+            entity.IsDeleted = false;
             // ObjectMapper.Map(input, entity);
             var result = await _scheduletaskRepository.UpdateAsync(entity);
             return result.MapTo<ScheduleTaskEditDto>();
@@ -173,16 +180,21 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input)
+        public async Task<List<ScheduleTaskEditDto>> CreateOrUpdateScheduleTaskAsync(List<ScheduleTaskEditDto> input)
         {
-            if (input.Id.HasValue)
+            List<ScheduleTaskEditDto> list = new List<ScheduleTaskEditDto>();
+            foreach (var item in input)
             {
-                return await UpdateScheduleTaskAsync(input);
+                if (item.Id.HasValue)
+                {
+                    list.Add(await UpdateScheduleTaskAsync(item));
+                }
+                else
+                {
+                    list.Add(await CreateScheduleTaskAsync(item));
+                }
             }
-            else
-            {
-                return await CreateScheduleTaskAsync(input);
-            }
+            return list;
         }
 
         /// <summary>
@@ -194,11 +206,55 @@ namespace GYISMS.ScheduleTasks
             return entity.MapTo<ScheduleTaskListDto>();
         }
 
+        /// 计划任务列表不分页
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<List<ScheduleTaskListDto>> GetScheduleTasksNoPageAsync(Guid id)
+        {
+            var scheduleTask = _scheduletaskRepository.GetAll().Where(v => v.ScheduleId == id && v.IsDeleted == false);
+            var visitTask = _visitTaskRepository.GetAll();
+            var query = await (from st in scheduleTask
+                               join vt in visitTask on st.TaskId equals vt.Id
+                               select new ScheduleTaskListDto()
+                               {
+                                   Id = st.Id,
+                                   TaskName = st.TaskName,
+                                   IsExamine = vt.IsExamine,
+                                   TypeName = vt.Type.ToString(),
+                                   TaskId = vt.Id,
+                                   ScheduleId = st.ScheduleId,
+                                   VisitNum = st.VisitNum,
+                                   IsDeleted = st.IsDeleted,
+                                   CreationTime = st.CreationTime,
+                                   CreatorUserId = st.CreatorUserId,
+                                   LastModificationTime = st.LastModificationTime,
+                                   LastModifierUserId = st.LastModifierUserId,
+                               }).OrderByDescending(v => v.TypeName).ThenByDescending(v => v.IsExamine).AsNoTracking().ToListAsync();
+            return query;
+        }
+
+        /// <summary>
+        /// 删除指派任务
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task VisitTaskDeleteByIdAsync(ScheduleTaskEditDto input)
+        {
+            var entity = await _scheduletaskRepository.GetAsync(input.Id.Value);
+            entity.IsDeleted = true;
+            entity.DeletionTime = DateTime.Now;
+            entity.DeleterUserId = AbpSession.UserId;
+            await _scheduletaskRepository.UpdateAsync(entity);
+        }
+
+        #region 钉钉客户端
+
         /// <summary>
         /// 获取钉钉用户任务列表
         /// </summary>
         [AbpAllowAnonymous]
-        public async Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsycn(string userId)
+        public async Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsync(string userId)
         {
             var query = from st in _scheduletaskRepository.GetAll()
                         join sd in _scheduleDetailRepository.GetAll() on st.Id equals sd.ScheduleTaskId
@@ -216,7 +272,7 @@ namespace GYISMS.ScheduleTasks
                             sd.VisitNum,
                             sd.CompleteNum
                         };
-            
+
             var taskList = from ts in (from q in query
                                        group q by new { q.Id, q.ScheduleId, q.Type, q.Name } into qg
                                        select new
@@ -240,9 +296,81 @@ namespace GYISMS.ScheduleTasks
                                EndTime = s.EndTime
                            };
 
-            var dataList = taskList.ToList();
-            return await Task.FromResult(dataList.OrderBy(d => d.EndDay).ToList());
+            var dataList = await taskList.ToListAsync();
+            return dataList.OrderBy(d => d.EndDay).ToList();
         }
+
+        /// <summary>
+        ///获取任务详情
+        /// </summary>
+        [AbpAllowAnonymous]
+        public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId)
+        {
+            //基本信息
+            var query = from st in _scheduletaskRepository.GetAll()
+                        join s in _scheduleRepository.GetAll() on st.ScheduleId equals s.Id
+                        join t in _visitTaskRepository.GetAll() on st.TaskId equals t.Id
+                        where st.Id == scheduleTaskId
+                        select new DingDingTaskDto()
+                        {
+                            Id = st.Id,
+                            BeginTime = s.BeginTime,
+                            EndTime = s.EndTime,
+                            ScheduleTitle = s.Name,
+                            TaskNam = st.TaskName,
+                            TaskType = t.Type
+                        };
+            var taskDto = await query.FirstOrDefaultAsync();
+
+            //烟农信息
+            var growerQuery = from sd in _scheduleDetailRepository.GetAll()
+                              join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                              where sd.ScheduleTaskId == scheduleTaskId
+                              select new DingDingTaskGrowerDto()
+                              {
+                                  Id = sd.Id,
+                                  CompleteNum = sd.CompleteNum,
+                                  GrowerName = sd.GrowerName,
+                                  VisitNum = sd.VisitNum,
+                                  UnitName = g.UnitName
+                              };
+            taskDto.Growers = await growerQuery.ToListAsync();
+
+            taskDto.VisitTotal = taskDto.Growers.Sum(g => g.VisitNum).Value;
+            taskDto.CompleteNum = taskDto.Growers.Sum(g => g.CompleteNum).Value;
+            
+            return taskDto;
+        }
+
+        [AbpAllowAnonymous]
+        public async Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleDetailId)
+        {
+            //详情
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        where sd.Id == scheduleDetailId
+                        select new DingDingVisitGrowerDetailDto()
+                        {
+                            Id = sd.Id,
+                            TaskNam = t.Name,
+                            TaskType = t.Type,
+                            GrowerId = sd.GrowerId,
+                            VisitNum = sd.VisitNum,
+                            CompleteNum = sd.CompleteNum
+                        };
+
+            var taskDetailDto = await query.FirstOrDefaultAsync();
+            taskDetailDto.GrowerInfo = (await _growerRepository.GetAsync(taskDetailDto.GrowerId.Value)).MapTo<GrowerListDto>();
+            taskDetailDto.VisitRecords = (await _visitRecordRepository.GetAll()
+                                              .Where(v => v.ScheduleDetailId == scheduleDetailId)
+                                              .OrderBy(v => v.CreationTime)
+                                              .ToListAsync()).MapTo<List<DingDingVisitRecordDto>>();
+            return taskDetailDto;
+        }
+
+        #endregion
+
+        
     }
 }
 

@@ -15,7 +15,10 @@ export class VisitTask implements IVisitTask {
     deleterUserId: number;
     typeName: string;
     taskExamineList: TaskExamine[];
-
+    checked: boolean;
+    visitNum: number;
+    isChecked: boolean;
+    scheduleTaskId: string;
     constructor(data?: IVisitTask) {
         if (data) {
             for (var property in data) {
@@ -23,6 +26,10 @@ export class VisitTask implements IVisitTask {
                     (<any>this)[property] = (<any>data)[property];
             }
         }
+    }
+
+    get taskName() {
+        return this.name;
     }
 
     init(data?: any) {
@@ -41,6 +48,9 @@ export class VisitTask implements IVisitTask {
             this.deletionTime = data["deletionTime"];
             this.deleterUserId = data["deleterUserId"];
             this.taskExamineList = data["taskExamineList"];
+            this.isChecked = data["isChecked"];
+            this.visitNum = data["visitNum"];
+            this.scheduleTaskId = data["scheduleTaskId"];
         }
     }
 
@@ -77,6 +87,7 @@ export class VisitTask implements IVisitTask {
         data["deletionTime"] = this.deletionTime;
         data["deleterUserId"] = this.deleterUserId;
         data["taskExamineList"] = this.taskExamineList;
+        data["scheduleTaskId"] = this.scheduleTaskId;
         return data;
     }
 
@@ -102,4 +113,8 @@ export interface IVisitTask {
     deletionTime: Date;
     deleterUserId: number;
     taskExamineList: TaskExamine[];
+    checked: boolean;
+    visitNum: number;
+    isChecked: boolean;
+    scheduleTaskId: string;
 }

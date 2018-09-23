@@ -8,7 +8,7 @@ using GYISMS.ScheduleDetails;
 
 namespace GYISMS.ScheduleDetails.Dtos
 {
-    public class ScheduleDetailEditDto
+    public class ScheduleDetailEditDto:IHasCreationTime
     {
         /// <summary>
         /// Id
@@ -34,7 +34,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// EmployeeId
         /// </summary>
         [Required(ErrorMessage = "EmployeeId不能为空")]
-        public long EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// <summary>
         /// CreationTime
         /// </summary>
-        public DateTime? CreationTime { get; set; }
+        public DateTime CreationTime { get; set; }
 
         public ScheduleStatusEnum Status { get; set; }
 
@@ -69,7 +69,5 @@ namespace GYISMS.ScheduleDetails.Dtos
         public string EmployeeName { get; set; }
 
         public string GrowerName { get; set; }
-
-
     }
 }

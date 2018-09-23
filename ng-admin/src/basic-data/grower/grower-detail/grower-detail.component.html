@@ -102,7 +102,7 @@
                                     <button nz-button nzType="primary" disabled nzSearch>亩</button>
                                 </ng-template>
                             </nz-input-group>
-                            <nz-form-explain *ngIf="validateForm.get('plantingArea').dirty&&validateForm.get('plantingArea').hasError('pattern')">请输入整数(两位精度)，如50.00</nz-form-explain>
+                            <nz-form-explain *ngIf="validateForm.get('plantingArea').dirty&&validateForm.get('plantingArea').hasError('pattern')">请输入非负数(最大两位精度)，如50.00</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item>
                     <nz-form-item nz-row>

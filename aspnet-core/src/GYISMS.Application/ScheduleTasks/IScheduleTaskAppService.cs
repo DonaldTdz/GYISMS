@@ -36,8 +36,18 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         Task BatchDeleteScheduleTasksAsync(List<Guid> input);
 
-        Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input);
+        //Task<ScheduleTaskEditDto> CreateOrUpdateScheduleTaskAsycn(ScheduleTaskEditDto input);
+        Task<List<ScheduleTaskEditDto>> CreateOrUpdateScheduleTaskAsync(List<ScheduleTaskEditDto> input);
 
-        Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsycn(string userId);
+
+        Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsync(string userId);
+
+        Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId);
+
+        Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleDetailId);
+
+        Task<List<ScheduleTaskListDto>> GetScheduleTasksNoPageAsync(Guid id);
+        Task VisitTaskDeleteByIdAsync(ScheduleTaskEditDto input);
+
     }
 }

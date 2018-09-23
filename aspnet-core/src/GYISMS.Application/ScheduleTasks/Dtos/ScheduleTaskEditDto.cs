@@ -2,19 +2,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.ScheduleTasks;
 
 namespace GYISMS.ScheduleTasks.Dtos
 {
-    public class ScheduleTaskEditDto
+    public class ScheduleTaskEditDto : AuditedEntityDto<Guid?>
     {
-        /// <summary>
-        /// Id
-        /// </summary>
-        public Guid? Id { get; set; }
-
-
         /// <summary>
         /// TaskId
         /// </summary>
@@ -35,16 +30,22 @@ namespace GYISMS.ScheduleTasks.Dtos
         /// </summary>
         public int? VisitNum { get; set; }
 
+        /// <summary>
+        /// IsDeleted
+        /// </summary>
+        public bool? IsDeleted { get; set; }
+
 
         /// <summary>
-        /// CreationTime
+        /// DeletionTime
         /// </summary>
-        public DateTime? CreationTime { get; set; }
+        public DateTime? DeletionTime { get; set; }
 
+        //public DateTime? CreationTime { get; set; }
 
-
-        //// custom codes
-
-        //// custom codes end
+        /// <summary>
+        /// DeleterUserId
+        /// </summary>
+        public long? DeleterUserId { get; set; }
     }
 }

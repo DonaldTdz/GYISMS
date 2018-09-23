@@ -60,7 +60,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             // longitude: [null, Validators.compose([Validators.pattern(/^[\-\+]?(0?\d{1,2}\.\d{1,5}|1[0-7]?\d{1}\.\d{1,5}|180\.0{1,5})$/)])],
             longitude: null,
             latitude: null,
-            plantingArea: [null, Validators.compose([Validators.pattern(/(?!\.00)(\d+\.\d{2}$)/)])],
+            plantingArea: [null, Validators.compose([Validators.pattern(/^(?:[1-9]\d*|0)(?:\.\d{1,2})?$/)])],
             countyCode: null,
             contractTime: null,
             type: null

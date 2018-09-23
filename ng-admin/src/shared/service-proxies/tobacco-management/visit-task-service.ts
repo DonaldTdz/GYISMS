@@ -9,7 +9,7 @@ import { ApiResult } from '@shared/service-proxies/entity/parameter';
 import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
-import { VisitTask, TaskExamine } from '@shared/entity/tobacco-management';
+import { VisitTask, TaskExamine, ScheduleTask } from '@shared/entity/tobacco-management';
 
 @Injectable()
 export class VisitTaskServiceProxy {
@@ -33,11 +33,22 @@ export class VisitTaskServiceProxy {
             }
         });
     }
-    getVisitTaskListNoPage(params: any): Observable<VisitTask[]> {
-        let url_ = "/api/services/app/VisitTask/GetVisitTasksListAsync";
+    getVisitTaskListWithStatus(params: any): Observable<VisitTask[]> {
+        let url_ = "/api/services/app/VisitTask/GetVisitTasksWithStatusAsync";
         return this._gyhttp.get(url_, params).map(data => {
             if (data) {
                 return VisitTask.fromJSArray(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
+    getScheduleTaskListNoPage(id: string): Observable<ScheduleTask[]> {
+        let url_ = "/api/services/app/ScheduleTask/GetScheduleTasksNoPageAsync?id=" + id;
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return ScheduleTask.fromJSArray(data);
             } else {
                 return null;
             }
@@ -78,9 +89,21 @@ export class VisitTaskServiceProxy {
     }
 
     updateTaskInfo(input: any): Observable<any> {
-        console.log(input);
+        let url_ = "/api/services/app/VisitTask/CreateOrUpdateVisitTaskAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data;
+        });
+    }
 
-        let url_ = "/api/services/app/VisitTask/CreateOrUpdateVisitTaskAsycn";
+    updateScheduleTask(input: any): Observable<any> {
+        let url_ = "/api/services/app/ScheduleTask/CreateOrUpdateScheduleTaskAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data;
+        });
+    }
+
+    updateScheduleDetail(input: any): Observable<any> {
+        let url_ = "/api/services/app/ScheduleDetail/CreateOrUpdateScheduleTaskAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data;
         });
@@ -102,6 +125,13 @@ export class VisitTaskServiceProxy {
 
     deleteTaskExamine(input: any): Observable<any> {
         let url_ = "/api/services/app/TaskExamine/TaskExaminesDeleteByIdAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data.result;
+        });
+    }
+
+    deleteScheduleTask(input: any): Observable<any> {
+        let url_ = "/api/services/app/ScheduleTask/VisitTaskDeleteByIdAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data.result;
         });

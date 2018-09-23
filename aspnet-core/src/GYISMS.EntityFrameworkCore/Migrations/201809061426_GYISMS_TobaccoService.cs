@@ -98,7 +98,13 @@ namespace GYISMS.Migrations
                     TaskName = table.Column<string>(maxLength: 200, nullable: true),
                     ScheduleId = table.Column<Guid>(nullable: false),
                     VisitNum = table.Column<int>(nullable: true),
-                    CreationTime = table.Column<DateTime>(nullable: true)
+                    IsDeleted = table.Column<bool>(nullable: true),
+                    CreationTime = table.Column<DateTime>(nullable: true),
+                    CreatorUserId = table.Column<long>(nullable: true),
+                    LastModificationTime = table.Column<DateTime>(nullable: true),
+                    LastModifierUserId = table.Column<long>(nullable: true),
+                    DeletionTime = table.Column<DateTime>(nullable: true),
+                    DeleterUserId = table.Column<long>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -63,7 +63,10 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
             devices: null
         });
         this.getRoomDevices();
-        this.getMeetingRoom();
+        setTimeout(() => {
+            this.getMeetingRoom();
+        }, 500);
+
         this.host = AppConsts.remoteServiceBaseUrl;
     }
 
@@ -83,18 +86,18 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
                 if (result.photo) {
                     this.room.showPhoto = this.host + this.room.photo;
                 }
-                // if (result.devices) {
-                //     this.deviceArry = this.room.devices.split(',');
-                //     let i: number = 0;
-                //     this.deviceList.map(v => {
-                //         if (v.label == this.deviceArry[i]) {
-                //             v.checked = true;
-                //             if (i < this.deviceArry.length) {
-                //                 i++;
-                //             }
-                //         }
-                //     });
-                // }
+                if (result.devices) {
+                    this.deviceArry = this.room.devices.split(',');
+                    let i: number = 0;
+                    this.deviceList.map(v => {
+                        if (v.label == this.deviceArry[i]) {
+                            v.checked = true;
+                            if (i < this.deviceArry.length) {
+                                i++;
+                            }
+                        }
+                    });
+                }
             });
         } else {
             //新增

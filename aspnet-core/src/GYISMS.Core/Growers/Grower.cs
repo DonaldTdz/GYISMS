@@ -8,9 +8,9 @@ namespace GYISMS.Growers
 {
     /// <summary>
     /// 烟农
-    /// </summary>
+    /// </summary
     [Table("Growers")]
-    public class Grower : AuditedEntity<int>
+    public class Grower : AuditedEntity<int>, ISoftDelete
     {
         /// <summary>
         /// 业务年度
@@ -104,7 +104,7 @@ namespace GYISMS.Growers
         /// <summary>
         /// 是否删除
         /// </summary>
-        public virtual bool? IsDeleted { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
         /// <summary>
         /// CreationTime

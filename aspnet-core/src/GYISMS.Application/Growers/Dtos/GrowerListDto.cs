@@ -6,9 +6,11 @@ using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.Growers;
+using Abp.AutoMapper;
 
 namespace GYISMS.Growers.Dtos
 {
+    [AutoMapFrom(typeof(Grower))]
     public class GrowerListDto : EntityDto<int>
     {
 
@@ -145,13 +147,8 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public long? DeleterUserId { get; set; }
 
-
-
-
-
-
-        //// custom codes
-
-        //// custom codes end
+        public Guid? ScheduleDetailId { get; set; }
+        public bool IsChecked { get; set; }
+        public int? VisitNum { get; set; }
     }
 }
