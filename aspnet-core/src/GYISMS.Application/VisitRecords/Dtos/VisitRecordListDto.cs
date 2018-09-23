@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.VisitRecords;
 using Abp.AutoMapper;
+using GYISMS.TaskExamines;
 
 namespace GYISMS.VisitRecords.Dtos
 {
@@ -85,7 +86,7 @@ namespace GYISMS.VisitRecords.Dtos
 
 
     [AutoMapTo(typeof(VisitRecord))]
-    public class DingDingVisitRecordDto
+    public class DingDingVisitRecordInputDto
     {
         public Guid ScheduleDetailId { get; set; }
 
@@ -104,9 +105,21 @@ namespace GYISMS.VisitRecords.Dtos
 
         public string GrowerName { get; set; }
 
-        public long? EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
         public string TaskDesc { get; set; }
 
+        
+        public List<DingDingTaskExamineDto> Examines { get; set; }
+    }
+
+    [AutoMapFrom(typeof(TaskExamine))]
+    public class DingDingTaskExamineDto : EntityDto
+    {
+        public string Name { get; set; }
+
+        public string Desc { get; set; }
+
+        public int Score { get; set; }
     }
 }

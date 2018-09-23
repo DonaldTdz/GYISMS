@@ -24,12 +24,12 @@ namespace GYISMS.VisitExamines
         /// <summary>
         /// 烟农Id 外键
         /// </summary>
-        public virtual string GrowerId { get; set; }
+        public virtual int? GrowerId { get; set; }
 
         /// <summary>
         /// 考核项Id 外键
         /// </summary>
-        public virtual string TaskExamineId { get; set; }
+        public virtual int? TaskExamineId { get; set; }
 
         /// <summary>
         /// 考核得分（优得5分、良得3分、差得1分）

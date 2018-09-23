@@ -87,7 +87,7 @@ namespace GYISMS.ScheduleTasks.Dtos
         {
             get
             {
-                if (EndDay == 1)
+                if (EndDay <= 1)
                 {
                     return "../../image/warn.png";
                 }

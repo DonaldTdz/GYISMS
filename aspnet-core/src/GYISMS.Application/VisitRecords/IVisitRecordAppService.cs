@@ -7,6 +7,7 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GYISMS.VisitRecords.Dtos;
 using GYISMS.VisitRecords;
+using GYISMS.Dtos;
 
 namespace GYISMS.VisitRecords
 {
@@ -65,6 +66,8 @@ namespace GYISMS.VisitRecords
         /// </summary>
         Task BatchDeleteVisitRecordsAsync(List<Guid> input);
 
-        Task<DingDingVisitRecordDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId);
+        Task<DingDingVisitRecordInputDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId);
+
+        Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input);
     }
 }

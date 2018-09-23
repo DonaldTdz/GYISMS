@@ -20,6 +20,9 @@ using GYISMS.VisitRecords;
 using GYISMS.Authorization;
 using GYISMS.ScheduleDetails;
 using GYISMS.VisitTasks;
+using GYISMS.TaskExamines;
+using GYISMS.Dtos;
+using GYISMS.VisitExamines;
 
 namespace GYISMS.VisitRecords
 {
@@ -32,6 +35,8 @@ namespace GYISMS.VisitRecords
         private readonly IRepository<VisitRecord, Guid> _visitrecordRepository;
         private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
         private readonly IRepository<VisitTask> _visitTaskRepository;
+        private readonly IRepository<TaskExamine> _taskExamineRepository;
+        private readonly IRepository<VisitExamine, Guid> _visitExamineRepository;
 
         private readonly IVisitRecordManager _visitrecordManager;
 
@@ -42,12 +47,16 @@ namespace GYISMS.VisitRecords
             IRepository<VisitRecord, Guid> visitrecordRepository
             , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
             , IRepository<VisitTask> visitTaskRepository
+            , IRepository<TaskExamine> taskExamineRepository
+            , IRepository<VisitExamine, Guid> visitExamineRepository
             , IVisitRecordManager visitrecordManager
             )
         {
             _visitrecordRepository = visitrecordRepository;
             _scheduleDetailRepository = scheduleDetailRepository;
             _visitTaskRepository = visitTaskRepository;
+            _taskExamineRepository = taskExamineRepository;
+            _visitExamineRepository = visitExamineRepository;
             _visitrecordManager = visitrecordManager;
         }
 
@@ -193,7 +202,7 @@ visitrecordListDtos
         }
 
         [AbpAllowAnonymous]
-        public async Task<DingDingVisitRecordDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId)
+        public async Task<DingDingVisitRecordInputDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId)
         {
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
@@ -206,15 +215,43 @@ visitrecordListDtos
                             sd.GrowerName,
                             t.Name,
                             t.Type,
-                            t.Desc
+                            t.Desc,
+                            TaskId = t.Id
                         };
             var dmdata = await query.FirstOrDefaultAsync();
-            return new DingDingVisitRecordDto()
+            var result = new DingDingVisitRecordInputDto()
             {
                 ScheduleDetailId = dmdata.Id,
-                //EmployeeId = dmdata.EmployeeId,
-
+                EmployeeId = dmdata.EmployeeId,
+                GrowerId = dmdata.GrowerId,
+                GrowerName = dmdata.GrowerName,
+                TaskDesc = string.Format("{0}（{1}），{2}", dmdata.Name, dmdata.Type.ToString(), dmdata.Desc)
             };
+
+            var examines = await _taskExamineRepository.GetAll().Where(t => t.TaskId == dmdata.TaskId).OrderBy(e => e.Seq).ToListAsync();
+            result.Examines = examines.MapTo<List<DingDingTaskExamineDto>>();
+            return result;
+        }
+
+        [AbpAllowAnonymous]
+        public async Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input)
+        {
+            var vistitRecord = input.MapTo<VisitRecord>();
+            var vrId = await _visitrecordRepository.InsertAndGetIdAsync(vistitRecord);
+            foreach (var item in input.Examines)
+            {
+                var ve = new VisitExamine()
+                {
+                    EmployeeId = input.EmployeeId,
+                    GrowerId = input.GrowerId,
+                    Score = item.Score,
+                    TaskExamineId = item.Id,
+                    VisitRecordId = vrId
+                };
+                await _visitExamineRepository.InsertAsync(ve);
+            }
+
+            return new APIResultDto() { Code = 0, Msg = "保存数据成功" };
         }
 
         /// <summary>
