@@ -18,6 +18,7 @@ using GYISMS.Growers.Authorization;
 using GYISMS.Growers.Dtos;
 using GYISMS.Growers;
 using GYISMS.Authorization;
+using GYISMS.ScheduleDetails;
 
 namespace GYISMS.Growers
 {
@@ -27,23 +28,21 @@ namespace GYISMS.Growers
     [AbpAuthorize(AppPermissions.Pages)]
     public class GrowerAppService : GYISMSAppServiceBase, IGrowerAppService
     {
-        private readonly IRepository<Grower, int>
-        _growerRepository;
-
-
+        private readonly IRepository<Grower, int> _growerRepository;
         private readonly IGrowerManager _growerManager;
+        private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
-        public GrowerAppService(
-        IRepository<Grower, int>
-    growerRepository
+        public GrowerAppService(IRepository<Grower, int> growerRepository
             , IGrowerManager growerManager
+            , IRepository<ScheduleDetail, Guid> scheduledetailRepository
             )
         {
             _growerRepository = growerRepository;
             _growerManager = growerManager;
+            _scheduledetailRepository = scheduledetailRepository;
         }
 
 
@@ -55,8 +54,7 @@ namespace GYISMS.Growers
         public async Task<PagedResultDto<GrowerListDto>> GetPagedGrowersAsync(GetGrowersInput input)
         {
 
-            var query = _growerRepository.GetAll().Where(v => v.IsDeleted == false)
-                .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
+            var query = _growerRepository.GetAll().WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
             // TODO:根据传入的参数添加过滤条件
 
             var growerCount = await query.CountAsync();
@@ -75,6 +73,48 @@ namespace GYISMS.Growers
                 );
         }
 
+        /// <summary>
+        /// 获取烟农信息（不分页）
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<List<GrowerListDto>> GetGrowersNoPageAsync(GetGrowersInput input)
+        {
+
+            var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
+            var scheduleDetailList = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId && v.TaskId == input.TaskId);
+            var query = await (from g in growerList
+                               select new GrowerListDto()
+                               {
+                                   Id = g.Id,
+                                   Name = g.Name,
+                                   EmployeeName = g.EmployeeName,
+                                   EmployeeId = g.EmployeeId,
+                                   UnitName = g.UnitName,
+                                   Tel = g.Tel
+                               }).AsNoTracking().ToListAsync();
+            var scheduleDto = from s in scheduleDetailList
+                              select new
+                              {
+                                  s.Id,
+                                  s.VisitNum,
+                                  s.GrowerId
+                              };
+            foreach (var scheduleItem in scheduleDto)
+            {
+                foreach (var item in query)
+                {
+                    if (item.Id == scheduleItem.GrowerId)
+                    {
+                        item.IsChecked = true;
+                        item.VisitNum = scheduleItem.VisitNum;
+                        item.ScheduleDetailId = scheduleItem.Id;
+                        break;
+                    }
+                }
+            }
+            return query;
+        }
 
         /// <summary>
         /// 添加或者修改Grower的公共方法
@@ -155,7 +195,7 @@ namespace GYISMS.Growers
         /// <returns></returns>
         public async Task<GrowerEditDto> CreateOrUpdateGrowerAsycn(GrowerEditDto input)
         {
-            if (input.Id!=null)
+            if (input.Id != null)
             {
                 return await UpdateGrowerAsync(input);
             }

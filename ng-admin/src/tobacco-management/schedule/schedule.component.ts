@@ -47,7 +47,7 @@ export class ScheduleComponent extends AppComponentBase implements OnInit {
         this.router.navigate(['app/task/schedule-detail'])
     }
 
-    goDetail(id: number) {
+    goDetail(id: string) {
         this.router.navigate(['app/task/schedule-detail', id])
     }
 }

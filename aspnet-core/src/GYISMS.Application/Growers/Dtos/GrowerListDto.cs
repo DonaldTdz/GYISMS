@@ -147,13 +147,8 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public long? DeleterUserId { get; set; }
 
-
-
-
-
-
-        //// custom codes
-
-        //// custom codes end
+        public Guid? ScheduleDetailId { get; set; }
+        public bool IsChecked { get; set; }
+        public int? VisitNum { get; set; }
     }
 }

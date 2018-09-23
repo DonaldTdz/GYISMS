@@ -55,5 +55,6 @@ namespace GYISMS.Growers
         Task<GrowerEditDto> CreateOrUpdateGrowerAsycn(GrowerEditDto input);
         Task GrowerDeleteByIdAsync(GrowerEditDto input);
         Task<GrowerListDto> GetGrowerByIdAsync(int id);
+        Task<List<GrowerListDto>> GetGrowersNoPageAsync(GetGrowersInput input);
     }
 }

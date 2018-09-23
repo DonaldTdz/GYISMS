@@ -111,6 +111,7 @@ namespace GYISMS.VisitTasks
                         item.IsChecked = true;
                         item.VisitNum = taskItem.VisitNum;
                         item.ScheduleTaskId = taskItem.Id;
+                        break;
                     }
                 }
             }
@@ -302,7 +303,7 @@ namespace GYISMS.VisitTasks
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsycn(VisitTaskEditDto input)
+        public async Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsync(VisitTaskEditDto input)
         {
             if (input.Id.HasValue)
             {

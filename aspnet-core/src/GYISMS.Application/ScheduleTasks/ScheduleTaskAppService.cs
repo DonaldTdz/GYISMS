@@ -180,7 +180,7 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<List<ScheduleTaskEditDto>> CreateOrUpdateScheduleTaskAsycn(List<ScheduleTaskEditDto> input)
+        public async Task<List<ScheduleTaskEditDto>> CreateOrUpdateScheduleTaskAsync(List<ScheduleTaskEditDto> input)
         {
             List<ScheduleTaskEditDto> list = new List<ScheduleTaskEditDto>();
             foreach (var item in input)

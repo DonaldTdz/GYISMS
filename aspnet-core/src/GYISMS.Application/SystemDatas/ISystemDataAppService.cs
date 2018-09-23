@@ -68,5 +68,12 @@ namespace GYISMS.SystemDatas
 
         //Task<List<CheckBoxGroup>> GetRoomDevicesAsync(int? id);
         Task<List<CheckBoxGroup>> GetRoomDevicesAsync();
+
+        Task<PagedResultDto<SystemDataListDto>> GetPagedSystemDatasByType(GetSystemDatasInput input);
+
+        Task CreateOrUpdateSystemDataNew(SystemDataEditDto input);
+
+        Task<SystemDataListDto> GetSystemDataById(int id);
+
     }
 }

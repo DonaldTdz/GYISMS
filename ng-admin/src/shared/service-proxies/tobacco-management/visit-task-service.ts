@@ -89,14 +89,21 @@ export class VisitTaskServiceProxy {
     }
 
     updateTaskInfo(input: any): Observable<any> {
-        let url_ = "/api/services/app/VisitTask/CreateOrUpdateVisitTaskAsycn";
+        let url_ = "/api/services/app/VisitTask/CreateOrUpdateVisitTaskAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data;
         });
     }
 
     updateScheduleTask(input: any): Observable<any> {
-        let url_ = "/api/services/app/ScheduleTask/CreateOrUpdateScheduleTaskAsycn";
+        let url_ = "/api/services/app/ScheduleTask/CreateOrUpdateScheduleTaskAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data;
+        });
+    }
+
+    updateScheduleDetail(input: any): Observable<any> {
+        let url_ = "/api/services/app/ScheduleDetail/CreateOrUpdateScheduleTaskAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data;
         });

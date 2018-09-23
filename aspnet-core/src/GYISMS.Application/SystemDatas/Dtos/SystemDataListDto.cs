@@ -50,6 +50,21 @@ namespace GYISMS.SystemDatas.Dtos
         /// CreationTime
         /// </summary>
         public DateTime? CreationTime { get; set; }
+
+        public string ModelName
+        {
+            get
+            {
+                return ModelId.ToString();
+            }
+        }
+        public string TypeName
+        {
+            get
+            {
+                return Type.ToString();
+            }
+        }
     }
 
     public class CheckBoxGroup

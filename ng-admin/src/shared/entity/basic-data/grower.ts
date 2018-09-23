@@ -23,6 +23,11 @@ export class Grower implements IGrower {
     lastModifierUserId: number;
     deletionTime: Date;
     deleterUserId: number;
+    visitNum: number;
+    checked: boolean;
+    scheduleDetailId: string;
+    isChecked: boolean;
+    selected: boolean;
     constructor(data?: IGrower) {
         if (data) {
             for (var property in data) {
@@ -58,6 +63,9 @@ export class Grower implements IGrower {
             this.lastModifierUserId = data["lastModifierUserId"];
             this.deletionTime = data["deletionTime"];
             this.deleterUserId = data["deleterUserId"];
+            this.scheduleDetailId = data["scheduleDetailId"];
+            this.visitNum = data["visitNum"];
+            this.isChecked = data["isChecked"];
         }
     }
 
@@ -140,4 +148,9 @@ export interface IGrower {
     lastModifierUserId: number;
     deletionTime: Date;
     deleterUserId: number;
+    visitNum: number;
+    checked: boolean
+    scheduleDetailId: string;
+    isChecked: boolean;
+    selected: boolean;
 }

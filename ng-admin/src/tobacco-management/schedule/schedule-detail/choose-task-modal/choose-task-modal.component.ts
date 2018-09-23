@@ -28,12 +28,14 @@ export class ChooseTaskModalComponent implements OnInit {
     checkedLength: number = 0; // 已选中的数量
     successMsg = '';
     confirmModal: NzModalRef;
+
+
     constructor(private taskService: VisitTaskServiceProxy) {
     }
 
     ngOnInit(): void {
-
     }
+
     isCancelCheck(x: any) {
         this.checkedLength = this.taskList.filter(v => v.checked).length;
         this.checkboxCount = this.taskList.length;
@@ -106,7 +108,6 @@ export class ChooseTaskModalComponent implements OnInit {
             //this.scheduleTask.scheduleId = this.scheduleId;
             //this.scheduleTaskList.push(ScheduleTask.fromJS(v));
             //});
-            console.log(visitTaskList);
 
             this.scheduleTaskList = ScheduleTask.fromVisitTaskJSArray(visitTaskList, this.scheduleId);
             this.eloading = true;
@@ -117,8 +118,6 @@ export class ChooseTaskModalComponent implements OnInit {
     }
 
     saveTaskInfo() {
-        console.log(this.scheduleTaskList);
-
         this.taskService.updateScheduleTask(this.scheduleTaskList).finally(() => { this.eloading = false; })
             .subscribe((result: any) => {
                 this.scheduleTaskList = result;

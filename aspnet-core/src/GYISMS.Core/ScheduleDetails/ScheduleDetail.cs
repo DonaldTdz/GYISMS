@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using GYISMS.GYEnums;
 using System;
 using System.ComponentModel.DataAnnotations;
@@ -10,7 +11,7 @@ namespace GYISMS.ScheduleDetails
     /// 任务明细
     /// </summary>
     [Table("ScheduleDetails")]
-    public class ScheduleDetail : Entity<Guid>
+    public class ScheduleDetail : Entity<Guid>,IHasCreationTime
     {
         /// <summary>
         /// 任务Id 外键
@@ -53,7 +54,7 @@ namespace GYISMS.ScheduleDetails
         /// <summary>
         /// CreationTime
         /// </summary>
-        public virtual DateTime? CreationTime { get; set; }
+        public virtual DateTime CreationTime { get; set; }
 
         [Required]
         public virtual Guid ScheduleTaskId { get; set; }

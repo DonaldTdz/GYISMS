@@ -1,0 +1,141 @@
+<!--component html goes here -->
+<nz-tabset>
+    <nz-tab nzTitle="烟叶服务">
+        <div nz-row>
+            <div nz-col [nzSpan]="6">
+                <!-- <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=3)">烟农单位</nz-tag>
+                <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=4)">烟农村组</nz-tag>
+                <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=5)">烟叶公共</nz-tag> -->
+                <nz-radio-group style="display: block;" *ngFor="let item of configMetting" [(ngModel)]="paramLe.Type" [nzButtonStyle]="'solid'"
+                    (ngModelChange)="checkChangeLeaf()">
+                    <label nz-radio-button [nzValue]="item.value" style="margin-top: 10px;">
+                        <span>{{item.text}}</span>
+                    </label>
+                </nz-radio-group>
+            </div>
+            <div nz-col [nzSpan]="18">
+                <ng-template #deleteContent>
+                    <h2>是否删除配置项{{LeafName}}?</h2>
+                </ng-template>
+                <form nz-form (ngSubmit)="getAllLeafs()" [nzLayout]="'inline'">
+                    <div nz-row [nzGutter]="24">
+                        <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'">
+                            <!-- <button nz-button type="reset" (click)="refreshData()" [nzSize]="'large'" class="mx-sm">重置</button> -->
+                            <button nz-button type="button" (click)="addLeaf()" [nzType]="'primary'" [nzSize]="'large'">
+                                <i class="anticon anticon-plus"></i>
+                                <span>新建</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <!-- <standard-form-row block style="padding-bottom: 9px;">
+                    <div nz-form-item>
+                        <div nz-form-control>
+                            <nz-checkable-tag *ngFor="let i of configs; let idx=index" [nzChecked]="i.value" (nzChange)="changeCategory($event,idx, i.id)">
+                                {{i.text}}
+                            </nz-checkable-tag>
+                        </div>
+                    </div>
+                </standard-form-row> -->
+                <nz-table #nzTable [nzData]="systemDataLeafs" [nzFrontPagination]="false" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [nzShowTotal]="totalTemplate"
+                    [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowTotal]="'true'" [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllLeafs()"
+                    (nzPageSizeChange)="getAllLeafs()">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span>配置类型</span>
+                            </th>
+                            <th>
+                                <span>编码</span>
+                            </th>
+                            <th>
+                                <span>描述</span>
+                            </th>
+                            <th>
+                                <span>序号</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let leaf of nzTable.data">
+                            <td>{{leaf.typeName}}</td>
+                            <td>{{leaf.code}}</td>
+                            <td>{{leaf.desc}}</td>
+                            <td>{{leaf.seq}}</td>
+                            <td>
+                                <a (click)="editLeaf(leaf)">编辑</a>
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a (click)="deleteLeaf(leaf,deleteContent)">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+
+        </div>
+    </nz-tab>
+    <nz-tab nzTitle="会议管理">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="4" class="mb-md">
+                <nz-radio-group style="display: block;" *ngFor="let item of configLeaf" [(ngModel)]="paramMe.Type" [nzButtonStyle]="'solid'"
+                    (ngModelChange)="checkChangeMetting()">
+                    <label nz-radio-button [nzValue]="item.value" style="margin-top: 10px;">
+                        <span>{{item.text}}</span>
+                    </label>
+                </nz-radio-group>
+            </div>
+            <div nz-col [nzSpan]="20" class="mb-md">
+                <ng-template #deleteContentMe>
+                    <h2>是否删除配置项{{mettingName}}?</h2>
+                </ng-template>
+                <form nz-form (ngSubmit)="getAllMetting()" [nzLayout]="'inline'">
+                    <div nz-row [nzGutter]="24">
+                        <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'">
+                            <button nz-button (click)="addConfigMetting()" [nzType]="'primary'" [nzSize]="'large'">
+                                <i class="anticon anticon-plus"></i>
+                                <span>新建</span>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <nz-table #nzTableMe [nzData]="systemDataMettings" [nzFrontPagination]="false" [nzTotal]="queryMe.total" [(nzPageIndex)]="queryMe.pageIndex"
+                    [(nzPageSize)]="queryMe.pageSize" [nzLoading]="loadingMe" [nzShowTotal]="'true'" [nzShowSizeChanger]="true"
+                    (nzPageIndexChange)="getAllMetting()" (nzPageSizeChange)="getAllMetting()">
+                    <thead nz-thead>
+                        <tr>
+                            <th nz-th>
+                                <span>配置类型</span>
+                            </th>
+                            <th nz-th>
+                                <span>编码</span>
+                            </th>
+                            <th nz-th>
+                                <span>描述</span>
+                            </th>
+                            <th nz-th>
+                                <span>序号</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody nz-tbody>
+                        <tr nz-tbody-tr *ngFor="let metting of nzTableMe.data">
+                            <td nz-td>{{metting.typeName}}</td>
+                            <td nz-td>{{metting.code}}</td>
+                            <td nz-td>{{metting.desc}}</td>
+                            <td nz-td>{{metting.seq}}</td>
+                            <td nz-td>
+                                <a (click)="editMetting(metting)">编辑</a>
+                                <!-- <span nz-table-divider></span> -->
+                                <nz-divider nzType="vertical"></nz-divider>
+                                <a (click)="deleteMetting(metting,deleteContentMe)">删除</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </nz-table>
+            </div>
+
+        </div>
+    </nz-tab>
+</nz-tabset>
+<data-config-create-modal #createDataConfigModal (modalSave)="refureshData($event)"></data-config-create-modal>
+<data-config-edit-modal #editDataConfigModal (modalSave)="refureshData($event)"></data-config-edit-modal>
