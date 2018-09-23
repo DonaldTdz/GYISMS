@@ -162,7 +162,13 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '',
                 '',
-            )]
+            ),
+            new MenuItem(
+                '数据配置',
+                '',
+                '',
+                '/app/config/data-config',
+            ),]
         ),
 
         // 系统管理

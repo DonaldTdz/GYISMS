@@ -130,13 +130,13 @@ systemdataListDtos
         /// <summary>
         /// 新增SystemData
         /// </summary>
-        [AbpAuthorize(SystemDataAppPermissions.SystemData_Create)]
+        //[AbpAuthorize(SystemDataAppPermissions.SystemData_Create)]
         protected virtual async Task<SystemDataEditDto> CreateSystemDataAsync(SystemDataEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
 
             var entity = ObjectMapper.Map<SystemData>(input);
-
+            entity.CreationTime = new DateTime();
             entity = await _systemdataRepository.InsertAsync(entity);
             return entity.MapTo<SystemDataEditDto>();
         }
@@ -144,7 +144,7 @@ systemdataListDtos
         /// <summary>
         /// 编辑SystemData
         /// </summary>
-        [AbpAuthorize(SystemDataAppPermissions.SystemData_Edit)]
+        //[AbpAuthorize(SystemDataAppPermissions.SystemData_Edit)]
         protected virtual async Task UpdateSystemDataAsync(SystemDataEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新
@@ -192,14 +192,14 @@ systemdataListDtos
             if (entity != null)
             {
                 List<CheckBoxGroup> list = new List<CheckBoxGroup>();
-                    string[] arry = entity.Split(',');
-                    foreach (var item in arry)
-                    {
-                        CheckBoxGroup checkboxGroup = new CheckBoxGroup();
-                        checkboxGroup.Label = item;
-                        checkboxGroup.Value = item;
-                        list.Add(checkboxGroup);
-                    }
+                string[] arry = entity.Split(',');
+                foreach (var item in arry)
+                {
+                    CheckBoxGroup checkboxGroup = new CheckBoxGroup();
+                    checkboxGroup.Label = item;
+                    checkboxGroup.Value = item;
+                    list.Add(checkboxGroup);
+                }
                 return list;
             }
             else
@@ -248,6 +248,59 @@ systemdataListDtos
         //        return new List<CheckBoxGroup>();
         //    }
         //}
+
+        /// <summary>
+        /// 根据所属模块和配置类型获取系统数据
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<SystemDataListDto>> GetPagedSystemDatasByType(GetSystemDatasInput input)
+        {
+
+            var query = _systemdataRepository.GetAll()
+                .WhereIf(input.ModelId.HasValue, s => s.ModelId == input.ModelId)
+                .Where(s => s.Type == input.Type);
+            // TODO:根据传入的参数添加过滤条件
+
+            var systemdataCount = await query.CountAsync();
+
+            var systemdatas = await query
+                    .OrderBy(input.Sorting).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
+
+            // var systemdataListDtos = ObjectMapper.Map<List <SystemDataListDto>>(systemdatas);
+            var systemdataListDtos = systemdatas.MapTo<List<SystemDataListDto>>();
+
+            return new PagedResultDto<SystemDataListDto>(
+                 systemdataCount,
+                 systemdataListDtos
+                );
+        }
+
+        /// <summary>
+        /// 更新或修改系统数据
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task CreateOrUpdateSystemDataNew(SystemDataEditDto input)
+        {
+            if (input.Id.HasValue)
+            {
+                await UpdateSystemDataAsync(input);
+            }
+            else
+            {
+                await CreateSystemDataAsync(input);
+            }
+        }
+
+        public async Task<SystemDataListDto> GetSystemDataById(int id)
+        {
+            var entity = await _systemdataRepository.GetAsync(id);
+
+            return entity.MapTo<SystemDataListDto>();
+        }
     }
 }
 
