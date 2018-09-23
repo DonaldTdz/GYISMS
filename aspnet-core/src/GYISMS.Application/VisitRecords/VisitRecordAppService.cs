@@ -18,6 +18,8 @@ using GYISMS.VisitRecords.Authorization;
 using GYISMS.VisitRecords.Dtos;
 using GYISMS.VisitRecords;
 using GYISMS.Authorization;
+using GYISMS.ScheduleDetails;
+using GYISMS.VisitTasks;
 
 namespace GYISMS.VisitRecords
 {
@@ -27,9 +29,9 @@ namespace GYISMS.VisitRecords
     [AbpAuthorize(AppPermissions.Pages)]
     public class VisitRecordAppService : GYISMSAppServiceBase, IVisitRecordAppService
     {
-        private readonly IRepository<VisitRecord, Guid>
-        _visitrecordRepository;
-
+        private readonly IRepository<VisitRecord, Guid> _visitrecordRepository;
+        private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
+        private readonly IRepository<VisitTask> _visitTaskRepository;
 
         private readonly IVisitRecordManager _visitrecordManager;
 
@@ -37,12 +39,15 @@ namespace GYISMS.VisitRecords
         /// 构造函数 
         ///</summary>
         public VisitRecordAppService(
-        IRepository<VisitRecord, Guid>
-    visitrecordRepository
+            IRepository<VisitRecord, Guid> visitrecordRepository
+            , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
+            , IRepository<VisitTask> visitTaskRepository
             , IVisitRecordManager visitrecordManager
             )
         {
             _visitrecordRepository = visitrecordRepository;
+            _scheduleDetailRepository = scheduleDetailRepository;
+            _visitTaskRepository = visitTaskRepository;
             _visitrecordManager = visitrecordManager;
         }
 
@@ -187,6 +192,30 @@ visitrecordListDtos
             await _visitrecordRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        [AbpAllowAnonymous]
+        public async Task<DingDingVisitRecordDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId)
+        {
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        where sd.Id == scheduleDetailId
+                        select new
+                        {
+                            sd.Id,
+                            sd.EmployeeId,
+                            sd.GrowerId,
+                            sd.GrowerName,
+                            t.Name,
+                            t.Type,
+                            t.Desc
+                        };
+            var dmdata = await query.FirstOrDefaultAsync();
+            return new DingDingVisitRecordDto()
+            {
+                ScheduleDetailId = dmdata.Id,
+                //EmployeeId = dmdata.EmployeeId,
+
+            };
+        }
 
         /// <summary>
         /// 导出VisitRecord为excel表,等待开发。

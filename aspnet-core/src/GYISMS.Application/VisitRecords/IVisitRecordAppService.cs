@@ -65,9 +65,6 @@ namespace GYISMS.VisitRecords
         /// </summary>
         Task BatchDeleteVisitRecordsAsync(List<Guid> input);
 
-
-		//// custom codes
-		 
-        //// custom codes end
+        Task<DingDingVisitRecordDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId);
     }
 }
