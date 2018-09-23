@@ -26,8 +26,6 @@ export class Grower implements IGrower {
     visitNum: number;
     checked: boolean;
     scheduleDetailId: string;
-    isChecked: boolean;
-    selected: boolean;
     constructor(data?: IGrower) {
         if (data) {
             for (var property in data) {
@@ -65,7 +63,7 @@ export class Grower implements IGrower {
             this.deleterUserId = data["deleterUserId"];
             this.scheduleDetailId = data["scheduleDetailId"];
             this.visitNum = data["visitNum"];
-            this.isChecked = data["isChecked"];
+            this.checked = data["checked"];
         }
     }
 
@@ -151,6 +149,4 @@ export interface IGrower {
     visitNum: number;
     checked: boolean
     scheduleDetailId: string;
-    isChecked: boolean;
-    selected: boolean;
 }

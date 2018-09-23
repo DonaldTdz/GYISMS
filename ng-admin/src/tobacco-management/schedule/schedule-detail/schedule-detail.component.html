@@ -108,9 +108,11 @@
                     <td>{{data.isExamine == true?"是":"否"}}</td>
                     <td>{{data.visitNum}}</td>
                     <td>
-                        <a (click)="assignTask(data.id,data.taskId,data.visitNum)">指派任务</a>
+                        <a (click)="assignTask(data.id,data.taskId,data.visitNum)">指派详情</a>
                         <nz-divider nzType="vertical"></nz-divider>
-                        <a (click)="deleteTask(data)">移除任务</a>
+                        <a (click)="assignAll(data.id,data.taskId,data.visitNum)">全部指派</a>
+                        <nz-divider nzType="vertical"></nz-divider>
+                        <a style="color:red" (click)="deleteTask(data)">移除</a>
                     </td>
                 </tr>
             </tbody>
@@ -125,14 +127,14 @@
             <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading">
                 {{l("删除")}}
             </button>
-            <button nz-button *ngIf="isPush" [nzType]="'primary'" type="button" (click)="push()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
-                {{l("发布")}}
+            <button nz-button *ngIf="isPush&&!isNewInfo" [nzType]="'primary'" type="button" (click)="push()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+                {{l(" 发布 ")}}
             </button>
-            <button nz-button *ngIf="isPush" [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
-                {{l("保存")}}
+            <button nz-button *ngIf="isPush " [nzType]=" 'primary' " type="button " (click)="save() " [nzLoading]="isConfirmLoading " [disabled]="!validateForm.valid ">
+                {{l("保存 ")}}
             </button>
         </footer-toolbar>
     </nz-card>
 </nz-card>
-<choose-task-modal #selectTaskModal (modalSelect)="getSelectData($event)"></choose-task-modal>
-<!-- <choose-employee-modal #selectEmployeeModal (modalSelect)="getSelectData($event)"></choose-employee-modal> -->
+<choose-task-modal #selectTaskModal (modalSelect)="getSelectData($event) "></choose-task-modal>
+<!-- <choose-employee-modal #selectEmployeeModal (modalSelect)="getSelectData($event) "></choose-employee-modal> -->

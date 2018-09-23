@@ -69,5 +69,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         public string EmployeeName { get; set; }
 
         public string GrowerName { get; set; }
+        public bool Checked { get; set; }
+        public string AreaCode { get; set; }
     }
 }

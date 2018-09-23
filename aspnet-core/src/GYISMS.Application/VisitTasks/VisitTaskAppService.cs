@@ -87,7 +87,8 @@ namespace GYISMS.VisitTasks
         public async Task<List<VisitTaskListDto>> GetVisitTasksWithStatusAsync(GetVisitTasksInput input)
         {
             var visitList = _visittaskRepository.GetAll().Where(v => v.IsDeleted == false);
-            var taskList = _scheduletaskRepository.GetAll().Where(v =>v.IsDeleted ==false&& v.ScheduleId == input.ScheduleId);
+            //var taskList = _scheduletaskRepository.GetAll().Where(v =>v.IsDeleted ==false&& v.ScheduleId == input.ScheduleId);
+            var taskList = _scheduletaskRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId);
             var query = await (from v in visitList
                                select new VisitTaskListDto
                                {
@@ -100,7 +101,8 @@ namespace GYISMS.VisitTasks
                           {
                               t.TaskId,
                               t.VisitNum,
-                              t.Id
+                              t.Id,
+                              t.IsDeleted
                           };
             foreach (var taskItem in taskDto)
             {
@@ -108,14 +110,22 @@ namespace GYISMS.VisitTasks
                 {
                     if (item.Id == taskItem.TaskId)
                     {
-                        item.IsChecked = true;
-                        item.VisitNum = taskItem.VisitNum;
+                        if (taskItem.IsDeleted == true)
+                        {
+                            item.Checked = false;
+                            item.VisitNum = 1;
+                        }
+                        else
+                        {
+                            item.Checked = true;
+                            item.VisitNum = taskItem.VisitNum;
+                        }
                         item.ScheduleTaskId = taskItem.Id;
                         break;
                     }
                 }
             }
-            return query.OrderByDescending(v => v.IsChecked).ThenBy(v => v.TypeName).ToList();
+            return query.OrderByDescending(v => v.Checked).ThenBy(v => v.TypeName).ToList();
         }
 
         /// <summary>

@@ -7,6 +7,8 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GYISMS.ScheduleDetails.Dtos;
 using GYISMS.ScheduleDetails;
+using GYISMS.Growers.Dtos;
+using GYISMS.Dtos;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -49,7 +51,7 @@ namespace GYISMS.ScheduleDetails
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task DeleteScheduleDetail(EntityDto<Guid> input);
+        Task DeleteScheduleDetail(Guid Id);
 
 
         /// <summary>
@@ -58,5 +60,6 @@ namespace GYISMS.ScheduleDetails
         Task BatchDeleteScheduleDetailsAsync(List<Guid> input);
 
         Task<List<ScheduleDetailEditDto>> CreateOrUpdateScheduleTaskAsync(List<ScheduleDetailEditDto> input);
+        Task<APIResultDto> CreateAllScheduleTaskAsync(GetGrowersInput input);
     }
 }
