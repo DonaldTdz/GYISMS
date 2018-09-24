@@ -110,6 +110,7 @@ export class Grower implements IGrower {
         data["lastModifierUserId"] = this.lastModifierUserId;
         data["deletionTime"] = this.deletionTime;
         data["deleterUserId"] = this.deleterUserId;
+        data["checked"] = this.checked;
 
         return data;
     }

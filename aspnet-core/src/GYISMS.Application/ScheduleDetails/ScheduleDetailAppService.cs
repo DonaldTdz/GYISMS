@@ -212,34 +212,24 @@ namespace GYISMS.ScheduleDetails
             //    //await CurrentUnitOfWork.SaveChangesAsync();
             //}
             //更新前删除逻辑
-
+            //获取没有保存的checkbox  已知烟技员 区县
             var unChecked = input.Where(v => v.Id.HasValue && v.Checked == false).Select(v => new { v.EmployeeId, v.TaskId, v.ScheduleId, v.ScheduleTaskId, v.AreaCode, v.GrowerId }).ToList();
             if (unChecked.Count != 0)
             {
                 foreach (var item in unChecked)
                 {
-                    if (item != null)
+                    Guid id = await _scheduledetailRepository.GetAll()
+                        .Where(v => v.TaskId == item.TaskId && v.ScheduleId == item.ScheduleId && v.ScheduleTaskId == item.ScheduleTaskId && v.EmployeeId == item.EmployeeId && v.GrowerId == item.GrowerId).Select(v => v.Id).FirstOrDefaultAsync();
+                    string emptyId = "{00000000-0000-0000-0000-000000000000}";
+                    if (id != new Guid(emptyId))
                     {
-                        var deleteGrowerId = item.GrowerId;
-                        Guid id = await _scheduledetailRepository.GetAll()
-                            .Where(v => v.TaskId == item.TaskId && v.ScheduleId == item.ScheduleId && v.ScheduleTaskId == item.ScheduleTaskId && v.EmployeeId == item.EmployeeId && v.GrowerId == item.GrowerId).Select(v => v.Id).FirstOrDefaultAsync();
-                        if (id != null)
-                        {
-                            await DeleteScheduleDetail(id);
-                            await CurrentUnitOfWork.SaveChangesAsync();
-                        }
+                        await DeleteScheduleDetail(id);
+                        await CurrentUnitOfWork.SaveChangesAsync();
                     }
                 }
             }
-            else
-            {
-                //List<Guid> oldIds = await _scheduledetailRepository.GetAll().Where(v => v.TaskId == item.TaskId && v.ScheduleId == item.ScheduleId && v.ScheduleTaskId == item.ScheduleTaskId && v.EmployeeId == item.EmployeeId).Select(v => v.Id).ToListAsync();
-                //await BatchDeleteScheduleDetailsAsync(oldIds);
-                //await CurrentUnitOfWork.SaveChangesAsync();
-            }
 
-
-            foreach (var item in input)
+            foreach (var item in input.Where(v => v.Checked == true))
             {
                 if (item.Id.HasValue)
                 {

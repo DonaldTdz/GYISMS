@@ -101,6 +101,9 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
             this.loading = false;
             this.isSelectedAll = false;
             this.growerList = result;
+            console.log(this.growerList.length);
+
+
             this.growerList.map(v => {
                 if (v.checked == true) {
                     i++;
@@ -125,7 +128,9 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     }
 
     save() {
-        var list = this.growerList.filter(v => v.checked);
+        // var list = this.growerList.filter(v => v.checked);
+        var list = this.growerList;
+
         let params: any = {};
         params.taskId = this.taskId;
         params.id = this.id;
@@ -146,6 +151,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
             this.scheduleDetail.completeNum = 0;
             this.scheduleDetail.employeeId = v.employeeId;
             this.scheduleDetail.employeeName = v.employeeName;
+            this.scheduleDetail.checked = v.checked;
             this.scheduleDetailList.push(ScheduleDetail.fromJS(this.scheduleDetail));
             this.scheduleDetail = new ScheduleDetail();
         })

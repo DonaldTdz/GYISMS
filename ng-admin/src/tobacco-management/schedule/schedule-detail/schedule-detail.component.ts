@@ -124,6 +124,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         this.scheduleService.updateScheduleInfo(this.schedule).finally(() => { this.isConfirmLoading = false; })
             .subscribe((result: any) => {
                 this.schedule = result;
+                this.id = result.id;
                 // if (this.schedule.id) {
                 //     this.scheduleTask.scheduleId = this.schedule.id;
                 //     this.scheduleService.updateScheduleTaskInfo(this.scheduleTask).subscribe((res: any) => {
