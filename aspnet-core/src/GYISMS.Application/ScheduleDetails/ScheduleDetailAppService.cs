@@ -187,32 +187,6 @@ namespace GYISMS.ScheduleDetails
         {
             List<ScheduleDetailEditDto> list = new List<ScheduleDetailEditDto>();
             //更新前删除逻辑
-            //var param = input.Where(v => v.Id.HasValue).Select(v => new { v.EmployeeId, v.TaskId, v.ScheduleId, v.ScheduleTaskId }).ToList();
-            //if (param.Count != 0)
-            //{
-            //    foreach (var item in param)
-            //    {
-            //        if (item != null)
-            //        {
-            //            Guid?[] newIds = input.Select(v => v.Id).ToArray();
-            //            Guid[] oldIds = _scheduledetailRepository.GetAll().Where(v => v.TaskId == item.TaskId && v.ScheduleId == item.ScheduleId && v.ScheduleTaskId == item.ScheduleTaskId && v.EmployeeId == item.EmployeeId).Select(v => v.Id).ToArray();
-            //            List<Guid> diffIds = oldIds.Where(v => !newIds.Contains(v)).ToList();
-            //            if (diffIds.Count != 0)
-            //            {
-            //                await BatchDeleteScheduleDetailsAsync(diffIds);
-            //                await CurrentUnitOfWork.SaveChangesAsync();
-            //            }
-            //        }
-            //    }
-            //}
-            //else
-            //{
-            //    //List<Guid> oldIds = await _scheduledetailRepository.GetAll().Where(v => v.TaskId == item.TaskId && v.ScheduleId == item.ScheduleId && v.ScheduleTaskId == item.ScheduleTaskId && v.EmployeeId == item.EmployeeId).Select(v => v.Id).ToListAsync();
-            //    //await BatchDeleteScheduleDetailsAsync(oldIds);
-            //    //await CurrentUnitOfWork.SaveChangesAsync();
-            //}
-            //更新前删除逻辑
-            //获取没有保存的checkbox  已知烟技员 区县
             var unChecked = input.Where(v => v.Id.HasValue && v.Checked == false).Select(v => new { v.EmployeeId, v.TaskId, v.ScheduleId, v.ScheduleTaskId, v.AreaCode, v.GrowerId }).ToList();
             if (unChecked.Count != 0)
             {
