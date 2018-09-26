@@ -356,7 +356,8 @@ namespace GYISMS.ScheduleTasks
                             TaskType = t.Type,
                             GrowerId = sd.GrowerId,
                             VisitNum = sd.VisitNum,
-                            CompleteNum = sd.CompleteNum
+                            CompleteNum = sd.CompleteNum,
+                            ScheduleStatus = sd.Status
                         };
 
             var taskDetailDto = await query.FirstOrDefaultAsync();
