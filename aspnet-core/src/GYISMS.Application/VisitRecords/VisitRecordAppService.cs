@@ -23,6 +23,7 @@ using GYISMS.VisitTasks;
 using GYISMS.TaskExamines;
 using GYISMS.Dtos;
 using GYISMS.VisitExamines;
+using GYISMS.GYEnums;
 
 namespace GYISMS.VisitRecords
 {
@@ -237,7 +238,11 @@ visitrecordListDtos
         public async Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input)
         {
             var vistitRecord = input.MapTo<VisitRecord>();
+            vistitRecord.SignTime = DateTime.Now;
+            //拜访记录
             var vrId = await _visitrecordRepository.InsertAndGetIdAsync(vistitRecord);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            //考核项
             foreach (var item in input.Examines)
             {
                 var ve = new VisitExamine()
@@ -250,6 +255,10 @@ visitrecordListDtos
                 };
                 await _visitExamineRepository.InsertAsync(ve);
             }
+            //更新拜访明细
+            var detail = await _scheduleDetailRepository.GetAsync(input.ScheduleDetailId);
+            detail.CompleteNum++;
+            detail.Status = detail.CompleteNum == detail.VisitNum ? ScheduleStatusEnum.已完成 : ScheduleStatusEnum.进行中;
 
             return new APIResultDto() { Code = 0, Msg = "保存数据成功" };
         }
