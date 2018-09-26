@@ -155,6 +155,49 @@ namespace GYISMS.ScheduleTasks.Dtos
         }
     }
 
+    public class DingDingScheduleDetailDto
+    {
+        public Guid Id { get; set; }
+
+        public TaskTypeEnum TaskType { get; set; }
+
+        public string TaskName { get; set; }
+
+        public DateTime? EndTime { get; set; }
+
+
+        public string Title
+        {
+            get
+            {
+                return TaskName + "（" + TaskType.ToString() + "）";
+            }
+        }
+
+        public string EndTimeFormat
+        {
+            get
+            {
+                return EndTime.HasValue ? EndTime.Value.ToString("yyyy-MM-dd") : string.Empty;
+            }
+        }
+
+        public ScheduleStatusEnum Status { get; set; }
+
+        public string StatusText
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
+
+        public int? GrowerId { get; set; }
+
+        public string GrowerName { get; set; }
+    }
+
+
     public class DingDingTaskDto
     {
         public DingDingTaskDto()
@@ -238,7 +281,8 @@ namespace GYISMS.ScheduleTasks.Dtos
             {
                 if (VisitTotal > 0)
                 {
-                    return (CompleteNum / VisitTotal * 100);
+                    decimal per = CompleteNum / ((decimal)VisitTotal);
+                    return (int)(per * 100);
                 }
                 return 0;
             }
