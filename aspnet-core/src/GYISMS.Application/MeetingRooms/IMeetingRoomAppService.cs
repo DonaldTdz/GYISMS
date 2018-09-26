@@ -63,5 +63,7 @@ namespace GYISMS.MeetingRooms
         Task<MeetingRoomListDto> GetMeetingRoomByIdAsync(int id);
         Task MeetingRoomDeleteByIdAsync(MeetingRoomEditDto input);
         Task DeleteMeetingRoom2(int id);
+        Task<List<MeetingRoomListDto>> GetDingDingMeetingRoomsAsync();
+        Task<MeetingRoomListDto> GetDingDingMeetingRoomByIdAsync(int id);
     }
 }
