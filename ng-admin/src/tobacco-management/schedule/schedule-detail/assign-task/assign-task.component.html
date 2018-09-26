@@ -13,7 +13,7 @@
                     <!-- <button nz-button [nzType]="'default'" (click)="return()">
                                 {{l("返回")}}
                             </button> -->
-                    <button nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading">
+                    <button *ngIf="isPush == 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading">
                                 {{l("保存当前")}}
                             </button>
                 </div>

@@ -109,10 +109,10 @@
                     <td>{{data.visitNum}}</td>
                     <td>
                         <a (click)="assignTask(data.id,data.taskId,data.visitNum)">指派详情</a>
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a (click)="assignAll(data.id,data.taskId,data.visitNum)">全部指派</a>
-                        <nz-divider nzType="vertical"></nz-divider>
-                        <a style="color:red" (click)="deleteTask(data)">移除</a>
+                        <nz-divider *ngIf="isPush&&!isNewInfo" nzType="vertical"></nz-divider>
+                        <a *ngIf="isPush&&!isNewInfo" (click)="assignAll(data.id,data.taskId,data.visitNum)">全部指派</a>
+                        <nz-divider *ngIf="isPush&&!isNewInfo" nzType="vertical"></nz-divider>
+                        <a *ngIf="isPush&&!isNewInfo" style="color:red" (click)="deleteTask(data)">移除</a>
                     </td>
                 </tr>
             </tbody>

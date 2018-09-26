@@ -72,6 +72,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             this.scheduleService.getScheduleById(params).subscribe((result: Schedule) => {
                 this.schedule = result;
                 this.isPush = result.status == 1 ? false : true;
+                console.log(this.isPush);
+
                 this.isDelete = true;
                 // if (!this.isPush) {
                 this.getTaskList();
@@ -217,8 +219,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     }
 
     assignTask(id: number, taskId: string, visitNum: number) {
-        let scheduleId: string = this.id;            //计划Id
-        this.router.navigate(['app/task/assign-task', id, taskId, visitNum, scheduleId]);
+        let scheduleId: string = this.id;            //计划Id,状态
+        this.router.navigate(['app/task/assign-task', id, taskId, visitNum, scheduleId, this.isPush]);
     }
     assignAll(id: number, taskId: string, visitNum: number): void {
         this.confirmModal = this.modal.confirm({

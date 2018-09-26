@@ -40,6 +40,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     checkboxCount: number = 0; // 所有Checkbox数量
     checkedLength: number = 0; // 已选中的数量
     checked = true;
+    isPush: boolean;
 
     constructor(injector: Injector, private taskService: VisitTaskServiceProxy
         , private organizationService: OrganizationServiceProxy
@@ -51,6 +52,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
         this.taskId = this.actRouter.snapshot.params['taskId'];
         this.visitNum = this.actRouter.snapshot.params['visitNum'];
         this.scheduleId = this.actRouter.snapshot.params['scheduleId'];
+        this.isPush = this.actRouter.snapshot.params['isPush'];
     }
 
     ngOnInit(): void {
@@ -101,8 +103,6 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
             this.loading = false;
             this.isSelectedAll = false;
             this.growerList = result;
-            console.log(this.growerList.length);
-
 
             this.growerList.map(v => {
                 if (v.checked == true) {
