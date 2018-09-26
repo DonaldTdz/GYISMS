@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +10,7 @@ namespace GYISMS.Meetings
     /// 会议申请
     /// </summary>
     [Table("Meetings")]
-    public class Meeting : Entity<Guid>
+    public class Meeting : AuditedEntity<Guid>, ISoftDelete
     {
 
         /// <summary>
@@ -139,27 +140,7 @@ namespace GYISMS.Meetings
         /// <summary>
         /// 是否删除
         /// </summary>
-        public virtual bool? IsDeleted { get; set; }
-
-        /// <summary>
-        /// CreationTime
-        /// </summary>
-        public virtual DateTime? CreationTime { get; set; }
-
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public virtual long? CreatorUserId { get; set; }
-
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public virtual DateTime? LastModificationTime { get; set; }
-
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public virtual long? LastModifierUserId { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
         /// <summary>
         /// DeletionTime

@@ -49,8 +49,7 @@ namespace GYISMS.Meetings
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task CreateOrUpdateMeeting(CreateOrUpdateMeetingInput input);
-
+        Task<MeetingEditDto> CreateOrUpdateMeeting(MeetingEditDto input);
 
         /// <summary>
         /// 删除Meeting信息的方法
