@@ -12,6 +12,10 @@ namespace GYISMS.VisitRecords
     [Table("VisitRecords")]
     public class VisitRecord : Entity<Guid>, IHasCreationTime
     {
+        public VisitRecord()
+        {
+            CreationTime = DateTime.Now;
+        }
 
         /// <summary>
         /// 任务明细Id 外键

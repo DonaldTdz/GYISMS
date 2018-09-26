@@ -10,8 +10,13 @@ namespace GYISMS.VisitExamines
     /// 拜访考核
     /// </summary>
     [Table("VisitExamines")]
-    public class VisitExamine : Entity<Guid> , IHasCreationTime
+    public class VisitExamine : Entity<Guid>, IHasCreationTime
     {
+        public VisitExamine()
+        {
+            CreationTime = DateTime.Now;
+        }
+
         /// <summary>
         /// 拜访记录Id 外键
         /// </summary>

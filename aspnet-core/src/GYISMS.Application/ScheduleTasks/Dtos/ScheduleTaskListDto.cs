@@ -331,6 +331,8 @@ namespace GYISMS.ScheduleTasks.Dtos
             }
         }
 
+        public ScheduleStatusEnum ScheduleStatus { get; set; }
+
         public GrowerListDto GrowerInfo { get; set; }
 
         public List<DingDingVisitRecordDto> VisitRecords { get; set; }
@@ -351,7 +353,7 @@ namespace GYISMS.ScheduleTasks.Dtos
             {
                 if (CreationTime.HasValue)
                 {
-                    return CreationTime.Value.ToString("yyyy-MM-dd");
+                    return CreationTime.Value.ToString("MM-dd HH:mm");
                 }
                 return string.Empty;
             }
