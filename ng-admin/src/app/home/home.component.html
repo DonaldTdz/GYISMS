@@ -56,16 +56,16 @@
       <ng-template #title1>
         <div nz-row>
           <div nz-col nzSpan="8">
-            任务计划
+            任务计划(按区域)
           </div>
           <div nz-col nzSpan="12" nzOffset="4">
             <nz-range-picker [nzFormat]="shedateFormat" [(ngModel)]="searchAreas" (ngModelChange)="changeTime($event)"></nz-range-picker>
-            <!-- <nz-date-picker [nzFormat]="shedateFormat"></nz-date-picker> -->
           </div>
         </div>
       </ng-template>
-      <!-- <bar height="275" [data]="shopData"></bar> -->
-      <g2-bar height="275" [data]="sheduMothData" color="name"></g2-bar>
+      <!-- <g2-bar height="275" [data]="sheduAreaData"></g2-bar> -->
+      <g2-group-bar height="275" [data]="sheduAreaData" groupName="name">
+      </g2-group-bar>
       <nz-table #nzTable [nzData]="sheduleArea" nzShowSizeChanger [nzShowPagination]="false">
         <thead>
 
@@ -83,17 +83,17 @@
         </thead>
         <tbody>
           <tr>
-            <td class="countsty">总数</td>
+            <td class="countsty">计划</td>
             <td *ngFor="let sheArea of nzTable.data">{{sheArea.total}}</td>
             <td class="bgcorlor">{{AreaSum.Satotal}}</td>
           </tr>
           <tr>
-            <td class="countsty">完成数 </td>
+            <td class="countsty">完成 </td>
             <td *ngFor="let sheArea of nzTable.data">{{sheArea.completed}}</td>
             <td class="bgcorlor">{{AreaSum.SaComplete}}</td>
           </tr>
           <tr>
-            <td class="countsty"> 逾期数 </td>
+            <td class="countsty"> 逾期 </td>
             <td *ngFor="let sheArea of nzTable.data">{{sheArea.expired}}</td>
             <td class="bgcorlor">{{AreaSum.SaExpired}}</td>
           </tr>
@@ -106,11 +106,10 @@
       <ng-template #title2>
         <div nz-row>
           <div nz-col nzSpan="8">
-            任务计划
+            任务计划（按月份）
           </div>
           <div nz-col nzSpan="8" nzOffset="8">
-            <nz-radio-group *ngFor="let item of tags" [(ngModel)]="searchMoth" [nzButtonStyle]="'solid'"
-              (ngModelChange)="changeCategory()">
+            <nz-radio-group *ngFor="let item of tags" [(ngModel)]="searchMoth" [nzButtonStyle]="'solid'" (ngModelChange)="changeCategory()">
               <label nz-radio-button [nzValue]="item.value" style="margin-right: 12px;">
                 <span>{{item.text}}</span>
               </label>
@@ -137,17 +136,17 @@
         </thead>
         <tbody>
           <tr>
-            <td class="countsty">总数</td>
+            <td class="countsty">计划</td>
             <td *ngFor="let sheMoth of nzTablew.data">{{sheMoth.total}}</td>
             <td class="bgcorlor">{{MothSum.Mototal}}</td>
           </tr>
           <tr>
-            <td class="countsty">完成数 </td>
+            <td class="countsty">完成 </td>
             <td *ngFor="let sheMoth of nzTablew.data">{{sheMoth.completed}}</td>
             <td class="bgcorlor">{{MothSum.MoComplete}}</td>
           </tr>
           <tr>
-            <td class="countsty"> 逾期数 </td>
+            <td class="countsty"> 逾期 </td>
             <td *ngFor="let sheMoth of nzTablew.data">{{sheMoth.expired}}</td>
             <td class="bgcorlor">{{MothSum.MoExpired}}</td>
           </tr>
@@ -156,51 +155,3 @@
     </nz-card>
   </div>
 </div>
-
-
-<div nz-row [nzGutter]="24">
-  <div nz-col nzXs="24" nzSm="24" nzMd="24">
-    <nz-card nzTitle="52ABP模板项目中的技术栈" [nzBordered]="false" [nzLoading]="loading" class="ant-card__body-nopadding mb-lg project-list">
-      <div *ngFor="let item of notice" nz-card-grid class="project-grid">
-        <nz-card [nzBordered]="false" class="ant-card__body-nopadding mb0">
-          <nz-card-meta [nzTitle]="noticeTitle" [nzDescription]="item.description">
-            <ng-template #noticeTitle>
-              <div class="card-title">
-                <nz-avatar [nzSrc]="item.logo" [nzSize]="'small'"></nz-avatar>
-                <a (click)="msg.info('to' + item.href)">{{item.title}}</a>
-              </div>
-            </ng-template>
-          </nz-card-meta>
-          <div class="project-item">
-            <a (click)="msg.info('show user: ' + item.member)">{{item.member}}</a>
-            <span *ngIf="item.updatedAt" class="datetime" title="{{item.updatedAt}}">
-              {{item.updatedAt | _date: 'fn' }}
-            </span>
-          </div>
-        </nz-card>
-      </div>
-    </nz-card>
-
-  </div>
-
-
-</div>
-
-
-<!-- 更多资料  -->
-<nz-row nzGutter="24">
-  <nz-col nzSpan="24">
-    <nz-card nzTitle="更多资料" [nzBordered]="false" [nzBodyStyle]="{'padding-top.px': 12, 'padding-bottom.px': 12 }" class="mb-lg">
-      <div class="members">
-        <div nz-row [nzGutter]="48">
-          <div nz-col [nzSpan]="12" *ngFor="let i of members">
-            <a href="{{i.link}}" target="_blank">
-              <nz-avatar [nzSrc]="i.logo" [nzSize]="'small'"></nz-avatar>
-              <span class="member">{{i.title}}</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </nz-card>
-  </nz-col>
-</nz-row>
