@@ -46,6 +46,7 @@ namespace GYISMS.GYEnums
 
     public enum ScheduleStatusEnum
     {
+        None = -1,
         已逾期 = 0,
         未开始 = 1,
         进行中 = 2,

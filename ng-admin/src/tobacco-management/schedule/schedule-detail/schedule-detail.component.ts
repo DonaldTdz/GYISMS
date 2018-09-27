@@ -19,7 +19,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     @ViewChild('selectTaskModal') selectTaskModal: ChooseTaskModalComponent;
     @ViewChild('selectEmployeeModal') selectEmployeeModal: ChooseEmployeeModalComponent;
 
-    id: string;
+    id: string = '';
     validateForm: FormGroup;
     schedule: Schedule = new Schedule();
     scheduleTask: ScheduleTask = new ScheduleTask();
@@ -33,6 +33,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     isSaved = false;
     taskList: VisitTask[] = [];
     loading = false;
+    isNewInfo: boolean;
 
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private taskService: VisitTaskServiceProxy,
@@ -51,6 +52,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             // visitNum: [null, Validators.compose([Validators.pattern("^\\d+$")])]
         });
         this.getScheduleInfo();
+        this.isNewInfo = typeof (this.id) == 'undefined';
     }
 
     getTaskList() {
@@ -70,6 +72,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             this.scheduleService.getScheduleById(params).subscribe((result: Schedule) => {
                 this.schedule = result;
                 this.isPush = result.status == 1 ? false : true;
+                console.log(this.isPush);
+
                 this.isDelete = true;
                 // if (!this.isPush) {
                 this.getTaskList();
@@ -122,6 +126,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         this.scheduleService.updateScheduleInfo(this.schedule).finally(() => { this.isConfirmLoading = false; })
             .subscribe((result: any) => {
                 this.schedule = result;
+                this.id = result.id;
                 // if (this.schedule.id) {
                 //     this.scheduleTask.scheduleId = this.schedule.id;
                 //     this.scheduleService.updateScheduleTaskInfo(this.scheduleTask).subscribe((res: any) => {
@@ -143,12 +148,11 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 this.save(true);
             }
         });
-
     }
 
     delete(): void {
         this.confirmModal = this.modal.confirm({
-            nzContent: '是否删除任务信息?',
+            nzContent: '是否移除任务信息?',
             nzOnOk: () => {
                 this.scheduleService.deleteSchedule(this.schedule).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
@@ -215,7 +219,22 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     }
 
     assignTask(id: number, taskId: string, visitNum: number) {
-        let scheduleId: string = this.id;            //计划Id
-        this.router.navigate(['app/task/assign-task', id, taskId, visitNum, scheduleId]);
+        let scheduleId: string = this.id;            //计划Id,状态
+        this.router.navigate(['app/task/assign-task', id, taskId, visitNum, scheduleId, this.isPush]);
+    }
+    assignAll(id: number, taskId: string, visitNum: number): void {
+        this.confirmModal = this.modal.confirm({
+            nzContent: '即将指派所有烟农，是否继续?',
+            nzOnOk: () => {
+                let input: any = {};
+                input.VisitNum = visitNum;
+                input.ScheduleTaskId = id;
+                input.ScheduleId = this.id;
+                input.TaskId = taskId;
+                this.taskService.createAllScheduleTask(input).subscribe(() => {
+                    this.notify.info(this.l('任务指派成功！'));
+                });
+            }
+        });
     }
 }

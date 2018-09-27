@@ -356,7 +356,8 @@ namespace GYISMS.ScheduleTasks
                             TaskType = t.Type,
                             GrowerId = sd.GrowerId,
                             VisitNum = sd.VisitNum,
-                            CompleteNum = sd.CompleteNum
+                            CompleteNum = sd.CompleteNum,
+                            ScheduleStatus = sd.Status
                         };
 
             var taskDetailDto = await query.FirstOrDefaultAsync();
@@ -368,9 +369,34 @@ namespace GYISMS.ScheduleTasks
             return taskDetailDto;
         }
 
+        [AbpAllowAnonymous]
+        public async Task<List<DingDingScheduleDetailDto>> GetDingDingScheduleTaskPagingAsync(string userId, ScheduleStatusEnum status, DateTime? startDate, DateTime? endDate, int pageIndex)
+        {
+            var query = from sd in _scheduleDetailRepository.GetAll().WhereIf(status != ScheduleStatusEnum.None, s => s.Status == status)
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        join s in _scheduleRepository.GetAll()
+                                        .WhereIf(startDate.HasValue, s => s.EndTime >= startDate)
+                                        .WhereIf(endDate.HasValue, s => s.EndTime <= endDate)
+                        on sd.ScheduleId equals s.Id
+                        where sd.EmployeeId == userId
+                        select new DingDingScheduleDetailDto()
+                        {
+                            Id = sd.Id,
+                            EndTime = s.EndTime,
+                            GrowerId = sd.GrowerId,
+                            GrowerName = sd.GrowerName,
+                            Status = sd.Status,
+                            TaskName = t.Name,
+                            TaskType = t.Type
+                        };
+
+            var dataList = await query.OrderByDescending(q => q.EndTime).Skip(pageIndex).Take(15).ToListAsync();
+            return dataList;
+        }
+
         #endregion
 
-        
+
     }
 }
 

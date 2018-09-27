@@ -22,6 +22,7 @@ using GYISMS.Growers.Dtos;
 using GYISMS.GYEnums;
 using GYISMS.Growers;
 using GYISMS.Schedules;
+using GYISMS.Dtos;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -45,6 +46,7 @@ namespace GYISMS.ScheduleDetails
            ISheduleDetailRepository scheduledetailRepository, IScheduleDetailManager scheduledetailManager, IRepository<Grower, int> growerRepository,
             IRepository<Schedule, Guid> scheduleRepository)
         {
+            _growerRepository = growerRepository;
             _scheduledetailRepository = scheduledetailRepository;
             _scheduledetailManager = scheduledetailManager;
             _growerRepository = growerRepository;
@@ -167,11 +169,10 @@ namespace GYISMS.ScheduleDetails
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(ScheduleDetailAppPermissions.ScheduleDetail_Delete)]
-        public async Task DeleteScheduleDetail(EntityDto<Guid> input)
+        public async Task DeleteScheduleDetail(Guid Id)
         {
             //TODO:删除前的逻辑判断，是否允许删除
-            await _scheduledetailRepository.DeleteAsync(input.Id);
+            await _scheduledetailRepository.DeleteAsync(Id);
         }
 
 
@@ -191,17 +192,23 @@ namespace GYISMS.ScheduleDetails
         {
             List<ScheduleDetailEditDto> list = new List<ScheduleDetailEditDto>();
             //更新前删除逻辑
-            var param = input.Where(v => v.Id.HasValue).Select(v => new { v.EmployeeId, v.TaskId, v.ScheduleId }).FirstOrDefault();
-            if (param != null)
+            var unChecked = input.Where(v => v.Id.HasValue && v.Checked == false).Select(v => new { v.EmployeeId, v.TaskId, v.ScheduleId, v.ScheduleTaskId, v.AreaCode, v.GrowerId }).ToList();
+            if (unChecked.Count != 0)
             {
-                Guid?[] newIds = input.Select(v => v.Id).ToArray();
-                Guid[] oldIds = _scheduledetailRepository.GetAll().Where(v => v.TaskId == param.TaskId && v.ScheduleId == param.ScheduleId).Select(v => v.Id).ToArray();
-                List<Guid> diffIds = oldIds.Where(v => !newIds.Contains(v)).ToList();
-                await BatchDeleteScheduleDetailsAsync(diffIds);
-                await CurrentUnitOfWork.SaveChangesAsync();
+                foreach (var item in unChecked)
+                {
+                    Guid id = await _scheduledetailRepository.GetAll()
+                        .Where(v => v.TaskId == item.TaskId && v.ScheduleId == item.ScheduleId && v.ScheduleTaskId == item.ScheduleTaskId && v.EmployeeId == item.EmployeeId && v.GrowerId == item.GrowerId).Select(v => v.Id).FirstOrDefaultAsync();
+                    string emptyId = "{00000000-0000-0000-0000-000000000000}";
+                    if (id != new Guid(emptyId))
+                    {
+                        await DeleteScheduleDetail(id);
+                        await CurrentUnitOfWork.SaveChangesAsync();
+                    }
+                }
             }
 
-            foreach (var item in input)
+            foreach (var item in input.Where(v => v.Checked == true))
             {
                 if (item.Id.HasValue)
                 {
@@ -320,11 +327,59 @@ namespace GYISMS.ScheduleDetails
             return list;
         }
 
-        public async Task GetSumShedule(SheduleSumInput input)
+        //public async Task GetSumShedule(SheduleSumInput input)
+        //{
+
+        //}
+
+        /// 任务全部指派
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<APIResultDto> CreateAllScheduleTaskAsync(GetGrowersInput input)
         {
+            try
+            {
+                // 全部指派找出已存在指派信息
+                var hasScheduleDetail = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.ScheduleTaskId).ToListAsync();
+                if (hasScheduleDetail.Count != 0)
+                {
+                    var growerIds = _growerRepository.GetAll().Where(v => v.IsDeleted == false).Select(v => v.Id);
+                    var sameIds = hasScheduleDetail.Where(v => growerIds.Contains(v.GrowerId)).Select(v => v.Id).ToList();
+                    await BatchDeleteScheduleDetailsAsync(sameIds);
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                }
 
+                var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
+                foreach (var item in growerList)
+                {
+                    ScheduleDetail entity = new ScheduleDetail();
+                    entity.VisitNum = input.VisitNum;
+                    entity.ScheduleTaskId = input.ScheduleTaskId;
+                    entity.CompleteNum = 0;
+                    entity.Status = ScheduleStatusEnum.未开始;
+                    entity.ScheduleId = input.ScheduleId;
+                    entity.TaskId = input.TaskId;
+                    entity.GrowerId = item.Id;
+                    entity.GrowerName = item.Name;
+                    if (item.EmployeeName != null)
+                    {
+                        entity.EmployeeName = item.EmployeeName;
+                    }
+                    if (item.EmployeeId != null)
+                    {
+                        entity.EmployeeId = item.EmployeeId;
+                    }
+                    var result = await _scheduledetailRepository.InsertAsync(entity);
+                }
+                return new APIResultDto() { Code = 0, Msg = "任务批量指派成功" };
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("AssignAll errormsg{0} Exception{1}", ex.Message, ex);
+                return new APIResultDto() { Code = 901, Msg = "任务批量指派失败" };
+            }
         }
-
     }
 }
 

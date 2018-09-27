@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -35,7 +36,7 @@ namespace GYISMS.MeetingRooms
         /// <summary>
         /// 会议室类型（固定会议室、临时会议室）
         /// </summary>
-        public virtual int? RoomType { get; set; }
+        public virtual RoomType? RoomType { get; set; }
 
         /// <summary>
         /// 地址

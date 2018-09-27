@@ -7,6 +7,7 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GYISMS.ScheduleTasks.Dtos;
 using GYISMS.ScheduleTasks;
+using GYISMS.GYEnums;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -48,6 +49,8 @@ namespace GYISMS.ScheduleTasks
 
         Task<List<ScheduleTaskListDto>> GetScheduleTasksNoPageAsync(Guid id);
         Task VisitTaskDeleteByIdAsync(ScheduleTaskEditDto input);
+
+        Task<List<DingDingScheduleDetailDto>> GetDingDingScheduleTaskPagingAsync(string userId, ScheduleStatusEnum status, DateTime? startDate, DateTime? endDate, int pageIndex);
 
     }
 }

@@ -51,6 +51,7 @@ export class VisitTask implements IVisitTask {
             this.isChecked = data["isChecked"];
             this.visitNum = data["visitNum"];
             this.scheduleTaskId = data["scheduleTaskId"];
+            this.checked = data["checked"];
         }
     }
 

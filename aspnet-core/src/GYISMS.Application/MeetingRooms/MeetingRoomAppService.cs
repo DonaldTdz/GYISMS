@@ -18,6 +18,7 @@ using GYISMS.MeetingRooms.Authorization;
 using GYISMS.MeetingRooms.Dtos;
 using GYISMS.MeetingRooms;
 using GYISMS.Authorization;
+using GYISMS.Meetings;
 
 namespace GYISMS.MeetingRooms
 {
@@ -27,7 +28,8 @@ namespace GYISMS.MeetingRooms
     [AbpAuthorize(AppPermissions.Pages)]
     public class MeetingRoomAppService : GYISMSAppServiceBase, IMeetingRoomAppService
     {
-        private readonly IRepository<MeetingRoom, int>_meetingroomRepository;
+        private readonly IRepository<MeetingRoom, int> _meetingroomRepository;
+        private readonly IRepository<Meeting, Guid> _meetingRepository;
 
 
         private readonly IMeetingRoomManager _meetingroomManager;
@@ -38,10 +40,12 @@ namespace GYISMS.MeetingRooms
         public MeetingRoomAppService(
         IRepository<MeetingRoom, int> meetingroomRepository
             , IMeetingRoomManager meetingroomManager
+            , IRepository<Meeting, Guid> meetingRepository
             )
         {
             _meetingroomRepository = meetingroomRepository;
             _meetingroomManager = meetingroomManager;
+            _meetingRepository = meetingRepository;
         }
 
 
@@ -127,7 +131,7 @@ namespace GYISMS.MeetingRooms
 
             var entity = ObjectMapper.Map<MeetingRoom>(input);
             entity.IsDeleted = false;
-            if (entity.Photo.Length==0)
+            if (entity.Photo.Length == 0)
             {
                 entity.Photo = "DefaultPhoto";
             }
@@ -183,7 +187,7 @@ namespace GYISMS.MeetingRooms
 
             if (input.Id.HasValue)
             {
-               return await UpdateMeetingRoomAsync(input);
+                return await UpdateMeetingRoomAsync(input);
             }
             else
             {
@@ -221,6 +225,45 @@ namespace GYISMS.MeetingRooms
         {
             //TODO:删除前的逻辑判断，是否允许删除
             await _meetingroomRepository.DeleteAsync(id);
+        }
+
+
+        [AbpAllowAnonymous]
+        public async Task<List<MeetingRoomListDto>> GetDingDingMeetingRoomsAsync()
+        {
+            var room = _meetingroomRepository.GetAll();
+            var meeting = _meetingRepository.GetAll();
+            var result = from r in room
+                         join m in meeting on r.Id equals m.MeetingRoomId
+                         into leftTable
+                         from entity in leftTable.DefaultIfEmpty()
+                         select new MeetingRoomListDto()
+                         {
+                             Id = r.Id,
+                             Name = r.Name + $"({r.Num}人)",
+                             Photo = r.Photo,
+                             RoomTypeName = r.RoomType.ToString(),
+                             CurrentStatus = entity.BeginTime == null ? $"未来两小时可预定({((bool)r.IsApprove?"需要审核":"无需审核")})" : (entity.BeginTime <= DateTime.Now.AddHours(2) && entity.EndTime <= DateTime.Now.AddHours(2) ? $"未来两小时不可预定({((bool)r.IsApprove ? "需要审核" : "无需审核")})" : $"未来两小时可预定({((bool)r.IsApprove ? "需要审核" : "无需审核")})")
+                         };
+
+            var meetingrooms = await result
+                    .OrderBy(v => v.Id).AsNoTracking()
+                    .ToListAsync();
+            var meetingroomListDtos = meetingrooms.MapTo<List<MeetingRoomListDto>>();
+            return meetingroomListDtos;
+        }
+
+        /// <summary>
+        /// 根据id获取会议室信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<MeetingRoomListDto> GetDingDingMeetingRoomByIdAsync(int id)
+        {
+            var room =await _meetingroomRepository.GetAll().Where(v => v.Id == id).AsNoTracking().FirstOrDefaultAsync();
+            var roomDto = room.MapTo<MeetingRoomListDto>();
+            return roomDto;
         }
     }
 }

@@ -40,6 +40,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     checkboxCount: number = 0; // 所有Checkbox数量
     checkedLength: number = 0; // 已选中的数量
     checked = true;
+    isPush: boolean;
 
     constructor(injector: Injector, private taskService: VisitTaskServiceProxy
         , private organizationService: OrganizationServiceProxy
@@ -51,6 +52,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
         this.taskId = this.actRouter.snapshot.params['taskId'];
         this.visitNum = this.actRouter.snapshot.params['visitNum'];
         this.scheduleId = this.actRouter.snapshot.params['scheduleId'];
+        this.isPush = this.actRouter.snapshot.params['isPush'];
     }
 
     ngOnInit(): void {
@@ -81,31 +83,34 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     }
 
     getTrees() {
-        this.organizationService.GetTreesAsync().subscribe((data) => {
+        this.organizationService.GetEmployeeTreesAsync().subscribe((data) => {
             this.nodes = data;
         });
     }
     /**
      * 获取
      */
-    refreshData(departId: string) {
+    refreshData(employeeId: string) {
         let i: number = 0;
         this.loading = true;
         let params: any = {};
         // params.departId = departId;
         params.TaskId = this.taskId;
         params.ScheduleId = this.scheduleId;
+        params.Id = this.id;
+        params.EmployeeId = employeeId;
         this.growerService.getGrowerListNoPageAsync(params).subscribe((result: Grower[]) => {
             this.loading = false;
+            this.isSelectedAll = false;
             this.growerList = result;
+
             this.growerList.map(v => {
-                if (v.isChecked == true) {
-                    v.checked = true;
+                if (v.checked == true) {
                     i++;
                 }
                 if ((!v.visitNum) && (v.visitNum != 0)) v.visitNum = this.visitNum;
             });
-            if (this.growerList.length == i) {
+            if ((this.growerList.length != 0) && (this.growerList.length == i)) {
                 this.isSelectedAll = true;
             }
         });
@@ -117,17 +122,15 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
             this.activedNode = null;
         }
         data.node.isSelected = true;
-
         this.activedNode = data.node;
-        this.query.pageIndex = 1;
-        this.query.pageSize = 10;
         this.tempNode = data.node.key;
-
         this.refreshData(data.node.key);
     }
 
     save() {
-        var list = this.growerList.filter(v => v.checked);
+        // var list = this.growerList.filter(v => v.checked);
+        var list = this.growerList;
+
         let params: any = {};
         params.taskId = this.taskId;
         params.id = this.id;
@@ -148,10 +151,10 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
             this.scheduleDetail.completeNum = 0;
             this.scheduleDetail.employeeId = v.employeeId;
             this.scheduleDetail.employeeName = v.employeeName;
+            this.scheduleDetail.checked = v.checked;
             this.scheduleDetailList.push(ScheduleDetail.fromJS(this.scheduleDetail));
             this.scheduleDetail = new ScheduleDetail();
         })
-        console.log(this.scheduleDetailList);
         this.isConfirmLoading = true;
         this.successMsg = '保存成功';
         this.saveAssignInfo();

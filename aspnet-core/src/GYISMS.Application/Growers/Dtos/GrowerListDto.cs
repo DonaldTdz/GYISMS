@@ -149,7 +149,6 @@ namespace GYISMS.Growers.Dtos
         public long? DeleterUserId { get; set; }
 
         public Guid? ScheduleDetailId { get; set; }
-        public bool IsChecked { get; set; }
         public int? VisitNum { get; set; }
 
         public string CountyCodeName
@@ -159,5 +158,7 @@ namespace GYISMS.Growers.Dtos
                return CountyCode.ToString();
             }
         }
+        public bool Checked { get; set; }
+
     }
 }

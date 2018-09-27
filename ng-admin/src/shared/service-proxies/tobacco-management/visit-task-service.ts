@@ -136,6 +136,13 @@ export class VisitTaskServiceProxy {
             return data.result;
         });
     }
+
+    createAllScheduleTask(input: any): Observable<ApiResult> {
+        let url_ = "/api/services/app/ScheduleDetail/CreateAllScheduleTaskAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data.result;
+        });
+    }
 }
 
 export class PagedResultDtoOfVisitTask implements IPagedResultDtoOfVisitTask {

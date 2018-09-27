@@ -12,17 +12,15 @@ namespace GYISMS.VisitRecords.Dtos.CustomMapper
     {
         public static void CreateMappings(IMapperConfigurationExpression configuration)
         {
-            configuration.CreateMap <VisitRecord, VisitRecordListDto>
-    ();
-    configuration.CreateMap <VisitRecordEditDto, VisitRecord>
-        ();
+            configuration.CreateMap<VisitRecord, VisitRecordListDto>();
+            configuration.CreateMap<VisitRecordEditDto, VisitRecord>();
 
 
 
-        //// custom codes
-         
-        //// custom codes end
+            //// custom codes
+
+            //// custom codes end
 
         }
-        }
-        }
+    }
+}

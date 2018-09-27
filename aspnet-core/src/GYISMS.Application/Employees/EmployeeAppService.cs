@@ -208,31 +208,48 @@ namespace GYISMS.Employees
             }
         }
 
-        /// <summary>
-        /// 按需获取子节点
-        /// </summary>
-        //public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
-        //{
-        //    var employeeList = await (from o in _employeeRepository.GetAll()
-        //                                  select new EmployeeListDto()
-        //                                  {
-        //                                      Id = o.Id,
-        //                                      Name = o.Name,
-        //                                  }).ToListAsync();
-        //    return GetTrees(0
-        //        , employeeList);
-        //}
+        private List<EmployeeNzTreeNode> GetAreaEmoloyee(string area)
+        {
+            var employeeList = (from o in _employeeRepository.GetAll()
+                                     .Where(v => v.AreaCode == area)
+                                select new EmployeeNzTreeNode()
+                                {
+                                    key = o.Id,
+                                    title = o.Name,
+                                    children = null,
+                                    IsLeaf = true
+                                }).ToList();
+            return employeeList;
+        }
 
-        //private List<EmployeeNzTreeNode> GetTrees(long? id, List<EmployeeListDto> employeeList)
-        //{
-        //    List<EmployeeNzTreeNode> treeNodeList = employeeList.Where(o => o.Department.Contains("1")).Select(t => new EmployeeNzTreeNode()
-        //    {
-        //        key = t.Id,
-        //        title = t.Name,
-        //        children = GetTrees(t.Id, employeeList)
-        //    }).ToList();
-        //    return treeNodeList;
-        //}
+        public List<EmployeeNzTreeNode> GetTreesAsync()
+        {
+            List<EmployeeNzTreeNode> treeNodeList = new List<EmployeeNzTreeNode>();
+
+            EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+            {
+                key = "1",
+                title = "昭化区",
+                children = GetAreaEmoloyee("1")
+            };
+            treeNodeList.Add(treeNode);
+            EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
+            {
+                key = "2",
+                title = "剑阁县",
+                children = GetAreaEmoloyee("2")
+            };
+            treeNodeList.Add(treeNode2);
+            EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
+            {
+                key = "3",
+                title = "旺苍县",
+                children = GetAreaEmoloyee("3"),
+            };
+            treeNodeList.Add(treeNode3);
+            return treeNodeList;
+        }
+
         [AbpAllowAnonymous]
         public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code)
         {

@@ -4,7 +4,7 @@ export class ScheduleTask implements IScheduleTask {
     scheduleId: string;
     visitNum: number;
     isDeleted: boolean;
-    // creationTime: Date;
+    creationTime: Date;
     creatorUserId: number;
     lastModificationTime: Date;
     lastModifierUserId: number;
@@ -29,7 +29,7 @@ export class ScheduleTask implements IScheduleTask {
             this.scheduleId = data["scheduleId"];
             this.visitNum = data["visitNum"];
             this.isDeleted = data["isDeleted"];
-            // this.creationTime = data["creationTime"];
+            this.creationTime = data["creationTime"];
             this.creatorUserId = data["creatorUserId"];
             this.lastModificationTime = data["lastModificationTime"];
             this.lastModifierUserId = data["lastModifierUserId"];
@@ -80,7 +80,7 @@ export class ScheduleTask implements IScheduleTask {
         data["scheduleId"] = this.scheduleId;
         data["visitNum"] = this.visitNum;
         data["isDeleted"] = this.isDeleted;
-        // data["creationTime"] = this.creationTime;
+        data["creationTime"] = this.creationTime;
         data["creatorUserId"] = this.creatorUserId;
         data["lastModificationTime"] = this.lastModificationTime;
         data["lastModifierUserId"] = this.lastModifierUserId;
@@ -103,7 +103,7 @@ export interface IScheduleTask {
     scheduleId: string;
     visitNum: number;
     isDeleted: boolean;
-    // creationTime: Date;
+    creationTime: Date;
     creatorUserId: number;
     lastModificationTime: Date;
     lastModifierUserId: number;

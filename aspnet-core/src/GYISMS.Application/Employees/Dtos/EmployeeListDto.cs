@@ -94,44 +94,28 @@ namespace GYISMS.Employees.Dtos
         /// Remark
         /// </summary>
         public string Remark { get; set; }
+
+        /// <summary>
+        /// ÇøÏØCode
+        /// </summary>
+        public string AreaCode { get; set; }
+
+        /// <summary>
+        /// ÇøÏØÃû³Æ
+        /// </summary>
+        public string Area { get; set; }
     }
     public class NzTreeNode
     {
         public virtual string title { get; set; }
         public virtual string key { get; set; }
-
-        public virtual bool expanded { get; set; }//ï¿½Ç·ï¿½ï¿½
-
-        public virtual bool isLeaf { get; set; } //ï¿½Ç·ï¿½ï¿½ï¿½ï¿½ï¿½Ò¶
+        public virtual bool IsLeaf { get; set; }
 
         public virtual List<NzTreeNode> children { get; set; }
     }
 
     public class EmployeeNzTreeNode : NzTreeNode
     {
-        public override bool expanded
-        {
-            get
-            {
-                if (key == "1")//ï¿½Ü¹ï¿½Ë¾
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-
-        public override bool isLeaf
-        {
-            get
-            {
-                if (children.Count == 0)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
 
         public new List<EmployeeNzTreeNode> children { get; set; }
         //// custom codes
