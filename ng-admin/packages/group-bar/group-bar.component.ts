@@ -45,6 +45,7 @@ export class G2GroupBarComponent implements OnDestroy, OnChanges {
     }
 
     @Input() color = 'rgba(24, 144, 255, 0.85)';
+    @Input() groupName = '';
 
     @HostBinding('style.height.px')
     @Input()
@@ -57,7 +58,7 @@ export class G2GroupBarComponent implements OnDestroy, OnChanges {
     private _height = 0;
 
     @Input() padding: number[];
-    @Input() data: Array<{ x: any; y: any;[key: string]: any }>;
+    @Input() data: any;
 
     @Input()
     set autoLabel(value: any) {
@@ -102,35 +103,42 @@ export class G2GroupBarComponent implements OnDestroy, OnChanges {
             padding: this.padding || 'auto',
         });
 
-        chart.axis('x', !this.autoHideXLabels);
+        /*chart.axis('x', !this.autoHideXLabels);
         chart.axis('y', {
             title: false,
             line: false,
             tickLine: false,
-        });
+        });*/
 
-        chart.source(this.data, {
+        /*chart.source(this.data, {
             x: {
                 type: 'cat',
             },
             y: {
                 min: 0,
             },
-        });
+        });*/
+        chart.source(this.data);
 
         chart.tooltip({
             showTitle: false,
         });
-        chart
-            .interval()
+        /*chart.interval()
             .position('x*y')
-            .color(this.color)
+            .color(this.groupName == ''? this.color : this.groupName)
             .tooltip('x*y', (x, y) => {
                 return {
                     name: x,
                     value: y,
                 };
-            });
+            });*/
+        chart.interval()
+            .position('x*y')
+            .color(this.groupName == '' ? this.color : this.groupName)
+            .adjust([{
+                type: 'dodge',
+                marginRatio: 1 / 32
+            }]);
         chart.render();
         this.chart = chart;
     }

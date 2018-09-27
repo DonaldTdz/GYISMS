@@ -65,7 +65,7 @@
         </div>
       </ng-template>
       <!-- <bar height="275" [data]="shopData"></bar> -->
-      <g2-bar height="275" [data]="sheduAreaData"></g2-bar>
+      <g2-bar height="275" [data]="sheduMothData" color="name"></g2-bar>
       <!-- <nz-table #nzTable [nzAjaxData]="shopStatistics" [nzIsPagination]="false" [nzShowSizeChanger]="true">
         <thead nz-thead>
           <tr>
@@ -99,7 +99,8 @@
             任务计划
           </div>
           <div nz-col nzSpan="8" nzOffset="8">
-            <nz-radio-group *ngFor="let item of tags" [(ngModel)]="searchMoth" [nzButtonStyle]="'solid'" (ngModelChange)="changeCategory()">
+            <nz-radio-group *ngFor="let item of tags" [(ngModel)]="searchMoth" [nzButtonStyle]="'solid'"
+              (ngModelChange)="changeCategory()">
               <label nz-radio-button [nzValue]="item.value" style="margin-right: 12px;">
                 <span>{{item.text}}</span>
               </label>
@@ -107,7 +108,7 @@
           </div>
         </div>
       </ng-template>
-      <g2-bar height="275" [data]="sheduMothData"></g2-bar>
+      <g2-group-bar height="275" [data]="sheduMothData" groupName="name"></g2-group-bar>
       <!-- <nz-table #nzTablew [nzAjaxData]="wechatUserStatistic" [nzIsPagination]="false" [nzShowSizeChanger]="true">
         <thead nz-thead>
           <tr>

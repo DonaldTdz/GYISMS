@@ -11,6 +11,7 @@ import { SharedModule } from '@shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
+import { G2GroupBarModule } from '../../packages/group-bar';
 import { AboutComponent } from '@app/about/about.component';
 import { TenantsComponent } from '@app/tenants/tenants.component';
 import { UsersComponent } from '@app/users/users.component';
@@ -32,6 +33,7 @@ import { EditUserComponent } from '@app/users/edit-user/edit-user.component';
     LayoutModule,
     SharedModule,
     AbpModule,
+    G2GroupBarModule,
   ],
   declarations: [
     //AppComponent,

@@ -23,14 +23,49 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   searchMoth = 1;
   sheduAreaData = [];
   sheduMothData = [{
-    x: "Jan.",
-    y: 20,
-    z: "a"
+    name: "计划",
+    x: "2018-07",
+    y: 85
   },
   {
-    x: "Jan.",
-    y: 70,
-    z: "b"
+    name: "完成",
+    x: "2018-07",
+    y: 80
+  },
+  {
+    name: "逾期",
+    x: "2018-07",
+    y: 5
+  },
+  {
+    name: "计划",
+    x: "2018-08",
+    y: 90
+  },
+  {
+    name: "完成",
+    x: "2018-08",
+    y: 60
+  },
+  {
+    name: "逾期",
+    x: "2018-08",
+    y: 10
+  },
+  {
+    name: "计划",
+    x: "2018-09",
+    y: 80
+  },
+  {
+    name: "完成",
+    x: "2018-09",
+    y: 70
+  },
+  {
+    name: "逾期",
+    x: "2018-09",
+    y: 5
   }
   ];
   tags = [
@@ -113,14 +148,14 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   loading = true;
 
   ngOnInit(): void {
-    zip(this.http.get('/api/notice')).subscribe(([chart]: [any]) => {
+    /*zip(this.http.get('/api/notice')).subscribe(([chart]: [any]) => {
       this.notice = chart;
 
       this.loading = false;
-    });
-    this.getHomeInfo();
-    this.getSheduleStatisByArea();
-    this.getShduleStatisByMoth();
+    });*/
+    //this.getHomeInfo();
+    //this.getSheduleStatisByArea();
+    //this.getShduleStatisByMoth();
   }
   getHomeInfo() {
     this.homeService.getHomeInfo().subscribe(data => {
