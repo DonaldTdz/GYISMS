@@ -2,7 +2,9 @@
 
 using Abp.Runtime.Validation;
 using GYISMS.Dtos;
+using GYISMS.GYEnums;
 using GYISMS.ScheduleDetails;
+using System;
 
 namespace GYISMS.ScheduleDetails.Dtos
 {
@@ -30,5 +32,35 @@ namespace GYISMS.ScheduleDetails.Dtos
         }
 
 
+    }
+
+    public class ScheduleDetaStatisticalInput
+    {
+        public DateTime? startTime { get; set; }
+        public DateTime? endTime { get; set; }
+
+    }
+
+    public class SheduleSumInput
+    {
+        /// <summary>
+        /// 区域
+        /// </summary>
+        public AreaTypeEnum? Area { get; set; }
+
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public DateTime? StartTime { get; set; }
+
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        public DateTime? EndTime { get; set; }
+
+        /// <summary>
+        /// 计划名称
+        /// </summary>
+        public string SheduleName { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -39,7 +40,7 @@ namespace GYISMS.Growers
         /// <summary>
         /// 所属区县（剑阁县、昭化区、旺苍县）
         /// </summary>
-        public virtual int? CountyCode { get; set; }
+        public virtual AreaTypeEnum? CountyCode { get; set; }
 
         /// <summary>
         /// 烟技员Id外键
