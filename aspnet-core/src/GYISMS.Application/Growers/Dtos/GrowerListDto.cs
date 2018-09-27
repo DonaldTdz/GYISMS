@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.Growers;
 using Abp.AutoMapper;
+using GYISMS.GYEnums;
 
 namespace GYISMS.Growers.Dtos
 {
@@ -42,7 +43,7 @@ namespace GYISMS.Growers.Dtos
         /// <summary>
         /// CountyCode
         /// </summary>
-        public int? CountyCode { get; set; }
+        public AreaTypeEnum? CountyCode { get; set; }
 
 
         /// <summary>
@@ -150,5 +151,13 @@ namespace GYISMS.Growers.Dtos
         public Guid? ScheduleDetailId { get; set; }
         public bool IsChecked { get; set; }
         public int? VisitNum { get; set; }
+
+        public string CountyCodeName
+        {
+            get
+            {
+               return CountyCode.ToString();
+            }
+        }
     }
 }

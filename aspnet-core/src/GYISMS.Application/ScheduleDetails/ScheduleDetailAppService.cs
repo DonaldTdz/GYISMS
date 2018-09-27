@@ -19,6 +19,9 @@ using GYISMS.ScheduleDetails.Dtos;
 using GYISMS.ScheduleDetails;
 using GYISMS.Authorization;
 using GYISMS.Growers.Dtos;
+using GYISMS.GYEnums;
+using GYISMS.Growers;
+using GYISMS.Schedules;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -28,17 +31,24 @@ namespace GYISMS.ScheduleDetails
     [AbpAuthorize(AppPermissions.Pages)]
     public class ScheduleDetailAppService : GYISMSAppServiceBase, IScheduleDetailAppService
     {
-        private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
+        //private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
         private readonly IScheduleDetailManager _scheduledetailManager;
+        private readonly IRepository<Grower, int> _growerRepository;
+        private readonly IRepository<Schedule, Guid> _scheduleRepository;
+        private readonly ISheduleDetailRepository _scheduledetailRepository;
+
 
         /// <summary>
         /// 构造函数 
         ///</summary>
-        public ScheduleDetailAppService(IRepository<ScheduleDetail, Guid> scheduledetailRepository
-            , IScheduleDetailManager scheduledetailManager)
+        public ScheduleDetailAppService(//IRepository<ScheduleDetail, Guid> scheduledetailRepository
+           ISheduleDetailRepository scheduledetailRepository, IScheduleDetailManager scheduledetailManager, IRepository<Grower, int> growerRepository,
+            IRepository<Schedule, Guid> scheduleRepository)
         {
             _scheduledetailRepository = scheduledetailRepository;
             _scheduledetailManager = scheduledetailManager;
+            _growerRepository = growerRepository;
+            _scheduleRepository = scheduleRepository;
         }
 
 
@@ -204,6 +214,117 @@ namespace GYISMS.ScheduleDetails
             }
             return list;
         }
+
+        /// <summary>
+        /// 获取任务完成情况数据统计
+        /// </summary>
+        /// <returns></returns>
+        public HomeInfo GetHomeInfo()
+        {
+            var homeInfo = new HomeInfo();
+            //var aa = await _scheduledetailRepository.GetAll().ToListAsync();
+            var totalCount =  _scheduledetailRepository.GetAll().Sum(s => s.VisitNum);
+            homeInfo.Total = totalCount.HasValue ? totalCount.Value : 0;
+            var compCount = _scheduledetailRepository.GetAll().Sum(s => s.CompleteNum);
+            homeInfo.Completed = compCount.HasValue ? compCount.Value : 0;
+            if (!compCount.HasValue)
+            {
+                homeInfo.CompletedRate = "0%";
+            }
+            else
+            {
+                homeInfo.CompletedRate = (Math.Round((double)homeInfo.Completed / homeInfo.Total, 2) * 100).ToString() + "%";
+            }
+            var expirCount =  _scheduledetailRepository.GetAll().Where(s => s.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum);
+            homeInfo.Expired = expirCount.HasValue ? expirCount.Value : 0;
+            return homeInfo;
+        }
+
+        /// <summary>
+        /// 按区域时间统计计划完成的情况
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<List<SheduleStatisticalDto>> GetSchedulByAreaTime(ScheduleDetaStatisticalInput input)
+        {
+            var timeNow = DateTime.Today;
+            input.startTime = input.startTime.HasValue ? input.startTime : timeNow.AddDays(1 - timeNow.Day);
+            input.endTime = input.endTime.HasValue ? input.endTime : timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
+            var query = from sd in _scheduledetailRepository.GetAll()
+                        join s in _scheduleRepository.GetAll().Where(s => s.BeginTime >= input.startTime && s.BeginTime <= input.endTime) on sd.ScheduleId equals s.Id
+                        join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id into sg
+                        from wr in sg.DefaultIfEmpty()
+                        select new
+                        {
+                            sd.Id,
+                            sd.Status,
+                            sd.VisitNum,
+                            sd.CompleteNum,
+                            wr.CountyCode,
+                        };
+            var lists = query.ToList();
+            var list = await query.GroupBy(s => s.CountyCode).Select(g => new SheduleStatisticalDto
+            {
+                GroupName = g.Key.ToString(),
+                Total = g.Sum(m => m.VisitNum),
+                Completed = g.Sum(m => m.CompleteNum),
+                Expired = g.Where(m => m.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum)
+            }).ToListAsync();
+            return list;
+        }
+
+        /// <summary>
+        /// 按月份统计计划完成情况
+        /// </summary>
+        /// <param name="searchMoth">半年或一年</param>
+        /// <returns></returns>
+        public async Task<List<SheduleStatisticalDto>> GetSchedulByMothTime(int searchMoth)
+        {
+            var timeNow = DateTime.Today;
+            DateTime startTime;
+            DateTime endTime;
+            if (searchMoth == 2)
+            {
+                startTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(-11);
+                endTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
+            }
+            else
+            {
+                startTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(-5);
+                endTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
+            }
+
+            //var query = from sd in _scheduledetailRepository.GetAll()
+            //            join s in _scheduleRepository.GetAll().Where(s => s.BeginTime >= startTime && s.EndTime <= endTime) on sd.ScheduleId equals s.Id
+            //            select new
+            //            {
+            //                sd.Id,
+            //                sd.Status,
+            //                sd.VisitNum,
+            //                sd.CompleteNum,
+            //                s.BeginTime,
+            //                s.EndTime
+            //            };
+            //var cList = _scheduleRepository.GetAll().ToList();
+            //var schList = _scheduleRepository.GetAll().Where(s => s.BeginTime >= startTime && s.EndTime <= endTime).ToList();
+            //var lists = query.ToList();
+            //var list = await query.GroupBy(s => new { s.BeginTime }).Select(g => new SheduleStatisticalDto
+            //{
+            //    //GroupName = g.Key.Month.ToString() + "份",
+            //    Total = g.Sum(s => s.VisitNum),
+            //    Completed = g.Sum(s => s.CompleteNum),
+            //    Expired = g.Sum(s => s.VisitNum - s.CompleteNum) 
+            //}).ToListAsync();
+            var list =await _scheduledetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime);
+
+            return list;
+        }
+
+        public async Task GetSumShedule(SheduleSumInput input)
+        {
+
+        }
+
     }
 }
 

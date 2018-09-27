@@ -59,4 +59,10 @@ namespace GYISMS.GYEnums
         政策宣传 = 3,
         临时任务 = 4
     }
+    public enum AreaTypeEnum
+    {
+        昭化区=1,
+        剑阁县=2,
+        旺苍县=3
+    }
 }
