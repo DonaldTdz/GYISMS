@@ -66,29 +66,38 @@
       </ng-template>
       <!-- <bar height="275" [data]="shopData"></bar> -->
       <g2-bar height="275" [data]="sheduAreaData"></g2-bar>
-      <!-- <nz-table #nzTable [nzAjaxData]="shopStatistics" [nzIsPagination]="false" [nzShowSizeChanger]="true">
-        <thead nz-thead>
+      <nz-table #nzTable [nzData]="sheduleArea" nzShowSizeChanger [nzShowPagination]="false">
+        <thead>
           <tr>
-            <th nz-th>
+            <th>
               <span>单位</span>
             </th>
-            <th nz-th *ngFor="let shops of nzTable.data">
-              <span>{{shops.showCompany}}</span>
+            <th *ngFor="let sheArea of nzTable.data">
+              <span>{{sheArea.groupName}}</span>
             </th>
-            <th nz-th>
+            <th>
               <span class="bgcorlor">总数</span>
             </th>
           </tr>
-
         </thead>
-        <tbody nz-tbody>
-          <tr nz-tbody-tr>
-            <td nz-td class="countsty">数量</td>
-            <td nz-td *ngFor="let shop of nzTable.data">{{shop.count}}</td>
-            <td nz-td class="bgcorlor">{{stotal}}</td>
+        <tbody>
+          <tr>
+            <td class="countsty">总数</td>
+            <td *ngFor="let sheArea of nzTable.data">{{sheArea.total}}</td>
+            <td class="bgcorlor">{{AreaSum.Satotal}}</td>
+          </tr>
+          <tr>
+            <td class="countsty">完成数 </td>
+            <td *ngFor="let sheArea of nzTable.data">{{sheArea.completed}}</td>
+            <td class="bgcorlor">{{AreaSum.SaComplete}}</td>
+          </tr>
+          <tr>
+            <td class="countsty"> 逾期数 </td>
+            <td *ngFor="let sheArea of nzTable.data">{{sheArea.expired}}</td>
+            <td class="bgcorlor">{{AreaSum.SaExpired}}</td>
           </tr>
         </tbody>
-      </nz-table> -->
+      </nz-table>
     </nz-card>
   </div>
   <div nz-col nzXs="24" nzMd="12">
@@ -108,29 +117,39 @@
         </div>
       </ng-template>
       <g2-bar height="275" [data]="sheduMothData"></g2-bar>
-      <!-- <nz-table #nzTablew [nzAjaxData]="wechatUserStatistic" [nzIsPagination]="false" [nzShowSizeChanger]="true">
-        <thead nz-thead>
+      <nz-table #nzTablew [nzData]="sheduleMoth" [nzShowPagination]="false" [nzShowSizeChanger]="true">
+        <thead>
           <tr>
-            <th nz-th>
+            <th>
               <span>单位</span>
             </th>
-            <th nz-th *ngFor="let wechats of nzTablew.data">
-              <span>{{wechats.showCompany}}</span>
+            <th *ngFor="let sheMoth of nzTablew.data">
+              <span>{{sheMoth.groupName}}</span>
             </th>
-            <th nz-th>
+            <th>
               <span class="bgcorlor">总数</span>
             </th>
           </tr>
 
         </thead>
-        <tbody nz-tbody>
-          <tr nz-tbody-tr>
-            <td nz-td class="countsty">数量</td>
-            <td nz-td *ngFor="let wechat of nzTablew.data">{{wechat.count}}</td>
-            <td nz-td class="bgcorlor">{{wtotal}}</td>
+        <tbody>
+          <tr>
+            <td class="countsty">总数</td>
+            <td *ngFor="let sheMoth of nzTablew.data">{{sheMoth.total}}</td>
+            <td class="bgcorlor">{{MothSum.Mototal}}</td>
+          </tr>
+          <tr>
+            <td class="countsty">完成数 </td>
+            <td *ngFor="let sheMoth of nzTablew.data">{{sheMoth.completed}}</td>
+            <td class="bgcorlor">{{MothSum.MoComplete}}</td>
+          </tr>
+          <tr>
+            <td class="countsty"> 逾期数 </td>
+            <td *ngFor="let sheMoth of nzTablew.data">{{sheMoth.expired}}</td>
+            <td class="bgcorlor">{{MothSum.MoExpired}}</td>
           </tr>
         </tbody>
-      </nz-table> -->
+      </nz-table>
     </nz-card>
   </div>
 </div>

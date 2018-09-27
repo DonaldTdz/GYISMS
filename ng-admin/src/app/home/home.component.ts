@@ -37,6 +37,8 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     { value: 1, text: '半年' },
     { value: 2, text: '一年' },
   ];
+  AreaSum = { Satotal: 0, SaComplete: 0, SaExpired: 0 }
+  MothSum = { Mototal: 0, MoComplete: 0, MoExpired: 0 }
   shedateFormat = 'yyyy-MM-dd';
   constructor(
     injector: Injector,
@@ -139,6 +141,12 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         i.expired = i.expired == null ? 0 : i.expired;
         return i;
       });
+      //计算任务情况总数
+      data.forEach(item => {
+        this.AreaSum.Satotal += item.total;
+        this.AreaSum.SaComplete += item.completed;
+        this.AreaSum.SaExpired += item.expired;
+      });
       const totals = [];
       const completes = [];
       const expireds = [];
@@ -183,6 +191,11 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         i.expired = i.expired == null ? 0 : i.expired;
         return i;
       });
+      data.forEach(item => {
+        this.MothSum.Mototal += item.total;
+        this.MothSum.MoComplete += item.completed;
+        this.MothSum.MoExpired += item.expired;
+      });
       /*this.sheduleMoth.forEach(item => {
         this.sheduMothData.push({
           x: item.groupName,
@@ -190,8 +203,8 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         })
       });*/
     });
-    console.log("sheduMothData:")
-    console.log(this.sheduMothData);
+    console.log("sheduleMoth:")
+    console.log(this.sheduleMoth);
   }
 
   /**
