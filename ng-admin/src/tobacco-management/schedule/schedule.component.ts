@@ -14,6 +14,9 @@ export class ScheduleComponent extends AppComponentBase implements OnInit {
     search: any = {};
     loading = false;
     scheduleList: Schedule[] = [];
+    scheduleTypes = [{ text: '每月', value: 1 },
+    { text: '每周', value: 2 },
+    { text: '每日', value: 3 }];
 
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private router: Router) {
@@ -35,7 +38,8 @@ export class ScheduleComponent extends AppComponentBase implements OnInit {
         let params: any = {};
         params.SkipCount = this.query.skipCount();
         params.MaxResultCount = this.query.pageSize;
-        params.Desc = this.search.desc;
+        params.Name = this.search.name;
+        params.scheduleType = this.search.scheduleType;
         this.scheduleService.getScheduleList(params).subscribe((result: PagedResultDtoOfSchedule) => {
             this.loading = false;
             this.scheduleList = result.items;

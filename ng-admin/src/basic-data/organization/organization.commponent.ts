@@ -176,4 +176,7 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
     //         this.query.total = result.totalCount;
     //     })
     // }
+    goAreaDetail(id: string) {
+
+    }
 }

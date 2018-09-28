@@ -33,9 +33,9 @@ namespace GYISMS.GYEnums
 
     public enum ScheduleType
     {
-        每日 = 1,
+        每月 = 1,
         每周 = 2,
-        每月 = 3
+        每日 = 3
     }
 
     public enum ScheduleMasterStatusEnum

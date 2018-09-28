@@ -69,5 +69,6 @@ namespace GYISMS.VisitRecords
         Task<DingDingVisitRecordInputDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId);
 
         Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input);
+        Task<PagedResultDto<VisitRecordListDto>> GetVisitRecordsByGrowerId(GetVisitRecordsInput input);
     }
 }

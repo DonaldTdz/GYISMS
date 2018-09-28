@@ -24,8 +24,9 @@ namespace GYISMS.VisitRecords.Dtos
         /// <summary>
         /// EmployeeId
         /// </summary>
-        public long? EmployeeId { get; set; }
+        public string EmployeeId { get; set; }
 
+        public string EmployeeName { get; set; }
 
         /// <summary>
         /// GrowerId

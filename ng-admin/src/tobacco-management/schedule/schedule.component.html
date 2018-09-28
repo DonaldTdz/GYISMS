@@ -7,7 +7,18 @@
                 <nz-form-item class="d-flex">
                     <nz-form-label nzFor="name">任务名称</nz-form-label>
                     <nz-form-control class="flex-1">
-                        <input nz-input [(ngModel)]="search.desc" name="name" placeholder="请输入任务名称" nzSize="default">
+                        <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入任务名称" nzSize="default">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+            <div nz-col [nzSpan]="8" class="mb-md">
+                <nz-form-item class="d-flex">
+                    <nz-form-label nzFor="scheduleType">计划类型</nz-form-label>
+                    <nz-form-control class="flex-1">
+                        <nz-select [nzPlaceHolder]="'请选择计划类型'" name="scheduleType" [(ngModel)]="search.scheduleType" [nzShowSearch]="true">
+                            <nz-option *ngFor="let i of scheduleTypes" [nzLabel]="i.text" [nzValue]="i.value">
+                            </nz-option>
+                        </nz-select>
                     </nz-form-control>
                 </nz-form-item>
             </div>

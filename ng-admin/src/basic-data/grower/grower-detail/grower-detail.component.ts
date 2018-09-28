@@ -7,6 +7,8 @@ import { GrowerServiceProxy } from '@shared/service-proxies/basic-data';
 import { Grower, Employee } from '@shared/entity/basic-data';
 import { GrowerEmployeeModalComponent } from './grower-employee-modal/grower-employee-modal.component';
 import * as moment from 'moment';
+import { VisitTaskServiceProxy, PagedResultDtoOfVisitRecord } from '@shared/service-proxies/tobacco-management';
+import { VisitRecord } from '@shared/entity/tobacco-management';
 
 @Component({
     moduleId: module.id,
@@ -21,6 +23,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     id: number;
     validateForm: FormGroup;
     grower: Grower = new Grower();
+    visitRecordList: VisitRecord[] = [];
     countyCodes: any[] = [{ text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }];
     types: any[] = [{ text: '普通烟农', value: 1 }];
     unitTypes = [
@@ -37,11 +40,16 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     successMsg = '';
     confirmModal: NzModalRef;
     isDelete = false;
+    loading = false;
+    previewImage = ''
+    defalutImg = '/visit/defaultRecord.png';
+    previewVisible = false;
 
     constructor(injector: Injector, private fb: FormBuilder
         , private growerService: GrowerServiceProxy
         , private actRouter: ActivatedRoute, private router: Router
-        , private modal: NzModalService) {
+        , private modal: NzModalService
+        , private taskService: VisitTaskServiceProxy) {
         super(injector);
         this.id = this.actRouter.snapshot.params['id'];
     }
@@ -77,6 +85,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
                 this.grower.plantingArea = Number(this.grower.plantingArea).toFixed(2);
                 this.isDelete = true;
             });
+            this.getVisitRecord();
         } else {
             //新增
             this.grower.countyCode = 1;
@@ -105,6 +114,19 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             this.saveRoomInfo();
 
         }
+    }
+
+    getVisitRecord() {
+        this.loading = true;
+        let params: any = {};
+        params.SkipCount = this.query.skipCount();
+        params.MaxResultCount = this.query.pageSize;
+        params.GrowerId = this.id;
+        this.taskService.getVisitVisitRecordListByGrowerId(params).subscribe((result: PagedResultDtoOfVisitRecord) => {
+            this.loading = false;
+            this.visitRecordList = result.items;
+            this.query.total = result.totalCount;
+        });
     }
 
     getText(e: any) {
@@ -150,5 +172,15 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     }
     return() {
         this.router.navigate(['app/basic/grower']);
+    }
+
+    handlePreview = (url: string) => {
+        if (!url) {
+            this.previewImage = this.defalutImg;
+        }
+        else {
+            this.previewImage = url;
+        }
+        this.previewVisible = true;
     }
 }
