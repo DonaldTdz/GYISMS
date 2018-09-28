@@ -113,6 +113,7 @@ meetingListDtos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
+        [AbpAllowAnonymous]
         public async Task<MeetingEditDto> CreateOrUpdateMeeting(MeetingEditDto input)
         {
 
@@ -130,7 +131,7 @@ meetingListDtos
         /// <summary>
         /// 新增Meeting
         /// </summary>
-        [AbpAuthorize(MeetingAppPermissions.Meeting_Create)]
+        [AbpAllowAnonymous]
         protected virtual async Task<MeetingEditDto> CreateMeetingAsync(MeetingEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -144,6 +145,7 @@ meetingListDtos
         /// <summary>
         /// 编辑Meeting
         /// </summary>
+        [AbpAllowAnonymous]
         protected virtual async Task<MeetingEditDto> UpdateMeetingAsync(MeetingEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新

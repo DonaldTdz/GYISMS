@@ -72,8 +72,6 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             this.scheduleService.getScheduleById(params).subscribe((result: Schedule) => {
                 this.schedule = result;
                 this.isPush = result.status == 1 ? false : true;
-                console.log(this.isPush);
-
                 this.isDelete = true;
                 // if (!this.isPush) {
                 this.getTaskList();

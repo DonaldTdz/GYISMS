@@ -233,19 +233,30 @@ namespace GYISMS.MeetingRooms
         {
             var room = _meetingroomRepository.GetAll();
             var meeting = _meetingRepository.GetAll();
+
+            var CurrentStatusCount = await _meetingRepository.GetAll().Where(r => r.BeginTime <= DateTime.Now.AddHours(2) && r.EndTime <= DateTime.Now.AddHours(2)).CountAsync();
+            //var result = from r in room
+            //             join m in meeting on r.Id equals m.MeetingRoomId
+            //             //into leftTable
+            //             //from entity in leftTable.DefaultIfEmpty()
+            //             select new MeetingRoomListDto()
+            //             {
+            //                 Id = r.Id,
+            //                 Name = r.Name + $"({r.Num}人)",
+            //                 Photo = r.Photo,
+            //                 RoomTypeName = r.RoomType.ToString(),
+            //                 CurrentStatus = m.BeginTime == null ? $"未来两小时可预定({((bool)r.IsApprove?"需要审核":"无需审核")})" : (m.BeginTime <= DateTime.Now.AddHours(2) && m.EndTime <= DateTime.Now.AddHours(2) ? $"未来两小时不可预定({((bool)r.IsApprove ? "需要审核" : "无需审核")})" : $"未来两小时可预定({((bool)r.IsApprove ? "需要审核" : "无需审核")})")
+            //             };
+
             var result = from r in room
-                         join m in meeting on r.Id equals m.MeetingRoomId
-                         into leftTable
-                         from entity in leftTable.DefaultIfEmpty()
                          select new MeetingRoomListDto()
                          {
                              Id = r.Id,
                              Name = r.Name + $"({r.Num}人)",
                              Photo = r.Photo,
                              RoomTypeName = r.RoomType.ToString(),
-                             CurrentStatus = entity.BeginTime == null ? $"未来两小时可预定({((bool)r.IsApprove?"需要审核":"无需审核")})" : (entity.BeginTime <= DateTime.Now.AddHours(2) && entity.EndTime <= DateTime.Now.AddHours(2) ? $"未来两小时不可预定({((bool)r.IsApprove ? "需要审核" : "无需审核")})" : $"未来两小时可预定({((bool)r.IsApprove ? "需要审核" : "无需审核")})")
+                             CurrentStatus = CurrentStatusCount==0? $"未来两小时可预订({((bool)r.IsApprove?"需要审核":"无需审核")})" : $"未来两小时不可预订({((bool)r.IsApprove?"需要审核":"无需审核")})"
                          };
-
             var meetingrooms = await result
                     .OrderBy(v => v.Id).AsNoTracking()
                     .ToListAsync();

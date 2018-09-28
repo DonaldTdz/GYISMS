@@ -59,4 +59,22 @@ namespace GYISMS.GYEnums
         政策宣传 = 3,
         临时任务 = 4
     }
+
+    public enum NoticeWayEnum
+    {
+        发DING = 0,
+        钉钉消息 = 1
+    }
+    public enum RemindingWayEnum
+    {
+        无提醒 = 0,
+        发DING = 1,
+        钉钉消息 =2
+    }
+    public enum RemindingTimeEnum
+    {
+        提前5分钟 = 0,
+        提前10分钟 = 1,
+        提前30分钟 = 2
+    }
 }
