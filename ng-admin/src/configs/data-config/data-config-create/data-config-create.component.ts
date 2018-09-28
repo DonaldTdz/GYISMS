@@ -43,7 +43,7 @@ export class DataConfigCreateComponent extends AppComponentBase implements OnIni
         this.reset();
         this.modeId = modeId;
         this.dataconfig.init({ modelId: modeId, type: type });
-        if (modeId = 1) {
+        if (modeId == 1) {
             this.config = this.configMetting;
         } else {
             this.config = this.configLeaf;

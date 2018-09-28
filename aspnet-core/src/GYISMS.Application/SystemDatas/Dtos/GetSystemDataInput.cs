@@ -17,12 +17,12 @@ namespace GYISMS.SystemDatas.Dtos
         /// <summary>
         /// 所属模块
         /// </summary>
-        public ConfigModel? ModelId { get; set; }
+        public ConfigModel ModelId { get; set; }
 
         /// <summary>
         /// 配置类型
         /// </summary>
-        public ConfigType Type { get; set; }
+        public ConfigType? Type { get; set; }
         //// custom codes
 
         //// custom codes end
