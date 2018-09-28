@@ -109,15 +109,21 @@
             任务计划（按月份）
           </div>
           <div nz-col nzSpan="8" nzOffset="8">
-            <nz-radio-group *ngFor="let item of tags" [(ngModel)]="searchMoth" [nzButtonStyle]="'solid'" (ngModelChange)="changeCategory()">
-              <label nz-radio-button [nzValue]="item.value" style="margin-right: 12px;">
-                <span>{{item.text}}</span>
-              </label>
+            <!-- <nz-radio-group *ngFor="let item of tags" [(ngModel)]="searchMoth">
+              <label nz-radio-button nzValue="item.value">{{item.text}}</label>
+              <label nz-radio-button nzValue="B">Shanghai</label>
+              <label nz-radio-button nzValue="C">Beijing</label>
+              <label nz-radio-button nzValue="D">Chengdu</label>
+            </nz-radio-group> -->
+            <nz-radio-group [(ngModel)]="searchMoth" (ngModelChange)="changeCategory()">
+              <!-- <label nz-radio-button nzValue="item.value">{{item.text}}</label> -->
+              <label nz-radio-button nzValue="1">近半年</label>
+              <label nz-radio-button nzValue="2">近一年</label>
             </nz-radio-group>
           </div>
         </div>
       </ng-template>
-      <g2-group-bar height="275" [data]="sheduMothData" groupName="name">
+      <g2-group-bar height="275" [color]="color" [data]="sheduMothData" groupName="name">
       </g2-group-bar>
       <nz-table #nzTablew [nzData]="sheduleMoth" [nzShowPagination]="false" [nzShowSizeChanger]="true">
         <thead>

@@ -30,6 +30,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   AreaSum = { Satotal: 0, SaComplete: 0, SaExpired: 0 }
   MothSum = { Mototal: 0, MoComplete: 0, MoExpired: 0 }
   shedateFormat = 'yyyy-MM-dd';
+  color = { name: 'name', color: ['#1890ff', '#52c41a', '#eb2f96'] }
   constructor(
     injector: Injector,
     private http: _HttpClient,

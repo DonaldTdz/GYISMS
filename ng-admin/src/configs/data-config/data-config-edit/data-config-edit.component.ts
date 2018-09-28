@@ -18,6 +18,16 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
     emodalVisible = false;
     iseConfirmLoading = false;
     forme: FormGroup;
+    configLeaf = [
+        { value: 3, text: '烟农单位' },
+        { value: 4, text: '烟农村组' },
+        { value: 5, text: '烟叶公共' },
+    ];
+    configMetting = [
+        { value: 1, text: '设备配置' },
+        { value: 2, text: '会议物资' },
+    ]
+    confige = [];
     constructor(injector: Injector, private dataConfigService: DataConfigServiceProxy, private fb: FormBuilder) {
         super(injector);
     }
@@ -30,15 +40,17 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
         });
     }
     show(modelId, id) {
-        console.log("id:" + id)
         this.modelId = modelId;
+        if (modelId == 1) {
+            this.confige = this.configMetting;
+        } else {
+            this.confige = this.configLeaf;
+        }
         this.getSingleConfigById(id);
         this.emodalVisible = true;
     }
     getSingleConfigById(id) {
-        console.log("aa");
-        this.dataConfigService.getSingleConfigById(id).subscribe(data => {
-            console.log("data:" + data);
+        this.dataConfigService.getSingleConfigById({ id: id }).subscribe(data => {
             this.systemData = data;
         });
     }
@@ -57,6 +69,7 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
         }
     }
     saveEd() {
+        console.log('save')
         for (const i in this.forme.controls) {
             this.forme.controls[i].markAsDirty();
         }

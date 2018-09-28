@@ -20,11 +20,11 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
 
     systemDataLeafs: SystemData[] = [];
     systemDataMettings: SystemData[] = [];
-    paramLe: any = { Type: 1 };
-    paramMe: any = { Type: 3 };
+    paramLe: any = { Type: 3 };
+    paramMe: any = { Type: 1 };
     queryMe: any = {
         pageIndex: 1,
-        pageSize: 5,
+        pageSize: 10,
         skipCount: function () { return (this.pageIndex - 1) * this.pageSize; },
         total: 0,
     };
@@ -113,9 +113,16 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
         this.loadingMe = true;
         this.systemDataSerice.getAll(this.paramMe).subscribe(data => {
             this.loadingMe = false;
-            this.systemDataMettings = data.items;
+            this.systemDataMettings = data.items.map(i => {
+                return i;
+            });
             this.query.total = data.totalCount;
+            console.log("data:");
+            console.log(data);
         });
+        console.log("systemDataMettings:");
+        console.log(this.systemDataMettings);
+
     }
 
     editMetting(metting: SystemData) {

@@ -35,6 +35,16 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// </summary>
         public int? TaskId { get; set; }
 
+        /// <summary>
+        /// 烟农
+        /// </summary>
+        public string GrowerName { get; set; }
+
+        /// <summary>
+        /// 烟技员
+        /// </summary>
+        public string EmployeeName { get; set; }
+
         //// custom codes
 
         //// custom codes end

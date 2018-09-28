@@ -258,8 +258,8 @@ systemdataListDtos
         {
 
             var query = _systemdataRepository.GetAll()
-                .WhereIf(input.ModelId.HasValue, s => s.ModelId == input.ModelId)
-                .Where(s => s.Type == input.Type);
+                .Where(s => s.ModelId == input.ModelId)
+                .WhereIf(input.Type.HasValue, s => s.Type == input.Type);
             // TODO:根据传入的参数添加过滤条件
 
             var systemdataCount = await query.CountAsync();
