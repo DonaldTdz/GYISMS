@@ -19,9 +19,11 @@ using GYISMS.ScheduleDetails.Dtos;
 using GYISMS.ScheduleDetails;
 using GYISMS.Authorization;
 using GYISMS.Growers.Dtos;
-using GYISMS.Growers;
-using GYISMS.Dtos;
 using GYISMS.GYEnums;
+using GYISMS.Growers;
+using GYISMS.Schedules;
+using GYISMS.Dtos;
+using GYISMS.VisitTasks;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -31,21 +33,26 @@ namespace GYISMS.ScheduleDetails
     [AbpAuthorize(AppPermissions.Pages)]
     public class ScheduleDetailAppService : GYISMSAppServiceBase, IScheduleDetailAppService
     {
-        private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
+        //private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
         private readonly IScheduleDetailManager _scheduledetailManager;
         private readonly IRepository<Grower, int> _growerRepository;
+        private readonly IRepository<Schedule, Guid> _scheduleRepository;
+        private readonly ISheduleDetailRepository _scheduledetailRepository;
+        private readonly IRepository<VisitTask, int> _visittaskRepository;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
-        public ScheduleDetailAppService(IRepository<ScheduleDetail, Guid> scheduledetailRepository
-            , IScheduleDetailManager scheduledetailManager
-            , IRepository<Grower, int> growerRepository)
-
+        public ScheduleDetailAppService(//IRepository<ScheduleDetail, Guid> scheduledetailRepository
+           ISheduleDetailRepository scheduledetailRepository, IScheduleDetailManager scheduledetailManager, IRepository<Grower, int> growerRepository,
+            IRepository<Schedule, Guid> scheduleRepository, IRepository<VisitTask, int> visittaskRepository)
         {
             _growerRepository = growerRepository;
             _scheduledetailRepository = scheduledetailRepository;
             _scheduledetailManager = scheduledetailManager;
+            _growerRepository = growerRepository;
+            _scheduleRepository = scheduleRepository;
+            _visittaskRepository = visittaskRepository;
         }
 
 
@@ -218,6 +225,245 @@ namespace GYISMS.ScheduleDetails
         }
 
         /// <summary>
+        /// 获取任务完成情况数据统计
+        /// </summary>
+        /// <returns></returns>
+        public HomeInfo GetHomeInfo()
+        {
+            var homeInfo = new HomeInfo();
+            //var aa = await _scheduledetailRepository.GetAll().ToListAsync();
+            var totalCount = _scheduledetailRepository.GetAll().Sum(s => s.VisitNum);
+            homeInfo.Total = totalCount.HasValue ? totalCount.Value : 0;
+            var compCount = _scheduledetailRepository.GetAll().Sum(s => s.CompleteNum);
+            homeInfo.Completed = compCount.HasValue ? compCount.Value : 0;
+            if (!compCount.HasValue)
+            {
+                homeInfo.CompletedRate = "0%";
+            }
+            else
+            {
+                homeInfo.CompletedRate = (Math.Round((double)homeInfo.Completed / homeInfo.Total, 2) * 100).ToString() + "%";
+            }
+            var expirCount = _scheduledetailRepository.GetAll().Where(s => s.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum);
+            homeInfo.Expired = expirCount.HasValue ? expirCount.Value : 0;
+            return homeInfo;
+        }
+
+        /// <summary>
+        /// 按区域时间统计计划完成的情况
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<List<SheduleStatisticalDto>> GetSchedulByAreaTime(ScheduleDetaStatisticalInput input)
+        {
+            var timeNow = DateTime.Today;
+            input.startTime = input.startTime.HasValue ? input.startTime : timeNow.AddDays(1 - timeNow.Day);
+            input.endTime = input.endTime.HasValue ? input.endTime : timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
+            var query = from sd in _scheduledetailRepository.GetAll()
+                        join s in _scheduleRepository.GetAll().Where(s => s.BeginTime >= input.startTime && s.BeginTime <= input.endTime) on sd.ScheduleId equals s.Id
+                        join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id into sg
+                        from wr in sg.DefaultIfEmpty()
+                        select new
+                        {
+                            sd.Id,
+                            sd.Status,
+                            sd.VisitNum,
+                            sd.CompleteNum,
+                            wr.CountyCode,
+                        };
+            var list = await query.GroupBy(s => s.CountyCode).Select(g => new SheduleStatisticalDto
+            {
+                GroupName = g.Key.ToString(),
+                Total = g.Sum(m => m.VisitNum),
+                Completed = g.Sum(m => m.CompleteNum),
+                Expired = g.Where(m => m.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum)
+            }).ToListAsync();
+            return list;
+        }
+
+        /// <summary>
+        /// 按月份统计计划完成情况
+        /// </summary>
+        /// <param name="searchMoth">半年或一年</param>
+        /// <returns></returns>
+        public async Task<List<SheduleStatisticalDto>> GetSchedulByMothTime(int searchMoth)
+        {
+            var timeNow = DateTime.Today;
+            DateTime startTime;
+            DateTime endTime;
+            if (searchMoth == 2)
+            {
+                startTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(-11);
+                endTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
+            }
+            else
+            {
+                startTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(-5);
+                endTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
+            }
+
+            //var query = from sd in _scheduledetailRepository.GetAll()
+            //            join s in _scheduleRepository.GetAll().Where(s => s.BeginTime >= startTime && s.EndTime <= endTime) on sd.ScheduleId equals s.Id
+            //            select new
+            //            {
+            //                sd.Id,
+            //                sd.Status,
+            //                sd.VisitNum,
+            //                sd.CompleteNum,
+            //                s.BeginTime,
+            //                s.EndTime
+            //            };
+            //var cList = _scheduleRepository.GetAll().ToList();
+            //var schList = _scheduleRepository.GetAll().Where(s => s.BeginTime >= startTime && s.EndTime <= endTime).ToList();
+            //var lists = query.ToList();
+            //var list = await query.GroupBy(s => new { s.BeginTime }).Select(g => new SheduleStatisticalDto
+            //{
+            //    //GroupName = g.Key.Month.ToString() + "份",
+            //    Total = g.Sum(s => s.VisitNum),
+            //    Completed = g.Sum(s => s.CompleteNum),
+            //    Expired = g.Sum(s => s.VisitNum - s.CompleteNum) 
+            //}).ToListAsync();
+            //var result = new SheduleSumStatisDto();
+            var list = await _scheduledetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime);
+
+            return list.OrderBy(s => s.GroupName).ToList();
+        }
+
+        /// <summary>
+        /// 获取任务汇总数据
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<List<SheduleSumDto>> GetSumShedule(SheduleSumInput input)
+        {
+            var timeNow = DateTime.Today;
+            input.StartTime = input.StartTime.HasValue ? input.StartTime : timeNow.AddDays(1 - timeNow.Day);
+            input.EndTime = input.EndTime.HasValue ? input.EndTime : timeNow.AddDays(1 - timeNow.Day);
+
+            var query = from sd in _scheduledetailRepository.GetAll()
+                        join t in _visittaskRepository.GetAll()
+                        .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
+                        on sd.TaskId equals t.Id
+                        join s in _scheduleRepository.GetAll()
+                            .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
+                            .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                            on sd.ScheduleId equals s.Id
+                        join g in _growerRepository.GetAll()
+                        .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode)
+                        on sd.GrowerId equals g.Id
+                        select new
+                        {
+                            g.CountyCode,
+                            t.Type,
+                            t.Name,
+                            sd.VisitNum,
+                            sd.CompleteNum,
+                            sd.Status
+                        };
+
+            var equery = from q in query
+                         group new
+                         {
+                             q.CountyCode,
+                             q.Type,
+                             q.Name,
+                             q.VisitNum,
+                             q.CompleteNum,
+                             q.Status
+                         } by new { q.CountyCode, q.Type, q.Name } into gq
+                         select new SheduleSumDto()
+                         {
+                             AreaCode = gq.Key.CountyCode,
+                             TaskType = gq.Key.Type,
+                             TaskName = gq.Key.Name,
+                             Total = gq.Sum(g => g.VisitNum),
+                             Complete = gq.Sum(g => g.CompleteNum),
+                             Expired = gq.Where(m => m.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum)
+                         };
+
+            var dataList = (await equery.ToListAsync()).MapTo<List<SheduleSumDto>>();
+            return dataList;
+
+            //var query = (from sd in _scheduledetailRepository.GetAll()
+            //             join s in _scheduleRepository.GetAll().Where(s => s.BeginTime >= input.StartTime && s.BeginTime <= input.EndTime) on sd.ScheduleId equals s.Id
+            //             join t in _visittaskRepository.GetAll().WhereIf(!string.IsNullOrEmpty(input.TaskName), t => t.Name.Contains(input.TaskName)) on sd.TaskId equals t.Id
+            //             join g in _growerRepository.GetAll().WhereIf(input.Area.HasValue, g => g.CountyCode == input.Area) on sd.GrowerId equals g.Id into gs
+            //             from sdg in gs.DefaultIfEmpty()
+            //             select new
+            //             {
+            //                 sdg.CountyCode,
+            //                 t.Name,
+            //                 t.Type,
+            //                 sd.VisitNum,
+            //                 sd.CompleteNum,
+            //                 sd.Status
+            //             }).ToList();
+
+            //var list = query.Select(s => new SheduleSumDto
+            //{
+            //    Area = s.CountyCode,
+            //    TaskName = s.Name,
+            //    TaskType = s.Type,
+            //    Total = s.VisitNum.HasValue ? s.VisitNum.Value : 0,
+            //    Complete = s.CompleteNum.HasValue ? s.VisitNum.Value : 0,
+            //    Expired = s.VisitNum.HasValue ? s.VisitNum.Value : 0,
+            //})
+
+            //var list =await _scheduledetailRepository.GetSheduleSum(input.Area, input.StartTime, input.EndTime, input.TaskName);
+            //return list;
+
+        }
+
+        public async Task<PagedResultDto<SheduleDetailTaskListDto>> GetPagedScheduleDetailsByOtherTable(GetScheduleDetailsInput input)
+        {
+
+            //var query = _scheduledetailRepository.GetAll();
+            // TODO:根据传入的参数添加过滤条件
+
+            var query = from sd in _scheduledetailRepository.GetAll()
+                        join s in _scheduleRepository.GetAll().WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime).WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime) on sd.ScheduleId equals s.Id
+                        join t in _visittaskRepository.GetAll().WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId) on sd.TaskId equals t.Id
+                        join g in _growerRepository.GetAll().WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode) on sd.GrowerId equals g.Id
+                        select new
+                        {
+                            sd.Id,
+                            sd.VisitNum,
+                            sd.CompleteNum,
+                            sd.Status,
+                            t.Name,
+                            t.Type,
+                            g.CountyCode
+                        };
+            var endQuery = from s in query
+                           join y in query.Where(y => y.Status == ScheduleStatusEnum.已逾期) on s.Id equals y.Id into sy
+                           from sd in sy.DefaultIfEmpty()
+                           select new SheduleDetailTaskListDto
+                           {
+                               Id = s.Id,
+                               VisitNum = s.VisitNum,
+                               CompleteNum = s.CompleteNum,
+                               Status = s.Status,
+                               TaskName = s.Name,
+                               TaskType = s.Type,
+                               AreaCode = s.CountyCode,
+                               Expired = sd.VisitNum - sd.CompleteNum
+                           };
+            var scheduledetailCount = await endQuery.CountAsync();
+
+            var scheduledetails = await endQuery
+                    .OrderBy(input.Sorting).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
+
+            // var scheduledetailListDtos = ObjectMapper.Map<List <ScheduleDetailListDto>>(scheduledetails);
+            var scheduledetailListDtos = scheduledetails.MapTo<List<SheduleDetailTaskListDto>>();
+
+            return new PagedResultDto<SheduleDetailTaskListDto>(
+                    scheduledetailCount,
+                    scheduledetailListDtos
+                );
+        }
+
         /// 任务全部指派
         /// </summary>
         /// <param name="input"></param>

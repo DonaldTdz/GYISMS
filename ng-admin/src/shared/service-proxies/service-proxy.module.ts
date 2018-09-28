@@ -8,6 +8,7 @@ import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
 import { MeetingRoomServiceProxy } from '@shared/service-proxies/meeting-management';
 import { VisitTaskServiceProxy, ScheduleServiceProxy } from '@shared/service-proxies/tobacco-management';
 import { DataConfigServiceProxy } from '@shared/service-proxies/config/data-config-service';
+import { HomeInfoServiceProxy } from '@shared/service-proxies/home/home-service';
 
 @NgModule({
   providers: [
@@ -26,6 +27,7 @@ import { DataConfigServiceProxy } from '@shared/service-proxies/config/data-conf
     VisitTaskServiceProxy,
     ScheduleServiceProxy,
     DataConfigServiceProxy,
+    HomeInfoServiceProxy,
     { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
   ],
 })

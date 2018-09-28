@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.Growers;
+using GYISMS.GYEnums;
 
 namespace GYISMS.Growers.Dtos
 {
@@ -44,7 +45,7 @@ namespace GYISMS.Growers.Dtos
         /// <summary>
         /// CountyCode
         /// </summary>
-        public int? CountyCode { get; set; }
+        public AreaTypeEnum? CountyCode { get; set; }
 
 
         /// <summary>

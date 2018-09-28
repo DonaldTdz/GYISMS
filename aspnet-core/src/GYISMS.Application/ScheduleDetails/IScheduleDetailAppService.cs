@@ -60,6 +60,16 @@ namespace GYISMS.ScheduleDetails
         Task BatchDeleteScheduleDetailsAsync(List<Guid> input);
 
         Task<List<ScheduleDetailEditDto>> CreateOrUpdateScheduleTaskAsync(List<ScheduleDetailEditDto> input);
+
+        HomeInfo GetHomeInfo();
+
+        Task<List<SheduleStatisticalDto>> GetSchedulByAreaTime(ScheduleDetaStatisticalInput input);
+
+        Task<List<SheduleStatisticalDto>> GetSchedulByMothTime(int input);
         Task<APIResultDto> CreateAllScheduleTaskAsync(GetGrowersInput input);
+
+        Task<List<SheduleSumDto>> GetSumShedule(SheduleSumInput input);
+
+        Task<PagedResultDto<SheduleDetailTaskListDto>> GetPagedScheduleDetailsByOtherTable(GetScheduleDetailsInput input);
     }
 }

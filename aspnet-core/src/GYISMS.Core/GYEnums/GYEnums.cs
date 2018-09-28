@@ -46,6 +46,7 @@ namespace GYISMS.GYEnums
 
     public enum ScheduleStatusEnum
     {
+        None = -1,
         已逾期 = 0,
         未开始 = 1,
         进行中 = 2,
@@ -76,5 +77,11 @@ namespace GYISMS.GYEnums
         提前5分钟 = 0,
         提前10分钟 = 1,
         提前30分钟 = 2
+    }
+    public enum AreaTypeEnum
+    {
+        昭化区=1,
+        剑阁县=2,
+        旺苍县=3
     }
 }
