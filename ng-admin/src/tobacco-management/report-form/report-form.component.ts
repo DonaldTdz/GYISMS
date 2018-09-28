@@ -1,7 +1,7 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { ScheduleSum, ScheduleDetailTask } from '@shared/entity/tobacco-management';
-import { ScheduleDetailServiceProxy } from '@shared/service-proxies/tobacco-management/schdule-detail-service';
+import { ScheduleDetailServiceProxy } from '@shared/service-proxies/tobacco-management';
 
 @Component({
     moduleId: module.id,
