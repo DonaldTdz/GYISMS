@@ -15,14 +15,33 @@ namespace GYISMS.ScheduleDetails.Dtos
 		 ///</summary>
         public string Filter { get; set; }
 
+        /// <summary>
+        /// 区域
+        /// </summary>
+        public AreaTypeEnum? AreaCode { get; set; }
 
-		//// custom codes
- 
+        /// <summary>
+        /// 开始时间
+        /// </summary>
+        public DateTime? StartTime { get; set; }
+
+        /// <summary>
+        /// 结束时间
+        /// </summary>
+        public DateTime? EndTime { get; set; }
+
+        /// <summary>
+        /// 计划名称
+        /// </summary>
+        public int? TaskId { get; set; }
+
+        //// custom codes
+
         //// custom codes end
 
-			  /// <summary>
-			 /// 正常化排序使用
-			///</summary>
+        /// <summary>
+        /// 正常化排序使用
+        ///</summary>
         public void Normalize()
         {
             if (string.IsNullOrEmpty(Sorting))
@@ -46,7 +65,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// <summary>
         /// 区域
         /// </summary>
-        public AreaTypeEnum? Area { get; set; }
+        public AreaTypeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 开始时间
@@ -61,6 +80,6 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// <summary>
         /// 计划名称
         /// </summary>
-        public string SheduleName { get; set; }
+        public int? TaskId { get; set; }
     }
 }

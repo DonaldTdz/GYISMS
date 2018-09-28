@@ -67,5 +67,9 @@ namespace GYISMS.ScheduleDetails
 
         Task<List<SheduleStatisticalDto>> GetSchedulByMothTime(int input);
         Task<APIResultDto> CreateAllScheduleTaskAsync(GetGrowersInput input);
+
+        Task<List<SheduleSumDto>> GetSumShedule(SheduleSumInput input);
+
+        Task<PagedResultDto<SheduleDetailTaskListDto>> GetPagedScheduleDetailsByOtherTable(GetScheduleDetailsInput input);
     }
 }

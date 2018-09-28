@@ -22,55 +22,10 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   searchAreas = [];
   searchMoth = 1;
   sheduAreaData = [];
-  sheduMothData = [{
-    name: "计划",
-    x: "2018-07",
-    y: 85
-  },
-  {
-    name: "完成",
-    x: "2018-07",
-    y: 80
-  },
-  {
-    name: "逾期",
-    x: "2018-07",
-    y: 5
-  },
-  {
-    name: "计划",
-    x: "2018-08",
-    y: 90
-  },
-  {
-    name: "完成",
-    x: "2018-08",
-    y: 60
-  },
-  {
-    name: "逾期",
-    x: "2018-08",
-    y: 10
-  },
-  {
-    name: "计划",
-    x: "2018-09",
-    y: 80
-  },
-  {
-    name: "完成",
-    x: "2018-09",
-    y: 70
-  },
-  {
-    name: "逾期",
-    x: "2018-09",
-    y: 5
-  }
-  ];
+  sheduMothData = [];
   tags = [
-    { value: 1, text: '半年' },
-    { value: 2, text: '一年' },
+    { value: 1, text: '近半年' },
+    { value: 2, text: '近一年' },
   ];
   AreaSum = { Satotal: 0, SaComplete: 0, SaExpired: 0 }
   MothSum = { Mototal: 0, MoComplete: 0, MoExpired: 0 }
@@ -83,81 +38,12 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   ) {
     super(injector);
   }
-
-  members = [
-    {
-      id: 'members-1',
-      title: '52ABP社区',
-      logo: 'https://avatars2.githubusercontent.com/u/33684174?s=200&v=4',
-      link:
-        // tslint:disable-next-line:max-line-length
-        'https://www.52abp.com',
-    },
-    {
-      id: 'members-2',
-      title: '视频课程：网易云云课堂',
-      logo: 'http://pp.myapp.com/ma_icon/0/icon_11357537_1529483301/256',
-      link:
-        'http://study.163.com/provider/400000000309007/course.htm?share=2&shareId=400000000309007',
-    },
-    {
-      id: 'members-1',
-      title: '微信公众号-角落的白板报',
-      logo:
-        'http://wx.qlogo.cn/mmhead/Q3auHgzwzM6PQV7JWIpJ2seavD5UuzCVWPyZs0SVqFkdYRyc3HQUkg/0',
-      link:
-        // tslint:disable-next-line:max-line-length
-        'https://mp.weixin.qq.com/profile?src=3&timestamp=1532171698&ver=1&signature=hRm1TI4zh80GpKxR5LYIc9SyUcyUPiM1EE8qlUdm4dbNzP06DOfA0HKfgajY2Dyj2xku0anPcrOwE8f7mjlwxg==',
-    },
-    {
-      id: 'members-3',
-      title: '视频课程：腾讯课堂',
-      logo:
-        'http://is4.mzstatic.com/image/thumb/Purple111/v4/06/e9/d3/06e9d3e2-4e07-f556-a765-7c8749f09c12/source/1200x630bb.jpg',
-      link: 'https://ke.qq.com/course/287301?tuin=2522cdf3',
-    },
-
-    {
-      id: 'members-5',
-      title: 'github源代码',
-      logo: 'https://major.io/wp-content/uploads/2014/08/github.png',
-      link: 'https://github.com/52ABP/LTMCompanyNameFree.GYISMS',
-    },
-    {
-      id: 'members-5',
-      title: '微软MVP',
-      logo: 'https://mvp.microsoft.com/Content/Images/mvp-banner.png',
-      link: 'https://mvp.microsoft.com/zh-CN/PublicProfile/5002741',
-    },
-    {
-      id: 'members-4',
-      title: '博客园-博文地址',
-      logo: '',
-      link: 'https://www.cnblogs.com/wer-ltm/',
-    },
-
-    {
-      id: 'members-5',
-      title: '博文地址:知乎专栏',
-      logo:
-        'http://wx.qlogo.cn/mmhead/Q3auHgzwzM6PQV7JWIpJ2seavD5UuzCVWPyZs0SVqFkdYRyc3HQUkg/0',
-      link: 'https://zhuanlan.zhihu.com/52abp',
-    },
-    // 、、https://github.com/52ABP/LTMCompanyNameFree.GYISMS
-  ];
-
-  notice: any[];
   loading = true;
 
   ngOnInit(): void {
-    /*zip(this.http.get('/api/notice')).subscribe(([chart]: [any]) => {
-      this.notice = chart;
-
-      this.loading = false;
-    });*/
-    //this.getHomeInfo();
-    //this.getSheduleStatisByArea();
-    //this.getShduleStatisByMoth();
+    this.getHomeInfo();
+    this.getSheduleStatisByArea();
+    this.getShduleStatisByMoth();
   }
   getHomeInfo() {
     this.homeService.getHomeInfo().subscribe(data => {
@@ -177,39 +63,35 @@ export class HomeComponent extends AppComponentBase implements OnInit {
         return i;
       });
       //计算任务情况总数
+      this.AreaSum = { Satotal: 0, SaComplete: 0, SaExpired: 0 }
       data.forEach(item => {
         this.AreaSum.Satotal += item.total;
         this.AreaSum.SaComplete += item.completed;
         this.AreaSum.SaExpired += item.expired;
       });
-      const totals = [];
-      const completes = [];
-      const expireds = [];
+
+
+      const AreaData = [];
       this.sheduleArea.forEach(item => {
-        totals.push({
+        AreaData.push({
+          name: "计划",
           x: item.groupName,
-          y: item.total,
-          "name": "total"
+          y: item.total
         });
-        completes.push({
+
+        AreaData.push({
+          name: "完成",
           x: item.groupName,
-          y: item.completed,
-          "name": "completed"
+          y: item.completed
         });
-        expireds.push({
+
+        AreaData.push({
+          name: "逾期",
           x: item.groupName,
-          y: item.expired,
-          "name": "expired"
+          y: item.expired
         });
       });
-      this.sheduAreaData.push(totals);
-      this.sheduAreaData.push(completes);
-      this.sheduAreaData.push(expireds);
-      console.log("sheduAreaData:");
-      console.log(this.sheduAreaData);
-      console.log("sheduleArea:");
-      console.log(this.sheduleArea);
-
+      this.sheduAreaData = AreaData;
     });
   }
 
@@ -218,28 +100,41 @@ export class HomeComponent extends AppComponentBase implements OnInit {
    */
   getShduleStatisByMoth() {
     this.homeService.getSheduleStatisByMoth({ searchMoth: this.searchMoth }).subscribe(data => {
-      console.log("data2:")
-      console.log(data);
       this.sheduleMoth = data.map(i => {
         i.completed = i.completed == null ? 0 : i.completed;
         i.total = i.total == null ? 0 : i.total;
         i.expired = i.expired == null ? 0 : i.expired;
         return i;
       });
+      this.MothSum = { Mototal: 0, MoComplete: 0, MoExpired: 0 }
       data.forEach(item => {
         this.MothSum.Mototal += item.total;
         this.MothSum.MoComplete += item.completed;
         this.MothSum.MoExpired += item.expired;
       });
-      /*this.sheduleMoth.forEach(item => {
-        this.sheduMothData.push({
+
+      let mothData = [];
+      this.sheduleMoth.forEach(item => {
+        mothData.push({
+          name: '计划',
           x: item.groupName,
           y: item.total,
-        })
-      });*/
+        });
+
+        mothData.push({
+          name: '完成',
+          x: item.groupName,
+          y: item.completed,
+        });
+
+        mothData.push({
+          name: '逾期',
+          x: item.groupName,
+          y: item.expired,
+        });
+      });
+      this.sheduMothData = mothData;
     });
-    console.log("sheduleMoth:")
-    console.log(this.sheduleMoth);
   }
 
   /**
@@ -247,9 +142,6 @@ export class HomeComponent extends AppComponentBase implements OnInit {
    * @param id 
    */
   changeCategory() {
-    // this.searchMoth = id;
-    console.log("searchMoth:");
-    console.log(this.searchMoth);
     this.getShduleStatisByMoth();
   }
 
