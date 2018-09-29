@@ -20,11 +20,11 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
 
     systemDataLeafs: SystemData[] = [];
     systemDataMettings: SystemData[] = [];
-    paramLe: any = { Type: 1 };
-    paramMe: any = { Type: 3 };
+    paramLe: any = { Type: 3 };
+    paramMe: any = { Type: 1 };
     queryMe: any = {
         pageIndex: 1,
-        pageSize: 5,
+        pageSize: 10,
         skipCount: function () { return (this.pageIndex - 1) * this.pageSize; },
         total: 0,
     };
@@ -51,7 +51,7 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
     }
 
     refureshData(type) {
-        if (type = 1) {
+        if (type == 1) {
             this.getAllMetting();
         } else {
             this.getAllLeafs();
@@ -84,7 +84,7 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
             nzOkText: '确定',
             nzCancelText: '取消',
             nzOnOk: () => {
-                this.systemDataSerice.delete(leaf.id).subscribe(() => {
+                this.systemDataSerice.delete({ id: leaf.id }).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.getAllLeafs();
                 });
@@ -113,9 +113,16 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
         this.loadingMe = true;
         this.systemDataSerice.getAll(this.paramMe).subscribe(data => {
             this.loadingMe = false;
-            this.systemDataMettings = data.items;
-            this.query.total = data.totalCount;
+            this.systemDataMettings = data.items.map(i => {
+                return i;
+            });
+            this.queryMe.total = data.totalCount;
+            console.log("data:");
+            console.log(data);
         });
+        console.log("systemDataMettings:");
+        console.log(this.systemDataMettings);
+
     }
 
     editMetting(metting: SystemData) {
@@ -129,7 +136,7 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
             nzOkText: '确定',
             nzCancelText: '取消',
             nzOnOk: () => {
-                this.systemDataSerice.delete(metting.id).subscribe(() => {
+                this.systemDataSerice.delete({ input: metting.id }).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.getAllMetting();
                 })

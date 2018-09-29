@@ -34,6 +34,17 @@ export class EmployeeServiceProxy {
             }
         });
     }
+
+    getEmployeeById(id: string): Observable<Employee> {
+        let url_ = "/api/services/app/Employee/GetEmployeeByIdAsync?id=" + id;
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return Employee.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
     // getEmployee(params: any): Observable<PagedResultDtoOfEmployee> {
     //     let url_ = "/api/services/app/Employee/GetPagedEmployeeAsync";
     //     return this._gyhttp.get(url_, params).map(data => {
@@ -44,6 +55,12 @@ export class EmployeeServiceProxy {
     //         }
     //     });
     // }
+    updateEmployeeArea(params: any): Observable<Employee> {
+        let url_ = "/api/services/app/Employee/EditEmployeeAreaInfoAsync";
+        return this._gyhttp.post(url_, params).map(data => {
+            return data;
+        });
+    }
 }
 
 export class PagedResultDtoOfEmployee implements IPagedResultDtoOfEmployee {

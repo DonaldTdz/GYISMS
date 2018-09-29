@@ -6,6 +6,8 @@ import { NzMessageService } from '../../../node_modules/ng-zorro-antd';
 import { zip } from '../../../node_modules/rxjs';
 import { HomeInfoServiceProxy } from '@shared/service-proxies/home/home-service';
 import { HomeInfo, SheduleStatis } from '@shared/entity/home';
+import { addDays } from 'date-fns';
+import { AppSessionService } from '@shared/session/app-session.service';
 
 @Component({
   templateUrl: './home.component.html',
@@ -19,7 +21,7 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   sheduleArea: SheduleStatis[] = [];
   sheduleMoth: SheduleStatis[] = [];
   searchArea = { startTime: null, endtime: null }
-  searchAreas = [];
+  searchAreasDate = [];
   searchMoth = 1;
   sheduAreaData = [];
   sheduMothData = [];
@@ -30,20 +32,36 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   AreaSum = { Satotal: 0, SaComplete: 0, SaExpired: 0 }
   MothSum = { Mototal: 0, MoComplete: 0, MoExpired: 0 }
   shedateFormat = 'yyyy-MM-dd';
+  colors = ['#1890ff', '#52c41a', '#eb2f96'];
+  roleName: string = '';
   constructor(
     injector: Injector,
     private http: _HttpClient,
     public msg: NzMessageService,
     private homeService: HomeInfoServiceProxy,
+    private _appSessionService: AppSessionService,
   ) {
     super(injector);
   }
   loading = true;
 
   ngOnInit(): void {
+    this.getNowDate();
     this.getHomeInfo();
     this.getSheduleStatisByArea();
     this.getShduleStatisByMoth();
+
+    let roles = this._appSessionService.roles;
+    if (roles) {
+
+      if (roles.includes('HostAdmin')) {
+        this.roleName += '系统管理员';
+      }
+
+      if (roles.includes('Admin')) {
+        this.roleName += '管理员';
+      }
+    }
   }
   getHomeInfo() {
     this.homeService.getHomeInfo().subscribe(data => {
@@ -154,5 +172,15 @@ export class HomeComponent extends AppComponentBase implements OnInit {
       this.searchArea.endtime = this.dateFormat(times[1]);
     }
     this.getSheduleStatisByArea();
+  }
+
+  getNowDate() {
+    var nowDate = new Date();
+    var year = nowDate.getFullYear();
+    var moth = nowDate.getMonth();
+    var firstDay = new Date(year, moth, 1);
+    // this.firstDay = new Date(nowDate.setDate(1));
+    var lastDay = addDays(new Date(year, moth + 1, 1), -1);
+    this.searchAreasDate = [firstDay, lastDay]
   }
 }

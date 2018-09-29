@@ -8,6 +8,7 @@ using Abp.Application.Services.Dto;
 using GYISMS.Schedules.Dtos;
 using GYISMS.Schedules;
 using GYISMS.VisitTasks.Dtos;
+using GYISMS.Dtos;
 
 namespace GYISMS.Schedules
 {
@@ -56,6 +57,7 @@ namespace GYISMS.Schedules
 
         Task<ScheduleListDto> GetScheduleByIdAsync(Guid id);
         Task ScheduleDeleteByIdAsync(ScheduleEditDto input);
-
+        Task<APIResultDto> SendMessageToEmployeeAsync(GetSchedulesInput input);
+        object UpdateAndGetMediaId();
     }
 }

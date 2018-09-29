@@ -17,6 +17,8 @@ export class Employee implements IEmployee {
     remark: string;
     selected: string;
     checked: boolean;
+    area: string;
+    areaCode: string;
     constructor(data?: IEmployee) {
         if (data) {
             for (var property in data) {
@@ -44,6 +46,8 @@ export class Employee implements IEmployee {
             this.roles = data["roles"];
             this.roleId = data["roleId"];
             this.remark = data["remark"];
+            this.area = data["area"];
+            this.areaCode = data["areaCode"];
         }
     }
 
@@ -82,7 +86,8 @@ export class Employee implements IEmployee {
         data["roles"] = this.roles;
         data["roleId"] = this.roleId;
         data["remark"] = this.remark;
-
+        data["area"] = this.area;
+        data["areaCode"] = this.areaCode;
         return data;
     }
 
@@ -112,4 +117,6 @@ export interface IEmployee {
     remark: string;
     selected: string;
     checked: boolean;
+    area: string;
+    areaCode: string;
 }

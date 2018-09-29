@@ -1,6 +1,10 @@
-<!-- <page-header>
-</page-header> -->
-<!-- 演示卡片数据 -->
+<div class="content__title">
+  <h1>
+    广元烟草
+    <small class="text-sm hidden-xs">欢迎您！广元烟草信息化平台V1.0</small>
+  </h1>
+  <div style=" float:right;">我的角色：{{roleName}}</div>
+</div>
 <div nz-row nzGutter="16">
   <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
     <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md">
@@ -59,12 +63,12 @@
             任务计划(按区域)
           </div>
           <div nz-col nzSpan="12" nzOffset="4">
-            <nz-range-picker [nzFormat]="shedateFormat" [(ngModel)]="searchAreas" (ngModelChange)="changeTime($event)"></nz-range-picker>
+            <nz-range-picker [nzFormat]="shedateFormat" [(ngModel)]="searchAreasDate" (ngModelChange)="changeTime($event)"></nz-range-picker>
           </div>
         </div>
       </ng-template>
       <!-- <g2-bar height="275" [data]="sheduAreaData"></g2-bar> -->
-      <g2-group-bar height="275" [data]="sheduAreaData" groupName="name">
+      <g2-group-bar height="275" [data]="sheduAreaData" [colors]="colors" groupName="name">
       </g2-group-bar>
       <nz-table #nzTable [nzData]="sheduleArea" nzShowSizeChanger [nzShowPagination]="false">
         <thead>
@@ -109,15 +113,21 @@
             任务计划（按月份）
           </div>
           <div nz-col nzSpan="8" nzOffset="8">
-            <nz-radio-group *ngFor="let item of tags" [(ngModel)]="searchMoth" [nzButtonStyle]="'solid'" (ngModelChange)="changeCategory()">
-              <label nz-radio-button [nzValue]="item.value" style="margin-right: 12px;">
-                <span>{{item.text}}</span>
-              </label>
+            <!-- <nz-radio-group *ngFor="let item of tags" [(ngModel)]="searchMoth">
+              <label nz-radio-button nzValue="item.value">{{item.text}}</label>
+              <label nz-radio-button nzValue="B">Shanghai</label>
+              <label nz-radio-button nzValue="C">Beijing</label>
+              <label nz-radio-button nzValue="D">Chengdu</label>
+            </nz-radio-group> -->
+            <nz-radio-group [(ngModel)]="searchMoth" (ngModelChange)="changeCategory()">
+              <!-- <label nz-radio-button nzValue="item.value">{{item.text}}</label> -->
+              <label nz-radio-button nzValue="1">近半年</label>
+              <label nz-radio-button nzValue="2">近一年</label>
             </nz-radio-group>
           </div>
         </div>
       </ng-template>
-      <g2-group-bar height="275" [data]="sheduMothData" groupName="name">
+      <g2-group-bar height="275" [colors]="colors" [data]="sheduMothData" groupName="name">
       </g2-group-bar>
       <nz-table #nzTablew [nzData]="sheduleMoth" [nzShowPagination]="false" [nzShowSizeChanger]="true">
         <thead>

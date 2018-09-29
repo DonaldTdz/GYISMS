@@ -9,7 +9,7 @@ import { ApiResult } from '@shared/service-proxies/entity/parameter';
 import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
-import { VisitTask, TaskExamine, ScheduleTask } from '@shared/entity/tobacco-management';
+import { VisitTask, TaskExamine, ScheduleTask, VisitTaskName, VisitRecord } from '@shared/entity/tobacco-management';
 
 @Injectable()
 export class VisitTaskServiceProxy {
@@ -33,6 +33,18 @@ export class VisitTaskServiceProxy {
             }
         });
     }
+
+    getVisitVisitRecordListByGrowerId(params: any): Observable<PagedResultDtoOfVisitRecord> {
+        let url_ = "/api/services/app/VisitRecord/GetVisitRecordsByGrowerId";
+        return this._gyhttp.get(url_, params).map(data => {
+            if (data) {
+                return PagedResultDtoOfVisitRecord.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
     getVisitTaskListWithStatus(params: any): Observable<VisitTask[]> {
         let url_ = "/api/services/app/VisitTask/GetVisitTasksWithStatusAsync";
         return this._gyhttp.get(url_, params).map(data => {
@@ -143,6 +155,21 @@ export class VisitTaskServiceProxy {
             return data.result;
         });
     }
+
+    /**
+     * 获取任务下拉框数据
+     * @param params 
+     */
+    getTaskName(params: any): Observable<VisitTaskName[]> {
+        var url = '/api/services/app/VisitTask/GetTaskList';
+        return this._gyhttp.get(url, params).map(data => {
+            if (data) {
+                return VisitTaskName.fromJSArray(data)
+            } else {
+                return null;
+            }
+        });
+    }
 }
 
 export class PagedResultDtoOfVisitTask implements IPagedResultDtoOfVisitTask {
@@ -251,4 +278,58 @@ export class PagedResultDtoOfTaskExamine implements IPagedResultDtoOfTaskExamine
 export interface IPagedResultDtoOfTaskExamine {
     totalCount: number;
     items: TaskExamine[];
+}
+
+export class PagedResultDtoOfVisitRecord implements IPagedResultDtoOfVisitRecord {
+    totalCount: number;
+    items: VisitRecord[];
+
+    constructor(data?: IPagedResultDtoOfVisitRecord) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(VisitRecord.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfVisitRecord {
+        let result = new PagedResultDtoOfVisitRecord();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfVisitRecord();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfVisitRecord {
+    totalCount: number;
+    items: VisitRecord[];
 }

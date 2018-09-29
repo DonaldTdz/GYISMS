@@ -12,6 +12,7 @@ import { EmployeeComponent } from './employee/employee.component';
 import { GrowerComponent } from './grower/grower.component';
 import { GrowerDetailComponent } from './grower/grower-detail/grower-detail.component';
 import { GrowerEmployeeModalComponent } from './grower/grower-detail/grower-employee-modal/grower-employee-modal.component';
+import { AreaDetailModalComponent } from './organization/area-detail-modal/area-detail-modal.component';
 
 @NgModule({
     imports: [
@@ -28,7 +29,8 @@ import { GrowerEmployeeModalComponent } from './grower/grower-detail/grower-empl
         EmployeeComponent,
         GrowerComponent,
         GrowerDetailComponent,
-        GrowerEmployeeModalComponent
+        GrowerEmployeeModalComponent,
+        AreaDetailModalComponent
     ],
     entryComponents: [
     ],

@@ -27,7 +27,16 @@ namespace GYISMS.Sessions
 
             if (AbpSession.UserId.HasValue)
             {
-                output.User = ObjectMapper.Map<UserLoginInfoDto>(await GetCurrentUserAsync());
+                var user = await GetCurrentUserAsync();
+                output.User = ObjectMapper.Map<UserLoginInfoDto>(user);
+                output.Roles = await UserManager.GetRolesAsync(user);
+                if (!AbpSession.TenantId.HasValue)
+                {
+                    for (int i=0;i<output.Roles.Count;i++)
+                    {
+                        output.Roles[i] = "Host" + output.Roles[i];
+                    }
+                }
             }
 
             return output;

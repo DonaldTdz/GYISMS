@@ -168,7 +168,6 @@ namespace GYISMS.ScheduleTasks
         /// <summary>
         /// 批量删除ScheduleTask的方法
         /// </summary>
-        [AbpAuthorize(ScheduleTaskAppPermissions.ScheduleTask_BatchDelete)]
         public async Task BatchDeleteScheduleTasksAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
@@ -246,8 +245,20 @@ namespace GYISMS.ScheduleTasks
             entity.DeletionTime = DateTime.Now;
             entity.DeleterUserId = AbpSession.UserId;
             await _scheduletaskRepository.UpdateAsync(entity);
+            List<Guid> detailIds =await _scheduleDetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.Id).AsNoTracking().Select(v => v.Id).ToListAsync();
+            await BatchDeleteScheduleDetailsAsync(detailIds);
         }
 
+        /// <summary>
+        /// 批量删除任务指派信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task BatchDeleteScheduleDetailsAsync(List<Guid> input)
+        {
+            //TODO:批量删除前的逻辑判断，是否允许删除
+            await _scheduleDetailRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
         #region 钉钉客户端
 
         /// <summary>

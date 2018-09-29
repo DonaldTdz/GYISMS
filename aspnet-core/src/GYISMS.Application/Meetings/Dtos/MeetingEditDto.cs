@@ -3,14 +3,17 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.Meetings;
 
 namespace GYISMS.Meetings.Dtos
 {
+    [AutoMapTo(typeof(Meeting))]
+
     public class MeetingEditDto : AuditedEntityDto<Guid?>
     {
-
+        //public Guid? Id { get; set; }
         /// <summary>
         /// MeetingRoomId
         /// </summary>
