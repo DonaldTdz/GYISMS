@@ -1,71 +1,52 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="选择任务" [nzContent]="modalContent" nzWidth="720px" nzMaskClosable="false" (nzOnCancel)="handleCancel()" style="width: 520px;" [nzFooter]="modalFooter">
+<nz-modal [(nzVisible)]="isVisible" nzMaskClosable="false" nzTitle="区县维护" [nzContent]="modalContent" (nzOnCancel)="handleCancel()" style="width: 520px;" [nzFooter]="modalFooter">
     <ng-template #modalContent>
         <nz-card [nzBordered]="false" *ngIf="isVisible">
-            <!-- <form nz-form (ngSubmit)="refreshData()" [nzLayout]="'inline'">
-                <div nz-row [nzGutter]="24">
-                    <div nz-col [nzSpan]="8" class="mb-md">
-                        <div nz-form-item class="d-flex">
-
-                            <div nz-form-control class="flex-1">
-                                <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
-                                    <input nz-input type="text" [(ngModel)]="q.name" name="name" (nzOnSearch)="refreshData()" placeholder="请输入任务名称" style="width: 420px;">
-                                </nz-input-group>
-                                <ng-template #suffixIconButton>
-                                    <button nz-button nzType="primary" nzSearch><i class="anticon anticon-search"></i></button>
-                                </ng-template>
-                            </div>
-                        </div>
+            <form nz-form [formGroup]="validateForm" *ngIf="employee">
+                <div nz-row nzGutter="16">
+                    <div nz-col nzXs="24" nzSm="25">
+                        <desc-list size="small" col="1" class="mb-md">
+                            <desc-list-item term="员工姓名">{{employee.name}}</desc-list-item>
+                            <desc-list-item term="电话号码">{{employee.mobile}}</desc-list-item>
+                            <desc-list-item term="职位信息">{{employee.position}}</desc-list-item>
+                        </desc-list>
                     </div>
                 </div>
-            </form> -->
-            <!-- <span style="margin-left: 8px;" *ngIf="checkedNumber">Selected {{checkedNumber}} items</span> -->
-
-            <nz-table #nzTable [nzShowSizeChanger]="true" [nzData]="taskList" [nzShowPagination]="false" [nzLoading]="eloading" [nzShowSizeChanger]="true">
-                <thead>
-                    <tr>
-                        <th nz-th> <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">
-                            </label>
-                        </th>
-                        <th nz-th>
-                            <span>任务名称</span>
-                        </th>
-                        <th nz-th>
-                            <span>任务类型</span>
-                        </th>
-                        <th nz-th>
-                            <span>是否考核</span>
-                        </th>
-                        <th nz-th>
-                            <span>默认拜访次数</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr nz-tbody-tr *ngFor="let item of nzTable.data">
-                        <td>
-                            <label nz-checkbox [(ngModel)]="item.checked" (ngModelChange)="isCancelCheck($event)">
-                            </label>
-                        </td>
-                        <td>{{item.name | lengthLimit:8}}</td>
-                        <td>{{item.typeName}}</td>
-                        <td>{{item.isExamine == true?"是":"否"}}</td>
-                        <td>
-                            <nz-input-number [nzPrecision]="0" [(ngModel)]="item.visitNum" [nzMin]="0"></nz-input-number>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-            <div style="float: right;margin-top: 5px;">
-                共{{taskList.length}}条
-            </div>
+                <!-- <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="4" nzFor="name" nzRequired>姓名</nz-form-label>
+                    <nz-form-control [nzSm]="20" nzHasFeedback>
+                        <input formControlName="name" nz-input id="name" [(ngModel)]="employee.name">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="4" nzFor="mobile">电话号码</nz-form-label>
+                    <nz-form-control [nzSm]="20" nzHasFeedback>
+                        <input nz-input formControlName="mobile" id="mobile" [(ngModel)]="employee.mobile">
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="4" nzFor="position">职位</nz-form-label>
+                    <nz-form-control [nzSm]="20" nzHasFeedback>
+                        <input formControlName="position" nz-input id="position" [(ngModel)]="employee.position">
+                    </nz-form-control>
+                </nz-form-item> -->
+                <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="4" nzFor="unitCode">所属区县</nz-form-label>
+                    <nz-form-control [nzSm]="20">
+                        <nz-select formControlName="unitCode" [nzPlaceHolder]="'请选择区县名称'" name="countyCode" [(ngModel)]="employee.areaCode" (ngModelChange)="getText($event)" [nzShowSearch]="true">
+                            <nz-option *ngFor="let i of countyCodes" [nzLabel]="i.text" [nzValue]="i.value">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </form>
         </nz-card>
     </ng-template>
     <ng-template #modalFooter>
         <button nz-button [nzType]="'default'" type="button" (click)="handleCancel($event)">
             取消
         </button>
-        <button nz-button [nzType]="'primary'" type="button" (click)="SelectTask()" [nzLoading]="eloading">
-            选择返回
+        <button nz-button [nzType]="'primary'" type="button" (click)="save(employee)" [nzLoading]="eloading">
+            保存
         </button>
     </ng-template>
 </nz-modal>

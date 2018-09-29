@@ -25,7 +25,7 @@ namespace GYISMS.Employees
 		/// <summary>
 		/// 通过指定id获取EmployeeListDto信息
 		/// </summary>
-		Task<EmployeeListDto> GetEmployeeByIdAsync(EntityDto<string> input);
+		Task<EmployeeListDto> GetEmployeeByIdAsync(string id);
 
 
         /// <summary>
@@ -60,5 +60,6 @@ namespace GYISMS.Employees
         List<EmployeeNzTreeNode> GetTreesAsync();
 
         Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code);
+        Task<EmployeeListDto> EditEmployeeAreaInfoAsync(EmployeeEditDto input);
     }
 }

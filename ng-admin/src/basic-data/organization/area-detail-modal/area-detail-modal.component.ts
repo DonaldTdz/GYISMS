@@ -1,8 +1,11 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core';
 import { VisitTaskServiceProxy } from '@shared/service-proxies/tobacco-management';
 import { NzModalRef } from 'ng-zorro-antd';
-import { Employee } from '@shared/entity/basic-data';
+import { Employee, SelectGroup } from '@shared/entity/basic-data';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { GrowerServiceProxy, EmployeeServiceProxy } from '@shared/service-proxies/basic-data';
+import { NotifyService } from 'abp-ng2-module/dist/src/notify/notify.service';
+import { AppComponentBase } from '@shared/app-component-base';
 @Component({
     moduleId: module.id,
     selector: 'area-detail-modal',
@@ -10,7 +13,7 @@ import { FormGroup, Validators, FormBuilder } from '@angular/forms';
     styleUrls: ['area-detail-modal.component.scss']
 })
 
-export class AreaDetailModalComponent implements OnInit {
+export class AreaDetailModalComponent extends AppComponentBase implements OnInit {
     @Output() modalSelect: EventEmitter<any> = new EventEmitter<any>();
     eloading = false;
     isVisible = false;
@@ -19,77 +22,77 @@ export class AreaDetailModalComponent implements OnInit {
     successMsg = '';
     confirmModal: NzModalRef;
     validateForm: FormGroup;
+    countyCodes: SelectGroup[] = []
+    notify: NotifyService;
 
-
-    constructor(private taskService: VisitTaskServiceProxy, private fb: FormBuilder) {
+    constructor(injector: Injector, private employeeService: EmployeeServiceProxy, private fb: FormBuilder
+        , private growerService: GrowerServiceProxy
+    ) {
+        super(injector);
     }
 
     ngOnInit(): void {
         this.validateForm = this.fb.group({
-            teName: [null, Validators.compose([Validators.required, Validators.maxLength(50)])],
-            teDesc: [null, Validators.compose([Validators.maxLength(500)])],
+            // name: null,
+            // mobile: null,
+            // position: null,
+            unitCode: null
         });
-    }
-
-    show(id?: string) {
-        if (id) {
-            this.employeeId = id;
-        }
-        this.isVisible = true;
     }
 
     /**
      * 获取
      */
-    // getTaskInfo() {
-    //     //新增
-    //     this.employee.name = null;
-    //     this.employee.desc = null;
-    //     this.employee.seq = null;
-    // }
+    show(id?: string) {
+        if (id) {
+            this.growerService.getCountyCodeSelectGroupAsync().subscribe((result: SelectGroup[]) => {
+                this.countyCodes = result;
+                this.getEmployee(id);
+            });
+        }
+        this.isVisible = true;
+    }
 
-    // /**
-    //  * 取消按钮事件
-    //  */
-    // handleCancel = (e) => {
-    //     this.isVisible = false;
-    //     this.eloading = false;
-    // }
+    getEmployee(id: string) {
+        this.employeeService.getEmployeeById(id).subscribe((result: Employee) => {
+            this.employee = result;
+        });
+    }
 
-    // SelectTask(): void {
-    //     if (employee) {
-    //             this.scheduleTask.taskId = v.id;
-    //             this.scheduleTask.visitNum = v.visitNum;
-    //             this.scheduleTask.taskName = v.name;
-    //             this.scheduleTask.scheduleId = this.scheduleId;
-    //             this.scheduleTaskList.push(ScheduleTask.fromJS(this.scheduleTask));
-    //             this.scheduleTask = new Employee();
-    //         });
+    getText(e: any) {
+        if (e) {
+            let status: any = this.countyCodes.find(s => s.value == e);
+            this.employee.area = status.text;
+        }
+    }
 
-    //         // this.scheduleTaskList = ScheduleTask.fromVisitTaskJSArray(visitTaskList, this.scheduleId);
-    //         this.eloading = true;
-    //         this.successMsg = '保存成功';
-    //         this.saveTaskInfo();
-    //     }
-    //     // this.modalSelect.emit(visitTaskList);
-    // }
+    /**
+     * 取消按钮事件
+     */
+    handleCancel = (e) => {
+        this.isVisible = false;
+        this.eloading = false;
+    }
 
-    // saveTaskInfo() {
-    //     this.taskService.updateScheduleTask(this.scheduleTaskList).finally(() => { this.eloading = false; })
-    //         .subscribe((result: any) => {
-    //             // this.scheduleTaskList = result;
-    //             this.scheduleTaskList = [];
-    //             result.forEach(x => {
-    //                 this.taskList.forEach(v => {
-    //                     if (v.scheduleTaskId == x.id) {
-    //                         v.scheduleTaskId = x.id;
-    //                         return;
-    //                     }
-    //                 });
-    //             });
-
-    //             this.modalSelect.emit();
-    //             this.isVisible = false;
-    //         });
-    // }
+    save(data: Employee) {
+        if (this.validateForm.valid) {
+            this.eloading = true;
+            this.employee.area = data.area;
+            this.employee.areaCode = data.areaCode;
+            this.successMsg = '保存成功';
+            this.saveAreaInfo(data);
+        }
+    }
+    saveAreaInfo(data: Employee) {
+        let params: any = {};
+        params.Id = this.employee.id;
+        params.Area = data.area;
+        params.AreaCode = data.areaCode;
+        this.employeeService.updateEmployeeArea(params).finally(() => { this.eloading = false; })
+            .subscribe((result: Employee) => {
+                this.employee = result;
+                this.notify.info(this.successMsg);
+                this.isVisible = false;
+            });
+    }
 }

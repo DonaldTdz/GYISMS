@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GrowerServiceProxy } from '@shared/service-proxies/basic-data';
-import { Grower, Employee } from '@shared/entity/basic-data';
+import { Grower, Employee, SelectGroup, RadioGroup } from '@shared/entity/basic-data';
 import { GrowerEmployeeModalComponent } from './grower-employee-modal/grower-employee-modal.component';
 import * as moment from 'moment';
 import { VisitTaskServiceProxy, PagedResultDtoOfVisitRecord } from '@shared/service-proxies/tobacco-management';
@@ -24,17 +24,19 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     validateForm: FormGroup;
     grower: Grower = new Grower();
     visitRecordList: VisitRecord[] = [];
-    countyCodes: any[] = [{ text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }];
+    countyCodes: RadioGroup[] = [
+        // { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }
+    ];
     types: any[] = [{ text: '普通烟农', value: 1 }];
-    unitTypes = [
-        { text: '张家烟叶生产收购点', value: '51081104R' },
-        { text: '王家烟叶生产收购点', value: '51081104G' },
-        { text: '文村烟叶生产收购点', value: '51081104D' },
-        { text: '晋贤烟叶生产收购点', value: '51081104E' },
-        { text: '磨滩烟叶生产收购点', value: '51081104H' },
-        { text: '白果烟叶生产收购点', value: '51081104M' },
-        { text: '朝阳烟叶生产收购点', value: '51081104V' },
-        { text: '陈江烟叶生产收购点', value: '51081104P' },
+    unitTypes: SelectGroup[] = [
+        // { text: '张家烟叶生产收购点', value: '51081104R' },
+        // { text: '王家烟叶生产收购点', value: '51081104G' },
+        // { text: '文村烟叶生产收购点', value: '51081104D' },
+        // { text: '晋贤烟叶生产收购点', value: '51081104E' },
+        // { text: '磨滩烟叶生产收购点', value: '51081104H' },
+        // { text: '白果烟叶生产收购点', value: '51081104M' },
+        // { text: '朝阳烟叶生产收购点', value: '51081104V' },
+        // { text: '陈江烟叶生产收购点', value: '51081104P' },
     ];
     isConfirmLoading = false;
     successMsg = '';
@@ -73,7 +75,8 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             contractTime: null,
             type: null
         });
-        this.getGrowerInfo();
+        this.getUnitType();
+        this.getCountyCode();
     }
 
     getGrowerInfo() {
@@ -112,8 +115,19 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
                 this.grower.contractTime = null;
             }
             this.saveRoomInfo();
-
         }
+    }
+    getUnitType() {
+        this.growerService.getUnitTypeAsync().subscribe((result: SelectGroup[]) => {
+            this.unitTypes = result;
+            this.getGrowerInfo();
+        });
+    }
+
+    getCountyCode() {
+        this.growerService.getCountyCodeAsync().subscribe((result: RadioGroup[]) => {
+            this.countyCodes = result;
+        });
     }
 
     getVisitRecord() {

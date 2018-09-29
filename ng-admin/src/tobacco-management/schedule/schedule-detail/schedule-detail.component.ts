@@ -133,10 +133,21 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 // }
                 this.isDelete = true;
                 this.isPush = result.status == 1 ? false : true;
-                this.notify.info(this.l(this.successMsg));
+                this.isNewInfo = false;
+                if (result.status == 0) {
+                    this.notify.info(this.l(this.successMsg));
+                }
                 this.isSaved = true;
                 this.getTaskList();
             });
+        if (isPulish == true) {
+            let input: any = {};
+            input.ScheduleId = this.schedule.id;
+            input.ScheduleName = this.schedule.name;
+            this.scheduleService.sendMessageToEmployee(input).subscribe(() => {
+                this.notify.info(this.l('发布成功'));
+            });
+        }
     }
     push() {
         this.confirmModal = this.modal.confirm({

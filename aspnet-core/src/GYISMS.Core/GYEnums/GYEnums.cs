@@ -28,7 +28,7 @@ namespace GYISMS.GYEnums
     public enum LayoutPattern
     {
         中心模式 = 1,
-        矩阵莫事 = 2
+        矩阵模式 = 2
     }
 
     public enum ScheduleType

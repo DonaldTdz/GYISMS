@@ -1,24 +1,23 @@
 <!-- <pro-header></pro-header> -->
-<nz-card [nzBordered]="false">
-    <nz-card [nzBordered]="false">
-        <form nz-form [formGroup]="validateForm" *ngIf="schedule">
-            <div nz-row>
-                <div nz-col [nzSpan]="16">
-                    <nz-form-item nz-row style="margin-bottom: 0px;">
-                        <nz-form-label nz-col [nzSm]="4">发布状态</nz-form-label>
-                        <nz-form-control nz-col [nzSm]="20" class="text-pink-light">
-                            {{schedule.status==true?"已发布":"草稿"}}
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item nz-row>
-                        <nz-form-label nz-col [nzSm]="4" nzFor="name" nzRequired>计划名称</nz-form-label>
-                        <nz-form-control [nzSm]="20" nzHasFeedback>
-                            <input nz-input formControlName="name" id="name" [(ngModel)]="schedule.name">
-                            <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">字符长度小于等于200</nz-form-explain>
-                            <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">计划名称不能为空</nz-form-explain>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <!-- <nz-form-item nz-row style="margin-bottom: 0px;">
+<nz-card [nzBordered]="false" nzTitle="计划详情">
+    <form nz-form [formGroup]="validateForm" *ngIf="schedule">
+        <div nz-row>
+            <div nz-col [nzSpan]="16">
+                <nz-form-item nz-row style="margin-bottom: 0px;">
+                    <nz-form-label nz-col [nzSm]="4">发布状态</nz-form-label>
+                    <nz-form-control nz-col [nzSm]="20" class="text-pink-light">
+                        {{schedule.status==true?"已发布":"草稿"}}
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="4" nzFor="name" nzRequired>计划名称</nz-form-label>
+                    <nz-form-control [nzSm]="20" nzHasFeedback>
+                        <input nz-input formControlName="name" id="name" [(ngModel)]="schedule.name">
+                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">字符长度小于等于200</nz-form-explain>
+                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">计划名称不能为空</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <!-- <nz-form-item nz-row style="margin-bottom: 0px;">
                         <nz-form-label nz-col [nzSm]="4" nzRequired>拜访任务</nz-form-label>
                         <nz-form-control [nzSm]="16" nzHasFeedback>
                             <input nz-input readonly="readonly" placeholder="请选择任务" formControlName="taskName" id="taskName" [(ngModel)]="scheduleTask.taskName">
@@ -34,107 +33,106 @@
                             <button nz-button type="button" nzType="primary" (click)="showEmployeeModal()" style="margin-left: 20px">任务指派</button>
                         </nz-form-control>
                     </nz-form-item> -->
-                    <nz-form-item nz-row style="margin-bottom: 0px;">
-                        <nz-form-label nz-col [nzSm]="4" nzRequired>计划类型</nz-form-label>
-                        <nz-form-control nz-col [nzSm]="20">
-                            <nz-radio-group formControlName="type" [(ngModel)]="schedule.type" class="mb-md">
-                                <label nz-radio [nzValue]="o.value" *ngFor="let o of types">
+                <nz-form-item nz-row style="margin-bottom: 0px;">
+                    <nz-form-label nz-col [nzSm]="4" nzRequired>计划类型</nz-form-label>
+                    <nz-form-control nz-col [nzSm]="20">
+                        <nz-radio-group formControlName="type" [(ngModel)]="schedule.type" class="mb-md">
+                            <label nz-radio [nzValue]="o.value" *ngFor="let o of types">
                                     <span>{{o.text}}</span>
                                 </label>
-                            </nz-radio-group>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <!-- <nz-form-item nz-row>
+                        </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <!-- <nz-form-item nz-row>
                         <nz-form-label nz-col [nzSm]="4" nzFor="visitNum">默认拜访次数</nz-form-label>
                         <nz-form-control [nzSm]="20" nzHasFeedback>
                             <input nz-input formControlName="visitNum" id="visitNum" [(ngModel)]="scheduleTask.visitNum">
                             <nz-form-explain *ngIf="validateForm.get('visitNum').dirty&&validateForm.get('visitNum').hasError('pattern')">请输入整数</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item> -->
-                    <nz-form-item nz-row *ngIf="schedule.type == 3">
-                        <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划执行时间</nz-form-label>
-                        <nz-form-control [nzSm]="20">
-                            <nz-date-picker formControlName="beginTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="schedule.beginTime" nzPlaceHolder="请选择日期"></nz-date-picker>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item nz-row *ngIf="schedule.type == 1">
-                        <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划开始时间</nz-form-label>
-                        <nz-form-control [nzSm]="20">
-                            <nz-month-picker formControlName="beginTime" [nzFormat]="monthFormat" [(ngModel)]="schedule.beginTime" nzPlaceHolder="请选择日期"></nz-month-picker>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item nz-row *ngIf="schedule.type == 1">
-                        <nz-form-label nz-col [nzSm]="4" nzFor="endTime">计划结束时间</nz-form-label>
-                        <nz-form-control [nzSm]="20">
-                            <nz-month-picker formControlName="endTime" [nzFormat]="monthFormat" [(ngModel)]="schedule.endTime" nzPlaceHolder="请选择日期"></nz-month-picker>
-                        </nz-form-control>
-                    </nz-form-item>
-                    <nz-form-item nz-row>
-                        <nz-form-label nz-col [nzSm]="4" nzFor="desc">计划说明</nz-form-label>
-                        <nz-form-control [nzSm]="20" nzHasFeedback>
-                            <textarea nz-input row="3" formControlName="desc" id="desc" [(ngModel)]="schedule.desc"></textarea>
-                            <nz-form-explain *ngIf="validateForm.get('desc').dirty&&validateForm.get('desc').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
-                        </nz-form-control>
-                    </nz-form-item>
-                </div>
+                <nz-form-item nz-row *ngIf="schedule.type == 3">
+                    <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划执行时间</nz-form-label>
+                    <nz-form-control [nzSm]="20">
+                        <nz-date-picker formControlName="beginTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="schedule.beginTime" nzPlaceHolder="请选择日期"></nz-date-picker>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row *ngIf="schedule.type == 1">
+                    <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划开始时间</nz-form-label>
+                    <nz-form-control [nzSm]="20">
+                        <nz-month-picker formControlName="beginTime" [nzFormat]="monthFormat" [(ngModel)]="schedule.beginTime" nzPlaceHolder="请选择日期"></nz-month-picker>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row *ngIf="schedule.type == 1">
+                    <nz-form-label nz-col [nzSm]="4" nzFor="endTime">计划结束时间</nz-form-label>
+                    <nz-form-control [nzSm]="20">
+                        <nz-month-picker formControlName="endTime" [nzFormat]="monthFormat" [(ngModel)]="schedule.endTime" nzPlaceHolder="请选择日期"></nz-month-picker>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="4" nzFor="desc">计划说明</nz-form-label>
+                    <nz-form-control [nzSm]="20" nzHasFeedback>
+                        <textarea nz-input row="3" formControlName="desc" id="desc" [(ngModel)]="schedule.desc"></textarea>
+                        <nz-form-explain *ngIf="validateForm.get('desc').dirty&&validateForm.get('desc').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
             </div>
-        </form>
+        </div>
+    </form>
 
-        <form *ngIf="isSaved" nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
-            <div nz-row [nzGutter]="24">
-                <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
-                    <button nz-button type="button" (click)="showModal(null)" nzType="primary">
+    <form *ngIf="isSaved&&isPush" nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
+        <div nz-row [nzGutter]="24">
+            <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
+                <button nz-button type="button" (click)="showModal(null)" nzType="primary">
                         <i class="anticon anticon-plus"></i>
                         <span>新增任务</span>
                     </button>
-                </div>
             </div>
-        </form>
-        <!-- <ng-template *ngIf="isPush" #totalTemplate let-total>共 {{query.total}} 条</ng-template> -->
-        <nz-table *ngIf="isSaved" #nzTable [nzData]="scheduleTaskList" [nzShowPagination]="false" [nzFrontPagination]="false" [nzLoading]="loading">
-            <thead>
-                <tr>
-                    <th>任务名称</th>
-                    <th>任务类型</th>
-                    <th>是否考核</th>
-                    <th>默认拜访次数</th>
-                    <th>操作</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let data of nzTable.data">
-                    <td>{{data.taskName}}</td>
-                    <td>{{data.typeName}}</td>
-                    <td>{{data.isExamine == true?"是":"否"}}</td>
-                    <td>{{data.visitNum}}</td>
-                    <td>
-                        <a (click)="assignTask(data.id,data.taskId,data.visitNum)">指派详情</a>
-                        <nz-divider *ngIf="isPush&&!isNewInfo" nzType="vertical"></nz-divider>
-                        <a *ngIf="isPush&&!isNewInfo" (click)="assignAll(data.id,data.taskId,data.visitNum)">全部指派</a>
-                        <nz-divider *ngIf="isPush&&!isNewInfo" nzType="vertical"></nz-divider>
-                        <a *ngIf="isPush&&!isNewInfo" style="color:red" (click)="deleteTask(data)">移除</a>
-                    </td>
-                </tr>
-            </tbody>
-        </nz-table>
-        <div *ngIf="isSaved" style="float: right;margin-top: 5px;">
-            共{{scheduleTaskList.length}}条
         </div>
-        <footer-toolbar errorCollect>
-            <button nz-button [nzType]="'default'" (click)="return()">
+    </form>
+    <!-- <ng-template *ngIf="isPush" #totalTemplate let-total>共 {{query.total}} 条</ng-template> -->
+    <nz-table *ngIf="isSaved" #nzTable [nzData]="scheduleTaskList" [nzShowPagination]="false" [nzFrontPagination]="false" [nzLoading]="loading">
+        <thead>
+            <tr>
+                <th>任务名称</th>
+                <th>任务类型</th>
+                <th>是否考核</th>
+                <th>默认拜访次数</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let data of nzTable.data">
+                <td>{{data.taskName}}</td>
+                <td>{{data.typeName}}</td>
+                <td>{{data.isExamine == true?"是":"否"}}</td>
+                <td>{{data.visitNum}}</td>
+                <td>
+                    <a (click)="assignTask(data.id,data.taskId,data.visitNum)">指派详情</a>
+                    <nz-divider *ngIf="isPush&&!isNewInfo" nzType="vertical"></nz-divider>
+                    <a *ngIf="isPush&&!isNewInfo" (click)="assignAll(data.id,data.taskId,data.visitNum)">全部指派</a>
+                    <nz-divider *ngIf="isPush&&!isNewInfo" nzType="vertical"></nz-divider>
+                    <a *ngIf="isPush&&!isNewInfo" style="color:red" (click)="deleteTask(data)">移除</a>
+                </td>
+            </tr>
+        </tbody>
+    </nz-table>
+    <div *ngIf="isSaved" style="float: right;margin-top: 5px;">
+        共{{scheduleTaskList.length}}条
+    </div>
+    <footer-toolbar errorCollect>
+        <button nz-button [nzType]="'default'" (click)="return()">
                 {{l("返回")}}
             </button>
-            <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading">
+        <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading">
                 {{l("删除")}}
             </button>
-            <button nz-button *ngIf="isPush&&!isNewInfo" [nzType]="'primary'" type="button" (click)="push()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
-                {{l(" 发布 ")}}
+        <button nz-button *ngIf="isPush == true&&!isNewInfo" [nzType]="'primary'" type="button" (click)="push()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+                {{l("发布")}}
             </button>
-            <button nz-button *ngIf="isPush " [nzType]=" 'primary' " type="button " (click)="save() " [nzLoading]="isConfirmLoading " [disabled]="!validateForm.valid ">
+        <button nz-button *ngIf="isPush" [nzType]=" 'primary' " type="button " (click)="save() " [nzLoading]="isConfirmLoading " [disabled]="!validateForm.valid ">
                 {{l("保存 ")}}
             </button>
-        </footer-toolbar>
-    </nz-card>
+    </footer-toolbar>
 </nz-card>
 <choose-task-modal #selectTaskModal (modalSelect)="getSelectData($event) "></choose-task-modal>
 <!-- <choose-employee-modal #selectEmployeeModal (modalSelect)="getSelectData($event) "></choose-employee-modal> -->

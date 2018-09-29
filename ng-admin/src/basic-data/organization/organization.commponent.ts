@@ -1,4 +1,4 @@
-import { Component, Injector, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, Injector, OnInit, ViewChild, HostListener, Output, EventEmitter } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { _HttpClient } from '@delon/theme';
 import { Organization, TreeNode, Employee } from '@shared/entity/basic-data';
@@ -7,6 +7,7 @@ import { PagedResultDtoOfOrganization, OrganizationServiceProxy } from '@shared/
 import { Parameter } from '@shared/service-proxies/entity/parameter';
 import { NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent } from 'ng-zorro-antd';
 import { PagedResultDtoOfEmployee, EmployeeServiceProxy } from '@shared/service-proxies/basic-data/employee-service';
+import { AreaDetailModalComponent } from './area-detail-modal/area-detail-modal.component';
 
 @Component({
     moduleId: module.id,
@@ -16,7 +17,8 @@ import { PagedResultDtoOfEmployee, EmployeeServiceProxy } from '@shared/service-
 })
 
 export class OrganizationComponent extends AppComponentBase implements OnInit {
-
+    @Output() modalSelect: EventEmitter<any> = new EventEmitter<any>();
+    @ViewChild('selectModal') selectModal: AreaDetailModalComponent;
     syncDataLoading = false;
     exportLoading = false;
     search: any = {};
@@ -156,10 +158,12 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
         this.organizationService.synchronousOrganizationAsync().subscribe(() => {
             this.notify.info(this.l('同步成功！'));
             this.syncDataLoading = false;
-        });
-        setTimeout(() => {
             this.getTrees();
-        }, 1000);
+            this.refreshData(null);
+        });
+        // setTimeout(() => {
+        //     this.getTrees();
+        // }, 1000);
     }
 
     getTrees() {
@@ -176,7 +180,11 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
     //         this.query.total = result.totalCount;
     //     })
     // }
-    goAreaDetail(id: string) {
 
+    showModal(id: string): void {
+        this.selectModal.show(id);
     }
+    // getSelectData = () => {
+    //     this.getTaskList();
+    // }
 }

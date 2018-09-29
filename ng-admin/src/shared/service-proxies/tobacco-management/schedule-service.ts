@@ -63,6 +63,13 @@ export class ScheduleServiceProxy {
             return data.result;
         });
     }
+
+    sendMessageToEmployee(input: any): Observable<ApiResult> {
+        let url_ = "/api/services/app/Schedule/SendMessageToEmployeeAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data.result;
+        });
+    }
 }
 
 export class PagedResultDtoOfSchedule implements IPagedResultDtoOfSchedule {
