@@ -203,6 +203,14 @@ namespace GYISMS.ScheduleDetails.Dtos
                 return TaskType.ToString();
             }
         }
+
+        public string StatusName
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
     }
 
 

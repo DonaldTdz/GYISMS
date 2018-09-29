@@ -338,8 +338,8 @@ namespace GYISMS.ScheduleDetails
         public async Task<SheduleSumStatisDto> GetSumShedule(SheduleSumInput input)
         {
             var timeNow = DateTime.Today;
-            input.StartTime = input.StartTime.HasValue ? input.StartTime : timeNow.AddDays(1 - timeNow.Day);
-            input.EndTime = input.EndTime.HasValue ? input.EndTime : timeNow.AddDays(1 - timeNow.Day);
+            //input.StartTime = input.StartTime.HasValue ? input.StartTime : timeNow.AddDays(1 - timeNow.Day);
+            //input.EndTime = input.EndTime.HasValue ? input.EndTime : timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
 
             var query = from sd in _scheduledetailRepository.GetAll()
                         join t in _visittaskRepository.GetAll()
@@ -431,74 +431,41 @@ namespace GYISMS.ScheduleDetails
             //var query = _scheduledetailRepository.GetAll();
             // TODO:根据传入的参数添加过滤条件
 
-            var queryAll = from sd in _scheduledetailRepository.GetAll()
-                                                        .WhereIf(!string.IsNullOrEmpty(input.EmployeeName),sd=>sd.EmployeeName.Contains(input.EmployeeName))
-                                                        .WhereIf(!string.IsNullOrEmpty(input.GrowerName),sd=>sd.GrowerName.Contains(input.GrowerName))
-                           join s in _scheduleRepository.GetAll()
-                                                        .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
-                                                        .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime) 
-                           on sd.ScheduleId equals s.Id
-                           join t in _visittaskRepository.GetAll()
-                                                        .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId) 
-                           on sd.TaskId equals t.Id
-                           join g in _growerRepository.GetAll()
-                                                        .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode)
-                           on sd.GrowerId equals g.Id
-                           select new
-                           {
-                               sd.Id,
-                               sd.VisitNum,
-                               sd.CompleteNum,
-                               sd.Status,
-                               t.Name,
-                               t.Type,
-                               g.CountyCode
-                           };
-            var queryEx = from sd in _scheduledetailRepository.GetAll()
-                                                        .Where(sd => sd.Status == ScheduleStatusEnum.已逾期)
+            var query = from sd in _scheduledetailRepository.GetAll()
                                                         .WhereIf(!string.IsNullOrEmpty(input.EmployeeName), sd => sd.EmployeeName.Contains(input.EmployeeName))
                                                         .WhereIf(!string.IsNullOrEmpty(input.GrowerName), sd => sd.GrowerName.Contains(input.GrowerName))
-                          join s in _scheduleRepository.GetAll()
-                                                        .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
-                                                        .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime) 
-                          on sd.ScheduleId equals s.Id
-                          join t in _visittaskRepository.GetAll()
-                                                        .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId) 
-                          on sd.TaskId equals t.Id
-                          join g in _growerRepository.GetAll()
-                                                        .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode) 
-                          on sd.GrowerId equals g.Id
-                          select new
-                          {
-                              sd.Id,
-                              ExpiredNum = sd.VisitNum - sd.CompleteNum
-                          };
-            var list1 = queryAll.ToListAsync();
-            var list2 = queryEx.ToListAsync();
-            var endQuery = from s in queryAll
-                           join y in queryEx on s.Id equals y.Id into sy
-                           from sd in sy.DefaultIfEmpty()
-                           select new SheduleDetailTaskListDto
-                           {
-                               Id = s.Id,
-                               VisitNum = s.VisitNum,
-                               CompleteNum = s.CompleteNum,
-                               Status = s.Status,
-                               TaskName = s.Name,
-                               TaskType = s.Type,
-                               AreaCode = s.CountyCode,
-                               Expired = sd.ExpiredNum
-                           };
-            var list = endQuery.ToListAsync();
-            var scheduledetailCount = await endQuery.CountAsync();
+                        join s in _scheduleRepository.GetAll()
+                                                     .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
+                                                     .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                        on sd.ScheduleId equals s.Id
+                        join t in _visittaskRepository.GetAll()
+                                                     .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
+                        on sd.TaskId equals t.Id
+                        join g in _growerRepository.GetAll()
+                                                     .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode)
+                        on sd.GrowerId equals g.Id
+                        select new SheduleDetailTaskListDto
+                        {
+                            Id = sd.Id,
+                            VisitNum = sd.VisitNum,
+                            CompleteNum = sd.CompleteNum,
+                            Status = sd.Status,
+                            TaskName = t.Name,
+                            TaskType = t.Type,
+                            AreaCode = g.CountyCode,
+                            GrowerName=sd.GrowerName,
+                            EmployeeName=sd.EmployeeName
+                        };
+           
+            var scheduledetailCount = await query.CountAsync();
 
-            var scheduledetails = await endQuery
+            var scheduledetails = await query
                     //.OrderBy(input.Sorting).AsNoTracking()
                     .PageBy(input)
                     .ToListAsync();
 
             // var scheduledetailListDtos = ObjectMapper.Map<List <ScheduleDetailListDto>>(scheduledetails);
-            var scheduledetailListDtos = scheduledetails.MapTo<List<SheduleDetailTaskListDto>>();
+             var scheduledetailListDtos = scheduledetails.MapTo<List<SheduleDetailTaskListDto>>();
 
             return new PagedResultDto<SheduleDetailTaskListDto>(
                     scheduledetailCount,

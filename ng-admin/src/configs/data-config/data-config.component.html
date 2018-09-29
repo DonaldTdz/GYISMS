@@ -5,10 +5,11 @@
                 <!-- <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=3)">烟农单位</nz-tag>
                     <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=4)">烟农村组</nz-tag>
                     <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=5)">烟叶公共</nz-tag> -->
-                <nz-radio-group style="display: block;" *ngFor="let item of configLeaf" [(ngModel)]="paramLe.Type" [nzButtonStyle]="'solid'" (ngModelChange)="checkChangeLeaf()">
+                <nz-radio-group style="display: block;" *ngFor="let item of configLeaf" [(ngModel)]="paramLe.Type" [nzButtonStyle]="'solid'"
+                    (ngModelChange)="checkChangeLeaf()">
                     <label nz-radio-button [nzValue]="item.value" style="margin-top: 10px;">
-                            <span>{{item.text}}</span>
-                        </label>
+                        <span>{{item.text}}</span>
+                    </label>
                 </nz-radio-group>
             </div>
             <div nz-col [nzSpan]="18">
@@ -20,23 +21,16 @@
                         <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'">
                             <!-- <button nz-button type="reset" (click)="refreshData()" [nzSize]="'large'" class="mx-sm">重置</button> -->
                             <button nz-button type="button" (click)="addLeaf()" [nzType]="'primary'" [nzSize]="'large'">
-                                    <i class="anticon anticon-plus"></i>
-                                    <span>新建</span>
-                                </button>
+                                <i class="anticon anticon-plus"></i>
+                                <span>新建</span>
+                            </button>
                         </div>
                     </div>
                 </form>
-                <!-- <standard-form-row block style="padding-bottom: 9px;">
-                        <div nz-form-item>
-                            <div nz-form-control>
-                                <nz-checkable-tag *ngFor="let i of configs; let idx=index" [nzChecked]="i.value" (nzChange)="changeCategory($event,idx, i.id)">
-                                    {{i.text}}
-                                </nz-checkable-tag>
-                            </div>
-                        </div>
-                    </standard-form-row> -->
-                <nz-table #nzTable [nzData]="systemDataLeafs" [nzFrontPagination]="false" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [nzShowTotal]="totalTemplate" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowTotal]="'true'" [nzShowSizeChanger]="true"
-                    (nzPageIndexChange)="getAllLeafs()" (nzPageSizeChange)="getAllLeafs()">
+                <ng-template #totalContentLe>共{{query.total}}条</ng-template>
+                <nz-table #nzTable [nzData]="systemDataLeafs" [nzFrontPagination]="false" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex"
+                    [(nzPageSize)]="query.pageSize" [nzShowTotal]="totalContentLe" [nzLoading]="loading" nzShowSizeChanger (nzPageIndexChange)="getAllLeafs()"
+                    (nzPageSizeChange)="getAllLeafs()">
                     <thead>
                         <tr>
                             <th>
@@ -50,6 +44,9 @@
                             </th>
                             <th>
                                 <span>序号</span>
+                            </th>
+                            <th>
+                                <span>操作</span>
                             </th>
                         </tr>
                     </thead>
@@ -74,10 +71,11 @@
     <nz-tab nzTitle="会议管理">
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="4" class="mb-md">
-                <nz-radio-group style="display: block;" *ngFor="let item of configMetting" [(ngModel)]="paramMe.Type" [nzButtonStyle]="'solid'" (ngModelChange)="checkChangeMetting()">
+                <nz-radio-group style="display: block;" *ngFor="let item of configMetting" [(ngModel)]="paramMe.Type" [nzButtonStyle]="'solid'"
+                    (ngModelChange)="checkChangeMetting()">
                     <label nz-radio-button [nzValue]="item.value" style="margin-top: 10px;">
-                            <span>{{item.text}}</span>
-                        </label>
+                        <span>{{item.text}}</span>
+                    </label>
                 </nz-radio-group>
             </div>
             <div nz-col [nzSpan]="20" class="mb-md">
@@ -88,14 +86,16 @@
                     <div nz-row [nzGutter]="24">
                         <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'">
                             <button nz-button (click)="addConfigMetting()" [nzType]="'primary'" [nzSize]="'large'">
-                                    <i class="anticon anticon-plus"></i>
-                                    <span>新建</span>
-                                </button>
+                                <i class="anticon anticon-plus"></i>
+                                <span>新建</span>
+                            </button>
                         </div>
                     </div>
                 </form>
-                <nz-table #nzTableMe [nzData]="systemDataMettings" [nzFrontPagination]="false" [nzTotal]="queryMe.total" [(nzPageIndex)]="queryMe.pageIndex" [(nzPageSize)]="queryMe.pageSize" [nzLoading]="loadingMe" [nzShowTotal]="'true'" [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllMetting()"
-                    (nzPageSizeChange)="getAllMetting()">
+                <ng-template #totalContentMe>共{{queryMe.total}}条</ng-template>
+                <nz-table #nzTableMe [nzData]="systemDataMettings" [nzFrontPagination]="false" [nzTotal]="queryMe.total" [(nzPageIndex)]="queryMe.pageIndex"
+                    [(nzPageSize)]="queryMe.pageSize" [nzShowTotal]="totalContentMe" [nzLoading]="loadingMe" [nzShowTotal]="'true'"
+                    [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllMetting()" (nzPageSizeChange)="getAllMetting()">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
@@ -109,6 +109,9 @@
                             </th>
                             <th nz-th>
                                 <span>序号</span>
+                            </th>
+                            <th>
+                                <span>操作</span>
                             </th>
                         </tr>
                     </thead>

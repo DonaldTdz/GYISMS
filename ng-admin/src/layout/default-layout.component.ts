@@ -91,7 +91,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '统计报表',
                 '',
                 '',
-                '',
+                '/app/task/report-form',
             ),
                 // new MenuItem(
                 //     '考核管理',

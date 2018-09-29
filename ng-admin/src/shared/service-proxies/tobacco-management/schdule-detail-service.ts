@@ -37,16 +37,18 @@ export class ScheduleDetailServiceProxy {
      * 获取任务明细
      * @param params 
      */
-    getSheDulDetailByTask(params: any): Observable<ScheduleDetailTask[]> {
+    getSheDulDetailByTask(params: any): Observable<PagedResultDtoOfScheduleDetailTask> {
         var url = '/api/services/app/ScheduleDetail/GetPagedScheduleDetailsByOtherTable';
         return this._gyhttp.get(url, params).map(data => {
             if (data) {
-                return ScheduleDetailTask.fromJSArray(data);
+                return PagedResultDtoOfScheduleDetailTask.fromJS(data);
             } else {
                 return null;
             }
         });
     }
+
+
 }
 
 export class PagedResultDtoOfSheduleSum implements IPagedResultDtoOfSheduleSum {
@@ -109,4 +111,58 @@ export interface IPagedResultDtoOfSheduleSum {
     completeSum: number;
     expiredSum: number
     items: ScheduleSum[];
+}
+
+export class PagedResultDtoOfScheduleDetailTask implements IPagedResultDtoOfScheduleDetailTask {
+    totalCount: number;
+    items: ScheduleDetailTask[];
+
+    constructor(data?: IPagedResultDtoOfScheduleDetailTask) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(ScheduleDetailTask.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfScheduleDetailTask {
+        let result = new PagedResultDtoOfScheduleDetailTask();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfScheduleDetailTask();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfScheduleDetailTask {
+    totalCount: number;
+    items: ScheduleDetailTask[];
 }

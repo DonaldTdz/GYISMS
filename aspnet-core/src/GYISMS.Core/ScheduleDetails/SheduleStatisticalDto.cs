@@ -88,13 +88,12 @@ namespace GYISMS.ScheduleDetails
         {
             get
             {
-                if (Complete == 0)
+                if (Complete.HasValue && Total.HasValue && Complete!=0)
                 {
-                    return "0%";
+                    return (Math.Round((double)Complete.Value / Total.Value, 2) * 100).ToString() + "%";
                 }
                 else
                 {
-                    //return (Math.Round((double)Complete / Total, 2) * 100).ToString() + "%";
                     return "0%";
                 }
             }

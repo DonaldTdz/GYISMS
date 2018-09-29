@@ -51,7 +51,7 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
     }
 
     refureshData(type) {
-        if (type = 1) {
+        if (type == 1) {
             this.getAllMetting();
         } else {
             this.getAllLeafs();
@@ -84,7 +84,7 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
             nzOkText: '确定',
             nzCancelText: '取消',
             nzOnOk: () => {
-                this.systemDataSerice.delete(leaf.id).subscribe(() => {
+                this.systemDataSerice.delete({ id: leaf.id }).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.getAllLeafs();
                 });
@@ -116,7 +116,7 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
             this.systemDataMettings = data.items.map(i => {
                 return i;
             });
-            this.query.total = data.totalCount;
+            this.queryMe.total = data.totalCount;
             console.log("data:");
             console.log(data);
         });
@@ -136,7 +136,7 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
             nzOkText: '确定',
             nzCancelText: '取消',
             nzOnOk: () => {
-                this.systemDataSerice.delete(metting.id).subscribe(() => {
+                this.systemDataSerice.delete({ input: metting.id }).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.getAllMetting();
                 })

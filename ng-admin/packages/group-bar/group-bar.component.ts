@@ -46,6 +46,7 @@ export class G2GroupBarComponent implements OnDestroy, OnChanges {
 
     @Input() color = 'rgba(24, 144, 255, 0.85)';
     @Input() groupName = '';
+    @Input() colors: any[];
 
     @HostBinding('style.height.px')
     @Input()
@@ -132,13 +133,24 @@ export class G2GroupBarComponent implements OnDestroy, OnChanges {
                     value: y,
                 };
             });*/
-        chart.interval()
-            .position('x*y')
-            .color(this.groupName == '' ? this.color : this.groupName)
-            .adjust([{
-                type: 'dodge',
-                marginRatio: 1 / 32
-            }]);
+        if (this.colors.length > 0) {
+            chart.interval()
+                .position('x*y')
+                .color(this.groupName == '' ? this.color : this.groupName, this.colors)
+                .adjust([{
+                    type: 'dodge',
+                    marginRatio: 1 / 32
+                }]);
+        } else {
+            chart.interval()
+                .position('x*y')
+                .color(this.groupName == '' ? this.color : this.groupName)
+                .adjust([{
+                    type: 'dodge',
+                    marginRatio: 1 / 32
+                }]);
+        }
+
         chart.render();
         this.chart = chart;
     }
