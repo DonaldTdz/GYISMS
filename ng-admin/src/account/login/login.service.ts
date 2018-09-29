@@ -41,7 +41,7 @@ export class LoginService {
   }
 
   authenticate(finallyCallback?: () => void): void {
-    finallyCallback = finallyCallback || (() => {});
+    finallyCallback = finallyCallback || (() => { });
 
     this._tokenAuthService
       .authenticate(this.authenticateModel)
@@ -93,7 +93,8 @@ export class LoginService {
     );
 
     let initialUrl = UrlHelper.initialUrl;
-    if (initialUrl.indexOf('/login') > 0) {
+    // if (initialUrl.indexOf('/login') > 0) {
+    if (initialUrl.indexOf('/login') > 0 || initialUrl == AppConsts.appBaseUrl + '/#/') {
       initialUrl = AppConsts.appBaseUrl;
     }
 

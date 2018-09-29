@@ -314,7 +314,7 @@ systemdataListDtos
                                     text = c.Desc,
                                     value = c.Code,
                                     seq = c.Seq
-                                }).OrderBy(v=>v.seq ).AsNoTracking().ToListAsync();
+                                }).OrderBy(v => v.seq).AsNoTracking().ToListAsync();
 
             return entity.MapTo<List<SelectGroup>>();
         }
@@ -331,7 +331,7 @@ systemdataListDtos
                                     text = c.Desc,
                                     value = c.Code,
                                     seq = c.Seq
-                                }).OrderBy(v => v.seq).AsNoTracking().ToListAsync(); 
+                                }).OrderBy(v => v.seq).AsNoTracking().ToListAsync();
             return entity.MapTo<List<RadioGroup>>();
         }
 
@@ -350,6 +350,37 @@ systemdataListDtos
                                 }).OrderBy(v => v.seq).AsNoTracking().ToListAsync();
 
             return entity.MapTo<List<SelectGroup>>();
+        }
+
+        /// <summary>
+        /// 获取周计划时间
+        /// </summary>
+        /// <returns></returns>
+        //public async Task<List<SelectGroup>> GetWeekTimeSelectGroup()
+        //{
+        //    List<RadioGroup> list = new List<RadioGroup>();
+        //    RadioGroup item = new RadioGroup();
+        //    DateTime dt = new DateTime();
+        //    DateTime dtn = DateTime.Now;
+        //    item.text = dt.Month
+        //    int dayInMonthBegin = dtn.Day;   //本周第一天
+        //    int dayInMonthEnd = dtn.Day + 6;
+        //    list.Add()
+
+        //    return null;
+        //}
+
+        public int getWeekNumInMonth()
+        {
+            DateTime daytime = DateTime.Now;
+            int dayInMonth = daytime.Day;   //本月第一天   
+            DateTime firstDay = daytime.AddDays(1 - daytime.Day);  //本月第一天是周几 
+            int weekday = (int)firstDay.DayOfWeek == 0 ? 7 : (int)firstDay.DayOfWeek;   //本月第一周有几天
+            int firstWeekEndDay = 7 - (weekday - 1);            //当前日期和第一周之差 
+            int diffday = dayInMonth - firstWeekEndDay;
+            diffday = diffday > 0 ? diffday : 1;            //当前是第几周,如果整除7就减一天   
+            int WeekNumInMonth = ((diffday % 7) == 0 ? (diffday / 7 - 1) : (diffday / 7)) + 1 + (dayInMonth > firstWeekEndDay ? 1 : 0);
+            return WeekNumInMonth;
         }
     }
 }
