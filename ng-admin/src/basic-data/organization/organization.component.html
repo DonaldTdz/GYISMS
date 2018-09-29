@@ -113,7 +113,7 @@
                         <td>{{item.position}}</td>
                         <td>{{item.mobile}}</td>
                         <td>
-                            <a (click)="goDetail(item.id)">查看详情</a>
+                            <a (click)="showModal(item.id)">区县维护</a>
                         </td>
                     </tr>
                 </tbody>
@@ -121,3 +121,4 @@
         </div>
     </div>
 </nz-card>
+<area-detail-modal #selectModal (modalSelect)="getSelectData($event) "></area-detail-modal>

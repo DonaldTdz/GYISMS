@@ -60,8 +60,8 @@ namespace GYISMS.VisitTasks
         public async Task<PagedResultDto<VisitTaskListDto>> GetPagedVisitTasksAsync(GetVisitTasksInput input)
         {
             var query = _visittaskRepository.GetAll().Where(v => v.IsDeleted == false)
-                     .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
-
+                     .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
+                     .WhereIf(input.TaskType.HasValue, r => r.Type == input.TaskType);
             // TODO:根据传入的参数添加过滤条件
 
             var visittaskCount = await query.CountAsync();

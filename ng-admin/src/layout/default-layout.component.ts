@@ -55,12 +55,12 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '/app/basic/organization',
             ),
-            new MenuItem(
-                '内部员工',
-                '',
-                '',
-                '/app/basic/employee',
-            ),
+            // new MenuItem(
+            //     '内部员工',
+            //     '',
+            //     '',
+            //     '/app/basic/employee',
+            // ),
             new MenuItem(
                 '烟农管理',
                 '',
@@ -93,12 +93,12 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '/app/task/report-form',
             ),
-            new MenuItem(
-                '考核管理',
-                '',
-                '',
-                '',
-            ),
+                // new MenuItem(
+                //     '考核管理',
+                //     '',
+                //     '',
+                //     '',
+                // ),
             ]
         ),
 
@@ -151,24 +151,25 @@ export class DefaultLayoutComponent extends AppComponentBase
             '',
             'anticon anticon-tool',
             '',
-            [new MenuItem(
-                '钉钉配置',
-                '',
-                '',
-                '',
-            ),
-            new MenuItem(
-                '微信配置',
-                '',
-                '',
-                '',
-            ),
-            new MenuItem(
-                '数据配置',
-                '',
-                '',
-                '/app/config/data-config',
-            ),]
+            [
+                //     new MenuItem(
+                //     '钉钉配置',
+                //     '',
+                //     '',
+                //     '',
+                // ),
+                // new MenuItem(
+                //     '微信配置',
+                //     '',
+                //     '',
+                //     '',
+                // ),
+                new MenuItem(
+                    '数据配置',
+                    '',
+                    '',
+                    '/app/config/data-config',
+                ),]
         ),
 
         // 系统管理

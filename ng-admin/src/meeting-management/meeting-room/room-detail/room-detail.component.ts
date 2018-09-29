@@ -30,7 +30,7 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
     deviceArry: string[] = [];
     validateForm: FormGroup;
     host = AppConsts.remoteServiceBaseUrl;
-    id: number;
+    id: number = 0;
     actionUrl = this.host + '/GYISMSFile/MeetingRoomPost?fileName=room';
     roomTypes: any[] = [{ text: '固定会议室', value: 1 }, { text: '临时会议室', value: 2 }];
     layoutPatterns: any[] = [{ text: '中心模式', value: 1 }, { text: '矩阵模式', value: 2 }];
@@ -63,21 +63,27 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
             devices: null
         });
         this.getRoomDevices();
-        setTimeout(() => {
-            this.getMeetingRoom();
-        }, 500);
+        // setTimeout(() => {
+        //     this.getMeetingRoom();
+        // }, 500);
 
         this.host = AppConsts.remoteServiceBaseUrl;
     }
 
     getRoomDevices() {
-        this.meetingService.getRoomDevices(this.id).subscribe((result: CheckBoxList[]) => {
+        this.meetingService.getRoomDevices().subscribe((result: CheckBoxList[]) => {
             this.deviceList = result;
+            this.getMeetingRoom();
         });
     }
 
     getMeetingRoom() {
-        if (this.id) {
+        if (this.id == 0) {
+            //新增
+            this.room.roomType = 1;
+            this.room.layoutPattern = 1;
+            this.room.isApprove = true;
+        } else {
             let params: any = {};
             params.id = this.id;
             this.meetingService.getMeetingRoomById(params).subscribe((result: MeetingRoom) => {
@@ -99,11 +105,6 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
                     });
                 }
             });
-        } else {
-            //新增
-            this.room.roomType = 1;
-            this.room.layoutPattern = 1;
-            this.room.isApprove = true;
         }
     }
 
@@ -141,8 +142,11 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
     saveRoomInfo() {
         let selected: CheckBoxList[] = this.deviceList.filter(v => v.checked == true);
         this.room.devices = selected.map(v => {
-            return v.value;
+            return v.label;
         }).join(',');
+        if (typeof (this.room.photo) == 'undefined') {
+            this.room.photo = '/visit/defaultRecord.png';
+        }
         this.meetingService.updateRoomInfo(this.room).finally(() => { this.isConfirmLoading = false; })
             .subscribe((result: MeetingRoom) => {
                 this.room = result;
@@ -157,7 +161,7 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
         this.confirmModal = this.modal.confirm({
             nzContent: '是否删除会议室信息?',
             nzOnOk: () => {
-                this.meetingService.deleteMeetingRoom(this.room.id).subscribe(() => {
+                this.meetingService.deleteMeetingRoom(this.room).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.return();
                 });

@@ -188,16 +188,16 @@ systemdataListDtos
         /// <returns></returns>
         public async Task<List<CheckBoxGroup>> GetRoomDevicesAsync()
         {
-            string entity = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.会议物资 && v.ModelId == ConfigModel.会议管理).Select(v => v.Code).FirstOrDefaultAsync();
+            var entity = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.会议物资 && v.ModelId == ConfigModel.会议管理).ToListAsync();
             if (entity != null)
             {
                 List<CheckBoxGroup> list = new List<CheckBoxGroup>();
-                string[] arry = entity.Split(',');
-                foreach (var item in arry)
+                //string[] arry = entity.Split(',');
+                foreach (var item in entity)
                 {
                     CheckBoxGroup checkboxGroup = new CheckBoxGroup();
-                    checkboxGroup.Label = item;
-                    checkboxGroup.Value = item;
+                    checkboxGroup.Label = item.Desc;
+                    checkboxGroup.Value = item.Code;
                     list.Add(checkboxGroup);
                 }
                 return list;
@@ -303,10 +303,55 @@ systemdataListDtos
             return entity.MapTo<SystemDataListDto>();
         }
 
-        public async Task DeleteSystemDataNew(int id)
+       
+        /// <summary>
+        /// 获取烟农单位Select
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SelectGroup>> GetUnitType()
         {
-            //TODO:删除前的逻辑判断，是否允许删除
-            await _systemdataRepository.DeleteAsync(id);
+            var entity = await (from c in _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟农单位)
+                                select new
+                                {
+                                    text = c.Desc,
+                                    value = c.Code,
+                                    seq = c.Seq
+                                }).OrderBy(v=>v.seq ).AsNoTracking().ToListAsync();
+
+            return entity.MapTo<List<SelectGroup>>();
+        }
+
+        /// <summary>
+        /// 获取烟农区县Radio
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<RadioGroup>> GetCountyCodes()
+        {
+            var entity = await (from c in _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟农村组)
+                                select new
+                                {
+                                    text = c.Desc,
+                                    value = c.Code,
+                                    seq = c.Seq
+                                }).OrderBy(v => v.seq).AsNoTracking().ToListAsync(); 
+            return entity.MapTo<List<RadioGroup>>();
+        }
+
+        /// <summary>
+        /// 获取烟农区县Select
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SelectGroup>> GetCountyCodesSelectGroup()
+        {
+            var entity = await (from c in _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟农村组)
+                                select new
+                                {
+                                    text = c.Desc,
+                                    value = c.Code,
+                                    seq = c.Seq
+                                }).OrderBy(v => v.seq).AsNoTracking().ToListAsync();
+
+            return entity.MapTo<List<SelectGroup>>();
         }
     }
 }

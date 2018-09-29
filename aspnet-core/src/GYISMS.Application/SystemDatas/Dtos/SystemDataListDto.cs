@@ -71,6 +71,18 @@ namespace GYISMS.SystemDatas.Dtos
     {
         public string Label { get; set; }
         public string Value { get; set; }
-        public bool Checked { get; set; }
+        //public bool Checked { get; set; }
+    }
+
+    public class SelectGroup
+    {
+        public string text { get; set; }
+        public string value { get; set; }
+    }
+
+    public class RadioGroup
+    {
+        public string text { get; set; }
+        public int value { get; set; }
     }
 }

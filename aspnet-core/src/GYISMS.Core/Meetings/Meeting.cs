@@ -1,5 +1,6 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -63,17 +64,17 @@ namespace GYISMS.Meetings
         /// <summary>
         /// 通知方式（发DING、钉钉消息）
         /// </summary>
-        public virtual int? NoticeWay { get; set; }
+        public virtual NoticeWayEnum? NoticeWay { get; set; }
 
         /// <summary>
         /// 提醒方式（无提醒、发DING、钉钉消息）
         /// </summary>
-        public virtual int? RemindingWay { get; set; }
+        public virtual RemindingWayEnum? RemindingWay { get; set; }
 
         /// <summary>
         /// 提醒时间提前（提前5分钟、提前10分钟、提前30分钟）
         /// </summary>
-        public virtual int? RemindingTime { get; set; }
+        public virtual RemindingTimeEnum? RemindingTime { get; set; }
 
         /// <summary>
         /// 会议状态（提交审核、申请成功、取消）

@@ -74,6 +74,9 @@ namespace GYISMS.SystemDatas
         Task CreateOrUpdateSystemDataNew(SystemDataEditDto input);
 
         Task<SystemDataListDto> GetSystemDataById(int id);
+        Task<List<SelectGroup>> GetUnitType();
+        Task<List<RadioGroup>> GetCountyCodes();
+        Task<List<SelectGroup>> GetCountyCodesSelectGroup();
 
     }
 }

@@ -1,11 +1,10 @@
-<!--component html goes here -->
 <nz-tabset>
     <nz-tab nzTitle="烟叶服务">
         <div nz-row>
             <div nz-col [nzSpan]="6">
                 <!-- <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=3)">烟农单位</nz-tag>
-                <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=4)">烟农村组</nz-tag>
-                <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=5)">烟叶公共</nz-tag> -->
+                    <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=4)">烟农村组</nz-tag>
+                    <nz-tag nzMode="checkable" [nzChecked]="true" (nzCheckedChange)="checkChange($event,paramLe.Type=5)">烟叶公共</nz-tag> -->
                 <nz-radio-group style="display: block;" *ngFor="let item of configLeaf" [(ngModel)]="paramLe.Type" [nzButtonStyle]="'solid'"
                     (ngModelChange)="checkChangeLeaf()">
                     <label nz-radio-button [nzValue]="item.value" style="margin-top: 10px;">

@@ -80,9 +80,9 @@ namespace GYISMS.Employees
         /// <summary>
         /// 通过指定id获取EmployeeListDto信息
         /// </summary>
-        public async Task<EmployeeListDto> GetEmployeeByIdAsync(EntityDto<string> input)
+        public async Task<EmployeeListDto> GetEmployeeByIdAsync(string id)
         {
-            var entity = await _employeeRepository.GetAsync(input.Id);
+            var entity = await _employeeRepository.GetAsync(id);
 
             return entity.MapTo<EmployeeListDto>();
         }
@@ -259,6 +259,27 @@ namespace GYISMS.Employees
             var userId = "165500493321719640";
             var query = await _employeeRepository.GetAsync(userId);
             return query.MapTo<DingDingUserDto>();
+        }
+
+        /// <summary>
+        /// 更新员工区县信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<EmployeeListDto> EditEmployeeAreaInfoAsync(EmployeeEditDto input)
+        {
+            var entity = await _employeeRepository.GetAsync(input.Id);
+            if (entity.AreaCode != input.AreaCode && entity.Area != input.Area)
+            {
+                entity.Area = input.Area;
+                entity.AreaCode = input.AreaCode;
+                var result = await _employeeRepository.UpdateAsync(entity);
+                return result.MapTo<EmployeeListDto>();
+            }
+            else
+            {
+                return entity.MapTo<EmployeeListDto>();
+            }
         }
     }
 }

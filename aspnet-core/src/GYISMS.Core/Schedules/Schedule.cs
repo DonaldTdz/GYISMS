@@ -23,7 +23,7 @@ namespace GYISMS.Schedules
         /// 计划类型（每月、每周、每日）
         /// </summary>
         [Required]
-        public virtual int Type { get; set; }
+        public virtual ScheduleType Type { get; set; }
 
         /// <summary>
         /// 计划开始时间

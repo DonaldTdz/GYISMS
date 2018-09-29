@@ -28,10 +28,10 @@
     <text value="退出登录" name="LogOut"/>
     <text value="清理本地缓存" name="ClearAllLocalStorage"/>
     <text value="全屏" name="FullScreen"/>
+    <text value="主页" name="home"/>
+    <text value="主页" name="Home"/>
     <text value="保存" name="Save"/>
     <text value="取消" name="Cancel"/>
-    <text name="home" value="主页" />
-    <text name="Home" value="主页" />
     <text name="RoleName" value="角色名" />
     <text name="DisplayName" value="显示名称" />
     <text name="UserName" value="用户名" />

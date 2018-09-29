@@ -11,6 +11,17 @@
                     </nz-form-control>
                 </nz-form-item>
             </div>
+            <div nz-col [nzSpan]="8" class="mb-md">
+                <nz-form-item class="d-flex">
+                    <nz-form-label nzFor="taskType">任务类型</nz-form-label>
+                    <nz-form-control class="flex-1">
+                        <nz-select [nzPlaceHolder]="'请选择任务类型'" name="taskType" [(ngModel)]="search.taskType" [nzShowSearch]="true">
+                            <nz-option *ngFor="let i of taskTypes" [nzLabel]="i.text" [nzValue]="i.value">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
             <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                 <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
                 <button nz-button type="reset" (click)="refreshData(true)" class="mx-sm">重置</button>

@@ -24,6 +24,7 @@ using GYISMS.TaskExamines;
 using GYISMS.Dtos;
 using GYISMS.VisitExamines;
 using GYISMS.GYEnums;
+using GYISMS.Employees;
 
 namespace GYISMS.VisitRecords
 {
@@ -38,6 +39,7 @@ namespace GYISMS.VisitRecords
         private readonly IRepository<VisitTask> _visitTaskRepository;
         private readonly IRepository<TaskExamine> _taskExamineRepository;
         private readonly IRepository<VisitExamine, Guid> _visitExamineRepository;
+        private readonly IRepository<Employee, string> _employeeRepository;
 
         private readonly IVisitRecordManager _visitrecordManager;
 
@@ -51,6 +53,7 @@ namespace GYISMS.VisitRecords
             , IRepository<TaskExamine> taskExamineRepository
             , IRepository<VisitExamine, Guid> visitExamineRepository
             , IVisitRecordManager visitrecordManager
+            , IRepository<Employee, string> employeeRepository
             )
         {
             _visitrecordRepository = visitrecordRepository;
@@ -59,6 +62,7 @@ namespace GYISMS.VisitRecords
             _taskExamineRepository = taskExamineRepository;
             _visitExamineRepository = visitExamineRepository;
             _visitrecordManager = visitrecordManager;
+            _employeeRepository = employeeRepository;
         }
 
 
@@ -89,7 +93,46 @@ visitrecordListDtos
                 );
         }
 
+        /// <summary>
+        /// 获取烟农被拜访记录
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<VisitRecordListDto>> GetVisitRecordsByGrowerId(GetVisitRecordsInput input)
+        {
+            var record = _visitrecordRepository.GetAll().Where(v => v.GrowerId == input.GrowerId);
+            var employee = _employeeRepository.GetAll();
+            var query = from r in record
+                        join e in employee on r.EmployeeId equals e.Id
+                        select new VisitRecordListDto()
+                        {
+                            Id = r.Id,
+                            EmployeeId = r.EmployeeId,
+                            GrowerId = r.GrowerId,
+                            Location = r.Location,
+                            Longitude = r.Longitude,
+                            SignTime = r.SignTime,
+                            ScheduleDetailId = r.ScheduleDetailId,
+                            Desc = r.Desc,
+                            ImgPath = r.ImgPath,
+                            Latitude = r.Latitude,
+                            CreationTime = r.CreationTime,
+                            EmployeeName = e.Name
+                        };
 
+            var visitrecordCount = await query.CountAsync();
+            var visitrecords = await query
+                    .OrderByDescending(v => v.SignTime).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
+
+            var visitrecordListDtos = visitrecords.MapTo<List<VisitRecordListDto>>();
+
+            return new PagedResultDto<VisitRecordListDto>(
+                        visitrecordCount,
+                        visitrecordListDtos
+                );
+        }
         /// <summary>
         /// 通过指定id获取VisitRecordListDto信息
         /// </summary>
