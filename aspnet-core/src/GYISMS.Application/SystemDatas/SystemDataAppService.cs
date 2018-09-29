@@ -163,7 +163,7 @@ systemdataListDtos
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        [AbpAuthorize(SystemDataAppPermissions.SystemData_Delete)]
+        //[AbpAuthorize(SystemDataAppPermissions.SystemData_Delete)]
         public async Task DeleteSystemData(EntityDto<int> input)
         {
             //TODO:删除前的逻辑判断，是否允许删除
@@ -291,6 +291,7 @@ systemdataListDtos
             }
             else
             {
+                input.CreationTime = DateTime.Now;
                 await CreateSystemDataAsync(input);
             }
         }
@@ -300,6 +301,12 @@ systemdataListDtos
             var entity = await _systemdataRepository.GetAsync(id);
 
             return entity.MapTo<SystemDataListDto>();
+        }
+
+        public async Task DeleteSystemDataNew(int id)
+        {
+            //TODO:删除前的逻辑判断，是否允许删除
+            await _systemdataRepository.DeleteAsync(id);
         }
     }
 }

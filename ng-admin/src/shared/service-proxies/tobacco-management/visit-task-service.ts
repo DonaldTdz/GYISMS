@@ -9,7 +9,7 @@ import { ApiResult } from '@shared/service-proxies/entity/parameter';
 import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
-import { VisitTask, TaskExamine, ScheduleTask } from '@shared/entity/tobacco-management';
+import { VisitTask, TaskExamine, ScheduleTask, VisitTaskName } from '@shared/entity/tobacco-management';
 
 @Injectable()
 export class VisitTaskServiceProxy {
@@ -141,6 +141,21 @@ export class VisitTaskServiceProxy {
         let url_ = "/api/services/app/ScheduleDetail/CreateAllScheduleTaskAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data.result;
+        });
+    }
+
+    /**
+     * 获取任务下拉框数据
+     * @param params 
+     */
+    getTaskName(params: any): Observable<VisitTaskName[]> {
+        var url = '/api/services/app/VisitTask/GetTaskList';
+        return this._gyhttp.get(url, params).map(data => {
+            if (data) {
+                return VisitTaskName.fromJSArray(data)
+            } else {
+                return null;
+            }
         });
     }
 }

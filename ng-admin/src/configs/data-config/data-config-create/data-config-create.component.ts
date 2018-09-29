@@ -77,7 +77,6 @@ export class DataConfigCreateComponent extends AppComponentBase implements OnIni
                     this.modalVisible = false;
                     this.notify.info(this.l('保存成功！'));
                     this.modalSave.emit(this.modeId);
-
                 });
         }
     }

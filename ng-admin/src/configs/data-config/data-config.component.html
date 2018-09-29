@@ -28,18 +28,10 @@
                         </div>
                     </div>
                 </form>
-                <!-- <standard-form-row block style="padding-bottom: 9px;">
-                    <div nz-form-item>
-                        <div nz-form-control>
-                            <nz-checkable-tag *ngFor="let i of configs; let idx=index" [nzChecked]="i.value" (nzChange)="changeCategory($event,idx, i.id)">
-                                {{i.text}}
-                            </nz-checkable-tag>
-                        </div>
-                    </div>
-                </standard-form-row> -->
+                <ng-template #totalContentLe>共{{query.total}}条</ng-template>
                 <nz-table #nzTable [nzData]="systemDataLeafs" [nzFrontPagination]="false" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex"
-                    [nzShowTotal]="totalTemplate" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowTotal]="'true'"
-                    [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllLeafs()" (nzPageSizeChange)="getAllLeafs()">
+                    [(nzPageSize)]="query.pageSize" [nzShowTotal]="totalContentLe" [nzLoading]="loading" nzShowSizeChanger (nzPageIndexChange)="getAllLeafs()"
+                    (nzPageSizeChange)="getAllLeafs()">
                     <thead>
                         <tr>
                             <th>
@@ -53,6 +45,9 @@
                             </th>
                             <th>
                                 <span>序号</span>
+                            </th>
+                            <th>
+                                <span>操作</span>
                             </th>
                         </tr>
                     </thead>
@@ -98,9 +93,10 @@
                         </div>
                     </div>
                 </form>
+                <ng-template #totalContentMe>共{{queryMe.total}}条</ng-template>
                 <nz-table #nzTableMe [nzData]="systemDataMettings" [nzFrontPagination]="false" [nzTotal]="queryMe.total" [(nzPageIndex)]="queryMe.pageIndex"
-                    [(nzPageSize)]="queryMe.pageSize" [nzLoading]="loadingMe" [nzShowTotal]="'true'" [nzShowSizeChanger]="true"
-                    (nzPageIndexChange)="getAllMetting()" (nzPageSizeChange)="getAllMetting()">
+                    [(nzPageSize)]="queryMe.pageSize" [nzShowTotal]="totalContentMe" [nzLoading]="loadingMe" [nzShowTotal]="'true'"
+                    [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllMetting()" (nzPageSizeChange)="getAllMetting()">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
@@ -114,6 +110,9 @@
                             </th>
                             <th nz-th>
                                 <span>序号</span>
+                            </th>
+                            <th>
+                                <span>操作</span>
                             </th>
                         </tr>
                     </thead>

@@ -49,6 +49,7 @@ export class HomeInfoServiceProxy {
             }
         });
     }
+
 }
 
 export class PagedResultDtoOfSheduleStatis implements IPagedResultDtoOfSheduleStatis {

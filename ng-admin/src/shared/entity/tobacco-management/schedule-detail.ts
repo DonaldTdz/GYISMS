@@ -227,6 +227,7 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
     growerName: string;
     areaName: string;
     typeName: string;
+    statusName: string;
     constructor(data?: IScheduleDetailTask) {
         if (data) {
             for (var property in data) {
@@ -250,6 +251,7 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
             this.growerName = data["growerName"];
             this.areaName = data["areaName"];
             this.typeName = data["typeName"];
+            this.statusName = data["statusName"];
 
         }
     }
@@ -285,6 +287,7 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
         data["growerName"] = this.growerName;
         data["areaName"] = this.areaName;
         data["typeName"] = this.typeName;
+        data["statusName"] = this.statusName;
         return data;
     }
 
@@ -308,6 +311,7 @@ export interface IScheduleDetailTask {
     growerName: string;
     areaName: string;
     typeName: string;
+    statusName: string;
 }
 
 

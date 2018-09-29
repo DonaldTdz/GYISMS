@@ -13,11 +13,12 @@ export class AppSessionService {
   private _user: UserLoginInfoDto;
   private _tenant: TenantLoginInfoDto;
   private _application: ApplicationInfoDto;
+  private _roles: string[];
 
   constructor(
     private _sessionService: SessionServiceProxy,
     private _abpMultiTenancyService: AbpMultiTenancyService,
-  ) {}
+  ) { }
 
   get application(): ApplicationInfoDto {
     return this._application;
@@ -39,6 +40,9 @@ export class AppSessionService {
     return this.tenant ? this.tenant.id : null;
   }
 
+  get roles(): string[] {
+    return this._roles;
+  }
   getShownLoginName(): string {
     const userName = this._user.userName;
     if (!this._abpMultiTenancyService.isEnabled) {
@@ -58,13 +62,13 @@ export class AppSessionService {
             this._application = result.application;
             this._user = result.user;
             this._tenant = result.tenant;
-
+            this._roles = result.roles;
             resolve(true);
           },
           err => {
             reject(err);
           },
-        );
+      );
     });
   }
 

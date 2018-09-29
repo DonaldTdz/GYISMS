@@ -1,6 +1,10 @@
-<!-- <page-header>
-</page-header> -->
-<!-- 演示卡片数据 -->
+<div class="content__title">
+  <h1>
+    广元烟草
+    <small class="text-sm hidden-xs">欢迎您！广元烟草信息化平台V1.0</small>
+  </h1>
+  <div style=" float:right;">我的角色：{{roleName}}</div>
+</div>
 <div nz-row nzGutter="16">
   <div nz-col nzXs="24" nzSm="12" nzMd="6" class="mb-md">
     <div nz-row nzType="flex" nzAlign="middle" class="bg-primary rounded-md">
@@ -59,12 +63,12 @@
             任务计划(按区域)
           </div>
           <div nz-col nzSpan="12" nzOffset="4">
-            <nz-range-picker [nzFormat]="shedateFormat" [(ngModel)]="searchAreas" (ngModelChange)="changeTime($event)"></nz-range-picker>
+            <nz-range-picker [nzFormat]="shedateFormat" [(ngModel)]="searchAreasDate" (ngModelChange)="changeTime($event)"></nz-range-picker>
           </div>
         </div>
       </ng-template>
       <!-- <g2-bar height="275" [data]="sheduAreaData"></g2-bar> -->
-      <g2-group-bar height="275" [data]="sheduAreaData" groupName="name">
+      <g2-group-bar height="275" [data]="sheduAreaData" [colors]="colors" groupName="name">
       </g2-group-bar>
       <nz-table #nzTable [nzData]="sheduleArea" nzShowSizeChanger [nzShowPagination]="false">
         <thead>
@@ -123,7 +127,7 @@
           </div>
         </div>
       </ng-template>
-      <g2-group-bar height="275" [color]="color" [data]="sheduMothData" groupName="name">
+      <g2-group-bar height="275" [colors]="colors" [data]="sheduMothData" groupName="name">
       </g2-group-bar>
       <nz-table #nzTablew [nzData]="sheduleMoth" [nzShowPagination]="false" [nzShowSizeChanger]="true">
         <thead>
