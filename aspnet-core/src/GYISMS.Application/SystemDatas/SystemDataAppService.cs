@@ -365,24 +365,23 @@ systemdataListDtos
         /// </summary>
         /// <returns></returns>
         public List<SelectGroup> GetWeekOfMonth()
-        //public async Task<List<SelectGroup>> GetWeekOfMonthAsync(Guid? Id)
         {
             List<SelectGroup> list = new List<SelectGroup>();
             DateTime startMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);  //该月第一天  
             int dayOfWeek = 7;
-                if (Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) > 0)
-                    dayOfWeek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d"));  //该月第一天为星期几  
-                DateTime startWeek = startMonth.AddDays(1 - dayOfWeek);  //该月第一周开始日期  
-                for (int i = 1; i <= 4; i++)
-                {
-                    SelectGroup item = new SelectGroup();
-                    DateTime startDayOfWeeks = startWeek.AddDays(i * 7);  //index周的起始日期 
-                    DateTime endDayOfWeeks = startWeek.AddDays((i * 7) + 6);  //index周的结束日期 
-                    item.text = DateTime.Now.Month + "月第" + i + "周(" + startDayOfWeeks.ToString("D") + " - " + endDayOfWeeks.ToString("D") + ")";
-                    item.value = string.Format($"{startDayOfWeeks.ToString("yyyy-MM-dd")},{endDayOfWeeks.ToString("yyyy-MM-dd")}");
-                    list.Add(item);
-                }
-                return list;
+            if (Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) > 0)
+                dayOfWeek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d"));  //该月第一天为星期几  
+            DateTime startWeek = startMonth.AddDays(1 - dayOfWeek);  //该月第一周开始日期  
+            for (int i = 1; i <= 4; i++)
+            {
+                SelectGroup item = new SelectGroup();
+                DateTime startDayOfWeeks = startWeek.AddDays(i * 7);  //index周的起始日期 
+                DateTime endDayOfWeeks = startWeek.AddDays((i * 7) + 6);  //index周的结束日期 
+                item.text = DateTime.Now.Month + "月第" + i + "周(" + startDayOfWeeks.ToString("D") + " - " + endDayOfWeeks.ToString("D") + ")";
+                item.value = string.Format($"{startDayOfWeeks.ToString("yyyy-MM-dd")},{endDayOfWeeks.ToString("yyyy-MM-dd")}");
+                list.Add(item);
+            }
+            return list;
         }
     }
 }
