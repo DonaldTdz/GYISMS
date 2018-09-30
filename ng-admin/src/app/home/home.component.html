@@ -120,9 +120,9 @@
               <label nz-radio-button nzValue="D">Chengdu</label>
             </nz-radio-group> -->
             <nz-radio-group [(ngModel)]="searchMoth" (ngModelChange)="changeCategory()">
-              <!-- <label nz-radio-button nzValue="item.value">{{item.text}}</label> -->
-              <label nz-radio-button nzValue="1">近半年</label>
-              <label nz-radio-button nzValue="2">近一年</label>
+              <label nz-radio-button *ngFor="let item of tags" [nzValue]="item.value">{{item.text}}</label>
+              <!-- <label nz-radio-button nzValue="1">近半年</label>
+              <label nz-radio-button nzValue="2">近一年</label> -->
             </nz-radio-group>
           </div>
         </div>

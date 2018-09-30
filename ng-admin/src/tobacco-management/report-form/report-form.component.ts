@@ -62,6 +62,7 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     getSheduleSum(reset = false) {
         if (reset) {
             this.sumSearch = { areaCode: null, startTime: null, endTime: null, taskId: null }
+            this.dateRange = [this.firstDay, this.lastDay];//[];
             this.resetTime(1);
         }
         this.loading = true;
