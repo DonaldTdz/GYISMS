@@ -25,6 +25,7 @@ using GYISMS.Dtos;
 using GYISMS.VisitExamines;
 using GYISMS.GYEnums;
 using GYISMS.Employees;
+using Abp.Runtime.Validation;
 
 namespace GYISMS.VisitRecords
 {
@@ -278,6 +279,7 @@ namespace GYISMS.VisitRecords
         }
 
         [AbpAllowAnonymous]
+        //[DisableValidation]
         public async Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input)
         {
             var vistitRecord = input.MapTo<VisitRecord>();
