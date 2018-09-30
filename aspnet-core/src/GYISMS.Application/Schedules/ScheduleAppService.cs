@@ -24,6 +24,7 @@ using DingTalk.Api;
 using DingTalk.Api.Request;
 using DingTalk.Api.Response;
 using GYISMS.ScheduleDetails;
+using Abp.Auditing;
 
 namespace GYISMS.Schedules
 {

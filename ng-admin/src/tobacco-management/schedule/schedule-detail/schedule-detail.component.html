@@ -56,6 +56,18 @@
                         <nz-date-picker formControlName="beginTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="schedule.beginTime" nzPlaceHolder="请选择日期"></nz-date-picker>
                     </nz-form-control>
                 </nz-form-item>
+                <nz-form-item nz-row *ngIf="schedule.type == 2">
+                    <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">周计划时间</nz-form-label>
+                    <nz-form-control nz-col [nzSm]="20">
+                        <nz-select formControlName="weekTempTime" [(ngModel)]="weekTempTime" class="mb-md">
+                            <nz-option *ngFor="let i of weekTypes" [nzLabel]="i.text" [nzValue]="i.value">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-control *ngIf="isExpired" style="color:red" nz-col [nzSm]="20">
+                            记录时间为{{expiredText}}，已逾期
+                        </nz-form-control>
+                    </nz-form-control>
+                </nz-form-item>
                 <nz-form-item nz-row *ngIf="schedule.type == 1">
                     <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划开始时间</nz-form-label>
                     <nz-form-control [nzSm]="20">

@@ -25,6 +25,7 @@ using GYISMS.Dtos;
 using GYISMS.VisitExamines;
 using GYISMS.GYEnums;
 using GYISMS.Employees;
+using Abp.Auditing;
 
 namespace GYISMS.VisitRecords
 {
@@ -246,6 +247,7 @@ visitrecordListDtos
         }
 
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<DingDingVisitRecordInputDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId)
         {
             var query = from sd in _scheduleDetailRepository.GetAll()
@@ -278,6 +280,7 @@ visitrecordListDtos
         }
 
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input)
         {
             var vistitRecord = input.MapTo<VisitRecord>();

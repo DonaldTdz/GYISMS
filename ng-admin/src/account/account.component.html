@@ -1,38 +1,26 @@
 ﻿<div class="container">
-  <div class="top">
-    <div class="head">
-      <a [routerLink]="['/']">
-        <!-- <img class="logo" src="/assets/images/logos/logo-color-shield.svg"> -->
-        <img class="logo" src="/assets/images/logos/logo-txt-color-shield.svg">
+    <div class="top">
+        <!-- <div class="head">
+            <img class="logo" src="/assets/images/logos/loginLogo.jpg">
+        </div> -->
+        <div class="text-center" style="color:white;">
+            <img style="height: 170px;" src="/assets/images/logos/loginLogo.jpg"></div>
+        <div *ngIf="showTenantChange()">
+            <tenant-change></tenant-change>
+        </div>
 
-
-        <!-- <span class="title">52ABP</span> -->
-      </a>
-    </div>
-    <p class="desc">您现在使用的是免费开源版本；欢迎到
-      <a href="http://www.52abp.com/" target="_blank">52ABP.COM</a>了解更多的框架信息
-    </p>
-
-    <div *ngIf="showTenantChange()">
-      <tenant-change></tenant-change>
-    </div>
-
-    <!-- <div>
+        <!-- <div>
       <img class="logo" src="/assets/images/52abp_logo.svg">
       <img class="logo" src="/assets/images/52abp_txt.svg">
     </div> -->
-  </div>
+    </div>
 
-  <router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 
-  <br>
-  <account-languages></account-languages>
-
-  <global-footer [links]="links">
-    Copyright
-    <i class="anticon anticon-copyright"></i> {{currentYear}}
-    <b>Version </b>{{versionText}}
-    <a href="http://www.52abp.com/" target="_blank">52ABP.COM</a>出品
-  </global-footer>
+    <br>
+    <!-- <account-languages></account-languages> -->
+    <div class="p-lg text-center text-sm">
+        广元信息服务平台
+    </div>
 
 </div>

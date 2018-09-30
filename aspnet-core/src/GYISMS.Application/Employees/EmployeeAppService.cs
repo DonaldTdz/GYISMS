@@ -19,6 +19,7 @@ using GYISMS.Employees.Dtos;
 using GYISMS.Employees;
 using GYISMS.Authorization;
 using GYISMS.DingDing;
+using Abp.Auditing;
 
 namespace GYISMS.Employees
 {
@@ -87,7 +88,7 @@ namespace GYISMS.Employees
             return entity.MapTo<EmployeeListDto>();
         }
 
-
+        [Audited]
         /// <summary>
         /// 添加或者修改Employee的公共方法
         /// </summary>
@@ -251,6 +252,8 @@ namespace GYISMS.Employees
         }
 
         [AbpAllowAnonymous]
+        [Audited]
+
         public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code)
         {
             //测试环境注释

@@ -26,6 +26,7 @@ using GYISMS.Growers;
 using GYISMS.TaskExamines;
 using GYISMS.VisitRecords;
 using GYISMS.Growers.Dtos;
+using Abp.Auditing;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -33,6 +34,7 @@ namespace GYISMS.ScheduleTasks
     /// ScheduleTask应用层服务的接口实现方法  
     ///</summary>
     [AbpAuthorize(AppPermissions.Pages)]
+
     public class ScheduleTaskAppService : GYISMSAppServiceBase, IScheduleTaskAppService
     {
         private readonly IRepository<ScheduleTask, Guid> _scheduletaskRepository;
@@ -265,6 +267,7 @@ namespace GYISMS.ScheduleTasks
         /// 获取钉钉用户任务列表
         /// </summary>
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsync(string userId)
         {
             var query = from st in _scheduletaskRepository.GetAll()
@@ -315,6 +318,7 @@ namespace GYISMS.ScheduleTasks
         ///获取任务详情
         /// </summary>
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId)
         {
             //基本信息
@@ -354,6 +358,7 @@ namespace GYISMS.ScheduleTasks
         }
 
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleDetailId)
         {
             //详情
@@ -381,6 +386,7 @@ namespace GYISMS.ScheduleTasks
         }
 
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<List<DingDingScheduleDetailDto>> GetDingDingScheduleTaskPagingAsync(string userId, ScheduleStatusEnum status, DateTime? startDate, DateTime? endDate, int pageIndex)
         {
             var query = from sd in _scheduleDetailRepository.GetAll().WhereIf(status != ScheduleStatusEnum.None, s => s.Status == status)
