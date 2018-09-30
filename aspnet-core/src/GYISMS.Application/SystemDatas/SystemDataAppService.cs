@@ -19,6 +19,8 @@ using GYISMS.SystemDatas.Dtos;
 using GYISMS.SystemDatas;
 using GYISMS.Authorization;
 using GYISMS.GYEnums;
+using GYISMS.Schedules;
+using Abp.Auditing;
 
 namespace GYISMS.SystemDatas
 {
@@ -26,19 +28,23 @@ namespace GYISMS.SystemDatas
     /// SystemData应用层服务的接口实现方法  
     ///</summary>
     [AbpAuthorize(AppPermissions.Pages)]
+
     public class SystemDataAppService : GYISMSAppServiceBase, ISystemDataAppService
     {
         private readonly IRepository<SystemData, int> _systemdataRepository;
         private readonly ISystemDataManager _systemdataManager;
+        private readonly IRepository<Schedule, Guid> _scheduleRepository;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
         public SystemDataAppService(IRepository<SystemData, int> systemdataRepository
-            , ISystemDataManager systemdataManager)
+            , ISystemDataManager systemdataManager
+            , IRepository<Schedule, Guid> scheduleRepository)
         {
             _systemdataRepository = systemdataRepository;
             _systemdataManager = systemdataManager;
+            _scheduleRepository = scheduleRepository;
         }
 
 
@@ -303,7 +309,7 @@ systemdataListDtos
             return entity.MapTo<SystemDataListDto>();
         }
 
-       
+
         /// <summary>
         /// 获取烟农单位Select
         /// </summary>
@@ -358,31 +364,24 @@ systemdataListDtos
         /// 获取周计划时间
         /// </summary>
         /// <returns></returns>
-        //public async Task<List<SelectGroup>> GetWeekTimeSelectGroup()
-        //{
-        //    List<RadioGroup> list = new List<RadioGroup>();
-        //    RadioGroup item = new RadioGroup();
-        //    DateTime dt = new DateTime();
-        //    DateTime dtn = DateTime.Now;
-        //    item.text = dt.Month
-        //    int dayInMonthBegin = dtn.Day;   //本周第一天
-        //    int dayInMonthEnd = dtn.Day + 6;
-        //    list.Add()
-
-        //    return null;
-        //}
-
-        public int getWeekNumInMonth()
+        public List<SelectGroup> GetWeekOfMonth()
         {
-            DateTime daytime = DateTime.Now;
-            int dayInMonth = daytime.Day;   //本月第一天   
-            DateTime firstDay = daytime.AddDays(1 - daytime.Day);  //本月第一天是周几 
-            int weekday = (int)firstDay.DayOfWeek == 0 ? 7 : (int)firstDay.DayOfWeek;   //本月第一周有几天
-            int firstWeekEndDay = 7 - (weekday - 1);            //当前日期和第一周之差 
-            int diffday = dayInMonth - firstWeekEndDay;
-            diffday = diffday > 0 ? diffday : 1;            //当前是第几周,如果整除7就减一天   
-            int WeekNumInMonth = ((diffday % 7) == 0 ? (diffday / 7 - 1) : (diffday / 7)) + 1 + (dayInMonth > firstWeekEndDay ? 1 : 0);
-            return WeekNumInMonth;
+            List<SelectGroup> list = new List<SelectGroup>();
+            DateTime startMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);  //该月第一天  
+            int dayOfWeek = 7;
+            if (Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) > 0)
+                dayOfWeek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d"));  //该月第一天为星期几  
+            DateTime startWeek = startMonth.AddDays(1 - dayOfWeek);  //该月第一周开始日期  
+            for (int i = 1; i <= 4; i++)
+            {
+                SelectGroup item = new SelectGroup();
+                DateTime startDayOfWeeks = startWeek.AddDays(i * 7);  //index周的起始日期 
+                DateTime endDayOfWeeks = startWeek.AddDays((i * 7) + 6);  //index周的结束日期 
+                item.text = DateTime.Now.Month + "月第" + i + "周(" + startDayOfWeeks.ToString("D") + " - " + endDayOfWeeks.ToString("D") + ")";
+                item.value = string.Format($"{startDayOfWeeks.ToString("yyyy-MM-dd")},{endDayOfWeeks.ToString("yyyy-MM-dd")}");
+                list.Add(item);
+            }
+            return list;
         }
     }
 }

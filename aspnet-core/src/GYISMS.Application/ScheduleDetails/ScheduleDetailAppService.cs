@@ -24,6 +24,7 @@ using GYISMS.Growers;
 using GYISMS.Schedules;
 using GYISMS.Dtos;
 using GYISMS.VisitTasks;
+using Abp.Auditing;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -31,6 +32,7 @@ namespace GYISMS.ScheduleDetails
     /// ScheduleDetail应用层服务的接口实现方法  
     ///</summary>
     [AbpAuthorize(AppPermissions.Pages)]
+
     public class ScheduleDetailAppService : GYISMSAppServiceBase, IScheduleDetailAppService
     {
         //private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;

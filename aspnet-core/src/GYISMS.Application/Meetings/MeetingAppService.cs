@@ -18,6 +18,7 @@ using GYISMS.Meetings.Authorization;
 using GYISMS.Meetings.Dtos;
 using GYISMS.Meetings;
 using GYISMS.Authorization;
+using Abp.Auditing;
 
 namespace GYISMS.Meetings
 {
@@ -114,6 +115,7 @@ meetingListDtos
         /// <param name="input"></param>
         /// <returns></returns>
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<MeetingEditDto> CreateOrUpdateMeeting(MeetingEditDto input)
         {
 
@@ -132,6 +134,7 @@ meetingListDtos
         /// 新增Meeting
         /// </summary>
         [AbpAllowAnonymous]
+        [Audited]
         protected virtual async Task<MeetingEditDto> CreateMeetingAsync(MeetingEditDto input)
         {
             //TODO:新增前的逻辑判断，是否允许新增
@@ -146,6 +149,7 @@ meetingListDtos
         /// 编辑Meeting
         /// </summary>
         [AbpAllowAnonymous]
+        [Audited]
         protected virtual async Task<MeetingEditDto> UpdateMeetingAsync(MeetingEditDto input)
         {
             //TODO:更新前的逻辑判断，是否允许更新

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Abp.AspNetCore.Mvc.Controllers;
+using Abp.Auditing;
 using Abp.Authorization;
 using HC.WeChat.Configuration;
 using Microsoft.AspNetCore.Hosting;
@@ -69,6 +70,7 @@ namespace GYISMS.Web.Host.Controllers
 
         [HttpPost]
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<IActionResult> FilesPostsBase64Async([FromBody]ImgBase64 input)
         {
             if (!string.IsNullOrWhiteSpace(input.imageBase64))
@@ -113,6 +115,7 @@ namespace GYISMS.Web.Host.Controllers
         [RequestFormSizeLimit(valueCountLimit: 2147483647)]
         [HttpPost]
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<IActionResult> FilesPostsAsync(IFormFile[] file)
         {
             var date = Request;
