@@ -181,9 +181,12 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 var y = currentdate.getFullYear();
                 var month = currentdate.getMonth() + 1;
                 var m = (month < 10 ? "0" + month : month).toString();
-                if (result.beginTime.substring(0, 4) == y.toString() && result.beginTime.substring(5, 7) == m) {
-                    this.isExpired = false;
+                if (result.type == 2 && this.weekTempTime) {
+                    if (result.beginTime.substring(0, 4) == y.toString() && result.beginTime.substring(5, 7) == m) {
+                        this.isExpired = false;
+                    }
                 }
+
                 if (result.status == 0) {
                     this.notify.info(this.l(this.successMsg));
                 }

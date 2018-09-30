@@ -20,6 +20,9 @@ using GYISMS.Employees;
 using GYISMS.Authorization;
 using GYISMS.DingDing;
 using Abp.Auditing;
+using GYISMS.SystemDatas;
+using GYISMS.GYEnums;
+using GYISMS.SystemDatas.Dtos;
 
 namespace GYISMS.Employees
 {
@@ -32,6 +35,7 @@ namespace GYISMS.Employees
         private readonly IRepository<Employee, string> _employeeRepository;
         private readonly IEmployeeManager _employeeManager;
         private readonly IDingDingAppService _dingDingAppService;
+        private readonly IRepository<SystemData, int> _systemdataRepository;
 
         /// <summary>
         /// 构造函数 
@@ -39,11 +43,13 @@ namespace GYISMS.Employees
         public EmployeeAppService(IRepository<Employee, string> employeeRepository
             , IEmployeeManager employeeManager
             , IDingDingAppService dingDingAppService
+            , IRepository<SystemData, int> systemdataRepository
             )
         {
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;
             _dingDingAppService = dingDingAppService;
+            _systemdataRepository = systemdataRepository;
         }
 
 
@@ -209,6 +215,11 @@ namespace GYISMS.Employees
             }
         }
 
+        /// <summary>
+        /// 获取区县Children
+        /// </summary>
+        /// <param name="area"></param>
+        /// <returns></returns>
         private List<EmployeeNzTreeNode> GetAreaEmoloyee(string area)
         {
             var employeeList = (from o in _employeeRepository.GetAll()
@@ -223,31 +234,46 @@ namespace GYISMS.Employees
             return employeeList;
         }
 
-        public List<EmployeeNzTreeNode> GetTreesAsync()
+        /// <summary>
+        /// 获取区县树
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
         {
             List<EmployeeNzTreeNode> treeNodeList = new List<EmployeeNzTreeNode>();
-
-            EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+            var AreaInfo = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟农村组 && v.ModelId == ConfigModel.烟叶服务).OrderBy(v => v.Seq).AsNoTracking()
+             .Select(v => new SystemDataListDto() { Code = v.Code, Desc = v.Desc }).ToListAsync();
+            foreach (var item in AreaInfo)
             {
-                key = "1",
-                title = "昭化区",
-                children = GetAreaEmoloyee("1")
-            };
-            treeNodeList.Add(treeNode);
-            EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
-            {
-                key = "2",
-                title = "剑阁县",
-                children = GetAreaEmoloyee("2")
-            };
-            treeNodeList.Add(treeNode2);
-            EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
-            {
-                key = "3",
-                title = "旺苍县",
-                children = GetAreaEmoloyee("3"),
-            };
-            treeNodeList.Add(treeNode3);
+                EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+                {
+                    key = item.Code,
+                    title = item.Desc,
+                    children = GetAreaEmoloyee(item.Code)
+                };
+                treeNodeList.Add(treeNode);
+            }
+            //EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+            //{
+            //    key = "1",
+            //    title = "昭化区",
+            //    children = GetAreaEmoloyee("1")
+            //};
+            //treeNodeList.Add(treeNode);
+            //EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
+            //{
+            //    key = "2",
+            //    title = "剑阁县",
+            //    children = GetAreaEmoloyee("2")
+            //};
+            //treeNodeList.Add(treeNode2);
+            //EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
+            //{
+            //    key = "3",
+            //    title = "旺苍县",
+            //    children = GetAreaEmoloyee("3"),
+            //};
+            //treeNodeList.Add(treeNode3);
             return treeNodeList;
         }
 
