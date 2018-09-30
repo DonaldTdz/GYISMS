@@ -88,8 +88,8 @@ namespace GYISMS.VisitRecords
             var visitrecordListDtos = visitrecords.MapTo<List<VisitRecordListDto>>();
 
             return new PagedResultDto<VisitRecordListDto>(
-visitrecordCount,
-visitrecordListDtos
+            visitrecordCount,
+            visitrecordListDtos
                 );
         }
 
