@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,8 +10,12 @@ namespace GYISMS.VisitRecords
     /// 拜访记录
     /// </summary>
     [Table("VisitRecords")]
-    public class VisitRecord : Entity<Guid>
+    public class VisitRecord : Entity<Guid>, IHasCreationTime
     {
+        public VisitRecord()
+        {
+            CreationTime = DateTime.Now;
+        }
 
         /// <summary>
         /// 任务明细Id 外键
@@ -26,7 +31,7 @@ namespace GYISMS.VisitRecords
         /// <summary>
         /// 烟农Id 外键
         /// </summary>
-        public virtual string GrowerId { get; set; }
+        public virtual int? GrowerId { get; set; }
 
         /// <summary>
         /// 签到时间
@@ -64,6 +69,6 @@ namespace GYISMS.VisitRecords
         /// <summary>
         /// CreationTime
         /// </summary>
-        public virtual DateTime? CreationTime { get; set; }
+        public virtual DateTime CreationTime { get; set; }
     }
 }

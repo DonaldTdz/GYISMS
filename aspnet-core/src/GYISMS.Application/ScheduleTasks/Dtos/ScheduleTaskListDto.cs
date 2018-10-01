@@ -87,7 +87,7 @@ namespace GYISMS.ScheduleTasks.Dtos
         {
             get
             {
-                if (EndDay == 1)
+                if (EndDay <= 1)
                 {
                     return "../../image/warn.png";
                 }
@@ -154,6 +154,49 @@ namespace GYISMS.ScheduleTasks.Dtos
             }
         }
     }
+
+    public class DingDingScheduleDetailDto
+    {
+        public Guid Id { get; set; }
+
+        public TaskTypeEnum TaskType { get; set; }
+
+        public string TaskName { get; set; }
+
+        public DateTime? EndTime { get; set; }
+
+
+        public string Title
+        {
+            get
+            {
+                return TaskName + "（" + TaskType.ToString() + "）";
+            }
+        }
+
+        public string EndTimeFormat
+        {
+            get
+            {
+                return EndTime.HasValue ? EndTime.Value.ToString("yyyy-MM-dd") : string.Empty;
+            }
+        }
+
+        public ScheduleStatusEnum Status { get; set; }
+
+        public string StatusText
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
+
+        public int? GrowerId { get; set; }
+
+        public string GrowerName { get; set; }
+    }
+
 
     public class DingDingTaskDto
     {
@@ -238,7 +281,8 @@ namespace GYISMS.ScheduleTasks.Dtos
             {
                 if (VisitTotal > 0)
                 {
-                    return (CompleteNum / VisitTotal * 100);
+                    decimal per = CompleteNum / ((decimal)VisitTotal);
+                    return (int)(per * 100);
                 }
                 return 0;
             }
@@ -331,6 +375,8 @@ namespace GYISMS.ScheduleTasks.Dtos
             }
         }
 
+        public ScheduleStatusEnum ScheduleStatus { get; set; }
+
         public GrowerListDto GrowerInfo { get; set; }
 
         public List<DingDingVisitRecordDto> VisitRecords { get; set; }
@@ -351,7 +397,7 @@ namespace GYISMS.ScheduleTasks.Dtos
             {
                 if (CreationTime.HasValue)
                 {
-                    return CreationTime.Value.ToString("yyyy-MM-dd");
+                    return CreationTime.Value.ToString("MM-dd HH:mm");
                 }
                 return string.Empty;
             }

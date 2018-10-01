@@ -51,6 +51,7 @@ export class VisitTask implements IVisitTask {
             this.isChecked = data["isChecked"];
             this.visitNum = data["visitNum"];
             this.scheduleTaskId = data["scheduleTaskId"];
+            this.checked = data["checked"];
         }
     }
 
@@ -117,4 +118,59 @@ export interface IVisitTask {
     visitNum: number;
     isChecked: boolean;
     scheduleTaskId: string;
+}
+
+export class VisitTaskName implements IVisitTaskName {
+    text: string;
+    value: number;
+    constructor(data?: IVisitTaskName) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.text = data["text"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): VisitTaskName {
+        let result = new VisitTaskName();
+        result.init(data);
+        return result;
+    }
+
+    static fromJSArray(dataArray: any[]): VisitTaskName[] {
+        let array = [];
+        dataArray.forEach(result => {
+            let item = new VisitTaskName();
+            item.init(result);
+            array.push(item);
+        });
+
+        return array;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["text"] = this.text;
+        data["value"] = this.value;
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new VisitTaskName();
+        result.init(json);
+        return result;
+    }
+}
+export interface IVisitTaskName {
+    text: string;
+    value: number;
 }

@@ -6,7 +6,7 @@ import { Injectable, Inject, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { ApiResult } from '@shared/service-proxies/entity/parameter';
-import { Grower } from '@shared/entity/basic-data';
+import { Grower, SelectGroup, RadioGroup } from '@shared/entity/basic-data';
 import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
@@ -28,6 +28,38 @@ export class GrowerServiceProxy {
         return this._gyhttp.get(url_, params).map(data => {
             if (data) {
                 return PagedResultDtoOfGrower.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
+    getUnitTypeAsync(): Observable<SelectGroup[]> {
+        let url_ = "/api/services/app/SystemData/GetUnitType";
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return SelectGroup.fromJSArray(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
+    getCountyCodeAsync(): Observable<RadioGroup[]> {
+        let url_ = "/api/services/app/SystemData/GetCountyCodes";
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return RadioGroup.fromJSArray(data);
+            } else {
+                return null;
+            }
+        });
+    }
+    getCountyCodeSelectGroupAsync(): Observable<SelectGroup[]> {
+        let url_ = "/api/services/app/SystemData/GetCountyCodesSelectGroup";
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return SelectGroup.fromJSArray(data);
             } else {
                 return null;
             }

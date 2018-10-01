@@ -21,6 +21,7 @@ using GYISMS.Authorization;
 using GYISMS.TaskExamines;
 using GYISMS.TaskExamines.Dtos;
 using GYISMS.ScheduleTasks;
+using GYISMS.GYEnums;
 
 namespace GYISMS.VisitTasks
 {
@@ -59,8 +60,8 @@ namespace GYISMS.VisitTasks
         public async Task<PagedResultDto<VisitTaskListDto>> GetPagedVisitTasksAsync(GetVisitTasksInput input)
         {
             var query = _visittaskRepository.GetAll().Where(v => v.IsDeleted == false)
-                     .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
-
+                     .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
+                     .WhereIf(input.TaskType.HasValue, r => r.Type == input.TaskType);
             // TODO:根据传入的参数添加过滤条件
 
             var visittaskCount = await query.CountAsync();
@@ -87,7 +88,8 @@ namespace GYISMS.VisitTasks
         public async Task<List<VisitTaskListDto>> GetVisitTasksWithStatusAsync(GetVisitTasksInput input)
         {
             var visitList = _visittaskRepository.GetAll().Where(v => v.IsDeleted == false);
-            var taskList = _scheduletaskRepository.GetAll().Where(v =>v.IsDeleted ==false&& v.ScheduleId == input.ScheduleId);
+            //var taskList = _scheduletaskRepository.GetAll().Where(v =>v.IsDeleted ==false&& v.ScheduleId == input.ScheduleId);
+            var taskList = _scheduletaskRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId);
             var query = await (from v in visitList
                                select new VisitTaskListDto
                                {
@@ -100,7 +102,8 @@ namespace GYISMS.VisitTasks
                           {
                               t.TaskId,
                               t.VisitNum,
-                              t.Id
+                              t.Id,
+                              t.IsDeleted
                           };
             foreach (var taskItem in taskDto)
             {
@@ -108,14 +111,22 @@ namespace GYISMS.VisitTasks
                 {
                     if (item.Id == taskItem.TaskId)
                     {
-                        item.IsChecked = true;
-                        item.VisitNum = taskItem.VisitNum;
+                        if (taskItem.IsDeleted == true)
+                        {
+                            item.Checked = false;
+                            item.VisitNum = 1;
+                        }
+                        else
+                        {
+                            item.Checked = true;
+                            item.VisitNum = taskItem.VisitNum;
+                        }
                         item.ScheduleTaskId = taskItem.Id;
                         break;
                     }
                 }
             }
-            return query.OrderByDescending(v => v.IsChecked).ThenBy(v => v.TypeName).ToList();
+            return query.OrderByDescending(v => v.Checked).ThenBy(v => v.TypeName).ToList();
         }
 
         /// <summary>
@@ -339,6 +350,23 @@ namespace GYISMS.VisitTasks
             entity.DeletionTime = DateTime.Now;
             entity.DeleterUserId = AbpSession.UserId;
             await _visittaskRepository.UpdateAsync(entity);
+        }
+
+        /// <summary>
+        /// 根据任务类型获取任务下拉框的信息
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public async Task<List<TaskSelectValue>> GetTaskList(TaskTypeEnum type)
+        {
+            var list =await _visittaskRepository.GetAll().Where(t => t.Type == type).Select(t =>
+                  new TaskSelectValue
+                  {
+                      Text = t.Name,
+                      Value = t.Id
+                  }).ToListAsync();
+
+            return list;
         }
     }
 }

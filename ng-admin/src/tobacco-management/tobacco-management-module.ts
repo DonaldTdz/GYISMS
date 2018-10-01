@@ -14,6 +14,7 @@ import { ChooseTaskModalComponent } from './schedule/schedule-detail/choose-task
 import { ChooseEmployeeModalComponent } from './schedule/schedule-detail/choose-employee-modal/choose-employee-modal.component';
 import { ExamineDetailModalComponent } from './visit-task/task-detail/examine-detail-modal/examine-detail-modal.component';
 import { AssignTaskComponent } from './schedule/schedule-detail/assign-task/assign-task.component';
+import { ReportFormComponent } from './report-form/report-form.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { AssignTaskComponent } from './schedule/schedule-detail/assign-task/assi
         ChooseTaskModalComponent,
         ChooseEmployeeModalComponent,
         ExamineDetailModalComponent,
-        AssignTaskComponent
+        AssignTaskComponent,
+        ReportFormComponent
     ],
     entryComponents: [
     ],

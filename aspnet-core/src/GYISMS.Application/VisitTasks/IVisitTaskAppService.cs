@@ -8,6 +8,7 @@ using Abp.Application.Services.Dto;
 using GYISMS.VisitTasks.Dtos;
 using GYISMS.VisitTasks;
 using GYISMS.TaskExamines.Dtos;
+using GYISMS.GYEnums;
 
 namespace GYISMS.VisitTasks
 {
@@ -48,5 +49,7 @@ namespace GYISMS.VisitTasks
         Task<VisitTaskEditDto> CreateOrUpdateVisitTaskAsync(VisitTaskEditDto input);
         Task<List<VisitTaskListDto>> GetVisitTasksListAsync(GetVisitTasksInput input);
         Task<List<VisitTaskListDto>> GetVisitTasksWithStatusAsync(GetVisitTasksInput input);
+
+        Task<List<TaskSelectValue>> GetTaskList(TaskTypeEnum type);
     }
 }

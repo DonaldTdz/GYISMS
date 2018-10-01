@@ -19,6 +19,12 @@ using GYISMS.Schedules.Dtos;
 using GYISMS.Schedules;
 using GYISMS.Authorization;
 using GYISMS.GYEnums;
+using GYISMS.Dtos;
+using DingTalk.Api;
+using DingTalk.Api.Request;
+using DingTalk.Api.Response;
+using GYISMS.ScheduleDetails;
+using Abp.Auditing;
 
 namespace GYISMS.Schedules
 {
@@ -29,23 +35,21 @@ namespace GYISMS.Schedules
 
     public class ScheduleAppService : GYISMSAppServiceBase, IScheduleAppService
     {
-        private readonly IRepository<Schedule, Guid>
-        _scheduleRepository;
-
-
+        private readonly IRepository<Schedule, Guid> _scheduleRepository;
         private readonly IScheduleManager _scheduleManager;
+        private readonly ISheduleDetailRepository _scheduledetailRepository;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
-        public ScheduleAppService(
-        IRepository<Schedule, Guid>
-    scheduleRepository
+        public ScheduleAppService(IRepository<Schedule, Guid> scheduleRepository
             , IScheduleManager scheduleManager
+            , ISheduleDetailRepository scheduledetailRepository
             )
         {
             _scheduleRepository = scheduleRepository;
             _scheduleManager = scheduleManager;
+            _scheduledetailRepository = scheduledetailRepository;
         }
 
 
@@ -58,7 +62,8 @@ namespace GYISMS.Schedules
         {
 
             var query = _scheduleRepository.GetAll().Where(v => v.IsDeleted == false)
-                     .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Desc.Contains(input.Name));
+                     .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
+                     .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType); ;
             // TODO:根据传入的参数添加过滤条件
 
             var scheduleCount = await query.CountAsync();
@@ -224,6 +229,86 @@ namespace GYISMS.Schedules
             entity.DeletionTime = DateTime.Now;
             entity.DeleterUserId = AbpSession.UserId;
             await _scheduleRepository.UpdateAsync(entity);
-        }  
+        }
+
+        /// <summary>
+        /// 获取AccessToken ToDo钉钉配置
+        /// </summary>
+        /// <returns></returns>
+        private string GetAccessToken()
+        {
+            DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
+            OapiGettokenRequest request = new OapiGettokenRequest();
+            request.Appkey = "ding7xespi5yumrzraaq";
+            request.Appsecret = "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3";
+            request.SetHttpMethod("GET");
+            OapiGettokenResponse response = client.Execute(request);
+            return response.AccessToken;
+        }
+
+        /// <summary>
+        /// 上传图片并返回MeadiaId
+        /// </summary>
+        /// <returns></returns>
+        public object UpdateAndGetMediaId()
+        {
+            string accessToken = GetAccessToken();
+            IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/media/upload");
+            OapiMediaUploadRequest request = new OapiMediaUploadRequest();
+            request.Type = "image";
+            request.Media = new Top.Api.Util.FileItem(@"D:\20180903GYISMS\GYVisit-task\src\image\taskDefault.png");
+            OapiMediaUploadResponse response = client.Execute(request, accessToken);
+            return response;
+        }
+
+
+
+        /// <summary>
+        /// 发送钉钉工作通知
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<APIResultDto> SendMessageToEmployeeAsync(GetSchedulesInput input)
+        {
+            try
+            {
+                //获取accessToken
+                string accessToken = GetAccessToken();
+                //获取UserIds
+                int pageIndex = 1; //skip
+                int pageSize = 20; //take
+                int count = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId).Select(v => v.EmployeeId).Distinct().AsNoTracking().CountAsync();
+                var ids =await _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId).Select(v => v.EmployeeId).Distinct().AsNoTracking().ToListAsync();
+                float frequency = (float)count / pageSize;//计算次数
+                for (int i = 0; i < Math.Ceiling(frequency); i++)
+                {
+                    var temp = ids.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    string tempIds = string.Join(",", temp.ToArray());
+                    //发送工作消息
+                    IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+                    OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+                    request.UseridList = tempIds;
+                    request.ToAllUser = false;
+                    request.AgentId = 190023627;
+
+                    OapiMessageCorpconversationAsyncsendV2Request.MsgDomain msg = new OapiMessageCorpconversationAsyncsendV2Request.MsgDomain();
+                    msg.Link = new OapiMessageCorpconversationAsyncsendV2Request.LinkDomain();
+                    msg.Msgtype = "link";
+                    msg.Link.Title = "您有新的拜访任务哦";
+                    msg.Link.Text = input.ScheduleName + DateTime.Now.ToString();
+                    msg.Link.PicUrl = "@lALPBY0V4-AiG7vMgMyA";
+                    msg.Link.MessageUrl = "eapp://";
+                    request.Msg_ = msg;
+                    OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);
+                    pageIndex++;
+                }
+                return new APIResultDto() { Code = 0, Msg = "钉钉消息发送成功" };
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("DingDingMessage errormsg{0} Exception{1}", ex.Message, ex);
+                return new APIResultDto() { Code = 901, Msg = "钉钉消息发送失败" };
+            }
+        }
     }
 }

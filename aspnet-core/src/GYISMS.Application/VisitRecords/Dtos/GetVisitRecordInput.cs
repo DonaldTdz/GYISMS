@@ -13,7 +13,7 @@ namespace GYISMS.VisitRecords.Dtos
 		 ///</summary>
         public string Filter { get; set; }
 
-
+        public int GrowerId { get; set; }
 		//// custom codes
  
         //// custom codes end

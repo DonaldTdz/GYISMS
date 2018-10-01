@@ -85,12 +85,18 @@ namespace GYISMS.VisitTasks.Dtos
         /// </summary>
         public DateTime? DeletionTime { get; set; }
 
-        public bool IsChecked { get; set; }
+        public bool Checked { get; set; }
         public int? VisitNum { get; set; }
         /// <summary>
         /// DeleterUserId
         /// </summary>
     }
 
+    public class TaskSelectValue
+    {
+        public string Text { get; set; }
+
+        public int Value { get; set; }
+    }
 
 }

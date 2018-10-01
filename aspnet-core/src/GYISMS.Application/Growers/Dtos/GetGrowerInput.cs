@@ -16,7 +16,10 @@ namespace GYISMS.Growers.Dtos
         public int TaskId { get; set; }
         public Guid ScheduleId { get; set; }
 
-
+        public Guid? Id { get; set; }
+        public int VisitNum { get; set; }
+        public Guid ScheduleTaskId { get; set; }
+        public string EmployeeId { get; set; }
         //// custom codes
 
         //// custom codes end

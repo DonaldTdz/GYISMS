@@ -26,6 +26,7 @@ using GYISMS.Growers;
 using GYISMS.TaskExamines;
 using GYISMS.VisitRecords;
 using GYISMS.Growers.Dtos;
+using Abp.Auditing;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -33,6 +34,7 @@ namespace GYISMS.ScheduleTasks
     /// ScheduleTask应用层服务的接口实现方法  
     ///</summary>
     [AbpAuthorize(AppPermissions.Pages)]
+
     public class ScheduleTaskAppService : GYISMSAppServiceBase, IScheduleTaskAppService
     {
         private readonly IRepository<ScheduleTask, Guid> _scheduletaskRepository;
@@ -168,7 +170,6 @@ namespace GYISMS.ScheduleTasks
         /// <summary>
         /// 批量删除ScheduleTask的方法
         /// </summary>
-        [AbpAuthorize(ScheduleTaskAppPermissions.ScheduleTask_BatchDelete)]
         public async Task BatchDeleteScheduleTasksAsync(List<Guid> input)
         {
             //TODO:批量删除前的逻辑判断，是否允许删除
@@ -246,14 +247,27 @@ namespace GYISMS.ScheduleTasks
             entity.DeletionTime = DateTime.Now;
             entity.DeleterUserId = AbpSession.UserId;
             await _scheduletaskRepository.UpdateAsync(entity);
+            List<Guid> detailIds =await _scheduleDetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.Id).AsNoTracking().Select(v => v.Id).ToListAsync();
+            await BatchDeleteScheduleDetailsAsync(detailIds);
         }
 
+        /// <summary>
+        /// 批量删除任务指派信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task BatchDeleteScheduleDetailsAsync(List<Guid> input)
+        {
+            //TODO:批量删除前的逻辑判断，是否允许删除
+            await _scheduleDetailRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
         #region 钉钉客户端
 
         /// <summary>
         /// 获取钉钉用户任务列表
         /// </summary>
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsync(string userId)
         {
             var query = from st in _scheduletaskRepository.GetAll()
@@ -304,6 +318,7 @@ namespace GYISMS.ScheduleTasks
         ///获取任务详情
         /// </summary>
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId)
         {
             //基本信息
@@ -343,6 +358,7 @@ namespace GYISMS.ScheduleTasks
         }
 
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleDetailId)
         {
             //详情
@@ -356,7 +372,8 @@ namespace GYISMS.ScheduleTasks
                             TaskType = t.Type,
                             GrowerId = sd.GrowerId,
                             VisitNum = sd.VisitNum,
-                            CompleteNum = sd.CompleteNum
+                            CompleteNum = sd.CompleteNum,
+                            ScheduleStatus = sd.Status
                         };
 
             var taskDetailDto = await query.FirstOrDefaultAsync();
@@ -368,9 +385,35 @@ namespace GYISMS.ScheduleTasks
             return taskDetailDto;
         }
 
+        [AbpAllowAnonymous]
+        [Audited]
+        public async Task<List<DingDingScheduleDetailDto>> GetDingDingScheduleTaskPagingAsync(string userId, ScheduleStatusEnum status, DateTime? startDate, DateTime? endDate, int pageIndex)
+        {
+            var query = from sd in _scheduleDetailRepository.GetAll().WhereIf(status != ScheduleStatusEnum.None, s => s.Status == status)
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        join s in _scheduleRepository.GetAll()
+                                        .WhereIf(startDate.HasValue, s => s.EndTime >= startDate)
+                                        .WhereIf(endDate.HasValue, s => s.EndTime <= endDate)
+                        on sd.ScheduleId equals s.Id
+                        where sd.EmployeeId == userId
+                        select new DingDingScheduleDetailDto()
+                        {
+                            Id = sd.Id,
+                            EndTime = s.EndTime,
+                            GrowerId = sd.GrowerId,
+                            GrowerName = sd.GrowerName,
+                            Status = sd.Status,
+                            TaskName = t.Name,
+                            TaskType = t.Type
+                        };
+
+            var dataList = await query.OrderByDescending(q => q.EndTime).Skip(pageIndex).Take(15).ToListAsync();
+            return dataList;
+        }
+
         #endregion
 
-        
+
     }
 }
 

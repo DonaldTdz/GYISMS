@@ -28,14 +28,14 @@ namespace GYISMS.GYEnums
     public enum LayoutPattern
     {
         中心模式 = 1,
-        矩阵莫事 = 2
+        矩阵模式 = 2
     }
 
     public enum ScheduleType
     {
-        每日 = 1,
+        每月 = 1,
         每周 = 2,
-        每月 = 3
+        每日 = 3
     }
 
     public enum ScheduleMasterStatusEnum
@@ -46,6 +46,7 @@ namespace GYISMS.GYEnums
 
     public enum ScheduleStatusEnum
     {
+        None = -1,
         已逾期 = 0,
         未开始 = 1,
         进行中 = 2,
@@ -58,5 +59,29 @@ namespace GYISMS.GYEnums
         生产管理 = 2,
         政策宣传 = 3,
         临时任务 = 4
+    }
+
+    public enum NoticeWayEnum
+    {
+        发DING = 0,
+        钉钉消息 = 1
+    }
+    public enum RemindingWayEnum
+    {
+        无提醒 = 0,
+        发DING = 1,
+        钉钉消息 =2
+    }
+    public enum RemindingTimeEnum
+    {
+        提前5分钟 = 0,
+        提前10分钟 = 1,
+        提前30分钟 = 2
+    }
+    public enum AreaTypeEnum
+    {
+        昭化区=1,
+        剑阁县=2,
+        旺苍县=3
     }
 }

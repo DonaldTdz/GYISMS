@@ -26,8 +26,6 @@ export class Grower implements IGrower {
     visitNum: number;
     checked: boolean;
     scheduleDetailId: string;
-    isChecked: boolean;
-    selected: boolean;
     constructor(data?: IGrower) {
         if (data) {
             for (var property in data) {
@@ -65,7 +63,7 @@ export class Grower implements IGrower {
             this.deleterUserId = data["deleterUserId"];
             this.scheduleDetailId = data["scheduleDetailId"];
             this.visitNum = data["visitNum"];
-            this.isChecked = data["isChecked"];
+            this.checked = data["checked"];
         }
     }
 
@@ -112,6 +110,7 @@ export class Grower implements IGrower {
         data["lastModifierUserId"] = this.lastModifierUserId;
         data["deletionTime"] = this.deletionTime;
         data["deleterUserId"] = this.deleterUserId;
+        data["checked"] = this.checked;
 
         return data;
     }
@@ -151,6 +150,114 @@ export interface IGrower {
     visitNum: number;
     checked: boolean
     scheduleDetailId: string;
-    isChecked: boolean;
-    selected: boolean;
+}
+
+export class SelectGroup implements ISelectGroup {
+    text: string;
+    value: string;
+    constructor(data?: ISelectGroup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.text = data["text"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): SelectGroup {
+        let result = new SelectGroup();
+        result.init(data);
+        return result;
+    }
+
+    static fromJSArray(dataArray: any[]): SelectGroup[] {
+        let array = [];
+        dataArray.forEach(result => {
+            let item = new SelectGroup();
+            item.init(result);
+            array.push(item);
+        });
+
+        return array;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["text"] = this.text;
+        data["value"] = this.value;
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new SelectGroup();
+        result.init(json);
+        return result;
+    }
+}
+export interface ISelectGroup {
+    text: string;
+    value: string;
+}
+
+export class RadioGroup implements IRadioGroup {
+    text: string;
+    value: number;
+    constructor(data?: IRadioGroup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.text = data["text"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): RadioGroup {
+        let result = new RadioGroup();
+        result.init(data);
+        return result;
+    }
+
+    static fromJSArray(dataArray: any[]): RadioGroup[] {
+        let array = [];
+        dataArray.forEach(result => {
+            let item = new RadioGroup();
+            item.init(result);
+            array.push(item);
+        });
+
+        return array;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["text"] = this.text;
+        data["value"] = this.value;
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new RadioGroup();
+        result.init(json);
+        return result;
+    }
+}
+export interface IRadioGroup {
+    text: string;
+    value: number;
 }

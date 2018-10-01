@@ -7,9 +7,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.MeetingRooms;
 using GYISMS.GYEnums;
+using Abp.AutoMapper;
 
 namespace GYISMS.MeetingRooms.Dtos
 {
+    [AutoMapFrom(typeof(MeetingRoom))]
     public class MeetingRoomListDto : EntityDto<int>
     {
 
@@ -37,7 +39,7 @@ namespace GYISMS.MeetingRooms.Dtos
         /// <summary>
         /// RoomType
         /// </summary>
-        public RoomType? RoomType { get; set; }
+        public RoomType RoomType { get; set; }
 
         public string TypeName
         {
@@ -46,6 +48,8 @@ namespace GYISMS.MeetingRooms.Dtos
                 return RoomType.ToString();
             }
         }
+
+        public string RoomTypeName { get; set; }
         /// <summary>
         /// Address
         /// </summary>
@@ -62,7 +66,7 @@ namespace GYISMS.MeetingRooms.Dtos
         /// IsApprove
         /// </summary>
         public bool? IsApprove { get; set; }
-
+        public string ApproveName { get; set; }
 
         /// <summary>
         /// ManagerId
@@ -159,13 +163,21 @@ namespace GYISMS.MeetingRooms.Dtos
         /// </summary>
         public long? DeleterUserId { get; set; }
 
+        public string CurrentStatus { get; set; }
 
-
-
+        public DateTime? BeginTime { get; set; }
+        public DateTime? EndTime { get; set; }
 
 
         //// custom codes
 
         //// custom codes end
+    }
+
+    public class MeetingStatus
+    {
+        public DateTime? BeginTime { get; set; }
+        public DateTime? EndTime { get; set; }
+        public string Status { get; set; }
     }
 }

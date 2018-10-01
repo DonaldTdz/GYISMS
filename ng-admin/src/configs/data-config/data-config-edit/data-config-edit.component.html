@@ -1,0 +1,55 @@
+<!--component html goes here -->
+<form nz-form [formGroup]="forme" *ngIf="emodalVisible" id="frm_edit_employee" (ngSubmit)="saveEd()">
+    <nz-modal [nzVisible]="emodalVisible" [nzTitle]="'修改基础信息'" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="ehandleCancel($event)">
+        <ng-template #modalContent>
+            <ng-template #nzTabHeading>
+                基础信息
+            </ng-template>
+            <fieldset>
+                <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="type">配置类型</nz-form-label>
+                    <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
+                        <nz-select formControlName="type" [nzPlaceHolder]="'配置类型'" [(ngModel)]="systemData.type" [nzShowSearch]="true" style="width:100%;">
+                            <nz-option *ngFor="let i of confige" [nzLabel]="i.text" [nzValue]="i.value">
+                            </nz-option>
+                        </nz-select>
+                        <nz-form-explain *ngIf="forme.get('type').dirty&&forme.get('type').hasError('required')">请选择配置类型</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+
+                <nz-form-item nz-row>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="code">编码</nz-form-label>
+                    <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
+                        <input nz-input formControlName="code" [(ngModel)]="systemData.code" id="code">
+                        <nz-form-explain *ngIf="forme.get('code').dirty&&forme.get('code').hasError('required')">请输入编码</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row>
+
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="desc">描述</nz-form-label>
+                    <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
+                        <input nz-input formControlName="desc" [(ngModel)]="systemData.desc" id="desc">
+                        <nz-form-explain *ngIf="forme.get('desc').dirty&&forme.get('desc').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
+                        <nz-form-explain *ngIf="forme.get('desc').dirty&&forme.get('desc').hasError('required')">请输入描述</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row>
+
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="seq">序号</nz-form-label>
+                    <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
+                        <input nz-input formControlName="seq" [(ngModel)]="systemData.seq" id="seq">
+                        <nz-form-explain *ngIf="forme.get('seq').dirty&&forme.get('seq').hasError('pattern')">请输入数字</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+            </fieldset>
+        </ng-template>
+        <ng-template #modalFooter>
+            <button nz-button [nzType]="'default'" [nzSize]="'large'" type="button" (click)="ehandleCancel($event)">
+                取消
+            </button>
+            <button nz-button [nzType]="'primary'" [nzSize]="'large'" type="submit" (click)="saveEd()" [nzLoading]="iseConfirmLoading">
+                保存
+            </button>
+        </ng-template>
+    </nz-modal>
+</form>

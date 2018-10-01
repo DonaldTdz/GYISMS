@@ -12,12 +12,13 @@ using Abp.Domain.Repositories;
 using Abp.Linq.Extensions;
 
 using System.Linq.Dynamic.Core;
- using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
 
 using GYISMS.Meetings.Authorization;
 using GYISMS.Meetings.Dtos;
 using GYISMS.Meetings;
 using GYISMS.Authorization;
+using Abp.Auditing;
 
 namespace GYISMS.Meetings
 {
@@ -27,183 +28,183 @@ namespace GYISMS.Meetings
     [AbpAuthorize(AppPermissions.Pages)]
     public class MeetingAppService : GYISMSAppServiceBase, IMeetingAppService
     {
-    private readonly IRepository<Meeting, Guid>
-    _meetingRepository;
-    
-       
-       private readonly IMeetingManager _meetingManager;
+        private readonly IRepository<Meeting, Guid> _meetingRepository;
+        private readonly IMeetingManager _meetingManager;
 
-    /// <summary>
+        /// <summary>
         /// 构造函数 
         ///</summary>
-    public MeetingAppService(
-    IRepository<Meeting, Guid>
-meetingRepository
-        ,IMeetingManager meetingManager
-        )
+        public MeetingAppService(IRepository<Meeting, Guid> meetingRepository
+            , IMeetingManager meetingManager
+            )
         {
-        _meetingRepository = meetingRepository;
-  _meetingManager=meetingManager;
+            _meetingRepository = meetingRepository;
+            _meetingManager = meetingManager;
         }
 
 
         /// <summary>
-            /// 获取Meeting的分页列表信息
-            ///</summary>
+        /// 获取Meeting的分页列表信息
+        ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public  async  Task<PagedResultDto<MeetingListDto>> GetPagedMeetings(GetMeetingsInput input)
-		{
+        public async Task<PagedResultDto<MeetingListDto>> GetPagedMeetings(GetMeetingsInput input)
+        {
 
-		    var query = _meetingRepository.GetAll();
-			// TODO:根据传入的参数添加过滤条件
+            var query = _meetingRepository.GetAll();
+            // TODO:根据传入的参数添加过滤条件
 
-			var meetingCount = await query.CountAsync();
+            var meetingCount = await query.CountAsync();
 
-			var meetings = await query
-					.OrderBy(input.Sorting).AsNoTracking()
-					.PageBy(input)
-					.ToListAsync();
+            var meetings = await query
+                    .OrderBy(input.Sorting).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
 
-				// var meetingListDtos = ObjectMapper.Map<List <MeetingListDto>>(meetings);
-				var meetingListDtos =meetings.MapTo<List<MeetingListDto>>();
+            // var meetingListDtos = ObjectMapper.Map<List <MeetingListDto>>(meetings);
+            var meetingListDtos = meetings.MapTo<List<MeetingListDto>>();
 
-				return new PagedResultDto<MeetingListDto>(
+            return new PagedResultDto<MeetingListDto>(
 meetingCount,
 meetingListDtos
-					);
-		}
+                );
+        }
 
 
-		/// <summary>
-		/// 通过指定id获取MeetingListDto信息
-		/// </summary>
-		public async Task<MeetingListDto> GetMeetingByIdAsync(EntityDto<Guid> input)
-		{
-			var entity = await _meetingRepository.GetAsync(input.Id);
+        /// <summary>
+        /// 通过指定id获取MeetingListDto信息
+        /// </summary>
+        public async Task<MeetingListDto> GetMeetingByIdAsync(EntityDto<Guid> input)
+        {
+            var entity = await _meetingRepository.GetAsync(input.Id);
 
-		    return entity.MapTo<MeetingListDto>();
-		}
+            return entity.MapTo<MeetingListDto>();
+        }
 
-		/// <summary>
-		/// MPA版本才会用到的方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		public async  Task<GetMeetingForEditOutput> GetMeetingForEdit(NullableIdDto<Guid> input)
-		{
-			var output = new GetMeetingForEditOutput();
-MeetingEditDto meetingEditDto;
+        /// <summary>
+        /// MPA版本才会用到的方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<GetMeetingForEditOutput> GetMeetingForEdit(NullableIdDto<Guid> input)
+        {
+            var output = new GetMeetingForEditOutput();
+            MeetingEditDto meetingEditDto;
 
-			if (input.Id.HasValue)
-			{
-				var entity = await _meetingRepository.GetAsync(input.Id.Value);
+            if (input.Id.HasValue)
+            {
+                var entity = await _meetingRepository.GetAsync(input.Id.Value);
 
-meetingEditDto = entity.MapTo<MeetingEditDto>();
+                meetingEditDto = entity.MapTo<MeetingEditDto>();
 
-				//meetingEditDto = ObjectMapper.Map<List <meetingEditDto>>(entity);
-			}
-			else
-			{
-meetingEditDto = new MeetingEditDto();
-			}
+                //meetingEditDto = ObjectMapper.Map<List <meetingEditDto>>(entity);
+            }
+            else
+            {
+                meetingEditDto = new MeetingEditDto();
+            }
 
-			output.Meeting = meetingEditDto;
-			return output;
-		}
-
-
-		/// <summary>
-		/// 添加或者修改Meeting的公共方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		public async Task CreateOrUpdateMeeting(CreateOrUpdateMeetingInput input)
-		{
-
-			if (input.Meeting.Id.HasValue)
-			{
-				await UpdateMeetingAsync(input.Meeting);
-			}
-			else
-			{
-				await CreateMeetingAsync(input.Meeting);
-			}
-		}
+            output.Meeting = meetingEditDto;
+            return output;
+        }
 
 
-		/// <summary>
-		/// 新增Meeting
-		/// </summary>
-		[AbpAuthorize(MeetingAppPermissions.Meeting_Create)]
-		protected virtual async Task<MeetingEditDto> CreateMeetingAsync(MeetingEditDto input)
-		{
-			//TODO:新增前的逻辑判断，是否允许新增
+        /// <summary>
+        /// 添加或者修改Meeting的公共方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        [Audited]
+        public async Task<MeetingEditDto> CreateOrUpdateMeeting(MeetingEditDto input)
+        {
 
-			var entity = ObjectMapper.Map <Meeting>(input);
-
-			entity = await _meetingRepository.InsertAsync(entity);
-			return entity.MapTo<MeetingEditDto>();
-		}
-
-		/// <summary>
-		/// 编辑Meeting
-		/// </summary>
-		[AbpAuthorize(MeetingAppPermissions.Meeting_Edit)]
-		protected virtual async Task UpdateMeetingAsync(MeetingEditDto input)
-		{
-			//TODO:更新前的逻辑判断，是否允许更新
-
-			var entity = await _meetingRepository.GetAsync(input.Id.Value);
-			input.MapTo(entity);
-
-			// ObjectMapper.Map(input, entity);
-		    await _meetingRepository.UpdateAsync(entity);
-		}
+            if (input.Id.HasValue)
+            {
+                return await UpdateMeetingAsync(input);
+            }
+            else
+            {
+                return await CreateMeetingAsync(input);
+            }
+        }
 
 
+        /// <summary>
+        /// 新增Meeting
+        /// </summary>
+        [AbpAllowAnonymous]
+        [Audited]
+        protected virtual async Task<MeetingEditDto> CreateMeetingAsync(MeetingEditDto input)
+        {
+            //TODO:新增前的逻辑判断，是否允许新增
 
-		/// <summary>
-		/// 删除Meeting信息的方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		[AbpAuthorize(MeetingAppPermissions.Meeting_Delete)]
-		public async Task DeleteMeeting(EntityDto<Guid> input)
-		{
-			//TODO:删除前的逻辑判断，是否允许删除
-			await _meetingRepository.DeleteAsync(input.Id);
-		}
+            var entity = ObjectMapper.Map<Meeting>(input);
+
+            entity = await _meetingRepository.InsertAsync(entity);
+            return entity.MapTo<MeetingEditDto>();
+        }
+
+        /// <summary>
+        /// 编辑Meeting
+        /// </summary>
+        [AbpAllowAnonymous]
+        [Audited]
+        protected virtual async Task<MeetingEditDto> UpdateMeetingAsync(MeetingEditDto input)
+        {
+            //TODO:更新前的逻辑判断，是否允许更新
+
+            var entity = await _meetingRepository.GetAsync(input.Id.Value);
+            input.MapTo(entity);
+
+            // ObjectMapper.Map(input, entity);
+            var result = await _meetingRepository.UpdateAsync(entity);
+            return result.MapTo<MeetingEditDto>();
+        }
 
 
 
-		/// <summary>
-		/// 批量删除Meeting的方法
-		/// </summary>
-		          [AbpAuthorize(MeetingAppPermissions.Meeting_BatchDelete)]
-		public async Task BatchDeleteMeetingsAsync(List<Guid> input)
-		{
-			//TODO:批量删除前的逻辑判断，是否允许删除
-			await _meetingRepository.DeleteAsync(s => input.Contains(s.Id));
-		}
-
-
-		/// <summary>
-		/// 导出Meeting为excel表,等待开发。
-		/// </summary>
-		/// <returns></returns>
-		//public async Task<FileDto> GetMeetingsToExcel()
-		//{
-		//	var users = await UserManager.Users.ToListAsync();
-		//	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-		//	await FillRoleNames(userListDtos);
-		//	return _userListExcelExporter.ExportToFile(userListDtos);
-		//}
+        /// <summary>
+        /// 删除Meeting信息的方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAuthorize(MeetingAppPermissions.Meeting_Delete)]
+        public async Task DeleteMeeting(EntityDto<Guid> input)
+        {
+            //TODO:删除前的逻辑判断，是否允许删除
+            await _meetingRepository.DeleteAsync(input.Id);
+        }
 
 
 
-		//// custom codes
-		 
+        /// <summary>
+        /// 批量删除Meeting的方法
+        /// </summary>
+        [AbpAuthorize(MeetingAppPermissions.Meeting_BatchDelete)]
+        public async Task BatchDeleteMeetingsAsync(List<Guid> input)
+        {
+            //TODO:批量删除前的逻辑判断，是否允许删除
+            await _meetingRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
+
+
+        /// <summary>
+        /// 导出Meeting为excel表,等待开发。
+        /// </summary>
+        /// <returns></returns>
+        //public async Task<FileDto> GetMeetingsToExcel()
+        //{
+        //	var users = await UserManager.Users.ToListAsync();
+        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
+        //	await FillRoleNames(userListDtos);
+        //	return _userListExcelExporter.ExportToFile(userListDtos);
+        //}
+
+
+
+        //// custom codes
+
         //// custom codes end
 
     }

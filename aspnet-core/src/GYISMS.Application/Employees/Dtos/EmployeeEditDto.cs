@@ -102,7 +102,15 @@ namespace GYISMS.Employees.Dtos
 
 
 
+        /// <summary>
+        /// 区县Code
+        /// </summary>
+        public string AreaCode { get; set; }
 
+        /// <summary>
+        /// 区县名称
+        /// </summary>
+        public string Area { get; set; }
 
         //// custom codes
 

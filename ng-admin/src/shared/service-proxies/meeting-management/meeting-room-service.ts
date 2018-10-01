@@ -51,15 +51,15 @@ export class MeetingRoomServiceProxy {
         });
     }
 
-    deleteMeetingRoom(id: number): Observable<any> {
-        // let url_ = "/api/services/app/MeetingRoom/MeetingRoomDeleteByIdAsync";
-        // return this._gyhttp.post(url_, input).map(data => {
-        //     return data.result;
-        // });
-        let url_ = "/api/services/app/MeetingRoom/MeetingRoomDeleteByIdAsync?id=" + id;
-        return this._gyhttp.delete(url_).map(data => {
+    deleteMeetingRoom(input: any): Observable<any> {
+        let url_ = "/api/services/app/MeetingRoom/MeetingRoomDeleteByIdAsync";
+        return this._gyhttp.post(url_, input).map(data => {
             return data.result;
         });
+        // let url_ = "/api/services/app/MeetingRoom/MeetingRoomDeleteByIdAsync?id=" + id;
+        // return this._gyhttp.delete(url_).map(data => {
+        //     return data.result;
+        // });
     }
 
     synchronousMeetingRoomAsync(): Observable<ApiResult> {
@@ -84,8 +84,10 @@ export class MeetingRoomServiceProxy {
     /**
      * 获取会议配置
      */
-    getRoomDevices(id: number): Observable<CheckBoxList[]> {
-        let url_ = "/api/services/app/SystemData/GetRoomDevicesAsync?id=" + id;
+    // getRoomDevices(id: number): Observable<CheckBoxList[]> {
+    getRoomDevices(): Observable<CheckBoxList[]> {
+        // let url_ = "/api/services/app/SystemData/GetRoomDevicesAsync?id=" + id;
+        let url_ = "/api/services/app/SystemData/GetRoomDevicesAsync";
         return this._gyhttp.get(url_).map(data => {
             if (data) {
                 return CheckBoxList.fromJSArray(data);

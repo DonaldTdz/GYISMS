@@ -9,6 +9,7 @@ import { ApiResult } from '@shared/service-proxies/entity/parameter';
 import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
 import { Schedule, ScheduleTask } from '@shared/entity/tobacco-management';
+import { SelectGroup } from '@shared/entity/basic-data';
 
 @Injectable()
 export class ScheduleServiceProxy {
@@ -43,6 +44,17 @@ export class ScheduleServiceProxy {
         });
     }
 
+    getWeekOfMonth(): Observable<SelectGroup[]> {
+        let url_ = "/api/services/app/SystemData/GetWeekOfMonth";
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return SelectGroup.fromJSArray(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
     updateScheduleInfo(input: Schedule): Observable<Schedule> {
         let url_ = "/api/services/app/Schedule/CreateOrUpdateScheduleAsycn";
         return this._gyhttp.post(url_, input).map(data => {
@@ -59,6 +71,13 @@ export class ScheduleServiceProxy {
 
     deleteSchedule(input: any): Observable<any> {
         let url_ = "/api/services/app/Schedule/ScheduleDeleteByIdAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data.result;
+        });
+    }
+
+    sendMessageToEmployee(input: any): Observable<ApiResult> {
+        let url_ = "/api/services/app/Schedule/SendMessageToEmployeeAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data.result;
         });

@@ -56,13 +56,17 @@ const routes: Routes = [
         data: { preload: true },
       },
       {
+        path: 'config',
+        loadChildren: 'configs/configs.module#ConfigModule', // Lazy load account module
+        data: { preload: true },
+      },
+      {
         path: '**',
         redirectTo: 'home',
       },
     ],
   },
 ];
-
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],

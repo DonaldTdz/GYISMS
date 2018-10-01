@@ -76,6 +76,7 @@ export class ChooseTaskModalComponent implements OnInit {
         let params: any = {};
         params.SkipCount = this.q.pi;
         params.ScheduleId = this.scheduleId;
+        let i: number = 0;
         this.taskService.getVisitTaskListWithStatus(params).subscribe((result: VisitTask[]) => {
             this.eloading = false;
             this.taskList = result;
@@ -83,10 +84,13 @@ export class ChooseTaskModalComponent implements OnInit {
                 if (!v.visitNum) {
                     v.visitNum = 1;
                 }
-                if (v.isChecked == false)
-                    v.checked = false;
-                else v.checked = true;
+                if (v.checked == true) {
+                    i++;
+                }
             });
+            if ((this.taskList.length != 0) && (this.taskList.length == i)) {
+                this.isSelectedAll = true;
+            }
         });
     }
 
@@ -101,15 +105,19 @@ export class ChooseTaskModalComponent implements OnInit {
     SelectTask(): void {
         var visitTaskList = this.taskList.filter(v => v.checked);
         if (visitTaskList) {
-            //visitTaskList.forEach(v => {
-            //this.scheduleTask.taskId = v.id;
-            //this.scheduleTask.visitNum = v.visitNum;
-            //this.scheduleTask.taskName = v.name;
-            //this.scheduleTask.scheduleId = this.scheduleId;
-            //this.scheduleTaskList.push(ScheduleTask.fromJS(v));
-            //});
+            visitTaskList.forEach(v => {
+                if (v.scheduleTaskId) {
+                    this.scheduleTask.id = v.scheduleTaskId;
+                }
+                this.scheduleTask.taskId = v.id;
+                this.scheduleTask.visitNum = v.visitNum;
+                this.scheduleTask.taskName = v.name;
+                this.scheduleTask.scheduleId = this.scheduleId;
+                this.scheduleTaskList.push(ScheduleTask.fromJS(this.scheduleTask));
+                this.scheduleTask = new ScheduleTask();
+            });
 
-            this.scheduleTaskList = ScheduleTask.fromVisitTaskJSArray(visitTaskList, this.scheduleId);
+            // this.scheduleTaskList = ScheduleTask.fromVisitTaskJSArray(visitTaskList, this.scheduleId);
             this.eloading = true;
             this.successMsg = '保存成功';
             this.saveTaskInfo();
@@ -120,7 +128,17 @@ export class ChooseTaskModalComponent implements OnInit {
     saveTaskInfo() {
         this.taskService.updateScheduleTask(this.scheduleTaskList).finally(() => { this.eloading = false; })
             .subscribe((result: any) => {
-                this.scheduleTaskList = result;
+                // this.scheduleTaskList = result;
+                this.scheduleTaskList = [];
+                result.forEach(x => {
+                    this.taskList.forEach(v => {
+                        if (v.scheduleTaskId == x.id) {
+                            v.scheduleTaskId = x.id;
+                            return;
+                        }
+                    });
+                });
+
                 this.modalSelect.emit();
                 this.isVisible = false;
             });

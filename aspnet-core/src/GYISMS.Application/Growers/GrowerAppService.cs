@@ -19,6 +19,8 @@ using GYISMS.Growers.Dtos;
 using GYISMS.Growers;
 using GYISMS.Authorization;
 using GYISMS.ScheduleDetails;
+using GYISMS.Employees;
+using Abp.Auditing;
 
 namespace GYISMS.Growers
 {
@@ -31,6 +33,7 @@ namespace GYISMS.Growers
         private readonly IRepository<Grower, int> _growerRepository;
         private readonly IGrowerManager _growerManager;
         private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
+        private readonly IRepository<Employee, string> _employeeRepository;
 
         /// <summary>
         /// 构造函数 
@@ -38,11 +41,13 @@ namespace GYISMS.Growers
         public GrowerAppService(IRepository<Grower, int> growerRepository
             , IGrowerManager growerManager
             , IRepository<ScheduleDetail, Guid> scheduledetailRepository
+            , IRepository<Employee, string> employeeRepository
             )
         {
             _growerRepository = growerRepository;
             _growerManager = growerManager;
             _scheduledetailRepository = scheduledetailRepository;
+            _employeeRepository = employeeRepository;
         }
 
 
@@ -80,40 +85,122 @@ namespace GYISMS.Growers
         /// <returns></returns>
         public async Task<List<GrowerListDto>> GetGrowersNoPageAsync(GetGrowersInput input)
         {
-
-            var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
-            var scheduleDetailList = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId && v.TaskId == input.TaskId);
-            var query = await (from g in growerList
-                               select new GrowerListDto()
-                               {
-                                   Id = g.Id,
-                                   Name = g.Name,
-                                   EmployeeName = g.EmployeeName,
-                                   EmployeeId = g.EmployeeId,
-                                   UnitName = g.UnitName,
-                                   Tel = g.Tel
-                               }).AsNoTracking().ToListAsync();
-            var scheduleDto = from s in scheduleDetailList
-                              select new
-                              {
-                                  s.Id,
-                                  s.VisitNum,
-                                  s.GrowerId
-                              };
-            foreach (var scheduleItem in scheduleDto)
+            int count = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.Id).CountAsync();
+            if (count != 0)
             {
-                foreach (var item in query)
+                if(input.EmployeeId == "1"|| input.EmployeeId == "2"|| input.EmployeeId == "3")
                 {
-                    if (item.Id == scheduleItem.GrowerId)
+                    var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
+                    var employeeIds = _employeeRepository.GetAll().Where(v=>v.AreaCode ==input.EmployeeId).Select(v => v.Id);
+                    var areaGrowerList = growerList.Where(v =>v.IsDeleted==false && employeeIds.Contains(v.EmployeeId));
+                    var scheduleDetailList = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId && v.TaskId == input.TaskId);
+                    var query = await (from g in areaGrowerList
+                                       select new GrowerListDto()
+                                       {
+                                           Id = g.Id,
+                                           Name = g.Name,
+                                           EmployeeName = g.EmployeeName,
+                                           EmployeeId = g.EmployeeId,
+                                           UnitName = g.UnitName,
+                                           Tel = g.Tel
+                                       }).AsNoTracking().ToListAsync();
+                    var scheduleDto = from s in scheduleDetailList
+                                      select new
+                                      {
+                                          s.Id,
+                                          s.VisitNum,
+                                          s.GrowerId
+                                      };
+                    foreach (var scheduleItem in scheduleDto)
                     {
-                        item.IsChecked = true;
-                        item.VisitNum = scheduleItem.VisitNum;
-                        item.ScheduleDetailId = scheduleItem.Id;
-                        break;
+                        foreach (var item in query)
+                        {
+                            if (item.Id == scheduleItem.GrowerId)
+                            {
+                                item.Checked = true;
+                                item.VisitNum = scheduleItem.VisitNum;
+                                item.ScheduleDetailId = scheduleItem.Id;
+                                break;
+                            }
+                        }
                     }
+                    return query;
                 }
+                else
+                {
+                    var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false && v.EmployeeId == input.EmployeeId);
+                    var scheduleDetailList = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId && v.TaskId == input.TaskId);
+                    var query = await (from g in growerList
+                                       select new GrowerListDto()
+                                       {
+                                           Id = g.Id,
+                                           Name = g.Name,
+                                           EmployeeName = g.EmployeeName,
+                                           EmployeeId = g.EmployeeId,
+                                           UnitName = g.UnitName,
+                                           Tel = g.Tel
+                                       }).AsNoTracking().ToListAsync();
+                    var scheduleDto = from s in scheduleDetailList
+                                      select new
+                                      {
+                                          s.Id,
+                                          s.VisitNum,
+                                          s.GrowerId
+                                      };
+                    foreach (var scheduleItem in scheduleDto)
+                    {
+                        foreach (var item in query)
+                        {
+                            if (item.Id == scheduleItem.GrowerId)
+                            {
+                                item.Checked = true;
+                                item.VisitNum = scheduleItem.VisitNum;
+                                item.ScheduleDetailId = scheduleItem.Id;
+                                break;
+                            }
+                        }
+                    }
+                    return query;
+                }              
             }
-            return query;
+            else
+            {
+                if (input.EmployeeId == "1" || input.EmployeeId == "2" || input.EmployeeId == "3")
+                {
+                    var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
+                    var employeeIds = _employeeRepository.GetAll().Where(v => v.AreaCode == input.EmployeeId).Select(v => v.Id);
+                    var areaGrowerList = growerList.Where(v => v.IsDeleted == false && employeeIds.Contains(v.EmployeeId));
+                    var query = await (from g in areaGrowerList
+                                       select new GrowerListDto()
+                                       {
+                                           Id = g.Id,
+                                           Name = g.Name,
+                                           EmployeeName = g.EmployeeName,
+                                           EmployeeId = g.EmployeeId,
+                                           UnitName = g.UnitName,
+                                           Tel = g.Tel,
+                                           Checked = true
+                                       }).AsNoTracking().ToListAsync();
+                    return query;
+                }
+                else
+                {
+                    var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false && v.EmployeeId == input.EmployeeId);
+                    var query = await (from g in growerList
+                                       select new GrowerListDto()
+                                       {
+                                           Id = g.Id,
+                                           Name = g.Name,
+                                           EmployeeName = g.EmployeeName,
+                                           EmployeeId = g.EmployeeId,
+                                           UnitName = g.UnitName,
+                                           Tel = g.Tel,
+                                           Checked = true
+                                       }).AsNoTracking().ToListAsync();
+                    return query;
+                }
+
+            }
         }
 
         /// <summary>

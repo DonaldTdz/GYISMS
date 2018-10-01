@@ -18,6 +18,16 @@ using GYISMS.VisitRecords.Authorization;
 using GYISMS.VisitRecords.Dtos;
 using GYISMS.VisitRecords;
 using GYISMS.Authorization;
+using GYISMS.ScheduleDetails;
+using GYISMS.VisitTasks;
+using GYISMS.TaskExamines;
+using GYISMS.Dtos;
+using GYISMS.VisitExamines;
+using GYISMS.GYEnums;
+using GYISMS.Employees;
+using Abp.Runtime.Validation;
+using Abp.Auditing;
+
 
 namespace GYISMS.VisitRecords
 {
@@ -27,9 +37,12 @@ namespace GYISMS.VisitRecords
     [AbpAuthorize(AppPermissions.Pages)]
     public class VisitRecordAppService : GYISMSAppServiceBase, IVisitRecordAppService
     {
-        private readonly IRepository<VisitRecord, Guid>
-        _visitrecordRepository;
-
+        private readonly IRepository<VisitRecord, Guid> _visitrecordRepository;
+        private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
+        private readonly IRepository<VisitTask> _visitTaskRepository;
+        private readonly IRepository<TaskExamine> _taskExamineRepository;
+        private readonly IRepository<VisitExamine, Guid> _visitExamineRepository;
+        private readonly IRepository<Employee, string> _employeeRepository;
 
         private readonly IVisitRecordManager _visitrecordManager;
 
@@ -37,13 +50,22 @@ namespace GYISMS.VisitRecords
         /// 构造函数 
         ///</summary>
         public VisitRecordAppService(
-        IRepository<VisitRecord, Guid>
-    visitrecordRepository
+            IRepository<VisitRecord, Guid> visitrecordRepository
+            , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
+            , IRepository<VisitTask> visitTaskRepository
+            , IRepository<TaskExamine> taskExamineRepository
+            , IRepository<VisitExamine, Guid> visitExamineRepository
             , IVisitRecordManager visitrecordManager
+            , IRepository<Employee, string> employeeRepository
             )
         {
             _visitrecordRepository = visitrecordRepository;
+            _scheduleDetailRepository = scheduleDetailRepository;
+            _visitTaskRepository = visitTaskRepository;
+            _taskExamineRepository = taskExamineRepository;
+            _visitExamineRepository = visitExamineRepository;
             _visitrecordManager = visitrecordManager;
+            _employeeRepository = employeeRepository;
         }
 
 
@@ -69,12 +91,51 @@ namespace GYISMS.VisitRecords
             var visitrecordListDtos = visitrecords.MapTo<List<VisitRecordListDto>>();
 
             return new PagedResultDto<VisitRecordListDto>(
-visitrecordCount,
-visitrecordListDtos
+            visitrecordCount,
+            visitrecordListDtos
                 );
         }
 
+        /// <summary>
+        /// 获取烟农被拜访记录
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<VisitRecordListDto>> GetVisitRecordsByGrowerId(GetVisitRecordsInput input)
+        {
+            var record = _visitrecordRepository.GetAll().Where(v => v.GrowerId == input.GrowerId);
+            var employee = _employeeRepository.GetAll();
+            var query = from r in record
+                        join e in employee on r.EmployeeId equals e.Id
+                        select new VisitRecordListDto()
+                        {
+                            Id = r.Id,
+                            EmployeeId = r.EmployeeId,
+                            GrowerId = r.GrowerId,
+                            Location = r.Location,
+                            Longitude = r.Longitude,
+                            SignTime = r.SignTime,
+                            ScheduleDetailId = r.ScheduleDetailId,
+                            Desc = r.Desc,
+                            ImgPath = r.ImgPath,
+                            Latitude = r.Latitude,
+                            CreationTime = r.CreationTime,
+                            EmployeeName = e.Name
+                        };
 
+            var visitrecordCount = await query.CountAsync();
+            var visitrecords = await query
+                    .OrderByDescending(v => v.SignTime).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
+
+            var visitrecordListDtos = visitrecords.MapTo<List<VisitRecordListDto>>();
+
+            return new PagedResultDto<VisitRecordListDto>(
+                        visitrecordCount,
+                        visitrecordListDtos
+                );
+        }
         /// <summary>
         /// 通过指定id获取VisitRecordListDto信息
         /// </summary>
@@ -187,6 +248,69 @@ visitrecordListDtos
             await _visitrecordRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        [AbpAllowAnonymous]
+        [Audited]
+        public async Task<DingDingVisitRecordInputDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId)
+        {
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        where sd.Id == scheduleDetailId
+                        select new
+                        {
+                            sd.Id,
+                            sd.EmployeeId,
+                            sd.GrowerId,
+                            sd.GrowerName,
+                            t.Name,
+                            t.Type,
+                            t.Desc,
+                            TaskId = t.Id
+                        };
+            var dmdata = await query.FirstOrDefaultAsync();
+            var result = new DingDingVisitRecordInputDto()
+            {
+                ScheduleDetailId = dmdata.Id,
+                EmployeeId = dmdata.EmployeeId,
+                GrowerId = dmdata.GrowerId,
+                GrowerName = dmdata.GrowerName,
+                TaskDesc = string.Format("{0}（{1}），{2}", dmdata.Name, dmdata.Type.ToString(), dmdata.Desc)
+            };
+
+            var examines = await _taskExamineRepository.GetAll().Where(t => t.TaskId == dmdata.TaskId).OrderBy(e => e.Seq).ToListAsync();
+            result.Examines = examines.MapTo<List<DingDingTaskExamineDto>>();
+            return result;
+        }
+
+        [AbpAllowAnonymous]
+        //[DisableValidation]
+        [Audited]
+        public async Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input)
+        {
+            var vistitRecord = input.MapTo<VisitRecord>();
+            vistitRecord.SignTime = DateTime.Now;
+            //拜访记录
+            var vrId = await _visitrecordRepository.InsertAndGetIdAsync(vistitRecord);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            //考核项
+            foreach (var item in input.Examines)
+            {
+                var ve = new VisitExamine()
+                {
+                    EmployeeId = input.EmployeeId,
+                    GrowerId = input.GrowerId,
+                    Score = item.Score,
+                    TaskExamineId = item.Id,
+                    VisitRecordId = vrId
+                };
+                await _visitExamineRepository.InsertAsync(ve);
+            }
+            //更新拜访明细
+            var detail = await _scheduleDetailRepository.GetAsync(input.ScheduleDetailId);
+            detail.CompleteNum++;
+            detail.Status = detail.CompleteNum == detail.VisitNum ? ScheduleStatusEnum.已完成 : ScheduleStatusEnum.进行中;
+
+            return new APIResultDto() { Code = 0, Msg = "保存数据成功" };
+        }
 
         /// <summary>
         /// 导出VisitRecord为excel表,等待开发。

@@ -44,7 +44,7 @@ export class MeetingRoomComponent extends AppComponentBase implements OnInit {
     }
 
     createRoom() {
-        this.router.navigate(['app/meeting/room-detail'])
+        this.router.navigate(['app/meeting/room-detail', 0])
     }
     goDetail(id: number) {
         this.router.navigate(['app/meeting/room-detail', id])

@@ -19,6 +19,10 @@ using GYISMS.Employees.Dtos;
 using GYISMS.Employees;
 using GYISMS.Authorization;
 using GYISMS.DingDing;
+using Abp.Auditing;
+using GYISMS.SystemDatas;
+using GYISMS.GYEnums;
+using GYISMS.SystemDatas.Dtos;
 
 namespace GYISMS.Employees
 {
@@ -31,6 +35,7 @@ namespace GYISMS.Employees
         private readonly IRepository<Employee, string> _employeeRepository;
         private readonly IEmployeeManager _employeeManager;
         private readonly IDingDingAppService _dingDingAppService;
+        private readonly IRepository<SystemData, int> _systemdataRepository;
 
         /// <summary>
         /// 构造函数 
@@ -38,11 +43,13 @@ namespace GYISMS.Employees
         public EmployeeAppService(IRepository<Employee, string> employeeRepository
             , IEmployeeManager employeeManager
             , IDingDingAppService dingDingAppService
+            , IRepository<SystemData, int> systemdataRepository
             )
         {
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;
             _dingDingAppService = dingDingAppService;
+            _systemdataRepository = systemdataRepository;
         }
 
 
@@ -80,14 +87,14 @@ namespace GYISMS.Employees
         /// <summary>
         /// 通过指定id获取EmployeeListDto信息
         /// </summary>
-        public async Task<EmployeeListDto> GetEmployeeByIdAsync(EntityDto<string> input)
+        public async Task<EmployeeListDto> GetEmployeeByIdAsync(string id)
         {
-            var entity = await _employeeRepository.GetAsync(input.Id);
+            var entity = await _employeeRepository.GetAsync(id);
 
             return entity.MapTo<EmployeeListDto>();
         }
 
-
+        [Audited]
         /// <summary>
         /// 添加或者修改Employee的公共方法
         /// </summary>
@@ -209,31 +216,70 @@ namespace GYISMS.Employees
         }
 
         /// <summary>
-        /// 按需获取子节点
+        /// 获取区县Children
         /// </summary>
-        //public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
-        //{
-        //    var employeeList = await (from o in _employeeRepository.GetAll()
-        //                                  select new EmployeeListDto()
-        //                                  {
-        //                                      Id = o.Id,
-        //                                      Name = o.Name,
-        //                                  }).ToListAsync();
-        //    return GetTrees(0
-        //        , employeeList);
-        //}
+        /// <param name="area"></param>
+        /// <returns></returns>
+        private List<EmployeeNzTreeNode> GetAreaEmoloyee(string area)
+        {
+            var employeeList = (from o in _employeeRepository.GetAll()
+                                     .Where(v => v.AreaCode == area)
+                                select new EmployeeNzTreeNode()
+                                {
+                                    key = o.Id,
+                                    title = o.Name,
+                                    children = null,
+                                    IsLeaf = true
+                                }).ToList();
+            return employeeList;
+        }
 
-        //private List<EmployeeNzTreeNode> GetTrees(long? id, List<EmployeeListDto> employeeList)
-        //{
-        //    List<EmployeeNzTreeNode> treeNodeList = employeeList.Where(o => o.Department.Contains("1")).Select(t => new EmployeeNzTreeNode()
-        //    {
-        //        key = t.Id,
-        //        title = t.Name,
-        //        children = GetTrees(t.Id, employeeList)
-        //    }).ToList();
-        //    return treeNodeList;
-        //}
+        /// <summary>
+        /// 获取区县树
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
+        {
+            List<EmployeeNzTreeNode> treeNodeList = new List<EmployeeNzTreeNode>();
+            var AreaInfo = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟农村组 && v.ModelId == ConfigModel.烟叶服务).OrderBy(v => v.Seq).AsNoTracking()
+             .Select(v => new SystemDataListDto() { Code = v.Code, Desc = v.Desc }).ToListAsync();
+            foreach (var item in AreaInfo)
+            {
+                EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+                {
+                    key = item.Code,
+                    title = item.Desc,
+                    children = GetAreaEmoloyee(item.Code)
+                };
+                treeNodeList.Add(treeNode);
+            }
+            //EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+            //{
+            //    key = "1",
+            //    title = "昭化区",
+            //    children = GetAreaEmoloyee("1")
+            //};
+            //treeNodeList.Add(treeNode);
+            //EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
+            //{
+            //    key = "2",
+            //    title = "剑阁县",
+            //    children = GetAreaEmoloyee("2")
+            //};
+            //treeNodeList.Add(treeNode2);
+            //EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
+            //{
+            //    key = "3",
+            //    title = "旺苍县",
+            //    children = GetAreaEmoloyee("3"),
+            //};
+            //treeNodeList.Add(treeNode3);
+            return treeNodeList;
+        }
+
         [AbpAllowAnonymous]
+        [Audited]
+
         public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code)
         {
             //测试环境注释
@@ -242,6 +288,27 @@ namespace GYISMS.Employees
             var userId = "165500493321719640";
             var query = await _employeeRepository.GetAsync(userId);
             return query.MapTo<DingDingUserDto>();
+        }
+
+        /// <summary>
+        /// 更新员工区县信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<EmployeeListDto> EditEmployeeAreaInfoAsync(EmployeeEditDto input)
+        {
+            var entity = await _employeeRepository.GetAsync(input.Id);
+            if (entity.AreaCode != input.AreaCode && entity.Area != input.Area)
+            {
+                entity.Area = input.Area;
+                entity.AreaCode = input.AreaCode;
+                var result = await _employeeRepository.UpdateAsync(entity);
+                return result.MapTo<EmployeeListDto>();
+            }
+            else
+            {
+                return entity.MapTo<EmployeeListDto>();
+            }
         }
     }
 }

@@ -2,12 +2,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.AutoMapper;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.GYEnums;
 using GYISMS.ScheduleDetails;
 
 namespace GYISMS.ScheduleDetails.Dtos
 {
+    [AutoMapFrom(typeof(ScheduleDetail))]
     public class ScheduleDetailEditDto:IHasCreationTime
     {
         /// <summary>
@@ -69,5 +71,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         public string EmployeeName { get; set; }
 
         public string GrowerName { get; set; }
+        public bool Checked { get; set; }
+        public string AreaCode { get; set; }
     }
 }

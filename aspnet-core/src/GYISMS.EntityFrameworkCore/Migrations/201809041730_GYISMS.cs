@@ -28,7 +28,8 @@ namespace GYISMS.Migrations
             migrationBuilder.CreateTable(
                 name: "SystemDatas",
                 columns: table => new
-                { Id = table.Column<int>(nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                {
+                    Id = table.Column<int>(nullable: false).Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     ModelId = table.Column<int>(nullable: true),
                     Type = table.Column<int>(nullable: false),
                     Code = table.Column<string>(maxLength: 50, nullable: false),
@@ -60,7 +61,9 @@ namespace GYISMS.Migrations
                     HiredDate = table.Column<string>(maxLength: 100, nullable: true),
                     Roles = table.Column<string>(maxLength: 300, nullable: true),
                     RoleId = table.Column<long>(nullable: true),
-                    Remark = table.Column<string>(maxLength: 500, nullable: true)
+                    Remark = table.Column<string>(maxLength: 500, nullable: true),
+                    AreaCode = table.Column<string>(maxLength: 50, nullable: true),
+                    Area = table.Column<string>(maxLength: 50, nullable: true)
                 },
                 constraints: table =>
                 {

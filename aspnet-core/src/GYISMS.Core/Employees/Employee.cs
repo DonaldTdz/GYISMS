@@ -94,5 +94,15 @@ namespace GYISMS.Employees
         /// </summary>
         [StringLength(500)]
         public virtual string Remark { get; set; }
+
+        /// <summary>
+        /// 区县Code
+        /// </summary>
+        public virtual string AreaCode{ get; set; }
+
+        /// <summary>
+        /// 区县名称
+        /// </summary>
+        public virtual string Area { get; set; }
     }
 }

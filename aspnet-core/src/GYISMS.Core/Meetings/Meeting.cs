@@ -1,4 +1,6 @@
 ﻿using Abp.Domain.Entities;
+using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,7 +11,7 @@ namespace GYISMS.Meetings
     /// 会议申请
     /// </summary>
     [Table("Meetings")]
-    public class Meeting : Entity<Guid>
+    public class Meeting : AuditedEntity<Guid>, ISoftDelete
     {
 
         /// <summary>
@@ -62,17 +64,17 @@ namespace GYISMS.Meetings
         /// <summary>
         /// 通知方式（发DING、钉钉消息）
         /// </summary>
-        public virtual int? NoticeWay { get; set; }
+        public virtual NoticeWayEnum? NoticeWay { get; set; }
 
         /// <summary>
         /// 提醒方式（无提醒、发DING、钉钉消息）
         /// </summary>
-        public virtual int? RemindingWay { get; set; }
+        public virtual RemindingWayEnum? RemindingWay { get; set; }
 
         /// <summary>
         /// 提醒时间提前（提前5分钟、提前10分钟、提前30分钟）
         /// </summary>
-        public virtual int? RemindingTime { get; set; }
+        public virtual RemindingTimeEnum? RemindingTime { get; set; }
 
         /// <summary>
         /// 会议状态（提交审核、申请成功、取消）
@@ -139,27 +141,7 @@ namespace GYISMS.Meetings
         /// <summary>
         /// 是否删除
         /// </summary>
-        public virtual bool? IsDeleted { get; set; }
-
-        /// <summary>
-        /// CreationTime
-        /// </summary>
-        public virtual DateTime? CreationTime { get; set; }
-
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public virtual long? CreatorUserId { get; set; }
-
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public virtual DateTime? LastModificationTime { get; set; }
-
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public virtual long? LastModifierUserId { get; set; }
+        public virtual bool IsDeleted { get; set; }
 
         /// <summary>
         /// DeletionTime
