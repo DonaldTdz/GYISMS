@@ -11,6 +11,10 @@ using HC.WeChat.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Processing.Transforms;
 
 namespace GYISMS.Web.Host.Controllers
 {
@@ -116,7 +120,7 @@ namespace GYISMS.Web.Host.Controllers
         [HttpPost]
         [AbpAllowAnonymous]
         [Audited]
-        public async Task<IActionResult> FilesPostsAsync(IFormFile[] file)
+        public Task<IActionResult> FilesPostsAsync(IFormFile[] file)
         {
             var date = Request;
             var files = Request.Form.Files;
@@ -142,16 +146,29 @@ namespace GYISMS.Web.Host.Controllers
 
                     filePath = fileDire + newFileName;
 
-                    using (var stream = new FileStream(filePath, FileMode.Create))
+                    //2压缩后保存 跨度为360px
+                    //using (var stream = new FileStream(filePath, FileMode.Create))
+                    using (Image<Rgba32> image = SixLabors.ImageSharp.Image.Load(formFile.OpenReadStream()))
                     {
-                        await formFile.CopyToAsync(stream);
+                        //如果宽度度大于360 就需要压缩
+                        if (image.Width > 360)
+                        {
+                            var height = (int)((360 / image.Width) * image.Height);
+                            image.Mutate(x => x.Resize(360, height));
+                        }
+                        image.Save(filePath);
                     }
+
+                    //using (var stream = new FileStream(filePath, FileMode.Create))
+                    //{
+                    //    await formFile.CopyToAsync(stream);
+                    //}
 
                     returnUrl = "/visit/" + newFileName;
                 }
             }
 
-            return Ok(returnUrl);
+            return Task.FromResult((IActionResult)Ok(returnUrl));
         }
 
     }
