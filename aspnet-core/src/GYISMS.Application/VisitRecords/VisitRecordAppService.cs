@@ -36,6 +36,8 @@ using SixLabors.Primitives;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp.Processing.Text;
+using GYISMS.Helpers;
+using GYISMS.SystemDatas;
 //using PT = SixLabors.ImageSharp.Processing.Processors.Text;
 
 namespace GYISMS.VisitRecords
@@ -53,6 +55,7 @@ namespace GYISMS.VisitRecords
         private readonly IRepository<VisitExamine, Guid> _visitExamineRepository;
         private readonly IRepository<Employee, string> _employeeRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IRepository<SystemData> _systemDataRepository;
 
         private readonly IVisitRecordManager _visitrecordManager;
 
@@ -67,6 +70,7 @@ namespace GYISMS.VisitRecords
             , IRepository<VisitExamine, Guid> visitExamineRepository
             , IVisitRecordManager visitrecordManager
             , IRepository<Employee, string> employeeRepository
+            , IRepository<SystemData> systemDataRepository
             , IHostingEnvironment env
             )
         {
@@ -77,6 +81,7 @@ namespace GYISMS.VisitRecords
             _visitExamineRepository = visitExamineRepository;
             _visitrecordManager = visitrecordManager;
             _employeeRepository = employeeRepository;
+            _systemDataRepository = systemDataRepository;
             _hostingEnvironment = env;
         }
 
@@ -390,6 +395,26 @@ namespace GYISMS.VisitRecords
         public Task GenerateWatermarkImgTests()
         {
             return Task.FromResult(GenerateWatermarkImg("/visit/bbed0bd3-6435-44e9-b86e-89556982fdfd.jpg", "四川成都戛纳湾金棕榈", "唐德舟","唐全华"));
+        }
+        [AbpAllowAnonymous]
+        [Audited]
+        public async Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower)
+        {
+            var distance = AbpMapByGoogle.GetDistance(lat, lon, latGrower, lonGrower);
+            var signRange = await _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.SignRange).FirstOrDefaultAsync();
+            var range = 500d;
+            if (signRange != null)
+            {
+                range = double.Parse(signRange.Desc);
+            }
+            if (distance < range)
+            {
+                return new APIResultDto() { Code = 0, Msg = "ok"};
+            }
+            else
+            {
+                return new APIResultDto() { Code = 901, Msg = "当前位置不在拜访位置范围内" };
+            }
         }
 
         /// <summary>

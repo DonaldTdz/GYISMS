@@ -332,7 +332,7 @@ namespace GYISMS.Growers
             grower.Longitude = longitude;
             grower.Latitude = latitude;
             await _growerRepository.UpdateAsync(grower);
-            return new APIResultDto() { Code = 0, Msg = "采集位置成功"};
+            return new APIResultDto() { Code = 0, Msg = "采集位置成功", Data = new { lon = longitude , lat = latitude } };
         }
     }
 }

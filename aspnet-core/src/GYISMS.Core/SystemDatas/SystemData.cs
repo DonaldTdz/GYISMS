@@ -10,7 +10,7 @@ namespace GYISMS.SystemDatas
     /// 系统配置数据
     /// </summary>
     [Table("SystemDatas")]
-    public class SystemData : Entity<int>
+    public class SystemData : Entity
     {
 
         /// <summary>

@@ -1431,8 +1431,8 @@ namespace GYISMS.Migrations
                 b.Property<string>("Address").HasMaxLength(500);
                 b.Property<int?>("Type");
                 b.Property<decimal?>("PlantingArea");
-                b.Property<decimal?>("Longitude");
-                b.Property<decimal?>("Latitude");
+                b.Property<decimal?>("Longitude").HasColumnType("decimal(18,6)");
+                b.Property<decimal?>("Latitude").HasColumnType("decimal(18,6)");
                 b.Property<DateTime?>("ContractTime");
                 b.Property<bool?>("IsDeleted");
                 b.Property<DateTime?>("CreationTime");
