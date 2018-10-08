@@ -394,7 +394,7 @@ namespace GYISMS.VisitRecords
         [AbpAllowAnonymous]
         public Task GenerateWatermarkImgTests()
         {
-            return Task.FromResult(GenerateWatermarkImg("/visit/bbed0bd3-6435-44e9-b86e-89556982fdfd.jpg", "四川成都戛纳湾金棕榈", "唐德舟","唐全华"));
+            return Task.FromResult(GenerateWatermarkImg("/visit/bbed0bd3-6435-44e9-b86e-89556982fdfd.jpg", "四川成都戛纳湾金棕榈", "烟技员","烟农"));
         }
         [AbpAllowAnonymous]
         [Audited]
