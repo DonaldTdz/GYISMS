@@ -11,6 +11,8 @@ namespace GYISMS.Charts
     {
         Task<List<ScheduleSummaryDto>> GetScheduleSummaryAsync(string userId);
 
+        Task<List<ScheduleSummaryDto>> GetUserScheduleSummaryAsync(string userId);
+
         Task<DistrictChartDto> GetDistrictChartDataAsync(string userId, DateTime? startDate, DateTime? endDate);
 
         Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime);

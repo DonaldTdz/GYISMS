@@ -25,6 +25,20 @@ using GYISMS.Dtos;
 using GYISMS.VisitExamines;
 using GYISMS.GYEnums;
 using GYISMS.Employees;
+using Abp.Runtime.Validation;
+using Abp.Auditing;
+using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using SixLabors.ImageSharp.PixelFormats;
+using SixLabors.ImageSharp;
+using SixLabors.Primitives;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.Fonts;
+using SixLabors.ImageSharp.Processing.Text;
+using GYISMS.Helpers;
+using GYISMS.SystemDatas;
+//using PT = SixLabors.ImageSharp.Processing.Processors.Text;
 
 namespace GYISMS.VisitRecords
 {
@@ -40,6 +54,8 @@ namespace GYISMS.VisitRecords
         private readonly IRepository<TaskExamine> _taskExamineRepository;
         private readonly IRepository<VisitExamine, Guid> _visitExamineRepository;
         private readonly IRepository<Employee, string> _employeeRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
+        private readonly IRepository<SystemData> _systemDataRepository;
 
         private readonly IVisitRecordManager _visitrecordManager;
 
@@ -54,6 +70,8 @@ namespace GYISMS.VisitRecords
             , IRepository<VisitExamine, Guid> visitExamineRepository
             , IVisitRecordManager visitrecordManager
             , IRepository<Employee, string> employeeRepository
+            , IRepository<SystemData> systemDataRepository
+            , IHostingEnvironment env
             )
         {
             _visitrecordRepository = visitrecordRepository;
@@ -63,6 +81,8 @@ namespace GYISMS.VisitRecords
             _visitExamineRepository = visitExamineRepository;
             _visitrecordManager = visitrecordManager;
             _employeeRepository = employeeRepository;
+            _systemDataRepository = systemDataRepository;
+            _hostingEnvironment = env;
         }
 
 
@@ -246,6 +266,7 @@ namespace GYISMS.VisitRecords
         }
 
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<DingDingVisitRecordInputDto> GetCreateDingDingVisitRecordAsync(Guid scheduleDetailId)
         {
             var query = from sd in _scheduleDetailRepository.GetAll()
@@ -277,11 +298,76 @@ namespace GYISMS.VisitRecords
             return result;
         }
 
+        private string GetWeekDay(DayOfWeek dayWeek)
+        {
+            switch (dayWeek)
+            {
+                case DayOfWeek.Friday:
+                    return "星期五";
+                case DayOfWeek.Monday:
+                    return "星期一";
+                case DayOfWeek.Saturday:
+                    return "星期六";
+                case DayOfWeek.Sunday:
+                    return "星期日";
+                case DayOfWeek.Thursday:
+                    return "星期四";
+                case DayOfWeek.Tuesday:
+                    return "星期二";
+                case DayOfWeek.Wednesday:
+                    return "星期三";
+                default:
+                    return string.Empty;
+            }
+        }
+
+        private string GenerateWatermarkImg(string imgPath, string location, string userName, string growerName)
+        {
+            //拜访时间
+            DateTime stime = DateTime.Now;
+            var host = _hostingEnvironment.WebRootPath;
+            var imgFullPath = host + imgPath;
+            using (FileStream stream = File.OpenRead(imgFullPath))
+            using (Image<Rgba32> vimage = Image.Load(stream))
+            {
+                //画文字
+                var fontCollection = new FontCollection();
+                var fontPath = "C:/Windows/Fonts/simkai.ttf";
+                //var fontPath = "C:/Windows/Fonts/STXINWEI.TTF";
+                //var fontPath = "C:/Windows/Fonts/simfang.ttf";
+                var fontTitle = new Font(fontCollection.Install(fontPath), 20, FontStyle.Bold);
+                var font = new Font(fontCollection.Install(fontPath), 12, FontStyle.Bold);
+                //var fontTitle = SystemFonts.CreateFont("Microsoft YaHei UI", 20, FontStyle.Bold);
+                //var font = SystemFonts.CreateFont("Microsoft YaHei UI", 12, FontStyle.Bold);
+                vimage.Mutate(x => x.DrawText(stime.ToString("HH:mm"), fontTitle, Rgba32.White, new PointF(10, 5)));
+                vimage.Mutate(x => x.DrawText(string.Format("{0} {1}", stime.ToString("yyyy.MM.dd"), GetWeekDay(stime.DayOfWeek)), font, Rgba32.White, new PointF(10, 30)));
+                vimage.Mutate(x => x.DrawText(string.Format("拜访烟农: {0}", growerName), font, Rgba32.White, new PointF(10, 48)));
+                TextGraphicsOptions options = new TextGraphicsOptions(true)
+                {
+                    Antialias = true,
+                    HorizontalAlignment = HorizontalAlignment.Right,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                var height = vimage.Height;
+                vimage.Mutate(x => x.DrawText(options, "用户: " + userName, font, Rgba32.White, new PointF(350, height - 46)));
+                vimage.Mutate(x => x.DrawText(options, "位置: " + location, font, Rgba32.White, new PointF(350, height - 28)));
+                var newImagePath = imgPath.Replace("visit", "visit/watermark");
+                vimage.Save(host + newImagePath);
+                return newImagePath;
+            }
+        }
+
         [AbpAllowAnonymous]
+        //[DisableValidation]
+        [Audited]
         public async Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input)
         {
             var vistitRecord = input.MapTo<VisitRecord>();
             vistitRecord.SignTime = DateTime.Now;
+            //计划明细
+            var detail = await _scheduleDetailRepository.GetAsync(input.ScheduleDetailId);
+            //生成水印图片
+            vistitRecord.ImgPath = GenerateWatermarkImg(vistitRecord.ImgPath, vistitRecord.Location, detail.EmployeeName, detail.GrowerName);
             //拜访记录
             var vrId = await _visitrecordRepository.InsertAndGetIdAsync(vistitRecord);
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -298,12 +384,37 @@ namespace GYISMS.VisitRecords
                 };
                 await _visitExamineRepository.InsertAsync(ve);
             }
-            //更新拜访明细
-            var detail = await _scheduleDetailRepository.GetAsync(input.ScheduleDetailId);
+
             detail.CompleteNum++;
             detail.Status = detail.CompleteNum == detail.VisitNum ? ScheduleStatusEnum.已完成 : ScheduleStatusEnum.进行中;
 
             return new APIResultDto() { Code = 0, Msg = "保存数据成功" };
+        }
+
+        [AbpAllowAnonymous]
+        public Task GenerateWatermarkImgTests()
+        {
+            return Task.FromResult(GenerateWatermarkImg("/visit/bbed0bd3-6435-44e9-b86e-89556982fdfd.jpg", "四川成都戛纳湾金棕榈", "烟技员","烟农"));
+        }
+        [AbpAllowAnonymous]
+        [Audited]
+        public async Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower)
+        {
+            var distance = AbpMapByGoogle.GetDistance(lat, lon, latGrower, lonGrower);
+            var signRange = await _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.SignRange).FirstOrDefaultAsync();
+            var range = 500d;
+            if (signRange != null)
+            {
+                range = double.Parse(signRange.Desc);
+            }
+            if (distance < range)
+            {
+                return new APIResultDto() { Code = 0, Msg = "ok"};
+            }
+            else
+            {
+                return new APIResultDto() { Code = 901, Msg = "当前位置不在拜访位置范围内" };
+            }
         }
 
         /// <summary>

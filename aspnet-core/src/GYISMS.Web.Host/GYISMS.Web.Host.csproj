@@ -7,6 +7,7 @@
     <OutputType>Exe</OutputType>
     <PackageId>GYISMS.Web.Host</PackageId>
     <UserSecretsId>AbpCompanyName-GYISMS-56C2EF2F-ABD6-4EFC-AAF2-2E81C34E8FB1</UserSecretsId>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
     <Content Remove="wwwroot\swagger\ui\index.html" />
@@ -53,6 +54,6 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="wwwroot\visit\" />
+    <Folder Include="wwwroot\visit\watermark\" />
   </ItemGroup>
 </Project>

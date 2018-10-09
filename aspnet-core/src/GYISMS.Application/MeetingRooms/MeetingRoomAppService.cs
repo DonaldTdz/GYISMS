@@ -19,6 +19,7 @@ using GYISMS.MeetingRooms.Dtos;
 using GYISMS.MeetingRooms;
 using GYISMS.Authorization;
 using GYISMS.Meetings;
+using Abp.Auditing;
 
 namespace GYISMS.MeetingRooms
 {
@@ -229,6 +230,7 @@ namespace GYISMS.MeetingRooms
 
 
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<List<MeetingRoomListDto>> GetDingDingMeetingRoomsAsync()
         {
             var room = _meetingroomRepository.GetAll();
@@ -270,6 +272,7 @@ namespace GYISMS.MeetingRooms
         /// <param name="id"></param>
         /// <returns></returns>
         [AbpAllowAnonymous]
+        [Audited]
         public async Task<MeetingRoomListDto> GetDingDingMeetingRoomByIdAsync(int id)
         {
             var room =await _meetingroomRepository.GetAll().Where(v => v.Id == id).AsNoTracking().FirstOrDefaultAsync();

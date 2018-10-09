@@ -18,6 +18,7 @@ using GYISMS.TaskExamines.Authorization;
 using GYISMS.TaskExamines.Dtos;
 using GYISMS.TaskExamines;
 using GYISMS.Authorization;
+using Abp.Auditing;
 
 namespace GYISMS.TaskExamines
 {
@@ -25,6 +26,7 @@ namespace GYISMS.TaskExamines
     /// TaskExamine应用层服务的接口实现方法  
     ///</summary>
     [AbpAuthorize(AppPermissions.Pages)]
+
     public class TaskExamineAppService : GYISMSAppServiceBase, ITaskExamineAppService
     {
         private readonly IRepository<TaskExamine, int> _taskexamineRepository;

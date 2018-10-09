@@ -84,4 +84,9 @@ namespace GYISMS.GYEnums
         剑阁县=2,
         旺苍县=3
     }
+
+    public static class GYCode
+    {
+        public static string SignRange = "SignRange";
+    }
 }

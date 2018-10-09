@@ -70,5 +70,9 @@ namespace GYISMS.VisitRecords
 
         Task<APIResultDto> SaveDingDingVisitRecordAsync(DingDingVisitRecordInputDto input);
         Task<PagedResultDto<VisitRecordListDto>> GetVisitRecordsByGrowerId(GetVisitRecordsInput input);
+
+        Task GenerateWatermarkImgTests();
+
+        Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower);
     }
 }

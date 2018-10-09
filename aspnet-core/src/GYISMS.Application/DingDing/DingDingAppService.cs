@@ -1,4 +1,5 @@
-﻿using Abp.Authorization;
+﻿using Abp.Auditing;
+using Abp.Authorization;
 using DingTalk.Api;
 using DingTalk.Api.Request;
 using DingTalk.Api.Response;
@@ -9,6 +10,7 @@ using System.Text;
 namespace GYISMS.DingDing
 {
     [AbpAllowAnonymous]
+    [Audited]
     public class DingDingAppService : GYISMSAppServiceBase, IDingDingAppService
     {
         /// <summary>

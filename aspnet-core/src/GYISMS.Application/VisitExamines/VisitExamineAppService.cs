@@ -18,6 +18,7 @@ using GYISMS.VisitExamines.Authorization;
 using GYISMS.VisitExamines.Dtos;
 using GYISMS.VisitExamines;
 using GYISMS.Authorization;
+using Abp.Auditing;
 
 namespace GYISMS.VisitExamines
 {
@@ -25,6 +26,7 @@ namespace GYISMS.VisitExamines
     /// VisitExamine应用层服务的接口实现方法  
     ///</summary>
     [AbpAuthorize(AppPermissions.Pages)]
+
     public class VisitExamineAppService : GYISMSAppServiceBase, IVisitExamineAppService
     {
     private readonly IRepository<VisitExamine, Guid>

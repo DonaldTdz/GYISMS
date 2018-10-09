@@ -24,6 +24,7 @@ using DingTalk.Api;
 using DingTalk.Api.Request;
 using DingTalk.Api.Response;
 using GYISMS.ScheduleDetails;
+using Abp.Auditing;
 
 namespace GYISMS.Schedules
 {
@@ -293,7 +294,7 @@ namespace GYISMS.Schedules
                     OapiMessageCorpconversationAsyncsendV2Request.MsgDomain msg = new OapiMessageCorpconversationAsyncsendV2Request.MsgDomain();
                     msg.Link = new OapiMessageCorpconversationAsyncsendV2Request.LinkDomain();
                     msg.Msgtype = "link";
-                    msg.Link.Title = "您有新的拜访计划";
+                    msg.Link.Title = "您有新的拜访任务哦";
                     msg.Link.Text = input.ScheduleName + DateTime.Now.ToString();
                     msg.Link.PicUrl = "@lALPBY0V4-AiG7vMgMyA";
                     msg.Link.MessageUrl = "eapp://";

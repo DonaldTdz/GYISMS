@@ -20,6 +20,8 @@ using GYISMS.Growers;
 using GYISMS.Authorization;
 using GYISMS.ScheduleDetails;
 using GYISMS.Employees;
+using Abp.Auditing;
+using GYISMS.Dtos;
 
 namespace GYISMS.Growers
 {
@@ -305,8 +307,6 @@ namespace GYISMS.Growers
         /// <summary>
         /// 删除烟农信息
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task GrowerDeleteByIdAsync(GrowerEditDto input)
         {
             var entity = await _growerRepository.GetAsync(input.Id.Value);
@@ -315,6 +315,24 @@ namespace GYISMS.Growers
             entity.DeletionTime = DateTime.Now;
             entity.DeleterUserId = AbpSession.UserId;
             await _growerRepository.UpdateAsync(entity);
+        }
+
+        /// <summary>
+        /// 更新烟农位置
+        /// </summary>
+        [AbpAllowAnonymous]
+        public async Task<APIResultDto> SavePositionAsync(int id, decimal longitude, decimal latitude)
+        {
+            var grower = await _growerRepository.GetAsync(id);
+            if (grower == null)
+            {
+                return new APIResultDto() { Code = 901, Msg = "烟农不存在" };
+            }
+
+            grower.Longitude = longitude;
+            grower.Latitude = latitude;
+            await _growerRepository.UpdateAsync(grower);
+            return new APIResultDto() { Code = 0, Msg = "采集位置成功", Data = new { lon = longitude , lat = latitude } };
         }
     }
 }

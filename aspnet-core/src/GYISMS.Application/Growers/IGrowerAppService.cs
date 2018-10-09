@@ -7,6 +7,7 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GYISMS.Growers.Dtos;
 using GYISMS.Growers;
+using GYISMS.Dtos;
 
 namespace GYISMS.Growers
 {
@@ -56,5 +57,7 @@ namespace GYISMS.Growers
         Task GrowerDeleteByIdAsync(GrowerEditDto input);
         Task<GrowerListDto> GetGrowerByIdAsync(int id);
         Task<List<GrowerListDto>> GetGrowersNoPageAsync(GetGrowersInput input);
+
+        Task<APIResultDto> SavePositionAsync(int id, decimal longitude, decimal latitude);
     }
 }

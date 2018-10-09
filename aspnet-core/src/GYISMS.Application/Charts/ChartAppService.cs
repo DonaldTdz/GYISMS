@@ -136,6 +136,7 @@ namespace GYISMS.Charts
         }
 
         /// <summary>
+<<<<<<< HEAD
         /// 统计任务完成情况的数据（按任务类型和任务名分组）
         /// </summary>
         /// <returns></returns>
@@ -213,6 +214,43 @@ namespace GYISMS.Charts
                 });
             }
             return items;
+        }
+
+        /// <summary>
+        /// 个人计划汇总
+        /// </summary>
+        public async Task<List<ScheduleSummaryDto>> GetUserScheduleSummaryAsync(string userId)
+        {
+            return await Task.Run(() =>
+            {
+                var dataList = new List<ScheduleSummaryDto>();
+                var query = from sd in _scheduleDetailRepository.GetAll()
+                            join s in _scheduleRepository.GetAll() on sd.ScheduleId equals s.Id
+                            where s.Status == ScheduleMasterStatusEnum.已发布
+                            && sd.EmployeeId == userId
+                            select sd;
+                //总数
+                var tnum = query.Sum(q => q.VisitNum);
+                tnum = tnum ?? 0;
+                //完成数
+                var cnum = query.Sum(q => q.CompleteNum);
+                cnum = cnum ?? 0;
+                var cpercent = Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
+                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "完成", ClassName = "complete", Percent = cpercent, Seq = 1 });
+
+                //逾期数
+                var etnum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
+                etnum = etnum ?? 0;
+                var etpercent = Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
+                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent, Seq = 3 });
+
+                //进行中数
+                var pnum = tnum - cnum - etnum;
+                var ppercent = 1M - cpercent - etpercent;
+                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "进行中", ClassName = "process", Percent = ppercent, Seq = 2 });
+
+                return dataList.OrderBy(d => d.Seq).ToList();
+            });
         }
     }
 }

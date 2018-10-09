@@ -23,6 +23,7 @@ using GYISMS.Dtos;
 using GYISMS.Authorization;
 using GYISMS.Employees;
 using GYISMS.Employees.Dtos;
+using Abp.Auditing;
 
 namespace GYISMS.Organizations
 {
@@ -30,6 +31,7 @@ namespace GYISMS.Organizations
     /// Organization应用层服务的接口实现方法  
     ///</summary>
     [AbpAuthorize(AppPermissions.Pages)]
+
     public class OrganizationAppService : GYISMSAppServiceBase, IOrganizationAppService
     {
         private readonly IRepository<Organization, long> _organizationRepository;
