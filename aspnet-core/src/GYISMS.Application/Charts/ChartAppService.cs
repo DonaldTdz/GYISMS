@@ -136,7 +136,6 @@ namespace GYISMS.Charts
         }
 
         /// <summary>
-<<<<<<< HEAD
         /// 统计任务完成情况的数据（按任务类型和任务名分组）
         /// </summary>
         /// <returns></returns>
