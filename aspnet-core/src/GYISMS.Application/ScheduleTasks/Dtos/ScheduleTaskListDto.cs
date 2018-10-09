@@ -389,7 +389,29 @@ namespace GYISMS.ScheduleTasks.Dtos
 
         public string Location { get; set; }
 
+        public DateTime? SignTime { get; set; }
+
+        public string TimeFormat
+        {
+            get
+            {
+                return SignTime.Value.ToString("yyyy.MM.dd HH:mm");
+            }
+        }
+
+        public string DateFormat
+        {
+            get
+            {
+                return SignTime.Value.ToString("yyyy-MM-dd");
+            }
+        }
+
+        public string ImgPath { get; set; }
+
         public DateTime? CreationTime { get; set; }
+
+        public string Desc { get; set; }
 
         public string CreationTimeFormat
         {
