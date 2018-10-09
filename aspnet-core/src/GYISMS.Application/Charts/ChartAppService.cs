@@ -235,13 +235,13 @@ namespace GYISMS.Charts
                 var cnum = query.Sum(q => q.CompleteNum);
                 cnum = cnum ?? 0;
                 var cpercent = Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
-                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "完成", ClassName = "complete", Percent = cpercent, Seq = 1 });
+                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "已完成", ClassName = "complete", Percent = cpercent, Seq = 1 });
 
                 //逾期数
                 var etnum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
                 etnum = etnum ?? 0;
                 var etpercent = Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
-                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent, Seq = 3 });
+                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "已逾期", ClassName = "overdue", Percent = etpercent, Seq = 3 });
 
                 //进行中数
                 var pnum = tnum - cnum - etnum;
