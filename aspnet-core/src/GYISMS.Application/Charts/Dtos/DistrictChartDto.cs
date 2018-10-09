@@ -89,4 +89,56 @@ namespace GYISMS.Charts.Dtos
             }
         }
     }
+
+    public class SheduleByTaskDto
+    {
+        public int Id { get; set; }
+
+        public string TaskName { get; set; }
+
+        public int? VisitNum { get; set; }
+
+        public int? CompleteNum { get; set; }
+
+        public int? ExpiredNum { get; set; }
+    }
+
+    public class ChartByTaskDto
+    {
+        public ChartByTaskDto()
+        {
+            SheduleByTaskDtos = new List<SheduleByTaskDto>();
+        }
+
+        public List<SheduleByTaskDto> SheduleByTaskDtos { get; set; }
+        public List<DistrictChartItemDto> Items
+        {
+            get
+            {
+                var items = new List<DistrictChartItemDto>();
+                foreach (var item in SheduleByTaskDtos)
+                {
+                    items.Add(new DistrictChartItemDto()
+                    {
+                        District = item.TaskName,
+                        Name = "计划",
+                        Num = item.VisitNum
+                    });
+                    items.Add(new DistrictChartItemDto()
+                    {
+                        District = item.TaskName,
+                        Name = "进行中",
+                        Num = item.CompleteNum
+                    });
+                    items.Add(new DistrictChartItemDto()
+                    {
+                        District = item.TaskName,
+                        Name = "逾期",
+                        Num = item.ExpiredNum
+                    });
+                }
+                return items;
+            }
+        }
+    }
 }

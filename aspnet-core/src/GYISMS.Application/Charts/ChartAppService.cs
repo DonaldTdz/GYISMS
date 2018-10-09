@@ -29,18 +29,18 @@ namespace GYISMS.Charts
     {
         private readonly IRepository<ScheduleTask, Guid> _scheduletaskRepository;
         private readonly IRepository<Schedule, Guid> _scheduleRepository;
-        private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
+        //private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
         private readonly IRepository<VisitTask> _visitTaskRepository;
         private readonly IRepository<Grower> _growerRepository;
         private readonly IRepository<VisitRecord, Guid> _visitRecordRepository;
-
+        private readonly ISheduleDetailRepository _scheduleDetailRepository;
         /// <summary>
         /// 构造函数 
         ///</summary>
         public ChartAppService(IRepository<ScheduleTask, Guid> scheduletaskRepository
             , IRepository<Schedule, Guid> scheduleRepository
             , IRepository<VisitTask> visitTaskRepository
-            , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
+            , ISheduleDetailRepository scheduleDetailRepository
             , IRepository<Grower> growerRepository
             , IRepository<VisitRecord, Guid> visitRecordRepository
             )
@@ -133,6 +133,86 @@ namespace GYISMS.Charts
             var resultData = new DistrictChartDto();
             resultData.Districts = await rquery.ToListAsync();
             return resultData;
+        }
+
+        /// <summary>
+        /// 统计任务完成情况的数据（按任务类型和任务名分组）
+        /// </summary>
+        /// <returns></returns>
+        public async Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime)
+        {
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                        join s in _scheduleRepository.GetAll()
+                        .WhereIf(startTime.HasValue, s => s.BeginTime >= startTime)
+                        .WhereIf(startTime.HasValue, s => s.BeginTime <= endTime)
+                        on sd.ScheduleId equals s.Id
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        select new
+                        {
+                            sd.VisitNum,
+                            sd.CompleteNum,
+                            sd.Status,
+                            t.Type,
+                            t.Name
+                        };
+            var list = query.GroupBy(s => new { s.Name, s.Type }).Select(s =>
+            new SheduleByTaskDto()
+            {
+                TaskName = s.Key.Name,
+                VisitNum = s.Sum(sd => sd.VisitNum),
+                CompleteNum = s.Sum(sd => sd.CompleteNum),
+                ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+            });
+            var result = new ChartByTaskDto();
+            result.SheduleByTaskDtos = await list.ToListAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// 按月统计任务（半年、一年）
+        /// </summary>
+        /// <param name="searchMoth"></param>
+        /// <returns></returns>
+        public async Task<List<DistrictChartItemDto>> GetChartByMothAsync(int searchMoth)
+        {
+            var timeNow = DateTime.Today;
+            DateTime startTime;
+            DateTime endTime;
+            if (searchMoth == 1)
+            {
+                startTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(-11);
+                endTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
+            }
+            else
+            {
+                startTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(-5);
+                endTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
+            }
+            var list = await _scheduleDetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime);
+            list.OrderBy(s => s.GroupName).ToList();
+            var items = new List<DistrictChartItemDto>();
+            foreach (var item in list)
+            {
+                items.Add(new DistrictChartItemDto()
+                {
+                    District = item.GroupName,
+                    Name = "计划",
+                    Num = item.Total
+                });
+                items.Add(new DistrictChartItemDto()
+                {
+                    District = item.GroupName,
+                    Name = "进行中",
+                    Num = item.Completed
+                });
+                items.Add(new DistrictChartItemDto()
+                {
+                    District = item.GroupName,
+                    Name = "逾期",
+                    Num = item.Expired
+                });
+            }
+            return items;
         }
     }
 }
