@@ -25,6 +25,10 @@ using GYISMS.Schedules;
 using GYISMS.Dtos;
 using GYISMS.VisitTasks;
 using Abp.Auditing;
+using DingTalk.Api;
+using DingTalk.Api.Request;
+using DingTalk.Api.Response;
+using GYISMS.Helpers;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -455,10 +459,10 @@ namespace GYISMS.ScheduleDetails
                             TaskName = t.Name,
                             TaskType = t.Type,
                             AreaCode = g.CountyCode,
-                            GrowerName=sd.GrowerName,
-                            EmployeeName=sd.EmployeeName
+                            GrowerName = sd.GrowerName,
+                            EmployeeName = sd.EmployeeName
                         };
-           
+
             var scheduledetailCount = await query.CountAsync();
 
             var scheduledetails = await query
@@ -467,7 +471,7 @@ namespace GYISMS.ScheduleDetails
                     .ToListAsync();
 
             // var scheduledetailListDtos = ObjectMapper.Map<List <ScheduleDetailListDto>>(scheduledetails);
-             var scheduledetailListDtos = scheduledetails.MapTo<List<SheduleDetailTaskListDto>>();
+            var scheduledetailListDtos = scheduledetails.MapTo<List<SheduleDetailTaskListDto>>();
 
             return new PagedResultDto<SheduleDetailTaskListDto>(
                     scheduledetailCount,
@@ -481,46 +485,108 @@ namespace GYISMS.ScheduleDetails
         /// <returns></returns>
         public async Task<APIResultDto> CreateAllScheduleTaskAsync(GetGrowersInput input)
         {
-            try
+            // 全部指派找出已存在指派信息
+            var hasScheduleDetail = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.ScheduleTaskId).ToListAsync();
+            if (hasScheduleDetail.Count != 0)
             {
-                // 全部指派找出已存在指派信息
-                var hasScheduleDetail = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.ScheduleTaskId).ToListAsync();
-                if (hasScheduleDetail.Count != 0)
-                {
-                    var growerIds = _growerRepository.GetAll().Where(v => v.IsDeleted == false).Select(v => v.Id);
-                    var sameIds = hasScheduleDetail.Where(v => growerIds.Contains(v.GrowerId)).Select(v => v.Id).ToList();
-                    await BatchDeleteScheduleDetailsAsync(sameIds);
-                    await CurrentUnitOfWork.SaveChangesAsync();
-                }
-
-                var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
-                foreach (var item in growerList)
-                {
-                    ScheduleDetail entity = new ScheduleDetail();
-                    entity.VisitNum = input.VisitNum;
-                    entity.ScheduleTaskId = input.ScheduleTaskId;
-                    entity.CompleteNum = 0;
-                    entity.Status = ScheduleStatusEnum.未开始;
-                    entity.ScheduleId = input.ScheduleId;
-                    entity.TaskId = input.TaskId;
-                    entity.GrowerId = item.Id;
-                    entity.GrowerName = item.Name;
-                    if (item.EmployeeName != null)
-                    {
-                        entity.EmployeeName = item.EmployeeName;
-                    }
-                    if (item.EmployeeId != null)
-                    {
-                        entity.EmployeeId = item.EmployeeId;
-                    }
-                    var result = await _scheduledetailRepository.InsertAsync(entity);
-                }
-                return new APIResultDto() { Code = 0, Msg = "任务批量指派成功" };
+                var growerIds = _growerRepository.GetAll().Where(v => v.IsDeleted == false).Select(v => v.Id);
+                var sameIds = hasScheduleDetail.Where(v => growerIds.Contains(v.GrowerId)).Select(v => v.Id).ToList();
+                await BatchDeleteScheduleDetailsAsync(sameIds);
+                await CurrentUnitOfWork.SaveChangesAsync();
             }
-            catch (Exception ex)
+
+            var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
+            foreach (var item in growerList)
             {
-                Logger.ErrorFormat("AssignAll errormsg{0} Exception{1}", ex.Message, ex);
-                return new APIResultDto() { Code = 901, Msg = "任务批量指派失败" };
+                ScheduleDetail entity = new ScheduleDetail();
+                entity.VisitNum = input.VisitNum;
+                entity.ScheduleTaskId = input.ScheduleTaskId;
+                entity.CompleteNum = 0;
+                entity.Status = ScheduleStatusEnum.未开始;
+                entity.ScheduleId = input.ScheduleId;
+                entity.TaskId = input.TaskId;
+                entity.GrowerId = item.Id;
+                entity.GrowerName = item.Name;
+                if (item.EmployeeName != null)
+                {
+                    entity.EmployeeName = item.EmployeeName;
+                }
+                if (item.EmployeeId != null)
+                {
+                    entity.EmployeeId = item.EmployeeId;
+                }
+                var result = await _scheduledetailRepository.InsertAsync(entity);
+            }
+            return new APIResultDto() { Code = 0, Msg = "任务批量指派成功" };
+        }
+
+        /// <summary>
+        /// 自动更新逾期计划状态
+        /// </summary>
+        [Audited]
+        [AbpAllowAnonymous]
+        public async Task AutoUpdateOverdueStatusAsync()
+        {
+            var dateTime = DateTime.Now;
+            var query = from sd in _scheduledetailRepository.GetAll()
+                        join s in _scheduleRepository.GetAll()
+                        on sd.ScheduleId equals s.Id
+                        where s.Status == ScheduleMasterStatusEnum.已发布
+                        && s.EndTime < dateTime        //已过期
+                        && sd.CompleteNum < sd.VisitNum//未完成
+                        && sd.Status != ScheduleStatusEnum.已逾期
+                        select sd;
+            var overdueList = await query.ToListAsync();
+            foreach (var item in overdueList)
+            {
+                item.Status = ScheduleStatusEnum.已逾期;
+            }
+        }
+
+        /// <summary>
+        /// 发送任务过期提醒
+        /// </summary>
+        [Audited]
+        [AbpAllowAnonymous]
+        public async Task SendTaskOverdueMsgAsync()
+        {
+            string accessToken = DingDingConfigHelper.GetVisitTaskAccessToken();
+            var dateTime = DateTime.Today.AddDays(-1);
+            var query = from sd in _scheduledetailRepository.GetAll()
+                        join s in _scheduleRepository.GetAll()
+                        on sd.ScheduleId equals s.Id
+                        join t in _visittaskRepository.GetAll()
+                        on sd.TaskId equals t.Id
+                        where s.Status == ScheduleMasterStatusEnum.已发布
+                        && s.EndTime <= dateTime        //还有1天过期
+                        && sd.CompleteNum < sd.VisitNum//未完成
+                        && sd.Status != ScheduleStatusEnum.已逾期
+                        select new
+                        {
+                            sd.EmployeeId,
+                            sd.EmployeeName,
+                            t.Name,
+                            s.EndTime
+                        };
+            var overdueList = await query.ToListAsync();
+            foreach (var item in overdueList)
+            {
+                //发送工作消息
+                IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+                OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+                request.UseridList = item.EmployeeId;
+                request.ToAllUser = false;
+                request.AgentId = DingDingConfigHelper.VisitTaskAgentID;
+
+                OapiMessageCorpconversationAsyncsendV2Request.MsgDomain msg = new OapiMessageCorpconversationAsyncsendV2Request.MsgDomain();
+                msg.Link = new OapiMessageCorpconversationAsyncsendV2Request.LinkDomain();
+                msg.Msgtype = "link";
+                msg.Link.Title = "任务过期提醒";
+                msg.Link.Text = string.Format("{0}：您有任务[{1}]即将过期，过期日期：{2}，点击查看详细",item.EmployeeName, item.Name, item.EndTime.Value.ToString("yyyy-MM-dd"));
+                msg.Link.PicUrl = "@lALPBY0V4-AiG7vMgMyA";
+                msg.Link.MessageUrl = "eapp://";
+                request.Msg_ = msg;
+                OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);
             }
         }
     }
