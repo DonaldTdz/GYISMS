@@ -11,6 +11,7 @@ import { HostBinding } from '@angular/core';
 import { NzModalService, NzNotificationService } from 'ng-zorro-antd';
 import { AppConsts } from '@shared/AppConsts';
 import { MenuItem } from '@shared/layout/menu-item';
+import { AppSessionService } from '@shared/session/app-session.service';
 
 @Component({
     selector: 'default-layout',
@@ -53,7 +54,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '组织架构',
                 '',
                 '',
-                '/app/basic/organization',
+                '/app/basic/organization', null, null, 'CityAdmin'
             ),
             // new MenuItem(
             //     '内部员工',
@@ -114,7 +115,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '/app/meeting/meeting-room',
             ),
-            new MenuItem(
+            /*new MenuItem(
                 '会议室预定',
                 '',
                 '',
@@ -125,7 +126,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '',
                 '',
-            ),
+            ),*/
             new MenuItem(
                 '会议室详情',
                 '',
@@ -142,7 +143,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 null,
                 true
             ),
-            ]
+            ], null, 'CityAdmin'
         ),
 
         // 配置管理
@@ -169,7 +170,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                     '',
                     '',
                     '/app/config/data-config',
-                ),]
+                ),], null, 'CityAdmin'
         ),
 
         // 系统管理
@@ -200,7 +201,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                     '',
                     '/app/users',
                 )
-            ]
+            ], null, 'Admin'
         )
     ];
 
@@ -210,14 +211,15 @@ export class DefaultLayoutComponent extends AppComponentBase
         private router: Router,
         private titleSrv: TitleService,
         private menuService: MenuService,
+        private appSessionService: AppSessionService,
     ) {
         super(injector);
 
         // 创建菜单
-
         const arrMenu = new Array<Menu>();
         this.processMenu(arrMenu, this.Menums);
         this.menuService.add(arrMenu);
+        this.menuService.resume();
     }
 
     ngOnInit(): void {
@@ -258,8 +260,13 @@ export class DefaultLayoutComponent extends AppComponentBase
                 link: item.route,
                 icon: `${item.icon}`,
                 hide: item.hide,
+                acl: item.acl,
             };
             if (item.permission !== '' && !this.isGranted(item.permission)) {
+                subMenu.hide = true;
+            }
+
+            if (!this.appSessionService.roles.includes('Admin') && item.acl && !this.appSessionService.roles.includes(item.acl)) {
                 subMenu.hide = true;
             }
 

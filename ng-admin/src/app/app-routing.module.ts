@@ -8,6 +8,8 @@ import { TenantsComponent } from '@app/tenants/tenants.component';
 import { RolesComponent } from '@app/roles/roles.component';
 import { UsersComponent } from '@app/users/users.component';
 import { DefaultLayoutComponent } from 'layout/default-layout.component';
+import { ACLGuard } from '@delon/acl';
+
 const routes: Routes = [
   {
     path: 'app',
@@ -23,17 +25,20 @@ const routes: Routes = [
       {
         path: 'tenants',
         component: TenantsComponent,
-        canActivate: [AppRouteGuard],
+        canActivate: [AppRouteGuard, ACLGuard],
+        data: { guard: 'Admin' },
       },
       {
         path: 'roles',
         component: RolesComponent,
-        canActivate: [AppRouteGuard],
+        canActivate: [AppRouteGuard, ACLGuard],
+        data: { guard: 'Admin' },
       },
       {
         path: 'users',
         component: UsersComponent,
-        canActivate: [AppRouteGuard],
+        canActivate: [AppRouteGuard, ACLGuard],
+        data: { guard: 'Admin' },
       },
       {
         path: 'about',

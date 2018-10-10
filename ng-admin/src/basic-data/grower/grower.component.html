@@ -14,7 +14,7 @@
             <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                 <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
                 <button nz-button type="reset" (click)="refreshData(true)" class="mx-sm">重置</button>
-                <button nz-button type="button" (click)="createRoom()" nzType="primary">
+                <button nz-button type="button" (click)="createRoom()" [acl]="'CityAdmin'" nzType="primary">
                     <i class="anticon anticon-plus"></i>
                     <span>新建</span>
                 </button>
@@ -22,8 +22,9 @@
         </div>
     </form>
     <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-    <nz-table #nzTable [nzData]="growerList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()"
-        (nzPageSizeChange)="refreshData()">
+    <nz-table #nzTable [nzData]="growerList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate"
+        [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true"
+        (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
         <thead>
             <tr>
                 <th>用户名</th>

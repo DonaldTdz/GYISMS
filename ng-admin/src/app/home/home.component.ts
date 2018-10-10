@@ -54,12 +54,16 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     let roles = this._appSessionService.roles;
     if (roles) {
 
-      if (roles.includes('HostAdmin')) {
+      if (roles.includes('Admin')) {
         this.roleName += '系统管理员';
       }
 
-      if (roles.includes('Admin')) {
-        this.roleName += '管理员';
+      if (roles.includes('CityAdmin')) {
+        this.roleName += '市级管理员';
+      }
+
+      if (roles.includes('DistrictAdmin')) {
+        this.roleName += '区县管理员';
       }
     }
   }

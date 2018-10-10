@@ -7,11 +7,14 @@ import { EmployeeComponent } from './employee/employee.component';
 import { RetailCustomerComponent } from './retail-customer/retail-customer.component';
 import { GrowerComponent } from './grower/grower.component';
 import { GrowerDetailComponent } from './grower/grower-detail/grower-detail.component';
+import { ACLGuard } from '@delon/acl';
+
 const routes: Routes = [
     {
         path: 'organization',
         component: OrganizationComponent,
-        canActivate: [AppRouteGuard],
+        canActivate: [AppRouteGuard, ACLGuard],
+        data: { guard: 'CityAdmin' },
     },
     {
         path: 'employee',
