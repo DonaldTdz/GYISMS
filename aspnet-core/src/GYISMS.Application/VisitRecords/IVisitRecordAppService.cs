@@ -74,5 +74,7 @@ namespace GYISMS.VisitRecords
         Task GenerateWatermarkImgTests();
 
         Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower);
+
+        Task<DingDingVisitRecordInputDto> GetDingDingVisitRecordAsync(Guid id);
     }
 }

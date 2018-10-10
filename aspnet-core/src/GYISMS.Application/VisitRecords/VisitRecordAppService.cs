@@ -373,6 +373,11 @@ namespace GYISMS.VisitRecords
                 vimage.Mutate(x => x.DrawText(options, "用户: " + userName, font, Rgba32.White, new PointF(350, height - 46)));
                 vimage.Mutate(x => x.DrawText(options, "位置: " + location, font, Rgba32.White, new PointF(350, height - 28)));
                 var newImagePath = imgPath.Replace("visit", "visit/watermark");
+                var newFolder = host + "/visit/watermark";
+                if (!Directory.Exists(newFolder))
+                {
+                    Directory.CreateDirectory(newFolder);
+                }
                 vimage.Save(host + newImagePath);
                 return newImagePath;
             }
@@ -438,6 +443,46 @@ namespace GYISMS.VisitRecords
             }
         }
 
+        [Audited]
+        [AbpAllowAnonymous]
+        public async Task<DingDingVisitRecordInputDto> GetDingDingVisitRecordAsync(Guid id)
+        {
+            var query = from vr in _visitrecordRepository.GetAll()
+                        join sd in _scheduleDetailRepository.GetAll() on vr.ScheduleDetailId equals sd.Id
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        join e in _employeeRepository.GetAll() on vr.EmployeeId equals e.Id
+                        where vr.Id == id
+                        select new DingDingVisitRecordInputDto()
+                        {
+                            ScheduleDetailId = sd.Id,
+                            EmployeeId = sd.EmployeeId,
+                            EmployeeName = sd.EmployeeName,
+                            GrowerName = sd.GrowerName,
+                            TaskDesc = t.Name + "（"+ t.Type.ToString() + "）",
+                            SignTime = vr.SignTime,
+                            Desc = vr.Desc,
+                            ImgPath = vr.ImgPath,
+                            Location = vr.Location,
+                            Latitude = vr.Latitude,
+                            Longitude = vr.Longitude,
+                            EmployeeImg = e.Avatar
+                        };
+            var dmdata = await query.FirstOrDefaultAsync();
+
+            var examQuery = from ve in _visitExamineRepository.GetAll()
+                            join te in _taskExamineRepository.GetAll() on ve.TaskExamineId equals te.Id
+                            where ve.VisitRecordId == id
+                            select new DingDingTaskExamineDto()
+                            {
+                                Name = te.Name,
+                                Desc = te.Desc,
+                                Score = ve.Score
+                            };
+
+            dmdata.Examines = await examQuery.ToListAsync();
+            return dmdata;
+        }
+
         /// <summary>
         /// 导出VisitRecord为excel表,等待开发。
         /// </summary>
@@ -449,12 +494,6 @@ namespace GYISMS.VisitRecords
         //	await FillRoleNames(userListDtos);
         //	return _userListExcelExporter.ExportToFile(userListDtos);
         //}
-
-
-
-        //// custom codes
-
-        //// custom codes end
 
     }
 }
