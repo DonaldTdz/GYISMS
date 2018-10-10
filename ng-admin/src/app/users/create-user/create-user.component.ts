@@ -26,7 +26,7 @@ export class CreateUserComponent extends ModalFormComponentBase<CreateUserDto> i
     this.validateForm = this.formBuilder.group({
       userName: ['', [Validators.required]],
       name: ['', [Validators.required]],
-      surname: ['', [Validators.required]],
+      // surname: ['', [Validators.required]],
       emailAddress: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
       confirmPassword: ['', [this.confirmationValidator]],
@@ -52,7 +52,6 @@ export class CreateUserComponent extends ModalFormComponentBase<CreateUserDto> i
     this._userService.getRoles()
       .subscribe((result) => {
         this.roles = result.items;
-
         this.roles.forEach((item) => {
           this.roleList.push({
             label: item.displayName, value: item.name, checked: true
@@ -86,7 +85,8 @@ export class CreateUserComponent extends ModalFormComponentBase<CreateUserDto> i
   protected getFormValues(): void {
     this.user.userName = this.getControlVal('userName');
     this.user.name = this.getControlVal('name');
-    this.user.surname = this.getControlVal('surname');
+    this.user.surname = this.user.name;
+    // this.user.surname = this.getControlVal('surname');
     this.user.emailAddress = this.getControlVal('emailAddress');
     this.user.password = this.getControlVal('password');
     this.user.isActive = this.getControlVal('isActive');

@@ -114,18 +114,18 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '/app/meeting/meeting-room',
             ),
-            new MenuItem(
-                '会议室预定',
-                '',
-                '',
-                '',
-            ),
-            new MenuItem(
-                '历史会议记录',
-                '',
-                '',
-                '',
-            ),
+            // new MenuItem(
+            //     '会议室预定',
+            //     '',
+            //     '',
+            //     '',
+            // ),
+            // new MenuItem(
+            //     '历史会议记录',
+            //     '',
+            //     '',
+            //     '',
+            // ),
             new MenuItem(
                 '会议室详情',
                 '',
@@ -258,6 +258,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 link: item.route,
                 icon: `${item.icon}`,
                 hide: item.hide,
+                reuse: false
             };
             if (item.permission !== '' && !this.isGranted(item.permission)) {
                 subMenu.hide = true;

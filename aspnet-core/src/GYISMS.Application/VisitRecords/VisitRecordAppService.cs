@@ -38,6 +38,7 @@ using SixLabors.Fonts;
 using SixLabors.ImageSharp.Processing.Text;
 using GYISMS.Helpers;
 using GYISMS.SystemDatas;
+using GYISMS.ScheduleTasks;
 //using PT = SixLabors.ImageSharp.Processing.Processors.Text;
 
 namespace GYISMS.VisitRecords
@@ -122,29 +123,49 @@ namespace GYISMS.VisitRecords
         {
             var record = _visitrecordRepository.GetAll().Where(v => v.GrowerId == input.GrowerId);
             var employee = _employeeRepository.GetAll();
-            var query = from r in record
-                        join e in employee on r.EmployeeId equals e.Id
-                        select new VisitRecordListDto()
-                        {
-                            Id = r.Id,
-                            EmployeeId = r.EmployeeId,
-                            GrowerId = r.GrowerId,
-                            Location = r.Location,
-                            Longitude = r.Longitude,
-                            SignTime = r.SignTime,
-                            ScheduleDetailId = r.ScheduleDetailId,
-                            Desc = r.Desc,
-                            ImgPath = r.ImgPath,
-                            Latitude = r.Latitude,
-                            CreationTime = r.CreationTime,
-                            EmployeeName = e.Name
-                        };
-
-            var visitrecordCount = await query.CountAsync();
-            var visitrecords = await query
-                    .OrderByDescending(v => v.SignTime).AsNoTracking()
-                    .PageBy(input)
-                    .ToListAsync();
+            var scheduleDetail = _scheduleDetailRepository.GetAll();
+            var task = _visitTaskRepository.GetAll();
+            var taskExamine = _taskExamineRepository.GetAll();
+            var query = await (from r in record
+                               join e in employee on r.EmployeeId equals e.Id
+                               join s in scheduleDetail on r.ScheduleDetailId equals s.Id
+                               join t in task on s.TaskId equals t.Id
+                               select new VisitRecordListDto()
+                               {
+                                   Id = r.Id,
+                                   EmployeeId = r.EmployeeId,
+                                   GrowerId = r.GrowerId,
+                                   Location = r.Location,
+                                   Longitude = r.Longitude,
+                                   SignTime = r.SignTime,
+                                   ScheduleDetailId = r.ScheduleDetailId,
+                                   Desc = r.Desc,
+                                   ImgPath = r.ImgPath,
+                                   Latitude = r.Latitude,
+                                   CreationTime = r.CreationTime,
+                                   EmployeeName = e.Name,
+                                   TaskName = t.Name,
+                                   HasExamine = t.IsExamine,
+                                   TaskId = t.Id
+                               }).ToListAsync();
+            foreach (var item in query)
+            {
+                if (item.HasExamine == true)
+                {
+                    var list = _taskExamineRepository.GetAll().Where(v => v.TaskId == item.TaskId).Select(v => v.Name).ToList();
+                    string examineName = string.Join(",", list.ToArray());
+                    item.ExaminesName = examineName;
+                }
+            }
+            var visitrecordCount =  query.Count();
+            //var visitrecords = await query
+            //        .OrderByDescending(v => v.SignTime).AsNoTracking()
+            //        .PageBy(input)
+            //        .ToListAsync();
+            var visitrecords = query
+                    .OrderByDescending(v => v.SignTime)
+                    .Skip(input.SkipCount)
+                    .Take(input.MaxResultCount);
 
             var visitrecordListDtos = visitrecords.MapTo<List<VisitRecordListDto>>();
 

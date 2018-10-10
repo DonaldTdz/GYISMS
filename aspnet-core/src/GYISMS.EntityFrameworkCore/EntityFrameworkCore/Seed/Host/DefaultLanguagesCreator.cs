@@ -15,8 +15,8 @@ namespace GYISMS.EntityFrameworkCore.Seed.Host
         {
             return new List<ApplicationLanguage>
             {
-                new ApplicationLanguage(null, "en", "English", "famfamfam-flags gb"),
                 new ApplicationLanguage(null, "zh-Hans", "简体中文", "famfamfam-flags cn"),
+                new ApplicationLanguage(null, "en", "English", "famfamfam-flags gb")
             };
         }
 

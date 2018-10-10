@@ -11,6 +11,14 @@
                     </nz-form-control>
                 </nz-form-item>
             </div>
+            <div nz-col [nzSpan]="8" class="mb-md">
+                <nz-form-item class="d-flex">
+                    <nz-form-label nzFor="employee">所属烟技员</nz-form-label>
+                    <nz-form-control class="flex-1">
+                        <input nz-input [(ngModel)]="search.employee" name="employee" placeholder="请输入烟技员姓名" nzSize="default">
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
             <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                 <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
                 <button nz-button type="reset" (click)="refreshData(true)" class="mx-sm">重置</button>
@@ -41,7 +49,7 @@
                 <td>{{data.tel}}</td>
                 <td>{{data.employeeName}}</td>
                 <td>
-                    <a (click)="goDetail(data.id)">信息维护</a>
+                    <a (click)="goDetail(data.id)">详细信息</a>
                 </td>
             </tr>
         </tbody>

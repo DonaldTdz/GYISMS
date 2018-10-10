@@ -64,7 +64,6 @@ namespace GYISMS.ScheduleTasks
             _visitTaskRepository = visitTaskRepository;
             _growerRepository = growerRepository;
             _visitRecordRepository = visitRecordRepository;
-
         }
 
 

@@ -15,7 +15,7 @@ namespace GYISMS.Growers.Dtos
         public string Name { get; set; }
         public int TaskId { get; set; }
         public Guid ScheduleId { get; set; }
-
+        public string Employee { get; set; }
         public Guid? Id { get; set; }
         public int VisitNum { get; set; }
         public Guid ScheduleTaskId { get; set; }

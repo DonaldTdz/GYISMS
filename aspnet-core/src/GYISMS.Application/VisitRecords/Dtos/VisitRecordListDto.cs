@@ -74,15 +74,10 @@ namespace GYISMS.VisitRecords.Dtos
         /// CreationTime
         /// </summary>
         public DateTime? CreationTime { get; set; }
-
-
-
-
-
-
-        //// custom codes
-
-        //// custom codes end
+        public int TaskId { get; set; }
+        public string TaskName { get; set; }
+        public string ExaminesName { get; set; }
+        public bool? HasExamine { get; set; }
     }
 
 
