@@ -11,6 +11,9 @@ export class VisitRecord implements IVisitRecord {
     imgPath: string;
     creationTime: Date;
     employeeName: string;
+    taskName: string;
+    examinesName: string;
+
     constructor(data?: IVisitRecord) {
         if (data) {
             for (var property in data) {
@@ -34,6 +37,8 @@ export class VisitRecord implements IVisitRecord {
             this.imgPath = data["imgPath"];
             this.creationTime = data["creationTime"];
             this.employeeName = data["employeeName"];
+            this.taskName = data["taskName"];
+            this.examinesName = data["examinesName"];
         }
     }
 
@@ -90,4 +95,6 @@ export interface IVisitRecord {
     imgPath: string;
     creationTime: Date;
     employeeName: string;
+    taskName: string;
+    examinesName: string;
 }

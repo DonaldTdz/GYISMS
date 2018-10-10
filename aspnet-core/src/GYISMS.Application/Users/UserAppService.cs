@@ -149,5 +149,31 @@ namespace GYISMS.Users
         {
             identityResult.CheckErrors(LocalizationManager);
         }
+
+        /// <summary>
+        /// 修改密码
+        /// </summary>
+        /// <param name="password">新密码</param>
+        /// <returns></returns>
+        public async Task GYUpdatePassword(string password)
+        {
+            var userId = AbpSession.GetUserId();
+            var user = _userManager.GetUserByIdAsync(userId).Result;
+            user.Password = _passwordHasher.HashPassword(user, password);
+            await _userManager.UpdateAsync(user);
+        }
+
+        /// <summary>
+        /// 检查输入的原密码与数据库中密码是否相等
+        /// </summary>
+        /// <returns></returns>
+        public async Task<bool> CheckOldPassword(string oldPassword)
+        {
+            var userId = AbpSession.GetUserId();
+            var entity = await _userManager.GetUserByIdAsync(userId);
+            var compareResult = _passwordHasher.VerifyHashedPassword(entity, entity.Password, oldPassword);
+            var result = compareResult == PasswordVerificationResult.Success ? true : false;
+            return result;
+        }
     }
 }

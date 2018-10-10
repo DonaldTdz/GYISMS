@@ -17,6 +17,7 @@ const COMPONENTS = [
   SideBarNavComponent,
   SideBarLogoComponent,
   SidebarUserComponent,
+  ChangePasswordComponent
 ];
 
 const HEADERCOMPONENTS = [
@@ -36,6 +37,7 @@ import { SideBarNavComponent } from './default/sidebar/components/sidebar-nav.co
 import { SideBarLogoComponent } from './default/sidebar/components/sidebar-logo.component';
 import { SidebarUserComponent } from './default/sidebar/components/sidebar-user.component';
 import { DefaultLayoutComponent } from './default-layout.component';
+import { ChangePasswordComponent } from './default/change-password/change-password.component';
 
 @NgModule({
   imports: [SharedModule],

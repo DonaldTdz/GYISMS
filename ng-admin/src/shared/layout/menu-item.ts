@@ -4,6 +4,7 @@ export class MenuItem {
   icon = '';
   route = '';
   childMenus: MenuItem[];
+  acl = '';
 
   hide = false;
 
@@ -14,12 +15,14 @@ export class MenuItem {
     route: string,
     childMenus: MenuItem[] = null,
     hide: boolean = false,
+    acl: string = '',
   ) {
     this.displayName = displayName;
     this.permission = permission;
     this.icon = icon;
     this.route = route;
     this.hide = hide;
+    this.acl = acl;
 
     if (childMenus) {
       this.childMenus = childMenus;

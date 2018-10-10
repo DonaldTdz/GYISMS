@@ -1,4 +1,4 @@
-<!-- <pro-header></pro-header> -->
+<page-header title="信息维护"></page-header>
 <nz-tabset>
     <nz-tab nzTitle="信息维护">
         <nz-card [nzBordered]="false">
@@ -17,7 +17,8 @@
                         <nz-form-item nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzRequired nzFor="unitCode">单位名称</nz-form-label>
                             <nz-form-control [nzSm]="20" nzHasFeedback>
-                                <nz-select formControlName="unitCode" [nzPlaceHolder]="'请选择单位名称'" name="unitCode" [(ngModel)]="grower.unitCode" (ngModelChange)="getText($event)" [nzShowSearch]="true">
+                                <nz-select formControlName="unitCode" [nzPlaceHolder]="'请选择单位名称'" name="unitCode"
+                                    [(ngModel)]="grower.unitCode" (ngModelChange)="getText($event)" [nzShowSearch]="true">
                                     <nz-option *ngFor="let i of unitTypes" [nzLabel]="i.text" [nzValue]="i.value">
                                     </nz-option>
                                 </nz-select>
@@ -39,11 +40,13 @@
                         <nz-form-item nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="employeeName">所属烟技员</nz-form-label>
                             <nz-form-control [nzSm]="16" nzHasFeedback>
-                                <input nz-input readonly="readonly" placeholder="请选择烟技员" formControlName="employeeName" id="employeeName" [(ngModel)]="grower.employeeName">
+                                <input nz-input readonly="readonly" placeholder="请选择烟技员" formControlName="employeeName"
+                                    id="employeeName" [(ngModel)]="grower.employeeName">
                                 <nz-form-explain *ngIf="validateForm.get('employeeName').dirty&&validateForm.get('employeeName').hasError('maxlength')">字符长度小于等于200</nz-form-explain>
                             </nz-form-control>
                             <nz-form-control [nzSm]="4" style="float: right;">
-                                <button nz-button type="button" nzType="primary" (click)="showModal()" style="margin-left: 20px">选择烟技员</button>
+                                <button nz-button type="button" nzType="primary" (click)="showModal()" [acl]="'CityAdmin'"
+                                    style="margin-left: 20px">选择烟技员</button>
                             </nz-form-control>
                         </nz-form-item>
 
@@ -109,7 +112,8 @@
                         <nz-form-item nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="contractTime">合同签订时间</nz-form-label>
                             <nz-form-control [nzSm]="20">
-                                <nz-date-picker formControlName="contractTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="grower.contractTime" [nzPlaceHolder]="'请选择日期'"></nz-date-picker>
+                                <nz-date-picker formControlName="contractTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="grower.contractTime"
+                                    [nzPlaceHolder]="'请选择日期'"></nz-date-picker>
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item nz-row>
@@ -133,10 +137,12 @@
                 <button nz-button [nzType]="'default'" (click)="return()">
                     {{l("返回")}}
                 </button>
-                <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading">
+                <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading"
+                    [acl]="'CityAdmin'">
                     {{l("删除")}}
                 </button>
-                <button nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+                <button nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading"
+                    [disabled]="!validateForm.valid" [acl]="'CityAdmin'">
                     {{l("保存")}}
                 </button>
             </footer-toolbar>
@@ -157,12 +163,16 @@
             </div>
 
             <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-            <nz-table #nzTable [nzData]="visitRecordList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="getVisitRecord()"
+            <nz-table #nzTable [nzData]="visitRecordList" [nzFrontPagination]="false" [nzTotal]="query.total"
+                [nzShowTotal]="totalTemplate" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize"
+                [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="getVisitRecord()"
                 (nzPageSizeChange)="getVisitRecord()">
                 <thead>
                     <tr>
                         <th>签到图片</th>
                         <th>烟技员</th>
+                        <th>任务名称</th>
+                        <th nzWidth="240px">考核项</th>
                         <th>签到地点</th>
                         <th>签到说明</th>
                         <th>签到时间</th>
@@ -171,9 +181,12 @@
                 <tbody>
                     <tr *ngFor="let data of nzTable.data">
                         <td>
-                            <nz-avatar [nzSrc]="(data.imgPath | hostUrl)" style="width:80px;height: 80px;" (click)="handlePreview(data.imgPath)" [nzSize]="'large'" [nzShape]="'square'"></nz-avatar>
+                            <nz-avatar [nzSrc]="(data.imgPath | hostUrl)" style="width:80px;height: 80px;" (click)="handlePreview(data.imgPath)"
+                                [nzSize]="'large'" [nzShape]="'square'"></nz-avatar>
                         </td>
                         <td>{{data.employeeName}}</td>
+                        <td>{{data.taskName}}</td>
+                        <td>{{data.examinesName}}</td>
                         <td>{{data.location}}</td>
                         <td>{{data.desc}}</td>
                         <td>{{data.signTime| _date}}</td>

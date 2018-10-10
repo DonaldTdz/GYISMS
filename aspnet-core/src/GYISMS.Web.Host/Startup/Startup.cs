@@ -17,6 +17,7 @@ using GYISMS.Configuration;
 using GYISMS.Identity;
 
 using Abp.AspNetCore.SignalR.Hubs;
+using Abp.Quartz;
 
 namespace GYISMS.Web.Host.Startup
 {
@@ -106,6 +107,8 @@ namespace GYISMS.Web.Host.Startup
                 routes.MapHub<AbpCommonHub>("/signalr");
             });
 
+            //QuartzScheduleJobs();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
@@ -127,5 +130,6 @@ namespace GYISMS.Web.Host.Startup
                     .GetManifestResourceStream("GYISMS.Web.Host.wwwroot.swagger.ui.index.html");
             }); // URL: /swagger
         }
+        
     }
 }

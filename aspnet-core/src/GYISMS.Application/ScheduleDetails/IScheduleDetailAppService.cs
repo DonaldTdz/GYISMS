@@ -71,5 +71,9 @@ namespace GYISMS.ScheduleDetails
         Task<SheduleSumStatisDto> GetSumShedule(SheduleSumInput input);
 
         Task<PagedResultDto<SheduleDetailTaskListDto>> GetPagedScheduleDetailsByOtherTable(GetScheduleDetailsInput input);
+
+        Task AutoUpdateOverdueStatusAsync();
+
+        Task SendTaskOverdueMsgAsync();
     }
 }

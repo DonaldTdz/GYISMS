@@ -38,6 +38,7 @@ using SixLabors.Fonts;
 using SixLabors.ImageSharp.Processing.Text;
 using GYISMS.Helpers;
 using GYISMS.SystemDatas;
+using GYISMS.ScheduleTasks;
 //using PT = SixLabors.ImageSharp.Processing.Processors.Text;
 
 namespace GYISMS.VisitRecords
@@ -122,29 +123,49 @@ namespace GYISMS.VisitRecords
         {
             var record = _visitrecordRepository.GetAll().Where(v => v.GrowerId == input.GrowerId);
             var employee = _employeeRepository.GetAll();
-            var query = from r in record
-                        join e in employee on r.EmployeeId equals e.Id
-                        select new VisitRecordListDto()
-                        {
-                            Id = r.Id,
-                            EmployeeId = r.EmployeeId,
-                            GrowerId = r.GrowerId,
-                            Location = r.Location,
-                            Longitude = r.Longitude,
-                            SignTime = r.SignTime,
-                            ScheduleDetailId = r.ScheduleDetailId,
-                            Desc = r.Desc,
-                            ImgPath = r.ImgPath,
-                            Latitude = r.Latitude,
-                            CreationTime = r.CreationTime,
-                            EmployeeName = e.Name
-                        };
-
-            var visitrecordCount = await query.CountAsync();
-            var visitrecords = await query
-                    .OrderByDescending(v => v.SignTime).AsNoTracking()
-                    .PageBy(input)
-                    .ToListAsync();
+            var scheduleDetail = _scheduleDetailRepository.GetAll();
+            var task = _visitTaskRepository.GetAll();
+            var taskExamine = _taskExamineRepository.GetAll();
+            var query = await (from r in record
+                               join e in employee on r.EmployeeId equals e.Id
+                               join s in scheduleDetail on r.ScheduleDetailId equals s.Id
+                               join t in task on s.TaskId equals t.Id
+                               select new VisitRecordListDto()
+                               {
+                                   Id = r.Id,
+                                   EmployeeId = r.EmployeeId,
+                                   GrowerId = r.GrowerId,
+                                   Location = r.Location,
+                                   Longitude = r.Longitude,
+                                   SignTime = r.SignTime,
+                                   ScheduleDetailId = r.ScheduleDetailId,
+                                   Desc = r.Desc,
+                                   ImgPath = r.ImgPath,
+                                   Latitude = r.Latitude,
+                                   CreationTime = r.CreationTime,
+                                   EmployeeName = e.Name,
+                                   TaskName = t.Name,
+                                   HasExamine = t.IsExamine,
+                                   TaskId = t.Id
+                               }).ToListAsync();
+            foreach (var item in query)
+            {
+                if (item.HasExamine == true)
+                {
+                    var list = _taskExamineRepository.GetAll().Where(v => v.TaskId == item.TaskId).Select(v => v.Name).ToList();
+                    string examineName = string.Join(",", list.ToArray());
+                    item.ExaminesName = examineName;
+                }
+            }
+            var visitrecordCount =  query.Count();
+            //var visitrecords = await query
+            //        .OrderByDescending(v => v.SignTime).AsNoTracking()
+            //        .PageBy(input)
+            //        .ToListAsync();
+            var visitrecords = query
+                    .OrderByDescending(v => v.SignTime)
+                    .Skip(input.SkipCount)
+                    .Take(input.MaxResultCount);
 
             var visitrecordListDtos = visitrecords.MapTo<List<VisitRecordListDto>>();
 
@@ -352,6 +373,11 @@ namespace GYISMS.VisitRecords
                 vimage.Mutate(x => x.DrawText(options, "用户: " + userName, font, Rgba32.White, new PointF(350, height - 46)));
                 vimage.Mutate(x => x.DrawText(options, "位置: " + location, font, Rgba32.White, new PointF(350, height - 28)));
                 var newImagePath = imgPath.Replace("visit", "visit/watermark");
+                var newFolder = host + "/visit/watermark";
+                if (!Directory.Exists(newFolder))
+                {
+                    Directory.CreateDirectory(newFolder);
+                }
                 vimage.Save(host + newImagePath);
                 return newImagePath;
             }
@@ -417,6 +443,46 @@ namespace GYISMS.VisitRecords
             }
         }
 
+        [Audited]
+        [AbpAllowAnonymous]
+        public async Task<DingDingVisitRecordInputDto> GetDingDingVisitRecordAsync(Guid id)
+        {
+            var query = from vr in _visitrecordRepository.GetAll()
+                        join sd in _scheduleDetailRepository.GetAll() on vr.ScheduleDetailId equals sd.Id
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        join e in _employeeRepository.GetAll() on vr.EmployeeId equals e.Id
+                        where vr.Id == id
+                        select new DingDingVisitRecordInputDto()
+                        {
+                            ScheduleDetailId = sd.Id,
+                            EmployeeId = sd.EmployeeId,
+                            EmployeeName = sd.EmployeeName,
+                            GrowerName = sd.GrowerName,
+                            TaskDesc = t.Name + "（"+ t.Type.ToString() + "）",
+                            SignTime = vr.SignTime,
+                            Desc = vr.Desc,
+                            ImgPath = vr.ImgPath,
+                            Location = vr.Location,
+                            Latitude = vr.Latitude,
+                            Longitude = vr.Longitude,
+                            EmployeeImg = e.Avatar
+                        };
+            var dmdata = await query.FirstOrDefaultAsync();
+
+            var examQuery = from ve in _visitExamineRepository.GetAll()
+                            join te in _taskExamineRepository.GetAll() on ve.TaskExamineId equals te.Id
+                            where ve.VisitRecordId == id
+                            select new DingDingTaskExamineDto()
+                            {
+                                Name = te.Name,
+                                Desc = te.Desc,
+                                Score = ve.Score
+                            };
+
+            dmdata.Examines = await examQuery.ToListAsync();
+            return dmdata;
+        }
+
         /// <summary>
         /// 导出VisitRecord为excel表,等待开发。
         /// </summary>
@@ -428,12 +494,6 @@ namespace GYISMS.VisitRecords
         //	await FillRoleNames(userListDtos);
         //	return _userListExcelExporter.ExportToFile(userListDtos);
         //}
-
-
-
-        //// custom codes
-
-        //// custom codes end
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Abp.AutoMapper;
 using Abp.Modules;
+using Abp.Quartz;
 using Abp.Reflection.Extensions;
 using GYISMS.Authorization;
 
@@ -7,7 +8,8 @@ namespace GYISMS
 {
     [DependsOn(
         typeof(GYISMSCoreModule), 
-        typeof(AbpAutoMapperModule))]
+        typeof(AbpAutoMapperModule),
+        typeof(AbpQuartzModule))]
     public class GYISMSApplicationModule : AbpModule
     {
         public override void PreInitialize()

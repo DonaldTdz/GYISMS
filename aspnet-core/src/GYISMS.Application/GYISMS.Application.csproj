@@ -12,6 +12,7 @@
     <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Abp.Quartz" Version="3.8.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0004" />
     <PackageReference Include="SixLabors.ImageSharp.Drawing" Version="1.0.0-beta0004" />
   </ItemGroup>

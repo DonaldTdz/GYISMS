@@ -60,7 +60,8 @@ namespace GYISMS.Growers
         public async Task<PagedResultDto<GrowerListDto>> GetPagedGrowersAsync(GetGrowersInput input)
         {
 
-            var query = _growerRepository.GetAll().WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
+            var query = _growerRepository.GetAll().WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
+                .WhereIf(!string.IsNullOrEmpty(input.Employee), u => u.EmployeeName.Contains(input.Employee));
             // TODO:根据传入的参数添加过滤条件
 
             var growerCount = await query.CountAsync();
