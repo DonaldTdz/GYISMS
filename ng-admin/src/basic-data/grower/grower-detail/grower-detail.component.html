@@ -1,4 +1,4 @@
-<!-- <pro-header></pro-header> -->
+<page-header title="信息维护"></page-header>
 <nz-tabset>
     <nz-tab nzTitle="信息维护">
         <nz-card [nzBordered]="false">
@@ -171,6 +171,8 @@
                     <tr>
                         <th>签到图片</th>
                         <th>烟技员</th>
+                        <th>任务名称</th>
+                        <th nzWidth="240px">考核项</th>
                         <th>签到地点</th>
                         <th>签到说明</th>
                         <th>签到时间</th>
@@ -183,6 +185,8 @@
                                 [nzSize]="'large'" [nzShape]="'square'"></nz-avatar>
                         </td>
                         <td>{{data.employeeName}}</td>
+                        <td>{{data.taskName}}</td>
+                        <td>{{data.examinesName}}</td>
                         <td>{{data.location}}</td>
                         <td>{{data.desc}}</td>
                         <td>{{data.signTime| _date}}</td>

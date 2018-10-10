@@ -36,6 +36,7 @@ export class GrowerComponent extends AppComponentBase implements OnInit {
         params.SkipCount = this.query.skipCount();
         params.MaxResultCount = this.query.pageSize;
         params.Name = this.search.name;
+        params.Employee = this.search.employee;
         this.growerService.getGrowerListAsync(params).subscribe((result: PagedResultDtoOfGrower) => {
             this.loading = false;
             this.growerList = result.items;

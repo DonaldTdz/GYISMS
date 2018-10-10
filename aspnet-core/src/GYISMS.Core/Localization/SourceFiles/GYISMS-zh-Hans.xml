@@ -51,5 +51,14 @@
     <text name="NotSelected" value="未选择" />
     <text name="Change" value="请选择" />
     <text name="DefaultPasswordIs" value="默认密码:{0}" />
+    <text name="RoleDescription" value="角色描述" />
+    <text name="CanNotNull" value="不能为空" />
+    <text name="NotEmail" value="请输入Email地址" />
+    <text name="ConfirmPassword" value="确认密码" />
+    <text name="PasswordInconsistent" value="两次输入的密码必须一致" />
+    <text name="CreateNewUser" value="创建新用户" />
+    <text name="Surname" value="真实姓名" />
+    <text name="SavedSuccessfully" value="保存成功" />
+
   </texts>
 </localizationDictionary>
