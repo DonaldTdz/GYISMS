@@ -21,7 +21,7 @@
             </div>
             <div nz-col [nzSpan]="8" class="mb-md">
                 <nz-form-item class="d-flex">
-                    <nz-form-label nzFor="area">区县</nz-form-label>
+                    <nz-form-label nzFor="area">所属区县</nz-form-label>
                     <nz-form-control class="flex-1">
                         <nz-select [nzPlaceHolder]="'请选择区县'" name="area" [(ngModel)]="search.area" [nzShowSearch]="true">
                             <nz-option *ngFor="let i of areaTypes" [nzLabel]="i.text" [nzValue]="i.value">
@@ -30,7 +30,7 @@
                     </nz-form-control>
                 </nz-form-item>
             </div>
-            <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
+            <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'" style="float:right">
                 <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
                 <button nz-button type="reset" (click)="refreshData(true)" class="mx-sm">重置</button>
                 <button nz-button type="button" (click)="createRoom()" [acl]="'CityAdmin'" nzType="primary">
@@ -48,7 +48,7 @@
                 <th>用户名</th>
                 <th>单位名称</th>
                 <th>联系方式</th>
-                <th>区县</th>
+                <th>所属区县</th>
                 <th>所属烟技员</th>
                 <th>操作</th>
             </tr>
@@ -58,7 +58,7 @@
                 <td>{{data.name}}</td>
                 <td>{{data.unitName}}</td>
                 <td>{{data.tel}}</td>
-                <td>{{data.countyCode}}</td>
+                <td>{{data.countyCodeName}}</td>
                 <td>{{data.employeeName}}</td>
                 <td>
                     <a (click)="goDetail(data.id)">详细信息</a>

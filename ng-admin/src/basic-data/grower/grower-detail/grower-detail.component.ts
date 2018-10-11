@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GrowerServiceProxy } from '@shared/service-proxies/basic-data';
-import { Grower, Employee, SelectGroup, RadioGroup } from '@shared/entity/basic-data';
+import { Grower, Employee, SelectGroup } from '@shared/entity/basic-data';
 import { GrowerEmployeeModalComponent } from './grower-employee-modal/grower-employee-modal.component';
 import * as moment from 'moment';
 import { VisitTaskServiceProxy, PagedResultDtoOfVisitRecord } from '@shared/service-proxies/tobacco-management';
@@ -24,8 +24,11 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     validateForm: FormGroup;
     grower: Grower = new Grower();
     visitRecordList: VisitRecord[] = [];
-    countyCodes: RadioGroup[] = [
-        // { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }
+    // countyCodes: RadioGroup[] = [
+    //     // { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }
+    // ];
+    countyCodes: any = [
+        { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }
     ];
     types: any[] = [{ text: '普通烟农', value: 1 }];
     unitTypes: SelectGroup[] = [];
@@ -67,7 +70,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             type: null
         });
         this.getUnitType();
-        this.getCountyCode();
+        // this.getCountyCode();
     }
 
     getGrowerInfo() {
@@ -115,11 +118,11 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
         });
     }
 
-    getCountyCode() {
-        this.growerService.getCountyCodeAsync().subscribe((result: RadioGroup[]) => {
-            this.countyCodes = result;
-        });
-    }
+    // getCountyCode() {
+    //     this.growerService.getCountyCodeAsync().subscribe((result: RadioGroup[]) => {
+    //         this.countyCodes = result;
+    //     });
+    // }
 
     getVisitRecord() {
         this.loading = true;

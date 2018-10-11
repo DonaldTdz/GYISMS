@@ -238,42 +238,43 @@ namespace GYISMS.Employees
         /// 获取区县树
         /// </summary>
         /// <returns></returns>
-        public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
+        //public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
+        public List<EmployeeNzTreeNode> GetTrees()
         {
             List<EmployeeNzTreeNode> treeNodeList = new List<EmployeeNzTreeNode>();
-            var AreaInfo = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟农村组 && v.ModelId == ConfigModel.烟叶服务).OrderBy(v => v.Seq).AsNoTracking()
-             .Select(v => new SystemDataListDto() { Code = v.Code, Desc = v.Desc }).ToListAsync();
-            foreach (var item in AreaInfo)
+            //var AreaInfo = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟农村组 && v.ModelId == ConfigModel.烟叶服务).OrderBy(v => v.Seq).AsNoTracking()
+            // .Select(v => new SystemDataListDto() { Code = v.Code, Desc = v.Desc }).ToListAsync();
+            //foreach (var item in AreaInfo)
+            //{
+            //    EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+            //    {
+            //        key = item.Code,
+            //        title = item.Desc,
+            //        children = GetAreaEmoloyee(item.Code)
+            //    };
+            //    treeNodeList.Add(treeNode);
+            //}
+            EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
             {
-                EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
-                {
-                    key = item.Code,
-                    title = item.Desc,
-                    children = GetAreaEmoloyee(item.Code)
-                };
-                treeNodeList.Add(treeNode);
-            }
-            //EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
-            //{
-            //    key = "1",
-            //    title = "昭化区",
-            //    children = GetAreaEmoloyee("1")
-            //};
-            //treeNodeList.Add(treeNode);
-            //EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
-            //{
-            //    key = "2",
-            //    title = "剑阁县",
-            //    children = GetAreaEmoloyee("2")
-            //};
-            //treeNodeList.Add(treeNode2);
-            //EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
-            //{
-            //    key = "3",
-            //    title = "旺苍县",
-            //    children = GetAreaEmoloyee("3"),
-            //};
-            //treeNodeList.Add(treeNode3);
+                key = "1",
+                title = "昭化区",
+                children = GetAreaEmoloyee("1")
+            };
+            treeNodeList.Add(treeNode);
+            EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
+            {
+                key = "2",
+                title = "剑阁县",
+                children = GetAreaEmoloyee("2")
+            };
+            treeNodeList.Add(treeNode2);
+            EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
+            {
+                key = "3",
+                title = "旺苍县",
+                children = GetAreaEmoloyee("3"),
+            };
+            treeNodeList.Add(treeNode3);
             return treeNodeList;
         }
 

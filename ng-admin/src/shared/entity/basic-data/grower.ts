@@ -26,6 +26,7 @@ export class Grower implements IGrower {
     visitNum: number;
     checked: boolean;
     scheduleDetailId: string;
+    countyCodeName: string;
     constructor(data?: IGrower) {
         if (data) {
             for (var property in data) {
@@ -64,6 +65,7 @@ export class Grower implements IGrower {
             this.scheduleDetailId = data["scheduleDetailId"];
             this.visitNum = data["visitNum"];
             this.checked = data["checked"];
+            this.countyCodeName = data["countyCodeName"];
         }
     }
 
