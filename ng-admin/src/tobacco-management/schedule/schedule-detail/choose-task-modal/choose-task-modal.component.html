@@ -1,7 +1,7 @@
 <nz-modal [(nzVisible)]="isVisible" nzTitle="选择任务" [nzContent]="modalContent" nzWidth="720px" nzMaskClosable="false" (nzOnCancel)="handleCancel()" style="width: 520px;" [nzFooter]="modalFooter">
     <ng-template #modalContent>
-        <nz-card [nzBordered]="false" *ngIf="isVisible">
-            <!-- <form nz-form (ngSubmit)="refreshData()" [nzLayout]="'inline'">
+        <!-- <nz-card [nzBordered]="false" *ngIf="isVisible"> -->
+        <!-- <form nz-form (ngSubmit)="refreshData()" [nzLayout]="'inline'">
                 <div nz-row [nzGutter]="24">
                     <div nz-col [nzSpan]="8" class="mb-md">
                         <div nz-form-item class="d-flex">
@@ -18,47 +18,47 @@
                     </div>
                 </div>
             </form> -->
-            <!-- <span style="margin-left: 8px;" *ngIf="checkedNumber">Selected {{checkedNumber}} items</span> -->
+        <!-- <span style="margin-left: 8px;" *ngIf="checkedNumber">Selected {{checkedNumber}} items</span> -->
 
-            <nz-table #nzTable [nzShowSizeChanger]="true" [nzData]="taskList" [nzShowPagination]="false" [nzLoading]="eloading" [nzShowSizeChanger]="true">
-                <thead>
-                    <tr>
-                        <th nz-th> <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">
+        <nz-table #nzTable [nzShowSizeChanger]="true" [nzData]="taskList" [nzShowPagination]="false" [nzLoading]="eloading" [nzShowSizeChanger]="true">
+            <thead>
+                <tr>
+                    <th nz-th> <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">
                             </label>
-                        </th>
-                        <th nz-th>
-                            <span>任务名称</span>
-                        </th>
-                        <th nz-th>
-                            <span>任务类型</span>
-                        </th>
-                        <th nz-th>
-                            <span>是否考核</span>
-                        </th>
-                        <th nz-th>
-                            <span>默认拜访次数</span>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr nz-tbody-tr *ngFor="let item of nzTable.data">
-                        <td>
-                            <label nz-checkbox [(ngModel)]="item.checked" (ngModelChange)="isCancelCheck($event)">
+                    </th>
+                    <th nz-th>
+                        <span>任务名称</span>
+                    </th>
+                    <th nz-th>
+                        <span>任务类型</span>
+                    </th>
+                    <th nz-th>
+                        <span>是否考核</span>
+                    </th>
+                    <th nz-th>
+                        <span>默认拜访次数</span>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr nz-tbody-tr *ngFor="let item of nzTable.data">
+                    <td>
+                        <label nz-checkbox [(ngModel)]="item.checked" (ngModelChange)="isCancelCheck($event)">
                             </label>
-                        </td>
-                        <td>{{item.name | lengthLimit:8}}</td>
-                        <td>{{item.typeName}}</td>
-                        <td>{{item.isExamine == true?"是":"否"}}</td>
-                        <td>
-                            <nz-input-number [nzPrecision]="0" [(ngModel)]="item.visitNum" [nzMin]="0"></nz-input-number>
-                        </td>
-                    </tr>
-                </tbody>
-            </nz-table>
-            <div style="float: right;margin-top: 5px;">
-                共{{taskList.length}}条
-            </div>
-        </nz-card>
+                    </td>
+                    <td>{{item.name | lengthLimit:8}}</td>
+                    <td>{{item.typeName}}</td>
+                    <td>{{item.isExamine == true?"是":"否"}}</td>
+                    <td>
+                        <nz-input-number [nzPrecision]="0" [(ngModel)]="item.visitNum" [nzMin]="0"></nz-input-number>
+                    </td>
+                </tr>
+            </tbody>
+        </nz-table>
+        <div style="float: right;margin-top: 5px;">
+            共{{taskList.length}}条
+        </div>
+        <!-- </nz-card> -->
     </ng-template>
     <ng-template #modalFooter>
         <button nz-button [nzType]="'default'" type="button" (click)="handleCancel($event)">

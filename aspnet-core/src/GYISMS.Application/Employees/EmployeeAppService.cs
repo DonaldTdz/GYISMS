@@ -23,6 +23,7 @@ using Abp.Auditing;
 using GYISMS.SystemDatas;
 using GYISMS.GYEnums;
 using GYISMS.SystemDatas.Dtos;
+using GYISMS.DingDing.Dtos;
 
 namespace GYISMS.Employees
 {
@@ -36,6 +37,7 @@ namespace GYISMS.Employees
         private readonly IEmployeeManager _employeeManager;
         private readonly IDingDingAppService _dingDingAppService;
         private readonly IRepository<SystemData, int> _systemdataRepository;
+        private DingDingAppConfig ddConfig;
 
         /// <summary>
         /// 构造函数 
@@ -238,54 +240,59 @@ namespace GYISMS.Employees
         /// 获取区县树
         /// </summary>
         /// <returns></returns>
-        public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
+        //public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
+        public List<EmployeeNzTreeNode> GetTrees()
         {
             List<EmployeeNzTreeNode> treeNodeList = new List<EmployeeNzTreeNode>();
-            var AreaInfo = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟农村组 && v.ModelId == ConfigModel.烟叶服务).OrderBy(v => v.Seq).AsNoTracking()
-             .Select(v => new SystemDataListDto() { Code = v.Code, Desc = v.Desc }).ToListAsync();
-            foreach (var item in AreaInfo)
+            //var AreaInfo = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟农村组 && v.ModelId == ConfigModel.烟叶服务).OrderBy(v => v.Seq).AsNoTracking()
+            // .Select(v => new SystemDataListDto() { Code = v.Code, Desc = v.Desc }).ToListAsync();
+            //foreach (var item in AreaInfo)
+            //{
+            //    EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+            //    {
+            //        key = item.Code,
+            //        title = item.Desc,
+            //        children = GetAreaEmoloyee(item.Code)
+            //    };
+            //    treeNodeList.Add(treeNode);
+            //}
+            var key = AreaTypeEnum.昭化区.GetHashCode().ToString();
+            EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
             {
-                EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
-                {
-                    key = item.Code,
-                    title = item.Desc,
-                    children = GetAreaEmoloyee(item.Code)
-                };
-                treeNodeList.Add(treeNode);
-            }
-            //EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
-            //{
-            //    key = "1",
-            //    title = "昭化区",
-            //    children = GetAreaEmoloyee("1")
-            //};
-            //treeNodeList.Add(treeNode);
-            //EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
-            //{
-            //    key = "2",
-            //    title = "剑阁县",
-            //    children = GetAreaEmoloyee("2")
-            //};
-            //treeNodeList.Add(treeNode2);
-            //EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
-            //{
-            //    key = "3",
-            //    title = "旺苍县",
-            //    children = GetAreaEmoloyee("3"),
-            //};
-            //treeNodeList.Add(treeNode3);
+                key = key,
+                title = AreaTypeEnum.昭化区.ToString(),
+                children = GetAreaEmoloyee(key)
+            };
+            treeNodeList.Add(treeNode);
+            key = AreaTypeEnum.剑阁县.GetHashCode().ToString();
+            EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
+            {
+                key = key,
+                title = AreaTypeEnum.剑阁县.ToString(),
+                children = GetAreaEmoloyee(key)
+            };
+            treeNodeList.Add(treeNode2);
+            key = AreaTypeEnum.旺苍县.GetHashCode().ToString();
+            EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
+            {
+                key = key,
+                title = AreaTypeEnum.旺苍县.ToString(),
+                children = GetAreaEmoloyee(key),
+            };
+            treeNodeList.Add(treeNode3);
             return treeNodeList;
         }
 
         [AbpAllowAnonymous]
         [Audited]
 
-        public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code)
+        public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code, DingDingAppEnum appId)
         {
+            ddConfig = _dingDingAppService.GetDingDingConfigByApp(appId);
             //测试环境注释
-            //var assessToken = _dingDingAppService.GetAccessToken("ding7xespi5yumrzraaq", "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3");
-            //var userId = _dingDingAppService.GetUserId(assessToken, code);
-            var userId = "165500493321719640";
+            var assessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
+            var userId = _dingDingAppService.GetUserId(assessToken, code);
+            //var userId = "165500493321719640";
             var query = await _employeeRepository.GetAsync(userId);
             return query.MapTo<DingDingUserDto>();
         }

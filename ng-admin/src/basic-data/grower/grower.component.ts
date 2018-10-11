@@ -14,7 +14,9 @@ export class GrowerComponent extends AppComponentBase implements OnInit {
     search: any = {};
     loading = false;
     growerList: Grower[] = [];
-
+    areaTypes = [{ text: '昭化区', value: 1 },
+    { text: '剑阁县', value: 2 },
+    { text: '旺苍县', value: 3 }];
     constructor(injector: Injector, private growerService: GrowerServiceProxy,
         private router: Router) {
         super(injector);
@@ -37,6 +39,7 @@ export class GrowerComponent extends AppComponentBase implements OnInit {
         params.MaxResultCount = this.query.pageSize;
         params.Name = this.search.name;
         params.Employee = this.search.employee;
+        params.AreaName = this.search.area;
         this.growerService.getGrowerListAsync(params).subscribe((result: PagedResultDtoOfGrower) => {
             this.loading = false;
             this.growerList = result.items;

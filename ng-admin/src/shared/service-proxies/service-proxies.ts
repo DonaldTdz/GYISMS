@@ -2947,6 +2947,10 @@ export class CreateUserDto implements ICreateUserDto {
     isActive: boolean | undefined;
     roleNames: string[] | undefined;
     password: string;
+    employeeName: string;
+    employeeId: string;
+    area: string;
+    areaCode: string;
 
     constructor(data?: ICreateUserDto) {
         if (data) {
@@ -2964,6 +2968,11 @@ export class CreateUserDto implements ICreateUserDto {
             this.surname = data["surname"];
             this.emailAddress = data["emailAddress"];
             this.isActive = data["isActive"];
+            this.employeeName = data["employeeName"];
+            this.employeeId = data["employeeId"];
+            this.area = data["area"];
+            this.areaCode = data["areaCode"];
+
             if (data["roleNames"] && data["roleNames"].constructor === Array) {
                 this.roleNames = [];
                 for (let item of data["roleNames"])
@@ -2986,7 +2995,12 @@ export class CreateUserDto implements ICreateUserDto {
         data["name"] = this.name;
         data["surname"] = this.surname;
         data["emailAddress"] = this.emailAddress;
+        data["employeeName"] = this.employeeName;
+        data["employeeId"] = this.employeeId;
+        data["area"] = this.area;
+        data["areaCode"] = this.areaCode;
         data["isActive"] = this.isActive;
+
         if (this.roleNames && this.roleNames.constructor === Array) {
             data["roleNames"] = [];
             for (let item of this.roleNames)
@@ -3012,6 +3026,10 @@ export interface ICreateUserDto {
     isActive: boolean | undefined;
     roleNames: string[] | undefined;
     password: string;
+    employeeName: string;
+    employeeId: string;
+    area: string;
+    areaCode: string;
 }
 
 export class UserDto implements IUserDto {
@@ -3025,6 +3043,10 @@ export class UserDto implements IUserDto {
     creationTime: moment.Moment | undefined;
     roleNames: string[] | undefined;
     id: number | undefined;
+    employeeName: string;
+    employeeId: string;
+    area: string;
+    areaCode: string;
 
     constructor(data?: IUserDto) {
         if (data) {
@@ -3043,6 +3065,10 @@ export class UserDto implements IUserDto {
             this.emailAddress = data["emailAddress"];
             this.isActive = data["isActive"];
             this.fullName = data["fullName"];
+            this.employeeName = data["employeeName"];
+            this.employeeId = data["employeeId"];
+            this.area = data["area"];
+            this.areaCode = data["areaCode"];
             this.lastLoginTime = data["lastLoginTime"] ? moment(data["lastLoginTime"].toString()) : <any>undefined;
             this.creationTime = data["creationTime"] ? moment(data["creationTime"].toString()) : <any>undefined;
             if (data["roleNames"] && data["roleNames"].constructor === Array) {
@@ -3069,6 +3095,10 @@ export class UserDto implements IUserDto {
         data["emailAddress"] = this.emailAddress;
         data["isActive"] = this.isActive;
         data["fullName"] = this.fullName;
+        data["employeeName"] = this.employeeName;
+        data["employeeId"] = this.employeeId;
+        data["area"] = this.area;
+        data["areaCode"] = this.areaCode;
         data["lastLoginTime"] = this.lastLoginTime ? this.lastLoginTime.toISOString() : <any>undefined;
         data["creationTime"] = this.creationTime ? this.creationTime.toISOString() : <any>undefined;
         if (this.roleNames && this.roleNames.constructor === Array) {
@@ -3099,6 +3129,10 @@ export interface IUserDto {
     creationTime: moment.Moment | undefined;
     roleNames: string[] | undefined;
     id: number | undefined;
+    employeeName: string;
+    employeeId: string;
+    area: string;
+    areaCode: string;
 }
 
 export class ChangePasswordDto implements IChangePasswordDto {

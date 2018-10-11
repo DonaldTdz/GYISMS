@@ -7,6 +7,7 @@ using Abp.Application.Services;
 using Abp.Application.Services.Dto;
 using GYISMS.Employees.Dtos;
 using GYISMS.Employees;
+using GYISMS.DingDing.Dtos;
 
 namespace GYISMS.Employees
 {
@@ -57,8 +58,9 @@ namespace GYISMS.Employees
         Task BatchDeleteEmployeesAsync(List<string> input);
         Task<PagedResultDto<EmployeeListDto>> GetEmployeeListByIdAsync(GetEmployeesInput input);
 
-        Task<List<EmployeeNzTreeNode>> GetTreesAsync();
-        Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code);
+        Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code, DingDingAppEnum appId);
+
         Task<EmployeeListDto> EditEmployeeAreaInfoAsync(EmployeeEditDto input);
+        List<EmployeeNzTreeNode> GetTrees();
     }
 }

@@ -960,6 +960,18 @@ namespace GYISMS.Migrations
                     .IsRequired()
                     .HasMaxLength(32);
 
+                b.Property<string>("Area")
+                  .HasMaxLength(50);
+
+                b.Property<string>("AreaCode")
+                 .HasMaxLength(50);
+
+                b.Property<string>("EmployeeId")
+                 .HasMaxLength(50);
+
+                b.Property<string>("EmployeeName")
+                 .HasMaxLength(50);
+
                 b.Property<string>("NormalizedEmailAddress")
                     .IsRequired()
                     .HasMaxLength(256);
@@ -1446,7 +1458,7 @@ namespace GYISMS.Migrations
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
 
                 b.ToTable("Growers");
-            });        
+            });
 
             modelBuilder.Entity("GYISMS.Schedules.Schedule", b =>
             {

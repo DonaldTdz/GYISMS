@@ -1,8 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core';
-import { VisitTaskServiceProxy } from '@shared/service-proxies/tobacco-management';
 import { NzModalRef } from 'ng-zorro-antd';
-import { Employee, SelectGroup } from '@shared/entity/basic-data';
-import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { Employee } from '@shared/entity/basic-data';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { GrowerServiceProxy, EmployeeServiceProxy } from '@shared/service-proxies/basic-data';
 import { NotifyService } from 'abp-ng2-module/dist/src/notify/notify.service';
 import { AppComponentBase } from '@shared/app-component-base';
@@ -22,7 +21,10 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
     successMsg = '';
     confirmModal: NzModalRef;
     validateForm: FormGroup;
-    countyCodes: SelectGroup[] = []
+    // countyCodes: SelectGroup[] = []
+    countyCodes: any = [
+        { text: '昭化区', value: '1' }, { text: '剑阁县', value: '2' }, { text: '旺苍县', value: '3' }
+    ];
     notify: NotifyService;
 
     constructor(injector: Injector, private employeeService: EmployeeServiceProxy, private fb: FormBuilder
@@ -33,9 +35,6 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
 
     ngOnInit(): void {
         this.validateForm = this.fb.group({
-            // name: null,
-            // mobile: null,
-            // position: null,
             unitCode: null
         });
     }
@@ -45,10 +44,11 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
      */
     show(id?: string) {
         if (id) {
-            this.growerService.getCountyCodeSelectGroupAsync().subscribe((result: SelectGroup[]) => {
-                this.countyCodes = result;
-                this.getEmployee(id);
-            });
+            // this.growerService.getCountyCodeSelectGroupAsync().subscribe((result: SelectGroup[]) => {
+            //     this.countyCodes = result;
+            //     this.getEmployee(id);
+            // });
+            this.getEmployee(id);
         }
         this.isVisible = true;
     }

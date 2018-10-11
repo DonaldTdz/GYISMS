@@ -34,6 +34,10 @@ namespace GYISMS.Users.Dto
         public DateTime? LastLoginTime { get; set; }
 
         public DateTime CreationTime { get; set; }
+        public string Area { get; set; }
+        public string AreaCode { get; set; }
+        public string EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
 
         public string[] RoleNames { get; set; }
     }

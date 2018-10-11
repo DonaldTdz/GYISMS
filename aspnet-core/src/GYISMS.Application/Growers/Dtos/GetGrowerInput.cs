@@ -3,6 +3,7 @@
 using Abp.Runtime.Validation;
 using GYISMS.Dtos;
 using GYISMS.Growers;
+using GYISMS.GYEnums;
 using System;
 
 namespace GYISMS.Growers.Dtos
@@ -20,6 +21,7 @@ namespace GYISMS.Growers.Dtos
         public int VisitNum { get; set; }
         public Guid ScheduleTaskId { get; set; }
         public string EmployeeId { get; set; }
+        public AreaTypeEnum? AreaName { get; set; }
         //// custom codes
 
         //// custom codes end
