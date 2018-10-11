@@ -1,4 +1,4 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="选择任务" [nzContent]="modalContent" nzWidth="720px" nzMaskClosable="false" (nzOnCancel)="handleCancel()" style="width: 520px;" [nzFooter]="modalFooter">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="选择任务" [nzContent]="modalContent" nzWidth="720px" nzMaskClosable="false" (nzOnCancel)="handleCancel($event)" style="width: 520px;" [nzFooter]="modalFooter">
     <ng-template #modalContent>
         <!-- <nz-card [nzBordered]="false" *ngIf="isVisible"> -->
         <!-- <form nz-form (ngSubmit)="refreshData()" [nzLayout]="'inline'">

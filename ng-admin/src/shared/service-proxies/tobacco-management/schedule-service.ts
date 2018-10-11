@@ -44,8 +44,8 @@ export class ScheduleServiceProxy {
         });
     }
 
-    getWeekOfMonth(): Observable<SelectGroup[]> {
-        let url_ = "/api/services/app/SystemData/GetWeekOfMonth";
+    getWeekOfMonth(id: string): Observable<SelectGroup[]> {
+        let url_ = "/api/services/app/SystemData/GetWeekOfMonthAsync?id=" + id;
         return this._gyhttp.get(url_).map(data => {
             if (data) {
                 return SelectGroup.fromJSArray(data);

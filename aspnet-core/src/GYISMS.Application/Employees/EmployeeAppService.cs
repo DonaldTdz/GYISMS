@@ -227,7 +227,7 @@ namespace GYISMS.Employees
                                 select new EmployeeNzTreeNode()
                                 {
                                     key = o.Id,
-                                    title = o.Name,
+                                    title = o.Position.Length!=0? o.Name+$"({o.Position})":o.Name,
                                     children = null,
                                     IsLeaf = true
                                 }).ToList();
