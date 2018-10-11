@@ -28,16 +28,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
         // { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }
     ];
     types: any[] = [{ text: '普通烟农', value: 1 }];
-    unitTypes: SelectGroup[] = [
-        // { text: '张家烟叶生产收购点', value: '51081104R' },
-        // { text: '王家烟叶生产收购点', value: '51081104G' },
-        // { text: '文村烟叶生产收购点', value: '51081104D' },
-        // { text: '晋贤烟叶生产收购点', value: '51081104E' },
-        // { text: '磨滩烟叶生产收购点', value: '51081104H' },
-        // { text: '白果烟叶生产收购点', value: '51081104M' },
-        // { text: '朝阳烟叶生产收购点', value: '51081104V' },
-        // { text: '陈江烟叶生产收购点', value: '51081104P' },
-    ];
+    unitTypes: SelectGroup[] = [];
     isConfirmLoading = false;
     successMsg = '';
     confirmModal: NzModalRef;
