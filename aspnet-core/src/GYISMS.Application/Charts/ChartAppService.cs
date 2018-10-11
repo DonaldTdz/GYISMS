@@ -75,18 +75,18 @@ namespace GYISMS.Charts
                 var cnum = query.Sum(q => q.CompleteNum);
                 cnum = cnum ?? 0;
                 var cpercent = Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
-                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "完成", ClassName = "complete", Percent = cpercent*100, Seq = 1 });
+                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "完成", ClassName = "complete", Percent = cpercent*100, Seq = 1,Status=2 });
 
                 //逾期数
                 var etnum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
                 etnum = etnum ?? 0;
                 var etpercent = Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
-                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3 });
+                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3,Status=0 });
 
                 //进行中数
                 var pnum = tnum - cnum - etnum;
                 var ppercent = 1M - cpercent - etpercent;
-                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "进行中", ClassName = "process", Percent = ppercent*100, Seq = 2 });
+                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "进行中", ClassName = "process", Percent = ppercent*100, Seq = 2 ,Status=3});
 
                 return dataList.OrderBy(d => d.Seq).ToList();
             });
@@ -289,16 +289,16 @@ namespace GYISMS.Charts
             {
                 querysd = querysd.Where(sd => sd.Status == ScheduleStatusEnum.已逾期);
             }
-            //进行中
-            if (TStatus == 1)
-            {
-                querysd = querysd.Where(sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum);
-            }
+            ////进行中
+            //if (TStatus == 1)
+            //{
+            //    querysd = querysd.Where(sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum);
+            //}
             var list = querysd.ToList();
             var query = from sd in _scheduleDetailRepository.GetAll()
                                                       .WhereIf(Status == 2, sd => sd.CompleteNum > 0)
                                                       .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
-                                                      .WhereIf(TStatus == 1, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                                                      .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
                         join s in _scheduleRepository.GetAll()
                                                       .WhereIf(StartTime.HasValue, s => s.BeginTime >= StartTime)
                                                       .WhereIf(EndTime.HasValue, s => s.BeginTime <= EndTime)
@@ -326,7 +326,7 @@ namespace GYISMS.Charts
                             VisitNum = sd.VisitNum,
                             CompleteNum = sd.CompleteNum
                         };
-            var items = await query.OrderByDescending(s => s.BeginTime).Skip(PageIndex).Take(15).ToListAsync();
+            var items = await query.OrderByDescending(s => s.BeginTime).Skip(PageIndex).Take(9).ToListAsync();
             return items;
         }
     }
