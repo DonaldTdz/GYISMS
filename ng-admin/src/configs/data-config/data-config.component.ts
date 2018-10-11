@@ -136,7 +136,7 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
             nzOkText: '确定',
             nzCancelText: '取消',
             nzOnOk: () => {
-                this.systemDataSerice.delete({ input: metting.id }).subscribe(() => {
+                this.systemDataSerice.delete({ id: metting.id }).subscribe(() => {
                     this.notify.info(this.l('删除成功！'));
                     this.getAllMetting();
                 })

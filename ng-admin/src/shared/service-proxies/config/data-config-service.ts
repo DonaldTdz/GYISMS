@@ -39,10 +39,8 @@ export class DataConfigServiceProxy {
     }
 
     delete(params: any): Observable<any> {
-        let url = '/api/services/app/SystemData/DeleteSystemData';
-        return this._gyhttp.delete(url, params).map(data => {
-            return data.result;
-        });
+        let url = '/api/services/app/SystemData/DeleteSystemDataById';
+        return this._gyhttp.delete(url, params);
     }
 
     update(input: SystemData): Observable<SystemData> {

@@ -189,6 +189,16 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// </summary>
         public string GrowerName { get; set; }
 
+        /// <summary>
+        /// 计划时间
+        /// </summary>
+        public string Time { get; set; }
+
+        /// <summary>
+        /// 计划名称
+        /// </summary>
+        public string SheduleName { get; set; }
+
         public string AreaName
         {
             get

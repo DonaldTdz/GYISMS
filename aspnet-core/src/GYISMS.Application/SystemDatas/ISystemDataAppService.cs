@@ -78,5 +78,6 @@ namespace GYISMS.SystemDatas
         Task<List<RadioGroup>> GetCountyCodes();
         Task<List<SelectGroup>> GetCountyCodesSelectGroup();
         List<SelectGroup> GetWeekOfMonth();
+        Task DeleteSystemDataById(int Id);
     }
 }

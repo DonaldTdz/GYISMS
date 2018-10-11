@@ -93,6 +93,9 @@
                 <form nz-form (ngSubmit)="getAllMetting()" [nzLayout]="'inline'">
                     <div nz-row [nzGutter]="24">
                         <div nz-col nzOffset="20" [nzSpan]="4" class="mb-md" [class.text-right]="'true'">
+                            <button nz-button (click)="getAllMetting()" nzShape="circle">
+                                <i class="anticon anticon-reload"></i>
+                            </button>
                             <button nz-button (click)="addConfigMetting()" nzShape="circle" [nzType]="'primary'" [nzSize]="'large'">
                                 <i class="anticon anticon-plus"></i>
                                 <!-- <span>新建</span> -->

@@ -374,6 +374,7 @@ namespace GYISMS.ScheduleDetails
                         join s in _scheduleRepository.GetAll()
                             .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
                             .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                            .WhereIf(!string.IsNullOrEmpty(input.SheduleName),s=>s.Desc.Contains(input.SheduleName))
                             .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                             on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll()
@@ -386,7 +387,11 @@ namespace GYISMS.ScheduleDetails
                             t.Name,
                             sd.VisitNum,
                             sd.CompleteNum,
-                            sd.Status
+                            sd.Status,
+                            s.Id,
+                            s.Desc,
+                            s.BeginTime,
+                            s.EndTime
                         };
 
             var equery = from q in query
@@ -398,7 +403,7 @@ namespace GYISMS.ScheduleDetails
                              q.VisitNum,
                              q.CompleteNum,
                              q.Status
-                         } by new { q.CountyCode, q.Type, q.Name } into gq
+                         } by new { q.CountyCode, q.Type, q.Name,q.Id,q.Desc,q.BeginTime,q.EndTime } into gq
                          select new SheduleSumDto()
                          {
                              AreaCode = gq.Key.CountyCode,
@@ -406,7 +411,9 @@ namespace GYISMS.ScheduleDetails
                              TaskName = gq.Key.Name,
                              Total = gq.Sum(g => g.VisitNum),
                              Complete = gq.Sum(g => g.CompleteNum),
-                             Expired = gq.Where(m => m.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum)
+                             Expired = gq.Where(m => m.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum),
+                             Time=gq.Key.BeginTime.Value.ToString("yyyy-MM-dd")+"至"+ gq.Key.EndTime.Value.ToString("yyyy-MM-dd"),
+                             SheduleName=gq.Key.Desc
                          };
 
             var result = new SheduleSumStatisDto();
@@ -464,6 +471,7 @@ namespace GYISMS.ScheduleDetails
                         join s in _scheduleRepository.GetAll()
                                                      .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
                                                      .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                                                     .WhereIf(!string.IsNullOrEmpty(input.SheduleName),s=>s.Desc.Contains(input.SheduleName))
                                                      .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
                         join t in _visittaskRepository.GetAll()
@@ -483,7 +491,9 @@ namespace GYISMS.ScheduleDetails
                             AreaCode = g.CountyCode,
                             GrowerId = sd.GrowerId,
                             GrowerName = sd.GrowerName,
-                            EmployeeName = sd.EmployeeName
+                            EmployeeName = sd.EmployeeName,
+                            Time=s.BeginTime.Value.ToString("yyyy-MM-dd")+"至"+ s.EndTime.Value.ToString("yyyy-MM-dd"),
+                            SheduleName=s.Desc
                         };
 
             var scheduledetailCount = await query.CountAsync();
@@ -630,7 +640,7 @@ namespace GYISMS.ScheduleDetails
                 ISheet sheet = workbook.CreateSheet("SheduleSum");
                 var rowIndex = 0;
                 IRow titleRow = sheet.CreateRow(rowIndex);
-                string[] titles = { "区域", "任务名", "任务类型", "计划数", "完成数", "逾期数", "完成率" };
+                string[] titles = { "区域", "计划名", "计划时间", "任务名", "任务类型", "计划数", "完成数", "逾期数", "完成率" };
                 var fontTitle = workbook.CreateFont();
                 fontTitle.IsBold = true;
                 for (int i = 0; i < titles.Length; i++)
@@ -647,12 +657,14 @@ namespace GYISMS.ScheduleDetails
                     rowIndex++;
                     IRow row = sheet.CreateRow(rowIndex);
                     ExcelHelper.SetCell(row.CreateCell(0), font, item.AreaName);
-                    ExcelHelper.SetCell(row.CreateCell(1), font, item.TaskName);
-                    ExcelHelper.SetCell(row.CreateCell(2), font, item.TaskTypeName);
-                    ExcelHelper.SetCell(row.CreateCell(3), font, item.Total.ToString());
-                    ExcelHelper.SetCell(row.CreateCell(4), font, item.Complete.ToString());
-                    ExcelHelper.SetCell(row.CreateCell(5), font, item.Expired.ToString());
-                    ExcelHelper.SetCell(row.CreateCell(6), font, item.CompleteRate);
+                    ExcelHelper.SetCell(row.CreateCell(1), font, item.SheduleName);
+                    ExcelHelper.SetCell(row.CreateCell(2), font, item.Time);
+                    ExcelHelper.SetCell(row.CreateCell(3), font, item.TaskName);
+                    ExcelHelper.SetCell(row.CreateCell(4), font, item.TaskTypeName);
+                    ExcelHelper.SetCell(row.CreateCell(5), font, item.Total.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(6), font, item.Complete.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(7), font, item.Expired.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(8), font, item.CompleteRate);
                 }
                 var completeRateT = "0%";
                 if (data.CompleteSum != 0 && data.TotalSum != 0)
@@ -662,10 +674,10 @@ namespace GYISMS.ScheduleDetails
                 rowIndex++;
                 IRow rowEnd = sheet.CreateRow(rowIndex);
                 ExcelHelper.SetCell(rowEnd.CreateCell(0), font, "总计：");
-                ExcelHelper.SetCell(rowEnd.CreateCell(3), font, data.TotalSum.ToString());
-                ExcelHelper.SetCell(rowEnd.CreateCell(4), font, data.CompleteSum.ToString());
-                ExcelHelper.SetCell(rowEnd.CreateCell(5), font, data.ExpiredSum.ToString());
-                ExcelHelper.SetCell(rowEnd.CreateCell(6), font, completeRateT);
+                ExcelHelper.SetCell(rowEnd.CreateCell(5), font, data.TotalSum.ToString());
+                ExcelHelper.SetCell(rowEnd.CreateCell(6), font, data.CompleteSum.ToString());
+                ExcelHelper.SetCell(rowEnd.CreateCell(7), font, data.ExpiredSum.ToString());
+                ExcelHelper.SetCell(rowEnd.CreateCell(8), font, completeRateT);
                 workbook.Write(fs);
             }
             return "/files/downloadtemp/" + fileName;
@@ -706,6 +718,7 @@ namespace GYISMS.ScheduleDetails
                         join s in _scheduleRepository.GetAll()
                                                      .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
                                                      .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                                                     .WhereIf(!string.IsNullOrEmpty(input.SheduleName),s=>s.Desc.Contains(input.SheduleName))
                                                      .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
                         join t in _visittaskRepository.GetAll()
@@ -725,7 +738,9 @@ namespace GYISMS.ScheduleDetails
                             AreaCode = g.CountyCode,
                             GrowerId = sd.GrowerId,
                             GrowerName = sd.GrowerName,
-                            EmployeeName = sd.EmployeeName
+                            EmployeeName = sd.EmployeeName,
+                            Time = s.BeginTime.Value.ToString("yyyy-MM-dd") + "至" + s.EndTime.Value.ToString("yyyy-MM-dd"),
+                            SheduleName = s.Desc
                         };
             var result = await query.OrderBy(s => s.AreaCode).ToListAsync();
             return result;
@@ -746,7 +761,7 @@ namespace GYISMS.ScheduleDetails
                 ISheet sheet = workbook.CreateSheet("SheduleSum");
                 var rowIndex = 0;
                 IRow titleRow = sheet.CreateRow(rowIndex);
-                string[] titles = { "区域", "任务名", "任务类型", "计划数", "完成数", "逾期数", "状态", "烟技员", "烟农" };
+                string[] titles = { "区域", "计划名", "计划时间", "任务名", "任务类型", "计划数", "完成数", "逾期数", "状态", "烟技员", "烟农" };
                 var fontTitle = workbook.CreateFont();
                 fontTitle.IsBold = true;
                 for (int i = 0; i < titles.Length; i++)
@@ -763,14 +778,16 @@ namespace GYISMS.ScheduleDetails
                     rowIndex++;
                     IRow row = sheet.CreateRow(rowIndex);
                     ExcelHelper.SetCell(row.CreateCell(0), font, item.AreaName);
-                    ExcelHelper.SetCell(row.CreateCell(1), font, item.TaskName);
-                    ExcelHelper.SetCell(row.CreateCell(2), font, item.TypeName);
-                    ExcelHelper.SetCell(row.CreateCell(3), font, item.VisitNum.ToString());
-                    ExcelHelper.SetCell(row.CreateCell(4), font, item.CompleteNum.ToString());
-                    ExcelHelper.SetCell(row.CreateCell(5), font, item.Status == ScheduleStatusEnum.已逾期 ? (item.VisitNum.Value - item.CompleteNum.Value).ToString() : "0");
-                    ExcelHelper.SetCell(row.CreateCell(6), font, item.StatusName);
-                    ExcelHelper.SetCell(row.CreateCell(7), font, item.EmployeeName);
-                    ExcelHelper.SetCell(row.CreateCell(8), font, item.GrowerName);
+                    ExcelHelper.SetCell(row.CreateCell(1), font, item.SheduleName);
+                    ExcelHelper.SetCell(row.CreateCell(2), font, item.Time);
+                    ExcelHelper.SetCell(row.CreateCell(3), font, item.TaskName);
+                    ExcelHelper.SetCell(row.CreateCell(4), font, item.TypeName);
+                    ExcelHelper.SetCell(row.CreateCell(5), font, item.VisitNum.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(6), font, item.CompleteNum.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(7), font, item.Status == ScheduleStatusEnum.已逾期 ? (item.VisitNum.Value - item.CompleteNum.Value).ToString() : "0");
+                    ExcelHelper.SetCell(row.CreateCell(8), font, item.StatusName);
+                    ExcelHelper.SetCell(row.CreateCell(9), font, item.EmployeeName);
+                    ExcelHelper.SetCell(row.CreateCell(10), font, item.GrowerName);
                 }
                 workbook.Write(fs);
             }
