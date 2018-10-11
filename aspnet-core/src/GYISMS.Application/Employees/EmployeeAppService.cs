@@ -23,6 +23,7 @@ using Abp.Auditing;
 using GYISMS.SystemDatas;
 using GYISMS.GYEnums;
 using GYISMS.SystemDatas.Dtos;
+using GYISMS.DingDing.Dtos;
 
 namespace GYISMS.Employees
 {
@@ -36,6 +37,7 @@ namespace GYISMS.Employees
         private readonly IEmployeeManager _employeeManager;
         private readonly IDingDingAppService _dingDingAppService;
         private readonly IRepository<SystemData, int> _systemdataRepository;
+        private DingDingAppConfig ddConfig;
 
         /// <summary>
         /// 构造函数 
@@ -280,12 +282,13 @@ namespace GYISMS.Employees
         [AbpAllowAnonymous]
         [Audited]
 
-        public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code)
+        public async Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code, DingDingAppEnum appId)
         {
+            ddConfig = _dingDingAppService.GetDingDingConfigByApp(appId);
             //测试环境注释
-            //var assessToken = _dingDingAppService.GetAccessToken("ding7xespi5yumrzraaq", "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3");
-            //var userId = _dingDingAppService.GetUserId(assessToken, code);
-            var userId = "165500493321719640";
+            var assessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
+            var userId = _dingDingAppService.GetUserId(assessToken, code);
+            //var userId = "165500493321719640";
             var query = await _employeeRepository.GetAsync(userId);
             return query.MapTo<DingDingUserDto>();
         }
