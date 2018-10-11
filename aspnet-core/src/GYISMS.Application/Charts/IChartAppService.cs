@@ -1,5 +1,6 @@
 ﻿using Abp.Application.Services;
 using GYISMS.Charts.Dtos;
+using GYISMS.GYEnums;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,6 +18,8 @@ namespace GYISMS.Charts
 
         Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime);
 
-        Task<List<DistrictChartItemDto>> GetChartByMothAsync(int searchMoth);
+        Task<ChartByTaskDto> GetChartByMothAsync(int searchMoth);
+
+        Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, string DateString, AreaTypeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus);
     }
 }

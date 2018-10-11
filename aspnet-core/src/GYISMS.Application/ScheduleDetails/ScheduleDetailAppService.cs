@@ -247,9 +247,12 @@ namespace GYISMS.ScheduleDetails
         {
             var homeInfo = new HomeInfo();
             //var aa = await _scheduledetailRepository.GetAll().ToListAsync();
-            var totalCount = _scheduledetailRepository.GetAll().Sum(s => s.VisitNum);
+            var query = from sd in _scheduledetailRepository.GetAll()
+                        join s in _scheduleRepository.GetAll().Where(s => s.Status == ScheduleMasterStatusEnum.已发布) on sd.ScheduleId equals s.Id
+                        select sd;
+            var totalCount = query.Sum(s => s.VisitNum);
             homeInfo.Total = totalCount.HasValue ? totalCount.Value : 0;
-            var compCount = _scheduledetailRepository.GetAll().Sum(s => s.CompleteNum);
+            var compCount = query.Sum(s => s.CompleteNum);
             homeInfo.Completed = compCount.HasValue ? compCount.Value : 0;
             if (!compCount.HasValue)
             {
@@ -259,7 +262,7 @@ namespace GYISMS.ScheduleDetails
             {
                 homeInfo.CompletedRate = (Math.Round((double)homeInfo.Completed / homeInfo.Total, 2) * 100).ToString() + "%";
             }
-            var expirCount = _scheduledetailRepository.GetAll().Where(s => s.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum);
+            var expirCount = query.Where(s => s.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum);
             homeInfo.Expired = expirCount.HasValue ? expirCount.Value : 0;
             return homeInfo;
         }
@@ -275,7 +278,7 @@ namespace GYISMS.ScheduleDetails
             input.startTime = input.startTime.HasValue ? input.startTime : timeNow.AddDays(1 - timeNow.Day);
             input.endTime = input.endTime.HasValue ? input.endTime : timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
             var query = from sd in _scheduledetailRepository.GetAll()
-                        join s in _scheduleRepository.GetAll().Where(s => s.BeginTime >= input.startTime && s.BeginTime <= input.endTime) on sd.ScheduleId equals s.Id
+                        join s in _scheduleRepository.GetAll().Where(s => s.BeginTime >= input.startTime && s.BeginTime <= input.endTime).Where(s=>s.Status== ScheduleMasterStatusEnum.已发布) on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id into sg
                         from wr in sg.DefaultIfEmpty()
                         select new
@@ -363,6 +366,7 @@ namespace GYISMS.ScheduleDetails
                         join s in _scheduleRepository.GetAll()
                             .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
                             .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                            .Where(s=>s.Status== ScheduleMasterStatusEnum.已发布)
                             on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll()
                         .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode)
@@ -452,6 +456,7 @@ namespace GYISMS.ScheduleDetails
                         join s in _scheduleRepository.GetAll()
                                                      .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
                                                      .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                                                     .Where(s=>s.Status== ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
                         join t in _visittaskRepository.GetAll()
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)

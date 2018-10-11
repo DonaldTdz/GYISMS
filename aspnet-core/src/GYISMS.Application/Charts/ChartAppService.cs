@@ -34,6 +34,7 @@ namespace GYISMS.Charts
         private readonly IRepository<Grower> _growerRepository;
         private readonly IRepository<VisitRecord, Guid> _visitRecordRepository;
         private readonly ISheduleDetailRepository _scheduleDetailRepository;
+        private readonly IRepository<VisitTask, int> _visittaskRepository;
         /// <summary>
         /// 构造函数 
         ///</summary>
@@ -43,6 +44,7 @@ namespace GYISMS.Charts
             , ISheduleDetailRepository scheduleDetailRepository
             , IRepository<Grower> growerRepository
             , IRepository<VisitRecord, Guid> visitRecordRepository
+            , IRepository<VisitTask, int> visittaskRepository
             )
         {
             _scheduletaskRepository = scheduletaskRepository;
@@ -51,7 +53,7 @@ namespace GYISMS.Charts
             _visitTaskRepository = visitTaskRepository;
             _growerRepository = growerRepository;
             _visitRecordRepository = visitRecordRepository;
-
+            _visittaskRepository = visittaskRepository;
         }
 
         /// <summary>
@@ -145,6 +147,7 @@ namespace GYISMS.Charts
                         join s in _scheduleRepository.GetAll()
                         .WhereIf(startTime.HasValue, s => s.BeginTime >= startTime)
                         .WhereIf(startTime.HasValue, s => s.BeginTime <= endTime)
+                        .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
                         join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
                         select new
@@ -153,18 +156,21 @@ namespace GYISMS.Charts
                             sd.CompleteNum,
                             sd.Status,
                             t.Type,
-                            t.Name
+                            t.Name,
+                            t.Id
                         };
-            var list = query.GroupBy(s => new { s.Name, s.Type }).Select(s =>
-            new SheduleByTaskDto()
-            {
-                TaskName = s.Key.Name,
-                VisitNum = s.Sum(sd => sd.VisitNum),
-                CompleteNum = s.Sum(sd => sd.CompleteNum),
-                ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
-            });
+            var list = query.GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
+             new SheduleByTaskDto()
+             {
+                 Id = s.Key.Id,
+                 //TaskType=s.Key.Type,
+                 TaskName = s.Key.Name,
+                 VisitNum = s.Sum(sd => sd.VisitNum),
+                 CompleteNum = s.Sum(sd => sd.CompleteNum),
+                 ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+             });
             var result = new ChartByTaskDto();
-            result.SheduleByTaskDtos = await list.ToListAsync();
+            result.Tasks = await list.ToListAsync();
             return result;
         }
 
@@ -173,7 +179,7 @@ namespace GYISMS.Charts
         /// </summary>
         /// <param name="searchMoth"></param>
         /// <returns></returns>
-        public async Task<List<DistrictChartItemDto>> GetChartByMothAsync(int searchMoth)
+        public async Task<ChartByTaskDto> GetChartByMothAsync(int searchMoth)
         {
             var timeNow = DateTime.Today;
             DateTime startTime;
@@ -191,28 +197,36 @@ namespace GYISMS.Charts
             var list = await _scheduleDetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime);
             list.OrderBy(s => s.GroupName).ToList();
             var items = new List<DistrictChartItemDto>();
+            var result = new ChartByTaskDto();
             foreach (var item in list)
             {
-                items.Add(new DistrictChartItemDto()
+                result.Tasks.Add(new SheduleByTaskDto
                 {
-                    District = item.GroupName,
-                    Name = "计划",
-                    Num = item.Total
+                    TaskName = item.GroupName,
+                    VisitNum = item.Total,
+                    CompleteNum = item.Completed,
+                    ExpiredNum = item.Expired
                 });
-                items.Add(new DistrictChartItemDto()
-                {
-                    District = item.GroupName,
-                    Name = "进行中",
-                    Num = item.Completed
-                });
-                items.Add(new DistrictChartItemDto()
-                {
-                    District = item.GroupName,
-                    Name = "逾期",
-                    Num = item.Expired
-                });
+                //items.Add(new DistrictChartItemDto()
+                //{
+                //    District = item.GroupName,
+                //    Name = "计划",
+                //    Num = item.Total
+                //});
+                //items.Add(new DistrictChartItemDto()
+                //{
+                //    District = item.GroupName,
+                //    Name = "进行中",
+                //    Num = item.Completed
+                //});
+                //items.Add(new DistrictChartItemDto()
+                //{
+                //    District = item.GroupName,
+                //    Name = "逾期",
+                //    Num = item.Expired
+                //});
             }
-            return items;
+            return result;
         }
 
         /// <summary>
@@ -250,6 +264,70 @@ namespace GYISMS.Charts
 
                 return dataList.OrderBy(d => d.Seq).ToList();
             });
+        }
+
+        /// <summary>
+        /// 获取任务的明细信息
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, string DateString, AreaTypeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus)
+        {
+            if (!string.IsNullOrEmpty(DateString))
+            {
+                var str = DateString.Split("-");
+                StartTime = new DateTime(int.Parse(str[0]), int.Parse(str[1]), 1);
+                EndTime = StartTime.Value.AddMonths(1).AddDays(-1);
+            }
+            var querysd = _scheduleDetailRepository.GetAll();
+            //完成
+            if (Status == 2)
+            {
+                querysd = querysd.Where(sd => sd.CompleteNum > 0);
+
+            } //逾期
+            else if (Status == 0)
+            {
+                querysd = querysd.Where(sd => sd.Status == ScheduleStatusEnum.已逾期);
+            }
+            //进行中
+            if (TStatus == 1)
+            {
+                querysd = querysd.Where(sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum);
+            }
+            var list = querysd.ToList();
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                                                      .WhereIf(Status == 2, sd => sd.CompleteNum > 0)
+                                                      .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
+                                                      .WhereIf(TStatus == 1, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                        join s in _scheduleRepository.GetAll()
+                                                      .WhereIf(StartTime.HasValue, s => s.BeginTime >= StartTime)
+                                                      .WhereIf(EndTime.HasValue, s => s.BeginTime <= EndTime)
+                                                      .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
+                        on sd.ScheduleId equals s.Id
+                        join t in _visittaskRepository.GetAll()
+                                                      //.WhereIf(input.TaskType.HasValue, t => t.Type == input.TaskType)
+                                                      //.WhereIf(!string.IsNullOrEmpty(input.TaskName), t => t.Name == input.TaskName)
+                                                      .WhereIf(TaskId.HasValue, t => t.Id == TaskId)
+                         on sd.TaskId equals t.Id
+                        join g in _growerRepository.GetAll()
+                                                     .WhereIf(AreaCode.HasValue, g => g.CountyCode == AreaCode)
+                        on sd.GrowerId equals g.Id
+                        select new SheduleDetailDto
+                        {
+                            Id = sd.Id,
+                            AreaCode = g.CountyCode,
+                            TaskType = t.Type,
+                            TaskName = t.Name,
+                            BeginTime = s.BeginTime,
+                            EndTime = s.EndTime,
+                            Status = sd.Status,
+                            EmployeeName = sd.EmployeeName,
+                            GrowerName = sd.GrowerName,
+                            VisitNum = sd.VisitNum,
+                            CompleteNum = sd.CompleteNum
+                        };
+            var items = await query.OrderByDescending(s => s.BeginTime).Skip(PageIndex).Take(15).ToListAsync();
+            return items;
         }
     }
 }

@@ -42,11 +42,16 @@ namespace GYISMS.Charts.Dtos
 
     public class DistrictChartItemDto
     {
+        public int? Id { get; set; }
         public string Name { get; set; }
 
         public string District { get; set; }
 
         public int? Num { get; set; }
+
+        public int? Status { get; set; }
+        public AreaTypeEnum? AreaCode { get; set; }
+        public string TimeGroup { get; set; }
     }
 
     public class DistrictChartDto
@@ -68,21 +73,27 @@ namespace GYISMS.Charts.Dtos
                 {
                     items.Add(new DistrictChartItemDto()
                     {
+                        AreaCode=item.AreaType,
                         District = item.District,
                         Name = "计划",
-                        Num = item.VisitNum
+                        Num = item.VisitNum,
+                        Status = 1,
                     });
                     items.Add(new DistrictChartItemDto()
                     {
+                        AreaCode = item.AreaType,
                         District = item.District,
                         Name = "完成",
-                        Num = item.CompleteNum
+                        Num = item.CompleteNum,
+                        Status = 2,
                     });
                     items.Add(new DistrictChartItemDto()
                     {
+                        AreaCode = item.AreaType,
                         District = item.District,
                         Name = "逾期",
-                        Num = item.OverdueNum
+                        Num = item.OverdueNum,
+                        Status = 0,
                     });
                 }
                 return items;
@@ -94,6 +105,7 @@ namespace GYISMS.Charts.Dtos
     {
         public int Id { get; set; }
 
+        //public TaskTypeEnum? TaskType { get; set; }
         public string TaskName { get; set; }
 
         public int? VisitNum { get; set; }
@@ -101,43 +113,149 @@ namespace GYISMS.Charts.Dtos
         public int? CompleteNum { get; set; }
 
         public int? ExpiredNum { get; set; }
+
+        public decimal? Percent
+        {
+            get
+            {
+                if (VisitNum.HasValue && VisitNum > 0)
+                {
+                    return Math.Round(CompleteNum.Value / (decimal)VisitNum.Value, 2) * 100;
+                }
+                return 0;
+            }
+        }
     }
 
     public class ChartByTaskDto
     {
         public ChartByTaskDto()
         {
-            SheduleByTaskDtos = new List<SheduleByTaskDto>();
+            Tasks = new List<SheduleByTaskDto>();
         }
 
-        public List<SheduleByTaskDto> SheduleByTaskDtos { get; set; }
+        public List<SheduleByTaskDto> Tasks { get; set; }
         public List<DistrictChartItemDto> Items
         {
             get
             {
                 var items = new List<DistrictChartItemDto>();
-                foreach (var item in SheduleByTaskDtos)
+                foreach (var item in Tasks)
                 {
                     items.Add(new DistrictChartItemDto()
                     {
+                        Id=item.Id,
                         District = item.TaskName,
                         Name = "计划",
-                        Num = item.VisitNum
+                        Num = item.VisitNum,
+                        Status=1,
                     });
                     items.Add(new DistrictChartItemDto()
                     {
+                        Id = item.Id,
                         District = item.TaskName,
-                        Name = "进行中",
-                        Num = item.CompleteNum
+                        Name = "完成",
+                        Num = item.CompleteNum,
+                        Status = 2,
                     });
                     items.Add(new DistrictChartItemDto()
                     {
+                        Id = item.Id,
                         District = item.TaskName,
                         Name = "逾期",
-                        Num = item.ExpiredNum
+                        Num = item.ExpiredNum,
+                        Status = 0,
                     });
                 }
                 return items;
+            }
+        }
+    }
+
+    public class SheduleDetailDto
+    {
+        public Guid Id { get; set; }
+        public AreaTypeEnum? AreaCode { get; set; }
+
+        public TaskTypeEnum? TaskType { get; set; }
+
+        public string TaskName { get; set; }
+
+        /// <summary>
+        /// 任务开始时间
+        /// </summary>
+        public DateTime? BeginTime { get; set; }
+
+        /// <summary>
+        /// 任务开始时间
+        /// </summary>
+        public DateTime? EndTime { get; set; }
+
+        /// <summary>
+        /// 任务状态
+        /// </summary>
+        public ScheduleStatusEnum Status { get; set; }
+
+        /// <summary>
+        /// 烟技员
+        /// </summary>
+        public string EmployeeName { get; set; }
+
+        /// <summary>
+        /// 烟农
+        /// </summary>
+        public string GrowerName { get; set; }
+
+        /// <summary>
+        /// VisitNum
+        /// </summary>
+        public int? VisitNum { get; set; }
+
+        /// <summary>
+        /// CompleteNum
+        /// </summary>
+        public int? CompleteNum { get; set; }
+
+        /// <summary>
+        /// 逾期数
+        /// </summary>
+        public int? ExpiredNum { get; set; }
+
+        public string AreaName
+        {
+            get
+            {
+                return AreaCode.ToString();
+            }
+        }
+
+        public string TaskTypeName
+        {
+            get
+            {
+                return TaskType.ToString();
+            }
+        }
+
+        public string StatusName
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
+        public string BeginTimeStr
+        {
+            get
+            {
+                return BeginTime.HasValue ? BeginTime.Value.ToString("yyyy-MM-dd") : string.Empty;
+            }
+        }
+        public string EndTimeStr
+        {
+            get
+            {
+                return EndTime.HasValue ? EndTime.Value.ToString("yyyy-MM-dd") : string.Empty;
             }
         }
     }
