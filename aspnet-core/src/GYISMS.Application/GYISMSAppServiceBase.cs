@@ -6,6 +6,7 @@ using Abp.IdentityFramework;
 using Abp.Runtime.Session;
 using GYISMS.Authorization.Users;
 using GYISMS.MultiTenancy;
+using GYISMS.GYEnums;
 
 namespace GYISMS
 {
@@ -42,6 +43,17 @@ namespace GYISMS
         protected virtual void CheckErrors(IdentityResult identityResult)
         {
             identityResult.CheckErrors(LocalizationManager);
+        }
+
+        protected async Task<AreaCodeEnum?> GetCurrentUserAreaCodeAsync()
+        {
+            var user = await GetCurrentUserAsync();
+            var roles = await UserManager.GetRolesAsync(user);
+            if (roles.Contains("DistrictAdmin"))// 如果是区县管理员
+            {
+                return user.AreaCode.HasValue? user.AreaCode : AreaCodeEnum.None;
+            }
+            return null;
         }
     }
 }

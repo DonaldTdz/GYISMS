@@ -4,6 +4,7 @@ using Abp.Authorization.Users;
 using Abp.AutoMapper;
 using Abp.Runtime.Validation;
 using GYISMS.Authorization.Users;
+using GYISMS.GYEnums;
 
 namespace GYISMS.Users.Dto
 {
@@ -45,7 +46,7 @@ namespace GYISMS.Users.Dto
         }
 
         public string Area { get; set; }
-        public string AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
     }

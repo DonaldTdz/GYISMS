@@ -18,7 +18,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// <summary>
         /// 区域
         /// </summary>
-        public AreaTypeEnum? AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 开始时间
@@ -80,7 +80,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// <summary>
         /// 区域
         /// </summary>
-        public AreaTypeEnum? AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 开始时间

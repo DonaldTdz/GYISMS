@@ -45,7 +45,7 @@ namespace GYISMS.Growers.Dtos
         /// <summary>
         /// CountyCode
         /// </summary>
-        public AreaTypeEnum? CountyCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
 
         /// <summary>

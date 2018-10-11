@@ -43,7 +43,7 @@ namespace GYISMS.Growers.Dtos
         /// <summary>
         /// CountyCode
         /// </summary>
-        public AreaTypeEnum? CountyCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// EmployeeId
@@ -154,7 +154,7 @@ namespace GYISMS.Growers.Dtos
         {
             get
             {
-               return CountyCode.ToString();
+               return AreaCode.ToString();
             }
         }
         public bool Checked { get; set; }

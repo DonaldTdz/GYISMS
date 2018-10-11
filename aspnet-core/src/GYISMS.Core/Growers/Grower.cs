@@ -1,6 +1,7 @@
 ﻿using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.GYEnums;
+using GYISMS.Interfaces;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -11,7 +12,7 @@ namespace GYISMS.Growers
     /// 烟农
     /// </summary
     [Table("Growers")]
-    public class Grower : AuditedEntity<int>, ISoftDelete
+    public class Grower : AuditedEntity<int>, ISoftDelete, IMayArea
     {
         /// <summary>
         /// 业务年度
@@ -40,7 +41,7 @@ namespace GYISMS.Growers
         /// <summary>
         /// 所属区县（剑阁县、昭化区、旺苍县）
         /// </summary>
-        public virtual AreaTypeEnum? CountyCode { get; set; }
+        public virtual AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 烟技员Id外键
@@ -136,5 +137,6 @@ namespace GYISMS.Growers
         /// DeleterUserId
         /// </summary>
         public virtual long? DeleterUserId { get; set; }
+
     }
 }

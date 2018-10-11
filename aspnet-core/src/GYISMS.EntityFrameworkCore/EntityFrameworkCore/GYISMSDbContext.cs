@@ -18,6 +18,8 @@ using GYISMS.VisitRecords;
 using GYISMS.VisitExamines;
 using GYISMS.VisitTasks;
 using GYISMS.Employees;
+using GYISMS.Interfaces;
+using GYISMS.GYEnums;
 
 namespace GYISMS.EntityFrameworkCore
 {

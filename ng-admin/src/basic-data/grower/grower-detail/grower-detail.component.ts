@@ -65,7 +65,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             longitude: null,
             latitude: null,
             plantingArea: [null, Validators.compose([Validators.pattern(/^(?:[1-9]\d*|0)(?:\.\d{1,2})?$/)])],
-            countyCode: null,
+            areaCode: null,
             contractTime: null,
             type: null
         });
@@ -85,7 +85,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             this.getVisitRecord();
         } else {
             //新增
-            this.grower.countyCode = 1;
+            this.grower.areaCode = 1;
             this.grower.type = 1;
             this.grower.plantingArea = Number(0).toFixed(2);
             var currentdate = new Date();

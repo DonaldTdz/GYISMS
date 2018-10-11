@@ -295,9 +295,9 @@ namespace GYISMS.ScheduleDetails
                             sd.Status,
                             sd.VisitNum,
                             sd.CompleteNum,
-                            wr.CountyCode,
+                            wr.AreaCode,
                         };
-            var list = await query.GroupBy(s => s.CountyCode).Select(g => new SheduleStatisticalDto
+            var list = await query.GroupBy(s => s.AreaCode).Select(g => new SheduleStatisticalDto
             {
                 GroupName = g.Key.ToString(),
                 Total = g.Sum(m => m.VisitNum),
@@ -378,11 +378,11 @@ namespace GYISMS.ScheduleDetails
                             .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                             on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll()
-                        .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode)
+                        .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
                         on sd.GrowerId equals g.Id
                         select new
                         {
-                            g.CountyCode,
+                            g.AreaCode,
                             t.Type,
                             t.Name,
                             sd.VisitNum,
@@ -397,16 +397,16 @@ namespace GYISMS.ScheduleDetails
             var equery = from q in query
                          group new
                          {
-                             q.CountyCode,
+                             q.AreaCode,
                              q.Type,
                              q.Name,
                              q.VisitNum,
                              q.CompleteNum,
                              q.Status
-                         } by new { q.CountyCode, q.Type, q.Name,q.Id,q.Desc,q.BeginTime,q.EndTime } into gq
+                         } by new { q.AreaCode, q.Type, q.Name,q.Id,q.Desc,q.BeginTime,q.EndTime } into gq
                          select new SheduleSumDto()
                          {
-                             AreaCode = gq.Key.CountyCode,
+                             AreaCode = gq.Key.AreaCode,
                              TaskType = gq.Key.Type,
                              TaskName = gq.Key.Name,
                              Total = gq.Sum(g => g.VisitNum),
@@ -478,7 +478,7 @@ namespace GYISMS.ScheduleDetails
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
                         on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode)
+                                                     .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailTaskListDto
                         {
@@ -488,7 +488,7 @@ namespace GYISMS.ScheduleDetails
                             Status = sd.Status,
                             TaskName = t.Name,
                             TaskType = t.Type,
-                            AreaCode = g.CountyCode,
+                            AreaCode = g.AreaCode,
                             GrowerId = sd.GrowerId,
                             GrowerName = sd.GrowerName,
                             EmployeeName = sd.EmployeeName,
@@ -725,7 +725,7 @@ namespace GYISMS.ScheduleDetails
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
                         on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode)
+                                                     .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailTaskListDto
                         {
@@ -735,7 +735,7 @@ namespace GYISMS.ScheduleDetails
                             Status = sd.Status,
                             TaskName = t.Name,
                             TaskType = t.Type,
-                            AreaCode = g.CountyCode,
+                            AreaCode = g.AreaCode,
                             GrowerId = sd.GrowerId,
                             GrowerName = sd.GrowerName,
                             EmployeeName = sd.EmployeeName,

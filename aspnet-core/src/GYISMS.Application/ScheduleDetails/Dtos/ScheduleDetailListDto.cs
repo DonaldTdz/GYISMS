@@ -146,7 +146,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// <summary>
         /// AreaCode
         /// </summary>
-        public AreaTypeEnum? AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// TaskName

@@ -42,7 +42,8 @@
                 </ng-template>
             </div> -->
             <div style="padding-bottom: 10px;border-right-width: 10px;padding-right: 10px; padding-left: 10px;">
-                <button nz-button (click)="syncData()" style="width:100%" [nzLoading]="syncDataLoading" nzType="primary">
+                <button nz-button (click)="syncData()" style="width:100%" [acl]="'Admin'" [nzLoading]="syncDataLoading"
+                    nzType="primary">
                     <i class="anticon anticon-reload"></i>
                     <span>同步组织架构</span>
                 </button>
@@ -55,13 +56,13 @@
                                 <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
                                 <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
                                 <span class="folder-name">{{node.title}}</span>
-                        <!-- <span class="folder-desc">{{node?.origin?.author | lowercase}}</span> -->
-                        </span>
-                        <span *ngIf="node.isLeaf">
+                                <!-- <span class="folder-desc">{{node?.origin?.author | lowercase}}</span> -->
+                            </span>
+                            <span *ngIf="node.isLeaf">
                                 <i class="anticon anticon-folder"></i>
                                 <span class="file-name">{{node.title}}</span>
-                        <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
-                        </span>
+                                <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
+                            </span>
                         </span>
                     </ng-template>
                 </nz-tree>
@@ -97,14 +98,15 @@
                 </div>
             </form>
             <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-            <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total" [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
-                (nzPageSizeChange)="refreshData(tempNode)">
+            <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total"
+                [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
+                [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)" (nzPageSizeChange)="refreshData(tempNode)">
                 <thead>
                     <tr>
                         <th>姓名</th>
                         <th>职位</th>
                         <th>电话号码</th>
-                        <th>操作</th>
+                        <th [acl]="'Admin'">操作</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -112,7 +114,7 @@
                         <td>{{item.name}}</td>
                         <td>{{item.position}}</td>
                         <td>{{item.mobile}}</td>
-                        <td>
+                        <td [acl]="'Admin'">
                             <a (click)="showModal(item.id)">区县维护</a>
                         </td>
                     </tr>

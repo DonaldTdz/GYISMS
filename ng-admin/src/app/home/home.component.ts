@@ -55,11 +55,11 @@ export class HomeComponent extends AppComponentBase implements OnInit {
     if (roles) {
 
       if (roles.includes('Admin')) {
-        this.roleName += '系统管理员';
+        this.roleName += '系统管理员 ';
       }
 
       if (roles.includes('CityAdmin')) {
-        this.roleName += '市级管理员';
+        this.roleName += '市级管理员 ';
       }
 
       if (roles.includes('DistrictAdmin')) {
