@@ -15,8 +15,8 @@ namespace GYISMS.DingDing
 
         OapiUserGetResponse GetUserInfo(string accessToken, string userId);
 
-        string GetAccessToken(DingDingAppEnum app);
+        string GetAccessTokenByApp(DingDingAppEnum app);
 
-        DingDingAppConfig GetDingDingConfig(DingDingAppEnum app);
+        DingDingAppConfig GetDingDingConfigByApp(DingDingAppEnum app);
     }
 }
