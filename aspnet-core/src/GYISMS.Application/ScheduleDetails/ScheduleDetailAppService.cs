@@ -31,6 +31,11 @@ using DingTalk.Api.Response;
 using GYISMS.Helpers;
 using GYISMS.DingDing;
 using GYISMS.DingDing.Dtos;
+using NPOI.SS.UserModel;
+using System.IO;
+using NPOI.XSSF.UserModel;
+using Microsoft.AspNetCore.Hosting;
+using Abp.Domain.Uow;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -51,13 +56,15 @@ namespace GYISMS.ScheduleDetails
 
         private string accessToken;
         private DingDingAppConfig ddConfig;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
         public ScheduleDetailAppService(//IRepository<ScheduleDetail, Guid> scheduledetailRepository
            ISheduleDetailRepository scheduledetailRepository, IScheduleDetailManager scheduledetailManager, IRepository<Grower, int> growerRepository,
-            IRepository<Schedule, Guid> scheduleRepository, IRepository<VisitTask, int> visittaskRepository, IDingDingAppService dingDingAppService)
+            IRepository<Schedule, Guid> scheduleRepository, IRepository<VisitTask, int> visittaskRepository, IDingDingAppService dingDingAppService,
+             IHostingEnvironment hostingEnvironment)
         {
             _growerRepository = growerRepository;
             _scheduledetailRepository = scheduledetailRepository;
@@ -68,6 +75,7 @@ namespace GYISMS.ScheduleDetails
             _dingDingAppService = dingDingAppService;
             ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
             accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
+            _hostingEnvironment = hostingEnvironment;
         }
 
 
@@ -403,7 +411,7 @@ namespace GYISMS.ScheduleDetails
 
             var result = new SheduleSumStatisDto();
 
-            var dataList = (await equery.ToListAsync()).MapTo<List<SheduleSumDto>>();
+            var dataList = (await equery.OrderBy(s=>s.AreaCode).ToListAsync()).MapTo<List<SheduleSumDto>>();
             result.sheduleSumDtos = dataList;
             var total = dataList.Sum(s => s.Total);
             result.TotalSum = total.HasValue ? total.Value : 0;
@@ -481,6 +489,7 @@ namespace GYISMS.ScheduleDetails
 
             var scheduledetails = await query
                     //.OrderBy(input.Sorting).AsNoTracking()
+                    .OrderBy(s=>s.AreaCode)
                     .PageBy(input)
                     .ToListAsync();
 
@@ -602,6 +611,192 @@ namespace GYISMS.ScheduleDetails
                 OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);
             }
         }
+
+        #region 导出报表
+
+        /// <summary>
+        /// 创建任务汇总的Excel
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        public string CreateSheduleSumExcel(string fileName, SheduleSumStatisDto data)
+        {
+            var fullPath = ExcelHelper.GetSavePath(_hostingEnvironment.WebRootPath) + fileName;
+            using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet = workbook.CreateSheet("SheduleSum");
+                var rowIndex = 0;
+                IRow titleRow = sheet.CreateRow(rowIndex);
+                string[] titles = { "区域", "任务名", "任务类型", "计划数", "完成数", "逾期数", "完成率" };
+                var fontTitle = workbook.CreateFont();
+                fontTitle.IsBold = true;
+                for (int i = 0; i < titles.Length; i++)
+                {
+                    var cell = titleRow.CreateCell(i);
+                    cell.CellStyle.SetFont(fontTitle);
+                    cell.SetCellValue(titles[i]);
+                    //ExcelHelper.SetCell(titleRow.CreateCell(i), fontTitle, titles[i]);
+                }
+                var font = workbook.CreateFont();
+                foreach (var item in data.sheduleSumDtos)
+                {
+
+                    rowIndex++;
+                    IRow row = sheet.CreateRow(rowIndex);
+                    ExcelHelper.SetCell(row.CreateCell(0), font, item.AreaName);
+                    ExcelHelper.SetCell(row.CreateCell(1), font, item.TaskName);
+                    ExcelHelper.SetCell(row.CreateCell(2), font, item.TaskTypeName);
+                    ExcelHelper.SetCell(row.CreateCell(3), font, item.Total.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(4), font, item.Complete.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(5), font, item.Expired.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(6), font, item.CompleteRate);
+                }
+                var completeRateT = "0%";
+                if (data.CompleteSum != 0 && data.TotalSum != 0)
+                {
+                    completeRateT = (Math.Round((double)data.CompleteSum / data.TotalSum, 2) * 100).ToString() + "%";
+                }
+                rowIndex++;
+                IRow rowEnd = sheet.CreateRow(rowIndex);
+                ExcelHelper.SetCell(rowEnd.CreateCell(0), font, "总计：");
+                ExcelHelper.SetCell(rowEnd.CreateCell(3), font, data.TotalSum.ToString());
+                ExcelHelper.SetCell(rowEnd.CreateCell(4), font, data.CompleteSum.ToString());
+                ExcelHelper.SetCell(rowEnd.CreateCell(5), font, data.ExpiredSum.ToString());
+                ExcelHelper.SetCell(rowEnd.CreateCell(6), font, completeRateT);
+                workbook.Write(fs);
+            }
+            return "/files/downloadtemp/" + fileName;
+        }
+        /// <summary>
+        /// 导出任务汇总信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [UnitOfWork(isTransactional: false)]
+        public async Task<APIResultDto> ExportSheduleSumExcel(SheduleSumInput input)
+        {
+            try
+            {
+                var exportData = await GetSumShedule(input);
+                var result = new APIResultDto();
+                result.Code = 0;
+                result.Data = CreateSheduleSumExcel("任务汇总.xlsx", exportData);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("ExportEmployeesExcel errormsg{0} Exception{1}", ex.Message, ex);
+                return new APIResultDto() { Code = 901, Msg = "网络忙...请待会儿再试！" };
+            }
+        }
+
+        /// <summary>
+        /// 获取任务明细信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<List<SheduleDetailTaskListDto>> GetNoPageScheduleDetailsByOtherTable(GetScheduleDetailsInput input)
+        {
+            var query = from sd in _scheduledetailRepository.GetAll()
+                                                        .WhereIf(!string.IsNullOrEmpty(input.EmployeeName), sd => sd.EmployeeName.Contains(input.EmployeeName))
+                                                        .WhereIf(!string.IsNullOrEmpty(input.GrowerName), sd => sd.GrowerName.Contains(input.GrowerName))
+                        join s in _scheduleRepository.GetAll()
+                                                     .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
+                                                     .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                                                     .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
+                        on sd.ScheduleId equals s.Id
+                        join t in _visittaskRepository.GetAll()
+                                                     .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
+                        on sd.TaskId equals t.Id
+                        join g in _growerRepository.GetAll()
+                                                     .WhereIf(input.AreaCode.HasValue, g => g.CountyCode == input.AreaCode)
+                        on sd.GrowerId equals g.Id
+                        select new SheduleDetailTaskListDto
+                        {
+                            Id = sd.Id,
+                            VisitNum = sd.VisitNum,
+                            CompleteNum = sd.CompleteNum,
+                            Status = sd.Status,
+                            TaskName = t.Name,
+                            TaskType = t.Type,
+                            AreaCode = g.CountyCode,
+                            GrowerName = sd.GrowerName,
+                            EmployeeName = sd.EmployeeName
+                        };
+            var result = await query.OrderBy(s => s.AreaCode).ToListAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// 创建任务明细Excel
+        /// </summary>
+        /// <param name="fileName">文件名</param>
+        /// <param name="data">文件数据</param>
+        /// <returns></returns>
+        public string CreateSheduleDetailExcel(string fileName, List<SheduleDetailTaskListDto> data)
+        {
+            var fullPath = ExcelHelper.GetSavePath(_hostingEnvironment.WebRootPath) + fileName;
+            using (var fs = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
+            {
+                IWorkbook workbook = new XSSFWorkbook();
+                ISheet sheet = workbook.CreateSheet("SheduleSum");
+                var rowIndex = 0;
+                IRow titleRow = sheet.CreateRow(rowIndex);
+                string[] titles = { "区域", "任务名", "任务类型", "计划数", "完成数", "逾期数", "状态","烟技员","烟农" };
+                var fontTitle = workbook.CreateFont();
+                fontTitle.IsBold = true;
+                for (int i = 0; i < titles.Length; i++)
+                {
+                    var cell = titleRow.CreateCell(i);
+                    cell.CellStyle.SetFont(fontTitle);
+                    cell.SetCellValue(titles[i]);
+                    //ExcelHelper.SetCell(titleRow.CreateCell(i), fontTitle, titles[i]);
+                }
+                var font = workbook.CreateFont();
+                foreach (var item in data)
+                {
+
+                    rowIndex++;
+                    IRow row = sheet.CreateRow(rowIndex);
+                    ExcelHelper.SetCell(row.CreateCell(0), font, item.AreaName);
+                    ExcelHelper.SetCell(row.CreateCell(1), font, item.TaskName);
+                    ExcelHelper.SetCell(row.CreateCell(2), font, item.TypeName);
+                    ExcelHelper.SetCell(row.CreateCell(3), font, item.VisitNum.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(4), font, item.CompleteNum.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(5), font, item.Expired.ToString());
+                    ExcelHelper.SetCell(row.CreateCell(6), font, item.StatusName);
+                    ExcelHelper.SetCell(row.CreateCell(7), font, item.EmployeeName);
+                    ExcelHelper.SetCell(row.CreateCell(8), font, item.GrowerName);
+                }
+                workbook.Write(fs);
+            }
+            return "/files/downloadtemp/" + fileName;
+        }
+        /// <summary>
+        /// 导出任务明细
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [UnitOfWork(isTransactional: false)]
+        public async Task<APIResultDto> ExportSheduleDetailExcel(GetScheduleDetailsInput input)
+        {
+            try
+            {
+                var exportData = await GetNoPageScheduleDetailsByOtherTable(input);
+                var result = new APIResultDto();
+                result.Code = 0;
+                result.Data = CreateSheduleDetailExcel("任务明细.xlsx", exportData);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("ExportEmployeesExcel errormsg{0} Exception{1}", ex.Message, ex);
+                return new APIResultDto() { Code = 901, Msg = "网络忙...请待会儿再试！" };
+            }
+        }
+        #endregion
     }
 }
 

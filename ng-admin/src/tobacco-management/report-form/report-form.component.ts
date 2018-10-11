@@ -3,6 +3,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { ScheduleSum, ScheduleDetailTask, VisitTaskName } from '@shared/entity/tobacco-management';
 import { ScheduleDetailServiceProxy, VisitTaskServiceProxy } from '@shared/service-proxies/tobacco-management';
 import { addDays, addMonths } from 'date-fns';
+import { AppConsts } from '@shared/AppConsts';
 
 @Component({
     moduleId: module.id,
@@ -44,6 +45,8 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     // dateRangeDe = [new Date(), addDays(new Date(), 3)];//[];  
     shedateFormat = 'yyyy-MM-dd';
     shedateFormatDe = 'yyyy-MM-dd';
+    exportSLoading = false;
+    exportDLoading = false;
     constructor(injector: Injector, private sheduleDetailService: ScheduleDetailServiceProxy, private taskService: VisitTaskServiceProxy) {
         super(injector);
     }
@@ -53,7 +56,6 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
         this.getSheduleSum();
         this.resetTime(2);
         this.getSheDulDetailByTask();
-
     }
 
     /**
@@ -146,13 +148,10 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
             this.dateRange = [this.firstDay, this.lastDay];//[]; 
             this.sumSearch.startTime = this.dateFormat(this.dateRange[0]);
             this.sumSearch.endtime = this.dateFormat(this.dateRange[1]);
-            console.log("this.dateRange");
-            console.log(this.dateRange);
         } else {
             this.dateRangeDe = [this.firstDay, this.lastDay];//[]; 
             this.detailSearch.startTime = this.dateFormat(this.dateRangeDe[0]);
             this.detailSearch.endtime = this.dateFormat(this.dateRangeDe[1]);
-            console.log("this.dateRangeDe");
         }
         console.log(this.dateRangeDe);
     }
@@ -164,5 +163,40 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
         this.firstDay = new Date(year, moth, 1);
         // this.firstDay = new Date(nowDate.setDate(1));
         this.lastDay = addDays(new Date(year, moth + 1, 1), -1)
+    }
+    /**
+     * 导出任务汇总
+     */
+    exportSheduleSum() {
+        this.exportSLoading = true;
+        this.sheduleDetailService.exportExcelOfSheduleSum(this.sumSearch).subscribe(data => {
+            if (data.code == 0) {
+                var url = AppConsts.remoteServiceBaseUrl + data.data;
+                console.log('url');
+                console.log(url);
+                document.getElementById('aSheduleSumExcelUrl').setAttribute('href', url);
+                document.getElementById('btnSheduleSumHref').click();
+            } else {
+                this.notify.error(data.msg);
+            }
+            this.exportSLoading = false;
+        });
+    }
+
+    /**
+     * 导出任务明细
+     */
+    exportSheduleDe() {
+        this.exportDLoading = true;
+        this.sheduleDetailService.exportExcelOfSheduleDetail(this.detailSearch).subscribe(data => {
+            if (data.code == 0) {
+                var url = AppConsts.remoteServiceBaseUrl + data.data;
+                document.getElementById('aSheduleDeExcelUrl').setAttribute('href', url);
+                document.getElementById('btnSheduleDeHref').click();
+            } else {
+                this.notify.error(data.msg);
+            }
+            this.exportDLoading = false;
+        })
     }
 }

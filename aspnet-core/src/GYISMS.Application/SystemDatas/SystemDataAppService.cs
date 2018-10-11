@@ -142,7 +142,7 @@ systemdataListDtos
             //TODO:新增前的逻辑判断，是否允许新增
 
             var entity = ObjectMapper.Map<SystemData>(input);
-            entity.CreationTime = new DateTime();
+            entity.CreationTime =DateTime.Now;
             entity = await _systemdataRepository.InsertAsync(entity);
             return entity.MapTo<SystemDataEditDto>();
         }
@@ -297,7 +297,7 @@ systemdataListDtos
             }
             else
             {
-                input.CreationTime = DateTime.Now;
+                //input.CreationTime = DateTime.Now;
                 await CreateSystemDataAsync(input);
             }
         }

@@ -75,5 +75,9 @@ namespace GYISMS.ScheduleDetails
         Task AutoUpdateOverdueStatusAsync();
 
         Task SendTaskOverdueMsgAsync();
+
+        Task<APIResultDto> ExportSheduleSumExcel(SheduleSumInput input);
+
+        Task<APIResultDto> ExportSheduleDetailExcel(GetScheduleDetailsInput input);
     }
 }
