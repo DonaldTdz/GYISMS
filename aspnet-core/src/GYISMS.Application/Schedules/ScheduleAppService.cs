@@ -26,6 +26,8 @@ using DingTalk.Api.Response;
 using GYISMS.ScheduleDetails;
 using Abp.Auditing;
 using GYISMS.Helpers;
+using GYISMS.DingDing;
+using GYISMS.DingDing.Dtos;
 
 namespace GYISMS.Schedules
 {
@@ -39,6 +41,10 @@ namespace GYISMS.Schedules
         private readonly IRepository<Schedule, Guid> _scheduleRepository;
         private readonly IScheduleManager _scheduleManager;
         private readonly ISheduleDetailRepository _scheduledetailRepository;
+        private readonly IDingDingAppService _dingDingAppService;
+
+        private string accessToken;
+        private DingDingAppConfig ddConfig;
 
         /// <summary>
         /// 构造函数 
@@ -46,11 +52,16 @@ namespace GYISMS.Schedules
         public ScheduleAppService(IRepository<Schedule, Guid> scheduleRepository
             , IScheduleManager scheduleManager
             , ISheduleDetailRepository scheduledetailRepository
+            , IDingDingAppService dingDingAppService
             )
         {
             _scheduleRepository = scheduleRepository;
             _scheduleManager = scheduleManager;
             _scheduledetailRepository = scheduledetailRepository;
+            _dingDingAppService = dingDingAppService;
+
+            ddConfig = _dingDingAppService.GetDingDingConfig(DingDingAppEnum.任务拜访);
+            accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
         }
 
 
@@ -253,7 +264,6 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         public object UpdateAndGetMediaId()
         {
-            string accessToken = DingDingConfigHelper.GetVisitTaskAccessToken();
             IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/media/upload");
             OapiMediaUploadRequest request = new OapiMediaUploadRequest();
             request.Type = "image";
@@ -271,8 +281,6 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         public async Task<APIResultDto> SendMessageToEmployeeAsync(GetSchedulesInput input)
         {
-            //获取accessToken
-            string accessToken = DingDingConfigHelper.GetVisitTaskAccessToken();
             //获取UserIds
             int pageIndex = 1; //skip
             int pageSize = 20; //take
@@ -288,7 +296,7 @@ namespace GYISMS.Schedules
                 OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
                 request.UseridList = tempIds;
                 request.ToAllUser = false;
-                request.AgentId = DingDingConfigHelper.VisitTaskAgentID;
+                request.AgentId = ddConfig.AgentID;
 
                 OapiMessageCorpconversationAsyncsendV2Request.MsgDomain msg = new OapiMessageCorpconversationAsyncsendV2Request.MsgDomain();
                 msg.Link = new OapiMessageCorpconversationAsyncsendV2Request.LinkDomain();

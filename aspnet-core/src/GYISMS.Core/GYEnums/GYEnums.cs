@@ -10,13 +10,18 @@ namespace GYISMS.GYEnums
         会议物资 = 2,
         烟农单位 = 3,
         烟农村组 = 4,
-        烟叶公共 = 5
+        烟叶公共 = 5,
+        钉钉配置 = 6,
+        任务拜访 = 7,
+        智能报表 = 8,
+        会议申请 = 9
     }
 
     public enum ConfigModel
     {
         会议管理 = 1,
-        烟叶服务 = 2
+        烟叶服务 = 2,
+        钉钉配置 = 3
     }
 
     public enum RoomType
@@ -70,7 +75,7 @@ namespace GYISMS.GYEnums
     {
         无提醒 = 0,
         发DING = 1,
-        钉钉消息 =2
+        钉钉消息 = 2
     }
     public enum RemindingTimeEnum
     {
@@ -80,9 +85,9 @@ namespace GYISMS.GYEnums
     }
     public enum AreaTypeEnum
     {
-        昭化区=1,
-        剑阁县=2,
-        旺苍县=3
+        昭化区 = 1,
+        剑阁县 = 2,
+        旺苍县 = 3
     }
 
     public static class GYCode
