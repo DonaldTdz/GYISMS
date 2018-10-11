@@ -21,12 +21,23 @@
                 <!-- 名 / 姓名 -->
                 <nz-form-item>
                     <nz-form-control nzHasFeedback>
+                        <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
+                            <input readonly="readonly" [(ngModel)]="user.name" nz-input formControlName="name" id="name" placeholder="请选择员工">
+                            <ng-template #suffixIconButton>
+                                <button nz-button type="button" nzType="primary" (click)="showModal()" nzSearch>选择员工</button>
+                            </ng-template>
+                        </nz-input-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <!-- <nz-form-item>
+                    <nz-form-control nzHasFeedback>
                         <input nz-input formControlName="name" [placeholder]="l('name')" autocomplete="name">
                         <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').errors">
                             <ng-container *ngIf="validateForm.get('name').hasError('required')">{{l('CanNotNull')}}</ng-container>
                         </nz-form-explain>
-                    </nz-form-control>
-                    <!-- <nz-col [nzSpan]="12">
+                    </nz-form-control>  
+                </nz-form-item>            -->
+                <!-- <nz-col [nzSpan]="12">
             <nz-form-control nzHasFeedback>
               <input nz-input formControlName="surname" [placeholder]="l('Surname')">
               <nz-form-explain *ngIf="validateForm.get('surname').dirty&&validateForm.get('surname').errors">
@@ -34,7 +45,7 @@
               </nz-form-explain>
             </nz-form-control>
           </nz-col> -->
-                </nz-form-item>
+
 
                 <!-- 邮箱 -->
                 <nz-form-item>
@@ -72,6 +83,6 @@
         </button>
             </div>
         </div>
-
     </form>
 </div>
+<chooese-employee-modal #selectsEmployeeModal (modalSelect)="getSelectData($event)"></chooese-employee-modal>

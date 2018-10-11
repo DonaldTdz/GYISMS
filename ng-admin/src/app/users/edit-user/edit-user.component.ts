@@ -1,7 +1,9 @@
-import { Component, OnInit, Injector, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Injector, Input, AfterViewInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { ModalFormComponentBase } from '@shared/component-base/modal-form-component-base';
 import { RoleDto, RoleServiceProxy, ListResultDtoOfPermissionDto, UserServiceProxy, UserDto } from '@shared/service-proxies/service-proxies';
 import { Validators, FormControl, AbstractControl } from '@angular/forms';
+import { ChooeseEmployeeModalComponent } from '../chooese-employee-modal/chooese-employee-modal.component';
+import { Employee } from '@shared/entity/basic-data';
 
 @Component({
   selector: 'app-edit-user',
@@ -9,7 +11,8 @@ import { Validators, FormControl, AbstractControl } from '@angular/forms';
   styles: []
 })
 export class EditUserComponent extends ModalFormComponentBase<UserDto> implements OnInit {
-
+  @Output() modalSelect: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('selectsEmployeeModal') selectsEmployeeModal: ChooeseEmployeeModalComponent;
 
   @Input() id: number;
   user: UserDto = null;
@@ -105,5 +108,20 @@ export class EditUserComponent extends ModalFormComponentBase<UserDto> implement
     this.roleList = this.getControlVal('roles');
   }
 
+  /**
+   * 模态框返回
+   */
+  getSelectData = (employee?: Employee) => {
+    if (employee) {
+      this.user.name = employee.name;
+      this.user.employeeName = employee.name;
+      this.user.employeeId = employee.id;
+      this.user.area = employee.area;
+      this.user.areaCode = employee.areaCode;
+    }
+  }
 
+  showModal(): void {
+    this.selectsEmployeeModal.show();
+  }
 }

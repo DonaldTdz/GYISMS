@@ -58,8 +58,9 @@ namespace GYISMS.Employees
         Task BatchDeleteEmployeesAsync(List<string> input);
         Task<PagedResultDto<EmployeeListDto>> GetEmployeeListByIdAsync(GetEmployeesInput input);
 
-        Task<List<EmployeeNzTreeNode>> GetTreesAsync();
         Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code, DingDingAppEnum appId);
+
         Task<EmployeeListDto> EditEmployeeAreaInfoAsync(EmployeeEditDto input);
+        List<EmployeeNzTreeNode> GetTrees();
     }
 }

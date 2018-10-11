@@ -27,7 +27,7 @@ namespace GYISMS.DingDing
 
         /// <summary>
         /// 获取addess token
-        /// </summary>
+        /// </summary>       
         public string GetAccessToken(string appkey, string appsecret)
         {
             DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
