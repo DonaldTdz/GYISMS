@@ -21,7 +21,7 @@ namespace GYISMS.Growers.Dtos
         public int VisitNum { get; set; }
         public Guid ScheduleTaskId { get; set; }
         public string EmployeeId { get; set; }
-        public AreaTypeEnum? Area { get; set; }
+        public AreaTypeEnum? AreaName { get; set; }
         //// custom codes
 
         //// custom codes end

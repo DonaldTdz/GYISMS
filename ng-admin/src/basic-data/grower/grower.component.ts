@@ -39,7 +39,7 @@ export class GrowerComponent extends AppComponentBase implements OnInit {
         params.MaxResultCount = this.query.pageSize;
         params.Name = this.search.name;
         params.Employee = this.search.employee;
-        params.Area = this.search.area;
+        params.AreaName = this.search.area;
         this.growerService.getGrowerListAsync(params).subscribe((result: PagedResultDtoOfGrower) => {
             this.loading = false;
             this.growerList = result.items;
