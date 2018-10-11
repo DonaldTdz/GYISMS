@@ -183,6 +183,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// </summary>
         public string EmployeeName { get; set; }
 
+        public int GrowerId { get; set; }
         /// <summary>
         /// 烟农
         /// </summary>

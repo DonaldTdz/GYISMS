@@ -24,6 +24,8 @@ using GYISMS.Authorization;
 using GYISMS.Employees;
 using GYISMS.Employees.Dtos;
 using Abp.Auditing;
+using GYISMS.DingDing;
+using GYISMS.DingDing.Dtos;
 
 namespace GYISMS.Organizations
 {
@@ -37,6 +39,7 @@ namespace GYISMS.Organizations
         private readonly IRepository<Organization, long> _organizationRepository;
         private readonly IOrganizationManager _organizationManager;
         private readonly IRepository<Employee, string> _employeeRepository;
+        private readonly IDingDingAppService _dingDingAppService;
 
         /// <summary>
         /// 构造函数 
@@ -44,11 +47,13 @@ namespace GYISMS.Organizations
         public OrganizationAppService(IRepository<Organization, long> organizationRepository
             , IOrganizationManager organizationManager
             , IRepository<Employee, string> employeeRepository
+            , IDingDingAppService dingDingAppService
             )
         {
             _organizationRepository = organizationRepository;
             _organizationManager = organizationManager;
             _employeeRepository = employeeRepository;
+            _dingDingAppService = dingDingAppService;
         }
 
 
@@ -221,7 +226,7 @@ namespace GYISMS.Organizations
         /// <returns></returns>
         public async Task<APIResultDto> SynchronousOrganizationAsync()
         {
-            string accessToken = GetAccessToken();
+            string accessToken = _dingDingAppService.GetAccessTokenByApp(DingDingAppEnum.会议申请); //GetAccessToken();
             IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
             OapiDepartmentListRequest request = new OapiDepartmentListRequest();
             request.SetHttpMethod("GET");
@@ -364,16 +369,16 @@ namespace GYISMS.Organizations
         /// 获取AccessToken ToDo钉钉配置
         /// </summary>
         /// <returns></returns>
-        private string GetAccessToken()
-        {
-            DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
-            OapiGettokenRequest request = new OapiGettokenRequest();
-            request.Appkey = "ding7xespi5yumrzraaq";
-            request.Appsecret = "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3";
-            request.SetHttpMethod("GET");
-            OapiGettokenResponse response = client.Execute(request);
-            return response.AccessToken;
-        }
+        //private string GetAccessToken()
+        //{
+        //    DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
+        //    OapiGettokenRequest request = new OapiGettokenRequest();
+        //    request.Appkey = "ding7xespi5yumrzraaq";
+        //    request.Appsecret = "idKPu4wVaZjBKo6oUvxcwSQB7tExjEbPaBpVpCEOGlcZPsH4BDx-sKilG726-nC3";
+        //    request.SetHttpMethod("GET");
+        //    OapiGettokenResponse response = client.Execute(request);
+        //    return response.AccessToken;
+        //}
 
 
         /// <summary>

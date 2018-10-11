@@ -224,6 +224,7 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
     expired: number;
     status: number;
     employeeName: string;
+    growerId: number;
     growerName: string;
     areaName: string;
     typeName: string;
@@ -252,6 +253,7 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
             this.areaName = data["areaName"];
             this.typeName = data["typeName"];
             this.statusName = data["statusName"];
+            this.growerId = data["growerId"];
 
         }
     }
@@ -288,6 +290,7 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
         data["areaName"] = this.areaName;
         data["typeName"] = this.typeName;
         data["statusName"] = this.statusName;
+        data["growerId"] = this.growerId;
         return data;
     }
 
@@ -308,6 +311,7 @@ export interface IScheduleDetailTask {
     expired: number;
     status: number;
     employeeName: string;
+    growerId: number;
     growerName: string;
     areaName: string;
     typeName: string;

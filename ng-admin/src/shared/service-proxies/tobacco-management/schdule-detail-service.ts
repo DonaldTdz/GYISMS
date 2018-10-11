@@ -4,6 +4,7 @@ import { GyismsHttpClient } from "@shared/service-proxies/gyisms-httpclient";
 import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { ScheduleSum, ScheduleDetailTask } from "@shared/entity/tobacco-management";
 import { Observable } from "rxjs";
+import { ApiResult } from "@shared/service-proxies/entity/parameter";
 
 @Injectable()
 export class ScheduleDetailServiceProxy {
@@ -42,6 +43,27 @@ export class ScheduleDetailServiceProxy {
         return this._gyhttp.get(url, params).map(data => {
             if (data) {
                 return PagedResultDtoOfScheduleDetailTask.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
+    exportExcelOfSheduleSum(params: any): Observable<ApiResult> {
+        var url = '/api/services/app/ScheduleDetail/ExportSheduleSumExcel';
+        return this._gyhttp.post(url, params).map(data => {
+            if (data) {
+                return ApiResult.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
+    exportExcelOfSheduleDetail(params: any): Observable<ApiResult> {
+        var url = '/api/services/app/ScheduleDetail/ExportSheduleDetailExcel';
+        return this._gyhttp.post(url, params).map(data => {
+            if (data) {
+                return ApiResult.fromJS(data);
             } else {
                 return null;
             }

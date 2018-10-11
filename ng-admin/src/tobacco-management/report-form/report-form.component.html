@@ -1,7 +1,8 @@
 <!--component html goes here -->
+<page-header></page-header>
 <nz-tabset>
     <nz-tab nzTitle="任务汇总">
-        <form nz-form (ngSubmit)="getSheduleSum(false,true)" [nzLayout]="'inline'">
+        <form nz-form (ngSubmit)="getSheduleSum(false)" [nzLayout]="'inline'">
             <div nz-row [nzGutter]="24">
                 <div nz-col [nzSpan]="8" class="mb-md">
                     <nz-form-item class="d-flex">
@@ -29,7 +30,7 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">任务</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="taskId" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="sumSearch.taskId" [nzShowSearch]="true">
+                            <nz-select name="taskId" [nzDisabled]="!(tasks.length>0)" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="sumSearch.taskId" [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of tasks" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -47,6 +48,13 @@
                 <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                     <button nz-button type="submit" [nzType]="'primary'" class="mx-sm">查询</button>
                     <button nz-button type="button" (click)="getSheduleSum(true)" class="mx-sm">重置</button>
+                    <a style="display: none;" id="aSheduleSumExcelUrl" href="#">
+                        <button type="button" id="btnSheduleSumHref">隐藏下载</button>
+                    </a>
+                    <button nz-button type="button" (click)="exportSheduleSum()" [nzLoading]="exportSLoading">
+                        <i class="anticon anticon-download"></i>
+                        <span>导出</span>
+                    </button>
                 </div>
             </div>
         </form>
@@ -128,7 +136,7 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">任务</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="taskId" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="detailSearch.taskId" [nzShowSearch]="true">
+                            <nz-select name="taskId" [nzDisabled]="!(tasksDe.length>0)" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="detailSearch.taskId" [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of tasksDe" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -162,6 +170,13 @@
                 <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                     <button nz-button type="submit" [nzType]="'primary'" class="mx-sm">查询</button>
                     <button nz-button type="button" (click)="getSheDulDetailByTask(true)" class="mx-sm">重置</button>
+                    <a style="display: none;" id="aSheduleDeExcelUrl" href="#">
+                        <button type="button" id="btnSheduleDeHref">隐藏下载</button>
+                    </a>
+                    <button nz-button type="button" (click)="exportSheduleDe()" [nzLoading]="exportDLoading">
+                        <i class="anticon anticon-download"></i>
+                        <span>导出</span>
+                    </button>
                 </div>
             </div>
         </form>
@@ -198,6 +213,9 @@
                     <th>
                         <span>烟农</span>
                     </th>
+                    <th>
+                        <span>操作</span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -211,6 +229,9 @@
                     <td>{{sum.statusName}}</td>
                     <td>{{sum.employeeName}}</td>
                     <td>{{sum.growerName}}</td>
+                    <td>
+                        <a (click)="goTask(sum.growerId)">查看拜访记录</a>
+                    </td>
                 </tr>
             </tbody>
         </nz-table>
