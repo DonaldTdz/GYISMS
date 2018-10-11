@@ -2,7 +2,7 @@
 <page-header></page-header>
 <nz-tabset>
     <nz-tab nzTitle="任务汇总">
-        <form nz-form (ngSubmit)="getSheduleSum(false,true)" [nzLayout]="'inline'">
+        <form nz-form (ngSubmit)="getSheduleSum(false)" [nzLayout]="'inline'">
             <div nz-row [nzGutter]="24">
                 <div nz-col [nzSpan]="8" class="mb-md">
                     <nz-form-item class="d-flex">
@@ -30,7 +30,7 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">任务</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="taskId" [nzDisabled]="!tasks.length>0" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="sumSearch.taskId" [nzShowSearch]="true">
+                            <nz-select name="taskId" [nzDisabled]="!(tasks.length>0)" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="sumSearch.taskId" [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of tasks" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -136,7 +136,7 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">任务</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="taskId" [nzDisabled]="!tasksDe.length>0" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="detailSearch.taskId" [nzShowSearch]="true">
+                            <nz-select name="taskId" [nzDisabled]="!(tasksDe.length>0)" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="detailSearch.taskId" [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of tasksDe" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -213,6 +213,9 @@
                     <th>
                         <span>烟农</span>
                     </th>
+                    <th>
+                        <span>操作</span>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -226,6 +229,9 @@
                     <td>{{sum.statusName}}</td>
                     <td>{{sum.employeeName}}</td>
                     <td>{{sum.growerName}}</td>
+                    <td>
+                        <a (click)="goTask(sum.growerId)">查看拜访记录</a>
+                    </td>
                 </tr>
             </tbody>
         </nz-table>

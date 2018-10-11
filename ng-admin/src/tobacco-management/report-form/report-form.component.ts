@@ -4,6 +4,8 @@ import { ScheduleSum, ScheduleDetailTask, VisitTaskName } from '@shared/entity/t
 import { ScheduleDetailServiceProxy, VisitTaskServiceProxy } from '@shared/service-proxies/tobacco-management';
 import { addDays, addMonths } from 'date-fns';
 import { AppConsts } from '@shared/AppConsts';
+import { Route } from '@angular/compiler/src/core';
+import { Router } from '@angular/router';
 
 @Component({
     moduleId: module.id,
@@ -47,7 +49,8 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     shedateFormatDe = 'yyyy-MM-dd';
     exportSLoading = false;
     exportDLoading = false;
-    constructor(injector: Injector, private sheduleDetailService: ScheduleDetailServiceProxy, private taskService: VisitTaskServiceProxy) {
+    constructor(injector: Injector, private sheduleDetailService: ScheduleDetailServiceProxy, private taskService: VisitTaskServiceProxy,
+        private router: Router) {
         super(injector);
     }
     ngOnInit(): void {
@@ -198,5 +201,8 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
             }
             this.exportDLoading = false;
         })
+    }
+    goTask(growerId: string) {
+        this.router.navigate(['app/basic/grower-detail', { id: growerId }])
     }
 }
