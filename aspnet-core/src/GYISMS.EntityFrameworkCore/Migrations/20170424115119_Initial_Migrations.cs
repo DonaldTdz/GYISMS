@@ -325,7 +325,11 @@ namespace GYISMS.Migrations
                     SecurityStamp = table.Column<string>(nullable: true),
                     Surname = table.Column<string>(maxLength: 32, nullable: false),
                     TenantId = table.Column<int>(nullable: true),
-                    UserName = table.Column<string>(maxLength: 32, nullable: false)
+                    UserName = table.Column<string>(maxLength: 32, nullable: false),
+                    EmployeeId = table.Column<string>(maxLength: 50, nullable: true),
+                    EmployeeName = table.Column<string>(maxLength: 50, nullable: true),
+                    Area = table.Column<string>(maxLength: 50, nullable: true),
+                    AreaCode = table.Column<string>(maxLength: 50, nullable: true),
                 },
                 constraints: table =>
                 {

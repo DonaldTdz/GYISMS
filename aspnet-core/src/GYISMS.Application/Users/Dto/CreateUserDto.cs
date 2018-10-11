@@ -43,5 +43,10 @@ namespace GYISMS.Users.Dto
                 RoleNames = new string[0];
             }
         }
+
+        public string Area { get; set; }
+        public string AreaCode { get; set; }
+        public string EmployeeId { get; set; }
+        public string EmployeeName { get; set; }
     }
 }

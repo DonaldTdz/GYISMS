@@ -1,7 +1,9 @@
-import { Component, OnInit, Injector } from '@angular/core';
+import { Component, OnInit, Injector, Output, ViewChild, EventEmitter } from '@angular/core';
 import { ModalFormComponentBase } from '@shared/component-base/modal-form-component-base';
 import { CreateUserDto, UserServiceProxy, RoleDto } from '@shared/service-proxies/service-proxies';
 import { Validators, FormControl } from '@angular/forms';
+import { Employee } from '@shared/entity/basic-data';
+import { ChooeseEmployeeModalComponent } from '../chooese-employee-modal/chooese-employee-modal.component';
 
 @Component({
   selector: 'app-create-user',
@@ -9,12 +11,12 @@ import { Validators, FormControl } from '@angular/forms';
   styles: []
 })
 export class CreateUserComponent extends ModalFormComponentBase<CreateUserDto> implements OnInit {
-
+  @Output() modalSelect: EventEmitter<any> = new EventEmitter<any>();
+  @ViewChild('selectsEmployeeModal') selectsEmployeeModal: ChooeseEmployeeModalComponent;
   user: CreateUserDto = new CreateUserDto();
   roles: RoleDto[] = null;
 
   roleList = [];
-
   constructor(
     injector: Injector,
     private _userService: UserServiceProxy
@@ -25,7 +27,8 @@ export class CreateUserComponent extends ModalFormComponentBase<CreateUserDto> i
   ngOnInit() {
     this.validateForm = this.formBuilder.group({
       userName: ['', [Validators.required]],
-      name: ['', [Validators.required]],
+      // name: ['', [Validators.required]],
+      name: null,
       // surname: ['', [Validators.required]],
       emailAddress: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
@@ -92,6 +95,20 @@ export class CreateUserComponent extends ModalFormComponentBase<CreateUserDto> i
     this.user.isActive = this.getControlVal('isActive');
     this.roleList = this.getControlVal('roles');
   }
+  /**
+   * 模态框返回
+   */
+  getSelectData = (employee?: Employee) => {
+    if (employee) {
+      this.user.name = employee.name;
+      this.user.employeeName = employee.name;
+      this.user.employeeId = employee.id;
+      this.user.area = employee.area;
+      this.user.areaCode = employee.areaCode;
+    }
+  }
 
-
+  showModal(): void {
+    this.selectsEmployeeModal.show();
+  }
 }
