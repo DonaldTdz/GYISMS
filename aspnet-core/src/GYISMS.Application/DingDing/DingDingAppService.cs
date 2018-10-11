@@ -67,16 +67,16 @@ namespace GYISMS.DingDing
         /// <summary>
         /// 获取钉钉AccessToken 根据App
         /// </summary>
-        public string GetAccessToken(DingDingAppEnum app)
+        public string GetAccessTokenByApp(DingDingAppEnum app)
         {
-            var config = GetDingDingConfig(app);
+            var config = GetDingDingConfigByApp(app);
             return GetAccessToken(config.Appkey, config.Appsecret);
         }
 
         /// <summary>
         /// 获取钉钉配置根据 应用App
         /// </summary>
-        public DingDingAppConfig GetDingDingConfig(DingDingAppEnum app)
+        public DingDingAppConfig GetDingDingConfigByApp(DingDingAppEnum app)
         {
             DingDingAppConfig config = new DingDingAppConfig();
             var configList = new List<SystemData>();

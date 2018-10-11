@@ -24,5 +24,7 @@ namespace GYISMS.Charts.Dtos
         public string ClassName { get; set; }
 
         public int Seq { get; set; }
+
+        public int? Status { get; set; }
     }
 }

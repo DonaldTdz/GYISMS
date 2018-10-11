@@ -66,7 +66,7 @@ namespace GYISMS.ScheduleDetails
             _scheduleRepository = scheduleRepository;
             _visittaskRepository = visittaskRepository;
             _dingDingAppService = dingDingAppService;
-            ddConfig = _dingDingAppService.GetDingDingConfig(DingDingAppEnum.任务拜访);
+            ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
             accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
         }
 
