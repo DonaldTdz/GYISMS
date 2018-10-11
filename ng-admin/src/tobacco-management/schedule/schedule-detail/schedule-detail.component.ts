@@ -37,8 +37,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     loading = false;
     isNewInfo: boolean;
     weekTempTime: string;
-    isExpired: boolean = false;//是否过期
-    expiredText: string = '';
+    // isExpired: boolean = false;//是否过期
+    // expiredText: string = '';
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private taskService: VisitTaskServiceProxy,
         private router: Router, private fb: FormBuilder, private actRouter: ActivatedRoute, private modal: NzModalService) {
@@ -71,7 +71,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     }
 
     getWeekType() {
-        this.scheduleService.getWeekOfMonth().subscribe((result: SelectGroup[]) => {
+        this.scheduleService.getWeekOfMonth(this.id).subscribe((result: SelectGroup[]) => {
             this.weekTypes = result;
             this.getScheduleInfo();
         });
@@ -84,20 +84,20 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 this.schedule = result;
                 this.isPush = result.status == 1 ? false : true;
                 this.isDelete = true;
-                if (result.type == 2) {
-                    if (result.beginTime && result.endTime) {
-                        var currentdate = new Date();
-                        var y = currentdate.getFullYear();
-                        var month = currentdate.getMonth() + 1;
-                        var m = (month < 10 ? "0" + month : month).toString();
-                        if (result.beginTime.substring(0, 4) != y.toString() || result.beginTime.substring(5, 7) != m) {
-                            this.expiredText = result.beginTime.substring(0, 10) + '至' + result.endTime.substring(0, 10);
-                            this.isExpired = true;
-                        } else {
-                            this.weekTempTime = result.beginTime.substring(0, 10) + ',' + result.endTime.substring(0, 10);
-                        }
-                    }
-                }
+                // if (result.type == 2) {
+                //     if (result.beginTime && result.endTime) {
+                //         var currentdate = new Date();
+                //         var y = currentdate.getFullYear();
+                //         var month = currentdate.getMonth() + 1;
+                //         var m = (month < 10 ? "0" + month : month).toString();
+                //         if (result.beginTime.substring(0, 4) != y.toString() || result.beginTime.substring(5, 7) != m) {
+                //             this.expiredText = result.beginTime.substring(0, 10) + '至' + result.endTime.substring(0, 10);
+                //             this.isExpired = true;
+                //         } else {
+                //             this.weekTempTime = result.beginTime.substring(0, 10) + ',' + result.endTime.substring(0, 10);
+                //         }
+                //     }
+                // }
                 // if (!this.isPush) {
                 this.getTaskList();
                 this.isSaved = true;
@@ -129,13 +129,13 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                     this.schedule.endTime = this.dateFormat(timeList[1]);
                 }
                 else {
-                    if (this.isExpired) {
-                        this.schedule.beginTime = this.schedule.beginTime;
-                        this.schedule.endTime = this.schedule.endTime;
-                    } else {
-                        this.schedule.beginTime = null;
-                        this.schedule.endTime = null;
-                    }
+                    // if (this.isExpired) {
+                    //     this.schedule.beginTime = this.schedule.beginTime;
+                    //     this.schedule.endTime = this.schedule.endTime;
+                    // } else {
+                    //     this.schedule.beginTime = null;
+                    //     this.schedule.endTime = null;
+                    // }
                 }
             }
             else {// type =1
@@ -183,7 +183,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 var m = (month < 10 ? "0" + month : month).toString();
                 if (result.type == 2 && this.weekTempTime) {
                     if (result.beginTime.substring(0, 4) == y.toString() && result.beginTime.substring(5, 7) == m) {
-                        this.isExpired = false;
+                        // this.isExpired = false;
                     }
                 }
 
@@ -228,7 +228,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
      * 模态框返回
      */
     // getSelectData = (visitTask?: VisitTask[]) => {
-    getSelectData = () => {
+    // getSelectData = () => {
+    getSelectData() {
         // visitTask.forEach(v => {
         //     if (!this.existsTask(v.id)) {
         //         this.taskList.push(...visitTask);

@@ -93,5 +93,7 @@ namespace GYISMS.GYEnums
     public static class GYCode
     {
         public static string SignRange = "SignRange";
+        public static string MessageTitle = "MessageTitle";
+        public static string MediaId = "MediaId";
     }
 }

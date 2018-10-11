@@ -28,6 +28,7 @@ using Abp.Auditing;
 using GYISMS.Helpers;
 using GYISMS.DingDing;
 using GYISMS.DingDing.Dtos;
+using GYISMS.SystemDatas;
 
 namespace GYISMS.Schedules
 {
@@ -42,6 +43,7 @@ namespace GYISMS.Schedules
         private readonly IScheduleManager _scheduleManager;
         private readonly ISheduleDetailRepository _scheduledetailRepository;
         private readonly IDingDingAppService _dingDingAppService;
+        private readonly IRepository<SystemData, int> _systemdataRepository;
 
         private string accessToken;
         private DingDingAppConfig ddConfig;
@@ -53,12 +55,14 @@ namespace GYISMS.Schedules
             , IScheduleManager scheduleManager
             , ISheduleDetailRepository scheduledetailRepository
             , IDingDingAppService dingDingAppService
+            , IRepository<SystemData, int> systemdataRepository
             )
         {
             _scheduleRepository = scheduleRepository;
             _scheduleManager = scheduleManager;
             _scheduledetailRepository = scheduledetailRepository;
             _dingDingAppService = dingDingAppService;
+            _systemdataRepository = systemdataRepository;
 
             ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
             accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
@@ -262,16 +266,15 @@ namespace GYISMS.Schedules
         /// 上传图片并返回MeadiaId
         /// </summary>
         /// <returns></returns>
-        public object UpdateAndGetMediaId()
+        public object UpdateAndGetMediaId(string path)
         {
             IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/media/upload");
             OapiMediaUploadRequest request = new OapiMediaUploadRequest();
             request.Type = "image";
-            request.Media = new Top.Api.Util.FileItem(@"D:\20180903GYISMS\GYVisit-task\src\image\taskDefault.png");
+            request.Media = new Top.Api.Util.FileItem($@"{path}");
             OapiMediaUploadResponse response = client.Execute(request, accessToken);
             return response;
         }
-
 
 
         /// <summary>
@@ -281,6 +284,9 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         public async Task<APIResultDto> SendMessageToEmployeeAsync(GetSchedulesInput input)
         {
+            //获取消息模板配置
+            string messageTitle = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MessageTitle).Select(v=>v.Desc).FirstOrDefaultAsync();
+            string messageMediaId = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MediaId).Select(v => v.Desc).FirstOrDefaultAsync();
             //获取UserIds
             int pageIndex = 1; //skip
             int pageSize = 20; //take
@@ -301,9 +307,9 @@ namespace GYISMS.Schedules
                 OapiMessageCorpconversationAsyncsendV2Request.MsgDomain msg = new OapiMessageCorpconversationAsyncsendV2Request.MsgDomain();
                 msg.Link = new OapiMessageCorpconversationAsyncsendV2Request.LinkDomain();
                 msg.Msgtype = "link";
-                msg.Link.Title = "您有新的拜访任务哦";
-                msg.Link.Text = input.ScheduleName + DateTime.Now.ToString();
-                msg.Link.PicUrl = "@lALPBY0V4-AiG7vMgMyA";
+                msg.Link.Title = messageTitle;
+                msg.Link.Text = input.ScheduleName + " " + DateTime.Now.ToString();
+                msg.Link.PicUrl = messageMediaId;
                 msg.Link.MessageUrl = "eapp://";
                 request.Msg_ = msg;
                 OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);

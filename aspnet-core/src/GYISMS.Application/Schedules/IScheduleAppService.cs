@@ -58,6 +58,6 @@ namespace GYISMS.Schedules
         Task<ScheduleListDto> GetScheduleByIdAsync(Guid id);
         Task ScheduleDeleteByIdAsync(ScheduleEditDto input);
         Task<APIResultDto> SendMessageToEmployeeAsync(GetSchedulesInput input);
-        object UpdateAndGetMediaId();
+        object UpdateAndGetMediaId(string path);
     }
 }

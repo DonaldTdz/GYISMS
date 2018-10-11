@@ -63,9 +63,9 @@
                             <nz-option *ngFor="let i of weekTypes" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>
-                        <nz-form-control *ngIf="isExpired" style="color:red" nz-col [nzSm]="20">
+                        <!-- <nz-form-control *ngIf="isExpired" style="color:red" nz-col [nzSm]="20">
                             记录时间为{{expiredText}}，已逾期
-                        </nz-form-control>
+                        </nz-form-control> -->
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row *ngIf="schedule.type == 1">
@@ -146,5 +146,5 @@
             </button>
     </footer-toolbar>
 </nz-card>
-<choose-task-modal #selectTaskModal (modalSelect)="getSelectData($event) "></choose-task-modal>
+<choose-task-modal #selectTaskModal (modalSelect)="getSelectData() "></choose-task-modal>
 <!-- <choose-employee-modal #selectEmployeeModal (modalSelect)="getSelectData($event) "></choose-employee-modal> -->

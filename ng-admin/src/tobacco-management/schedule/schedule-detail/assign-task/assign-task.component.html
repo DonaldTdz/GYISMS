@@ -3,7 +3,8 @@
         <div nz-row>
             <div nz-col nzSpan="8">
                 <div style="padding-left:10px; padding-right:10px;">
-                    <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultSelectedKeys]="selectedKeys" [nzDefaultExpandAll]="true">
+                    <!-- <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultSelectedKeys]="selectedKeys" [nzDefaultExpandAll]="true"> -->
+                    <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultExpandAll]="true">
                     </nz-tree>
                 </div>
             </div>
@@ -13,8 +14,9 @@
                         <!-- <button nz-button [nzType]="'default'" (click)="return()">
                                 {{l("返回")}}
                             </button> -->
-                        <button *ngIf="isPush == 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading">
-                                {{l("保存当前")}}
+                        <!-- <button *ngIf="isPush == 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading"> -->
+                        <button *ngIf="isPush == true" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading">
+                            {{l("保存当前")}}
                             </button>
                     </div>
                 </div>

@@ -368,7 +368,7 @@ systemdataListDtos
         /// 获取周计划时间
         /// </summary>
         /// <returns></returns>
-        public List<SelectGroup> GetWeekOfMonth()
+        public async Task<List<SelectGroup>> GetWeekOfMonthAsync(Guid id)
         {
             DateTime startMonth = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);  //该月第一天  
             DateTime startWeek;
@@ -381,15 +381,24 @@ systemdataListDtos
                 startWeek = startMonth;  //该月第一周开始日期 
             
             List<SelectGroup> list = new List<SelectGroup>();
+            SelectGroup item = new SelectGroup();
+            var entity = await _scheduleRepository.GetAll().Where(v => v.Id == id).FirstOrDefaultAsync();
+            if (entity.Type == ScheduleType.每周)
+            {
+                //list.text = Convert.ToInt32(entity.BeginTime.Value.ToString("d"))  + "月第" + (i + 1) + "周(" + startDayOfWeeks.ToString("D") + " - " + endDayOfWeeks.ToString("D") + ")";
+                item.text = entity.BeginTime.Value.ToString("D") + " - " + entity.EndTime.Value.ToString("D");
+                item.value = string.Format($"{entity.BeginTime.Value.ToString("yyyy-MM-dd")},{entity.EndTime.Value.ToString("yyyy-MM-dd")}");
+                list.Add(item);
+            }
             for (int i = 0; i < 4; i++)
             {
-                SelectGroup item = new SelectGroup();
                 DateTime startDayOfWeeks = startWeek.AddDays(i * 7);  //index周的起始日期 
                 DateTime endDayOfWeeks = startWeek.AddDays((i * 7) + 6);  //index周的结束日期 
                 item.text = DateTime.Now.Month + "月第" + (i + 1) + "周(" + startDayOfWeeks.ToString("D") + " - " + endDayOfWeeks.ToString("D") + ")";
                 item.value = string.Format($"{startDayOfWeeks.ToString("yyyy-MM-dd")},{endDayOfWeeks.ToString("yyyy-MM-dd")}");
                 list.Add(item);
             }
+
             return list;
         }
     }
