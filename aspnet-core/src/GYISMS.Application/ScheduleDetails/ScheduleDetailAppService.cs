@@ -29,6 +29,8 @@ using DingTalk.Api;
 using DingTalk.Api.Request;
 using DingTalk.Api.Response;
 using GYISMS.Helpers;
+using GYISMS.DingDing;
+using GYISMS.DingDing.Dtos;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -45,13 +47,17 @@ namespace GYISMS.ScheduleDetails
         private readonly IRepository<Schedule, Guid> _scheduleRepository;
         private readonly ISheduleDetailRepository _scheduledetailRepository;
         private readonly IRepository<VisitTask, int> _visittaskRepository;
+        private readonly IDingDingAppService _dingDingAppService;
+
+        private string accessToken;
+        private DingDingAppConfig ddConfig;
 
         /// <summary>
         /// 构造函数 
         ///</summary>
         public ScheduleDetailAppService(//IRepository<ScheduleDetail, Guid> scheduledetailRepository
            ISheduleDetailRepository scheduledetailRepository, IScheduleDetailManager scheduledetailManager, IRepository<Grower, int> growerRepository,
-            IRepository<Schedule, Guid> scheduleRepository, IRepository<VisitTask, int> visittaskRepository)
+            IRepository<Schedule, Guid> scheduleRepository, IRepository<VisitTask, int> visittaskRepository, IDingDingAppService dingDingAppService)
         {
             _growerRepository = growerRepository;
             _scheduledetailRepository = scheduledetailRepository;
@@ -59,6 +65,9 @@ namespace GYISMS.ScheduleDetails
             _growerRepository = growerRepository;
             _scheduleRepository = scheduleRepository;
             _visittaskRepository = visittaskRepository;
+            _dingDingAppService = dingDingAppService;
+            ddConfig = _dingDingAppService.GetDingDingConfig(DingDingAppEnum.任务拜访);
+            accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
         }
 
 
@@ -550,7 +559,6 @@ namespace GYISMS.ScheduleDetails
         [AbpAllowAnonymous]
         public async Task SendTaskOverdueMsgAsync()
         {
-            string accessToken = DingDingConfigHelper.GetVisitTaskAccessToken();
             var dateTime = DateTime.Today.AddDays(-1);
             var query = from sd in _scheduledetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
@@ -576,7 +584,7 @@ namespace GYISMS.ScheduleDetails
                 OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
                 request.UseridList = item.EmployeeId;
                 request.ToAllUser = false;
-                request.AgentId = DingDingConfigHelper.VisitTaskAgentID;
+                request.AgentId = ddConfig.AgentID;
 
                 OapiMessageCorpconversationAsyncsendV2Request.MsgDomain msg = new OapiMessageCorpconversationAsyncsendV2Request.MsgDomain();
                 msg.Link = new OapiMessageCorpconversationAsyncsendV2Request.LinkDomain();
