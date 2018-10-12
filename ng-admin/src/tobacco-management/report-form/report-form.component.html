@@ -6,7 +6,7 @@
             <div nz-row [nzGutter]="24">
                 <div nz-col [nzSpan]="8" class="mb-md" [acl]="'CityAdmin'">
                     <nz-form-item class="d-flex">
-                        <nz-form-label nzFor="area">区域</nz-form-label>
+                        <nz-form-label nzFor="area">区县</nz-form-label>
                         <nz-form-control class="flex-1">
                             <nz-select name="area" [nzPlaceHolder]="'请选择区域'" [(ngModel)]="sumSearch.areaCode" [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of areas" [nzLabel]="i.text" [nzValue]="i.value">
@@ -130,7 +130,7 @@
             <div nz-row [nzGutter]="24">
                 <div nz-col [nzSpan]="8" class="mb-md" [acl]="'CityAdmin'">
                     <nz-form-item class="d-flex">
-                        <nz-form-label nzFor="area">区域</nz-form-label>
+                        <nz-form-label nzFor="area">区县</nz-form-label>
                         <nz-form-control class="flex-1">
                             <nz-select name="area" [nzPlaceHolder]="'请选择区域'" [(ngModel)]="detailSearch.areaCode" [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of areas" [nzLabel]="i.text" [nzValue]="i.value">
