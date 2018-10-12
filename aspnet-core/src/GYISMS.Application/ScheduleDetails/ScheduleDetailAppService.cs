@@ -265,7 +265,7 @@ namespace GYISMS.ScheduleDetails
             homeInfo.Total = totalCount.HasValue ? totalCount.Value : 0;
             var compCount = query.Sum(s => s.CompleteNum);
             homeInfo.Completed = compCount.HasValue ? compCount.Value : 0;
-            if (!compCount.HasValue)
+            if (homeInfo.Total==0)
             {
                 homeInfo.CompletedRate = "0%";
             }
