@@ -36,6 +36,7 @@ using System.IO;
 using NPOI.XSSF.UserModel;
 using Microsoft.AspNetCore.Hosting;
 using Abp.Domain.Uow;
+using GYISMS.SystemDatas;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -53,6 +54,7 @@ namespace GYISMS.ScheduleDetails
         private readonly ISheduleDetailRepository _scheduledetailRepository;
         private readonly IRepository<VisitTask, int> _visittaskRepository;
         private readonly IDingDingAppService _dingDingAppService;
+        private readonly IRepository<SystemData> _systemdataRepository;
 
         private string accessToken;
         private DingDingAppConfig ddConfig;
@@ -64,7 +66,7 @@ namespace GYISMS.ScheduleDetails
         public ScheduleDetailAppService(//IRepository<ScheduleDetail, Guid> scheduledetailRepository
            ISheduleDetailRepository scheduledetailRepository, IScheduleDetailManager scheduledetailManager, IRepository<Grower, int> growerRepository,
             IRepository<Schedule, Guid> scheduleRepository, IRepository<VisitTask, int> visittaskRepository, IDingDingAppService dingDingAppService,
-             IHostingEnvironment hostingEnvironment)
+             IHostingEnvironment hostingEnvironment, IRepository<SystemData> systemdataRepository)
         {
             _growerRepository = growerRepository;
             _scheduledetailRepository = scheduledetailRepository;
@@ -76,6 +78,7 @@ namespace GYISMS.ScheduleDetails
             ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
             accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
             _hostingEnvironment = hostingEnvironment;
+            _systemdataRepository = systemdataRepository;
         }
 
 
@@ -602,6 +605,7 @@ namespace GYISMS.ScheduleDetails
                             s.EndTime
                         };
             var overdueList = await query.ToListAsync();
+            string messageMediaId = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MediaId).Select(v => v.Desc).FirstOrDefaultAsync();
             foreach (var item in overdueList)
             {
                 //发送工作消息
@@ -616,7 +620,7 @@ namespace GYISMS.ScheduleDetails
                 msg.Msgtype = "link";
                 msg.Link.Title = "任务过期提醒";
                 msg.Link.Text = string.Format("{0}：您有任务[{1}]即将过期，过期日期：{2}，点击查看详细", item.EmployeeName, item.Name, item.EndTime.Value.ToString("yyyy-MM-dd"));
-                msg.Link.PicUrl = "@lALPBY0V4-AiG7vMgMyA";
+                msg.Link.PicUrl = messageMediaId;
                 msg.Link.MessageUrl = "eapp://";
                 request.Msg_ = msg;
                 OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);
