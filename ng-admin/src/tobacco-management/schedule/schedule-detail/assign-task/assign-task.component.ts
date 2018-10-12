@@ -40,7 +40,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     checkboxCount: number = 0; // 所有Checkbox数量
     checkedLength: number = 0; // 已选中的数量
     checked = true;
-    isPush: boolean;
+    isPush: string = 'false';
 
     constructor(injector: Injector, private taskService: VisitTaskServiceProxy
         , private organizationService: OrganizationServiceProxy

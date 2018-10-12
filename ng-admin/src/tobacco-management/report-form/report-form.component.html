@@ -4,7 +4,7 @@
     <nz-tab nzTitle="任务汇总">
         <form nz-form (ngSubmit)="getSheduleSum(false)" [nzLayout]="'inline'">
             <div nz-row [nzGutter]="24">
-                <div nz-col [nzSpan]="8" class="mb-md">
+                <div nz-col [nzSpan]="8" class="mb-md" [acl]="'CityAdmin'">
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="area">区域</nz-form-label>
                         <nz-form-control class="flex-1">
@@ -128,7 +128,7 @@
     <nz-tab nzTitle="任务明细">
         <form nz-form (ngSubmit)="getSheDulDetailByTask(false,true)" [nzLayout]="'inline'">
             <div nz-row [nzGutter]="24">
-                <div nz-col [nzSpan]="8" class="mb-md">
+                <div nz-col [nzSpan]="8" class="mb-md" [acl]="'CityAdmin'">
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="area">区域</nz-form-label>
                         <nz-form-control class="flex-1">

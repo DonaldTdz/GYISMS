@@ -366,6 +366,8 @@ namespace GYISMS.ScheduleDetails
         /// <returns></returns>
         public async Task<SheduleSumStatisDto> GetSumShedule(SheduleSumInput input)
         {
+            var areaCode = await GetCurrentUserAreaCodeAsync();
+            var areaCodeE = areaCode.HasValue ? areaCode : input.AreaCode;
             var timeNow = DateTime.Today;
             //input.StartTime = input.StartTime.HasValue ? input.StartTime : timeNow.AddDays(1 - timeNow.Day);
             //input.EndTime = input.EndTime.HasValue ? input.EndTime : timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
@@ -381,7 +383,8 @@ namespace GYISMS.ScheduleDetails
                             .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                             on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll()
-                        .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
+                        .WhereIf(areaCodeE.HasValue, g => g.AreaCode == areaCodeE)
+                        //.WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
                         on sd.GrowerId equals g.Id
                         select new
                         {
@@ -468,6 +471,8 @@ namespace GYISMS.ScheduleDetails
             //var query = _scheduledetailRepository.GetAll();
             // TODO:根据传入的参数添加过滤条件
 
+            var areaCode = await GetCurrentUserAreaCodeAsync();
+            var areaCodeE = areaCode.HasValue ? areaCode : input.AreaCode;
             var query = from sd in _scheduledetailRepository.GetAll()
                                                         .WhereIf(!string.IsNullOrEmpty(input.EmployeeName), sd => sd.EmployeeName.Contains(input.EmployeeName))
                                                         .WhereIf(!string.IsNullOrEmpty(input.GrowerName), sd => sd.GrowerName.Contains(input.GrowerName))
@@ -481,7 +486,7 @@ namespace GYISMS.ScheduleDetails
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
                         on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
+                                                     .WhereIf(areaCodeE.HasValue, g => g.AreaCode == areaCodeE)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailTaskListDto
                         {
@@ -716,6 +721,8 @@ namespace GYISMS.ScheduleDetails
         /// <returns></returns>
         public async Task<List<SheduleDetailTaskListDto>> GetNoPageScheduleDetailsByOtherTable(GetScheduleDetailsInput input)
         {
+            var areaCode = await GetCurrentUserAreaCodeAsync();
+            var areaCodeE = areaCode.HasValue ? areaCode : input.AreaCode;
             var query = from sd in _scheduledetailRepository.GetAll()
                                                         .WhereIf(!string.IsNullOrEmpty(input.EmployeeName), sd => sd.EmployeeName.Contains(input.EmployeeName))
                                                         .WhereIf(!string.IsNullOrEmpty(input.GrowerName), sd => sd.GrowerName.Contains(input.GrowerName))
@@ -729,7 +736,7 @@ namespace GYISMS.ScheduleDetails
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
                         on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
+                                                     .WhereIf(areaCodeE.HasValue, g => g.AreaCode == areaCodeE)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailTaskListDto
                         {
