@@ -15,13 +15,12 @@
                                 {{l("返回")}}
                             </button> -->
                         <!-- <button *ngIf="isPush == 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading"> -->
-                        <button *ngIf="isPush == 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading">
+                        <button *ngIf="isPush === 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading">
                             {{l("保存当前")}}
                             </button>
                     </div>
                 </div>
                 <nz-table #nzTable [nzData]="growerList" [nzShowPagination]="false" [nzScroll]="{ y: '700px' }">
-
                     <thead>
                         <tr>
                             <th nz-th>
