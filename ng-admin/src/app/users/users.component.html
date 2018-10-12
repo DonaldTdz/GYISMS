@@ -19,6 +19,7 @@
                 <th>{{l("UserName")}}</th>
                 <th>真实姓名</th>
                 <th>{{l("EmailAddress")}}</th>
+                <th>区县</th>
                 <th>{{l("IsActive")}}</th>
                 <th>{{l("Actions")}}</th>
             </tr>
@@ -28,6 +29,7 @@
                 <td>{{item.userName}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.emailAddress}}</td>
+                <td>{{item.area}}</td>
                 <td>
                     <nz-badge *ngIf="item.isActive" [nzStatus]="'success'" [nzText]="l('Yes')"></nz-badge>
                     <nz-badge *ngIf="!item.isActive" [nzStatus]="'default'" [nzText]="l('No')"></nz-badge>
