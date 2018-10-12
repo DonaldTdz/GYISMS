@@ -117,7 +117,11 @@ namespace GYISMS.VisitRecords.Dtos
         {
             get
             {
-                return SignTime.Value.ToString("HH:mm yyyy.MM.dd");
+                if (SignTime.HasValue)
+                {
+                    return SignTime.Value.ToString("HH:mm yyyy.MM.dd");
+                }
+                return string.Empty;
             }
         }
 
