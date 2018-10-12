@@ -15,6 +15,8 @@ export class Schedule implements IScheduleom {
     deleterUserId: number;
     typeName: string;
     name: string;
+    createUserName: string;
+    area: string;
     constructor(data?: IScheduleom) {
         if (data) {
             for (var property in data) {
@@ -43,6 +45,8 @@ export class Schedule implements IScheduleom {
             this.creationTime = data["creationTime"];
             this.typeName = data["typeName"];
             this.name = data["name"];
+            this.createUserName = data["createUserName"];
+            this.area = data["area"];
         }
     }
 
@@ -81,6 +85,7 @@ export class Schedule implements IScheduleom {
         data["deleterUserId"] = this.deleterUserId;
         data["typeName"] = this.typeName;
         data["name"] = this.name;
+        data["createUserName"] = this.createUserName;
         return data;
     }
 
@@ -108,4 +113,6 @@ export interface IScheduleom {
     deleterUserId: number;
     typeName: string;
     name: string;
+    createUserName: string;
+    area: string;
 }

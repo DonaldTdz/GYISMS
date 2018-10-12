@@ -29,6 +29,7 @@ using GYISMS.Helpers;
 using GYISMS.DingDing;
 using GYISMS.DingDing.Dtos;
 using GYISMS.SystemDatas;
+using GYISMS.Authorization.Users;
 
 namespace GYISMS.Schedules
 {
@@ -44,7 +45,7 @@ namespace GYISMS.Schedules
         private readonly ISheduleDetailRepository _scheduledetailRepository;
         private readonly IDingDingAppService _dingDingAppService;
         private readonly IRepository<SystemData, int> _systemdataRepository;
-
+        private readonly IRepository<User, long> _userRepository;
         private string accessToken;
         private DingDingAppConfig ddConfig;
 
@@ -56,6 +57,7 @@ namespace GYISMS.Schedules
             , ISheduleDetailRepository scheduledetailRepository
             , IDingDingAppService dingDingAppService
             , IRepository<SystemData, int> systemdataRepository
+            , IRepository<User, long> userRepository
             )
         {
             _scheduleRepository = scheduleRepository;
@@ -63,6 +65,7 @@ namespace GYISMS.Schedules
             _scheduledetailRepository = scheduledetailRepository;
             _dingDingAppService = dingDingAppService;
             _systemdataRepository = systemdataRepository;
+            _userRepository = userRepository;
 
             ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
             accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
@@ -79,22 +82,36 @@ namespace GYISMS.Schedules
 
             var query = _scheduleRepository.GetAll().Where(v => v.IsDeleted == false)
                      .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
-                     .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType); ;
+                     .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType);
+            var user = _userRepository.GetAll();
+            var entity = from q in query
+                         join u in user on q.CreatorUserId equals u.Id into table
+                         from t in table.DefaultIfEmpty()
+                         select new ScheduleListDto()
+                         {
+                             Id = q.Id,
+                             Name = q.Name,
+                             Type = q.Type,
+                             Status = q.Status,
+                             PublishTime = q.PublishTime,
+                             CreateUserName = t.Name,
+                             Area =t.Area!=null?t.Area:" - "
+                         };
             // TODO:根据传入的参数添加过滤条件
 
             var scheduleCount = await query.CountAsync();
 
-            var schedules = await query
+            var schedules = await entity
                     .OrderBy(input.Sorting).AsNoTracking()
                     .PageBy(input)
                     .ToListAsync();
 
             // var scheduleListDtos = ObjectMapper.Map<List <ScheduleListDto>>(schedules);
-            var scheduleListDtos = schedules.MapTo<List<ScheduleListDto>>();
+            //var scheduleListDtos = schedules.MapTo<List<ScheduleListDto>>();
 
             return new PagedResultDto<ScheduleListDto>(
                     scheduleCount,
-                    scheduleListDtos
+                    schedules
                 );
         }
 
@@ -285,7 +302,7 @@ namespace GYISMS.Schedules
         public async Task<APIResultDto> SendMessageToEmployeeAsync(GetSchedulesInput input)
         {
             //获取消息模板配置
-            string messageTitle = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MessageTitle).Select(v=>v.Desc).FirstOrDefaultAsync();
+            string messageTitle = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MessageTitle).Select(v => v.Desc).FirstOrDefaultAsync();
             string messageMediaId = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MediaId).Select(v => v.Desc).FirstOrDefaultAsync();
             //获取UserIds
             int pageIndex = 1; //skip

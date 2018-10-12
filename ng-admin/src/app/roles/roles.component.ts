@@ -38,17 +38,16 @@ export class RolesComponent extends PagedListingComponentBase<RoleDto> {
   }
   protected delete(entity: RoleDto): void {
     abp.message.confirm(
-      'Remove Users from Role and delete Role \'' + entity.displayName + '\'?',
-      'Permanently delete this Role',
+      "确定删除吗?",
       (result: boolean) => {
         if (result) {
           this.rolesService
             .delete(entity.id)
             .finally(() => {
-              abp.notify.info('Deleted Role: ' + entity.displayName);
+              abp.notify.info('删除成功');
               this.refresh();
             })
-            .subscribe(() => {});
+            .subscribe(() => { });
         }
       },
     );

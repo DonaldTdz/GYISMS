@@ -39,11 +39,12 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
 
   protected delete(entity: UserDto): void {
     abp.message.confirm(
-      "Delete user '" + entity.fullName + "'?",
+      // "Delete user '" + entity.fullName + "'?",
+      "确定删除吗?",
       (result: boolean) => {
         if (result) {
           this._userService.delete(entity.id).subscribe(() => {
-            abp.notify.info('Deleted User: ' + entity.fullName);
+            abp.notify.info('删除成功');
             this.refresh();
           });
         }

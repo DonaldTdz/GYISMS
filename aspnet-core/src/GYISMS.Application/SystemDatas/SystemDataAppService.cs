@@ -142,7 +142,7 @@ systemdataListDtos
             //TODO:新增前的逻辑判断，是否允许新增
 
             var entity = ObjectMapper.Map<SystemData>(input);
-            entity.CreationTime =DateTime.Now;
+            entity.CreationTime = DateTime.Now;
             entity = await _systemdataRepository.InsertAsync(entity);
             return entity.MapTo<SystemDataEditDto>();
         }
@@ -375,28 +375,35 @@ systemdataListDtos
             int dayOfWeek = Convert.ToInt32(startMonth.DayOfWeek.ToString("d"));
             if (Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) > 1)
                 startWeek = startMonth.AddDays(8 - dayOfWeek);  //该月第一周开始日期  
-            else if(Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) == 0)
+            else if (Convert.ToInt32(startMonth.DayOfWeek.ToString("d")) == 0)
                 startWeek = startMonth.AddDays(1);  //该月第一周开始日期  
             else
                 startWeek = startMonth;  //该月第一周开始日期 
-            
+
             List<SelectGroup> list = new List<SelectGroup>();
-            SelectGroup item = new SelectGroup();
-            var entity = await _scheduleRepository.GetAll().Where(v => v.Id == id).FirstOrDefaultAsync();
-            if (entity.Type == ScheduleType.每周)
-            {
-                //list.text = Convert.ToInt32(entity.BeginTime.Value.ToString("d"))  + "月第" + (i + 1) + "周(" + startDayOfWeeks.ToString("D") + " - " + endDayOfWeeks.ToString("D") + ")";
-                item.text = entity.BeginTime.Value.ToString("D") + " - " + entity.EndTime.Value.ToString("D");
-                item.value = string.Format($"{entity.BeginTime.Value.ToString("yyyy-MM-dd")},{entity.EndTime.Value.ToString("yyyy-MM-dd")}");
-                list.Add(item);
-            }
             for (int i = 0; i < 4; i++)
             {
+                SelectGroup item = new SelectGroup();
                 DateTime startDayOfWeeks = startWeek.AddDays(i * 7);  //index周的起始日期 
                 DateTime endDayOfWeeks = startWeek.AddDays((i * 7) + 6);  //index周的结束日期 
                 item.text = DateTime.Now.Month + "月第" + (i + 1) + "周(" + startDayOfWeeks.ToString("D") + " - " + endDayOfWeeks.ToString("D") + ")";
                 item.value = string.Format($"{startDayOfWeeks.ToString("yyyy-MM-dd")},{endDayOfWeeks.ToString("yyyy-MM-dd")}");
                 list.Add(item);
+            }
+            string emptyId = "{00000000-0000-0000-0000-000000000000}";
+            if (id != new Guid(emptyId))
+            {
+                var entity = await _scheduleRepository.GetAll().Where(v => v.Id == id).FirstOrDefaultAsync();
+                if (entity.Type == ScheduleType.每周)
+                    if (DateTime.Now.Year != entity.BeginTime.Value.Year || DateTime.Now.Month != entity.BeginTime.Value.Month)
+                    {
+                        {
+                            SelectGroup item = new SelectGroup();
+                            item.text = entity.BeginTime.Value.ToString("D") + " - " + entity.EndTime.Value.ToString("D");
+                            item.value = string.Format($"{entity.BeginTime.Value.ToString("yyyy-MM-dd")},{entity.EndTime.Value.ToString("yyyy-MM-dd")}");
+                            list.Add(item);
+                        }
+                    }
             }
 
             return list;
