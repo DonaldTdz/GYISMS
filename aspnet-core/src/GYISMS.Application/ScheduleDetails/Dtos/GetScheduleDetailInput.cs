@@ -50,6 +50,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// 计划名称
         /// </summary>
         public string SheduleName { get; set; }
+        public Guid ScheduleId { get; set; }
         //// custom codes
 
         //// custom codes end

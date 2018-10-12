@@ -8,7 +8,7 @@
                     <nz-form-control [nzSm]="20" nzHasFeedback>
                         <input nz-input formControlName="name" [(ngModel)]="task.name" id="name">
                         <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">字符长度小于等于50</nz-form-explain>
-                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">请输入烟农姓名</nz-form-explain>
+                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">请输入任务名称</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row style="margin-bottom: 0px;">
@@ -52,9 +52,8 @@
         </div>
     </form>
     <ng-template *ngIf="task.isExamine == true" #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-    <nz-table *ngIf="task.isExamine == true" #nzTable [nzData]="taskExamineList" [nzFrontPagination]="false" [nzTotal]="query.total"
-        [nzShowTotal]="totalTemplate" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
-        [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
+    <nz-table *ngIf="task.isExamine == true" #nzTable [nzData]="taskExamineList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true"
+        (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
         <thead>
             <tr>
                 <th>考核项名称</th>
@@ -81,8 +80,7 @@
         <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading">
             {{l("删除")}}
         </button>
-        <button nz-button [nzType]="'primary'" type="button" (click)="save()" [acl]="'CityAdmin'" [nzLoading]="isConfirmLoading"
-            [disabled]="!validateForm.valid">
+        <button nz-button [nzType]="'primary'" type="button" (click)="save()" [acl]="'CityAdmin'" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
             {{l("保存")}}
         </button>
     </footer-toolbar>

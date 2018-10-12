@@ -79,5 +79,6 @@ namespace GYISMS.ScheduleDetails
         Task<APIResultDto> ExportSheduleSumExcel(SheduleSumInput input);
 
         Task<APIResultDto> ExportSheduleDetailExcel(GetScheduleDetailsInput input);
+        Task<PagedResultDto<ScheduleDetailListDto>> GetPagedScheduleDetailRecordAsync(GetScheduleDetailsInput input);
     }
 }

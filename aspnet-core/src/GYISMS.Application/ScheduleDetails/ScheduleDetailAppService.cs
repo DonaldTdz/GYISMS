@@ -623,6 +623,47 @@ namespace GYISMS.ScheduleDetails
             }
         }
 
+        /// <summary>
+        /// 查询任务完成情况
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<PagedResultDto<ScheduleDetailListDto>> GetPagedScheduleDetailRecordAsync(GetScheduleDetailsInput input)
+        {
+            var query = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId);
+            var task = _visittaskRepository.GetAll();
+            var result = from q in query
+                         join t in task on q.TaskId equals t.Id
+                         select new ScheduleDetailListDto()
+                         {
+                             Id = q.Id,
+                             TaskId = q.TaskId,
+                             Status =q.Status,
+                             
+                             TaskName = t.Name+$"({t.Type})",
+                             ScheduleId = q.ScheduleId,
+                             VisitNum = q.VisitNum,
+                             CompleteNum = q.CompleteNum,
+                             EmployeeName = q.EmployeeName,
+                             GrowerName = q.GrowerName,
+                             //Percentage = (float)((float)q.CompleteNum / q.VisitNum)
+                             //Percentage = Math.Round((Convert.ToDecimal((double)(q.CompleteNum.Value) / q.VisitNum.Value)), 2)
+                         };
+
+            var scheduledetailCount = await query.CountAsync();
+
+            var scheduledetailListDtos = await result
+                    .OrderBy(v=>v.TaskName)
+                    .ThenBy(v=>v.Percentage).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
+
+            return new PagedResultDto<ScheduleDetailListDto>(
+                    scheduledetailCount,
+                    scheduledetailListDtos
+                );
+        }
+
         #region 导出报表
 
         /// <summary>

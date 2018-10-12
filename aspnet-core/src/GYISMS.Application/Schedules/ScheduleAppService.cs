@@ -79,35 +79,61 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         public async Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
         {
-
+            var detail = _scheduledetailRepository.GetAll();
             var query = _scheduleRepository.GetAll().Where(v => v.IsDeleted == false)
                      .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
                      .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType);
             var user = _userRepository.GetAll();
             var entity = from q in query
-                         join u in user on q.CreatorUserId equals u.Id into table
-                         from t in table.DefaultIfEmpty()
-                         select new ScheduleListDto()
-                         {
-                             Id = q.Id,
-                             Name = q.Name,
-                             Type = q.Type,
-                             Status = q.Status,
-                             PublishTime = q.PublishTime,
-                             CreateUserName = t.Name,
-                             Area =t.Area!=null?t.Area:" - "
-                         };
-            // TODO:根据传入的参数添加过滤条件
+                                join u in user on q.CreatorUserId equals u.Id into table
+                                from t in table.DefaultIfEmpty()
+                                select new ScheduleListDto()
+                                {
+                                    Id = q.Id,
+                                    Name = q.Name,
+                                    Type = q.Type,
+                                    Status = q.Status,
+                                    PublishTime = q.PublishTime,
+                                    CreateUserName = t.Name,
+                                    Area = t.Area != null ? t.Area : " - "
+                                };
+
+           var temp = await (from d in detail
+                              group new
+                              {
+                                  d.ScheduleId,
+                                  d.VisitNum,
+                                  d.CompleteNum
+                              } by new
+                              {
+                                  d.ScheduleId
+                              } into g
+                              select new
+                              {
+                                  Id = g.Key.ScheduleId,
+                                  CompleteCount = g.Sum(v => v.CompleteNum),
+                                  VisitCount = g.Sum(v=>v.VisitNum),
+                              }).ToListAsync();
+            var result = (from e in entity
+                    join t in temp on e.Id equals t.Id into g
+                    from table in g.DefaultIfEmpty()
+                    select new ScheduleListDto() {
+                        Id = e.Id,
+                        Name = e.Name,
+                        Type = e.Type,
+                        Status = e.Status,
+                        PublishTime = e.PublishTime,
+                        CreateUserName = e.Name,
+                        Area = e.Area,
+                        Percentage = table != null ? Math.Round((Convert.ToDecimal((double)table.CompleteCount/table.VisitCount)),2) : 0
+                    });
 
             var scheduleCount = await query.CountAsync();
 
-            var schedules = await entity
+            var schedules = await result
                     .OrderBy(input.Sorting).AsNoTracking()
                     .PageBy(input)
                     .ToListAsync();
-
-            // var scheduleListDtos = ObjectMapper.Map<List <ScheduleListDto>>(schedules);
-            //var scheduleListDtos = schedules.MapTo<List<ScheduleListDto>>();
 
             return new PagedResultDto<ScheduleListDto>(
                     scheduleCount,

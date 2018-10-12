@@ -12,8 +12,9 @@ export class ScheduleDetail implements IScheduleDetail {
     employeeName: string;
     growerName: string;
     checked: boolean;
-
-
+    taskName: string;
+    percentage: string;
+    statusName: string;
     constructor(data?: IScheduleDetail) {
         if (data) {
             for (var property in data) {
@@ -38,6 +39,9 @@ export class ScheduleDetail implements IScheduleDetail {
             this.employeeName = data["employeeName"];
             this.growerName = data["growerName"];
             this.checked = data["checked"];
+            this.taskName = data["taskName"];
+            this.percentage = data["percentage"];
+            this.statusName = data["statusName"];
         }
     }
 
@@ -123,6 +127,9 @@ export interface IScheduleDetail {
     employeeName: string;
     growerName: string;
     checked: boolean;
+    taskName: string;
+    percentage: string;
+    statusName: string;
 }
 
 
@@ -330,7 +337,6 @@ export interface IScheduleDetailTask {
     typeName: string;
     statusName: string;
     time: string;
-    sheduleName: string;
 }
 
 

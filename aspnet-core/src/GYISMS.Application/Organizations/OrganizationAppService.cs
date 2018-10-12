@@ -26,6 +26,7 @@ using GYISMS.Employees.Dtos;
 using Abp.Auditing;
 using GYISMS.DingDing;
 using GYISMS.DingDing.Dtos;
+using GYISMS.GYEnums;
 
 namespace GYISMS.Organizations
 {
@@ -251,7 +252,7 @@ namespace GYISMS.Organizations
                     o.CreationTime = DateTime.Now;
                     if (o.Id != 1)
                     {
-                        await SynchronousEmployeeAsync(o.Id, accessToken);
+                        await SynchronousEmployeeAsync(o.Id, accessToken, o.ParentId);
                     }
                 }
                 else
@@ -264,7 +265,7 @@ namespace GYISMS.Organizations
                     await CreateSyncOrganizationAsync(organization);
                     if (organization.Id != 1)
                     {
-                        await SynchronousEmployeeAsync(organization.Id, accessToken);
+                        await SynchronousEmployeeAsync(organization.Id, accessToken,organization.ParentId);
                     }
                 }
             }
@@ -278,7 +279,7 @@ namespace GYISMS.Organizations
         /// <param name="departId"></param>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken)
+        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken, long? parentId)
         {
             try
             {
@@ -318,6 +319,21 @@ namespace GYISMS.Organizations
                         e.HiredDate = item.HiredDate;
                         e.Avatar = item.Avatar;
                         e.Active = item.Active;
+                        if ( departId == 59569075||parentId == 59569075)
+                        {
+                            e.Area = AreaCodeEnum.旺苍县.ToString();
+                            e.AreaCode = AreaCodeEnum.昭化区.GetHashCode().ToString();
+                        }
+                        else if (departId == 59594070 || parentId == 59594070)
+                        {
+                            e.Area = AreaCodeEnum.剑阁县.ToString();
+                            e.AreaCode = AreaCodeEnum.剑阁县.GetHashCode().ToString();
+                        }
+                        else if (departId == 59617065 || parentId == 59617065)
+                        {
+                            e.Area = AreaCodeEnum.旺苍县.ToString();
+                            e.AreaCode = AreaCodeEnum.旺苍县.GetHashCode().ToString();
+                        }
                     }
                     else
                     {
@@ -333,6 +349,21 @@ namespace GYISMS.Organizations
                         employee.HiredDate = item.HiredDate;
                         employee.Avatar = item.Avatar;
                         employee.Active = item.Active;
+                        if ( departId == 59569075 || parentId == 59569075)
+                        {
+                            e.Area = AreaCodeEnum.旺苍县.ToString();
+                            e.AreaCode = AreaCodeEnum.昭化区.GetHashCode().ToString();
+                        }
+                        else if (departId == 59594070 || parentId == 59594070)
+                        {
+                            e.Area = AreaCodeEnum.剑阁县.ToString();
+                            e.AreaCode = AreaCodeEnum.剑阁县.GetHashCode().ToString();
+                        }
+                        else if (departId == 59617065 || parentId == 59617065)
+                        {
+                            e.Area = AreaCodeEnum.旺苍县.ToString();
+                            e.AreaCode = AreaCodeEnum.旺苍县.GetHashCode().ToString();
+                        }      
                         await CreateSyncEmployeeAsync(employee);
                     }
                 }
@@ -387,13 +418,13 @@ namespace GYISMS.Organizations
         public async Task<List<OrganizationNzTreeNode>> GetTreesAsync()
         {
             int? count = 0;
-            var organizationList =await (from o in _organizationRepository.GetAll()
-                                   select new OrganizationListDto()
-                                   {
-                                       Id = o.Id,
-                                       DepartmentName = o.DepartmentName,
-                                       ParentId = o.ParentId
-                                   }).ToListAsync();
+            var organizationList = await (from o in _organizationRepository.GetAll()
+                                          select new OrganizationListDto()
+                                          {
+                                              Id = o.Id,
+                                              DepartmentName = o.DepartmentName,
+                                              ParentId = o.ParentId
+                                          }).ToListAsync();
             foreach (var item in organizationList)
             {
                 if (item.Id == 1)
