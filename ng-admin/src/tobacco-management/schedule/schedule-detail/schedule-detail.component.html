@@ -36,7 +36,7 @@
                         </nz-form-control>
                     </nz-form-item> -->
                         <nz-form-item nz-row style="margin-bottom: 0px;">
-                            <nz-form-label nz-col [nzSm]="4" nzRequired>计划类型</nz-form-label>
+                            <nz-form-label nz-col [nzSm]="4" nzRequired>计划周期</nz-form-label>
                             <nz-form-control nz-col [nzSm]="20">
                                 <nz-radio-group formControlName="type" [(ngModel)]="schedule.type" class="mb-md">
                                     <label nz-radio [nzValue]="o.value" *ngFor="let o of types">
@@ -59,7 +59,7 @@
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item nz-row *ngIf="schedule.type == 2">
-                            <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">周计划时间</nz-form-label>
+                            <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">周计划周期</nz-form-label>
                             <nz-form-control nz-col [nzSm]="20">
                                 <nz-select formControlName="weekTempTime" [(ngModel)]="weekTempTime" class="mb-md">
                                     <nz-option *ngFor="let i of weekTypes" [nzLabel]="i.text" [nzValue]="i.value">
@@ -71,17 +71,22 @@
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item nz-row *ngIf="schedule.type == 1">
-                            <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划开始时间</nz-form-label>
+                            <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划时间</nz-form-label>
                             <nz-form-control [nzSm]="20">
-                                <nz-month-picker formControlName="beginTime" [nzFormat]="monthFormat" [(ngModel)]="schedule.beginTime" nzPlaceHolder="请选择日期"></nz-month-picker>
+                                <nz-month-picker formControlName="beginTime" (ngModelChange)="onChange($event)" [(ngModel)]="showTime" nzPlaceHolder="请选择日期"></nz-month-picker>
+                                <nz-form-control *ngIf="isMonthText && schedule.beginTime " [nzSm]="20">
+                                    {{monthText}}
+                                </nz-form-control>
                             </nz-form-control>
-                        </nz-form-item>
-                        <nz-form-item nz-row *ngIf="schedule.type == 1">
+                            <!-- <nz-form-item nz-row *ngIf="schedule.type == 1">
                             <nz-form-label nz-col [nzSm]="4" nzFor="endTime">计划结束时间</nz-form-label>
                             <nz-form-control [nzSm]="20">
                                 <nz-month-picker formControlName="endTime" [nzFormat]="monthFormat" [(ngModel)]="schedule.endTime" nzPlaceHolder="请选择日期"></nz-month-picker>
                             </nz-form-control>
+                        </nz-form-item> -->
+
                         </nz-form-item>
+
                         <nz-form-item nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="desc">计划说明</nz-form-label>
                             <nz-form-control [nzSm]="20" nzHasFeedback>

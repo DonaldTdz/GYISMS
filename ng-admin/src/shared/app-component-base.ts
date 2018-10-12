@@ -69,6 +69,20 @@ export abstract class AppComponentBase {
     return this.permission.isGranted(permissionName);
   }
 
+  dateFormatForMM(date: any): string {
+    if (date === null) {
+      return null;
+    }
+    let d = new Date(date);
+    let y = d.getFullYear().toString();
+    var month = d.getMonth() + 1;
+    let m = (month < 10 ? "0" + month : month).toString();
+    let day = d.getDate().toString();
+    return y + '-' + m + '-' + day;
+    //let dateStr:string = this.datePipe.transform(d,'yyyy-MM-dd');
+    //return dateStr;
+  }
+
   dateFormat(date: any): string {
     if (date === null) {
       return null;

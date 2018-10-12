@@ -8,6 +8,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ChooseTaskModalComponent } from './choose-task-modal/choose-task-modal.component';
 import { ChooseEmployeeModalComponent } from './choose-employee-modal/choose-employee-modal.component';
 import { SelectGroup } from '@shared/entity/basic-data';
+import { addDays } from 'date-fns';
 
 @Component({
     moduleId: module.id,
@@ -40,6 +41,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     isExpired: boolean = false;//是否过期
     recordList: ScheduleDetail[] = [];
     recordTitle: string = '';
+    monthText: string = '';
+    isMonthText: boolean = false;
     loadingRecord = false;
     allPercentage: string = "0";
     queryRecord: any = {
@@ -51,6 +54,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         status: -1,
         statusList: []
     };
+    showTime: any;
     // expiredText: string = '';
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private taskService: VisitTaskServiceProxy,
@@ -59,9 +63,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         this.id = this.actRouter.snapshot.params['id'];
         this.allPercentage = this.actRouter.snapshot.params['allPercentage'];
         this.recordTitle = '计划完成总进度:' + this.allPercentage + '%';
-        console.log(this.recordTitle);
-
     }
+
     ngOnInit(): void {
         this.validateForm = this.fb.group({
             name: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
@@ -134,6 +137,9 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                             this.weekTempTime = result.beginTime.substring(0, 10) + ',' + result.endTime.substring(0, 10);
                         }
                     }
+                } else if (result.type == 1) {
+                    this.isMonthText = true;
+                    this.showTime = result.beginTime;
                 }
                 // if (!this.isPush) {
                 this.getTaskList();
@@ -143,7 +149,22 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         } else {
             //新增
             this.schedule.type = 1;
+            var currentdate = new Date();
+            var y = currentdate.getFullYear();
+            var m = currentdate.getMonth() + 1;
+            var d = currentdate.getDate();
+            var beginTime = y + '-' + (m > 9 ? m : '0' + m) + '-' + '01';
+            this.showTime = beginTime;
         }
+    }
+    onChange(result: Date): void {
+        let time: Date = new Date(result);
+        var m = time.getMonth() + 1;
+        this.schedule.beginTime = time.getFullYear().toString() + '-' + (m > 9 ? m : '0' + m).toString() + '-' + '01';
+        this.schedule.endTime = this.dateFormatForMM(addDays(new Date(time.getFullYear(), time.getMonth() + 1, 1), -1));
+        console.log(this.schedule.beginTime);
+        this.isMonthText = true;
+        this.monthText = this.schedule.beginTime + ' 至 ' + this.schedule.endTime;
     }
 
     save(isPulish = false) {
@@ -176,12 +197,17 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 }
             }
             else {// type =1
-                if (this.schedule.beginTime)
-                    this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
+                if (this.schedule.beginTime != 'NaN-0NaN-01' && this.schedule.beginTime == '1970-01-01') {
+                    // this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
+                    // this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
+                    this.schedule.beginTime = this.schedule.beginTime;
+                    console.log(this.schedule.beginTime);
+                }
                 else
                     this.schedule.beginTime = null;
-                if (this.schedule.endTime)
-                    this.schedule.endTime = this.dateFormat(this.schedule.endTime);
+                if (this.schedule.endTime != 'NaN-NaN-NaN' && this.schedule.endTime != '1970-01-31')
+                    // this.schedule.endTime = this.dateFormat(this.schedule.endTime);
+                    this.schedule.endTime = this.schedule.endTime;
                 else
                     this.schedule.endTime = null;
             }
@@ -320,7 +346,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
 
     assignTask(id: number, taskId: string, visitNum: number) {
         let scheduleId: string = this.id;            //计划Id,状态
-        this.router.navigate(['app/task/assign-task', id, taskId, visitNum, scheduleId, this.isPush]);
+        this.router.navigate(['app/task/assign-task', id, taskId, visitNum, scheduleId, this.isPush, this.allPercentage]);
     }
     assignAll(id: number, taskId: string, visitNum: number): void {
         this.confirmModal = this.modal.confirm({

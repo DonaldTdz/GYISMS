@@ -80,9 +80,10 @@ namespace GYISMS.Schedules
         public async Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
         {
             var detail = _scheduledetailRepository.GetAll();
-            var query = _scheduleRepository.GetAll().Where(v => v.IsDeleted == false)
+            var query = _scheduleRepository.GetAll()
                      .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
-                     .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType);
+                     .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType)
+                     .Where(s =>s.IsDeleted == false && s.Status == ScheduleMasterStatusEnum.已发布 || (s.Status == ScheduleMasterStatusEnum.草稿 && s.CreatorUserId == AbpSession.UserId));
             var user = _userRepository.GetAll();
             var entity = from q in query
                                 join u in user on q.CreatorUserId equals u.Id into table
@@ -123,13 +124,13 @@ namespace GYISMS.Schedules
                         Type = e.Type,
                         Status = e.Status,
                         PublishTime = e.PublishTime,
-                        CreateUserName = e.Name,
+                        CreateUserName = e.CreateUserName,
                         Area = e.Area,
                         Percentage = table != null ? Math.Round((Convert.ToDecimal((double)table.CompleteCount/table.VisitCount)),2) : 0
                     });
 
             var scheduleCount = await query.CountAsync();
-
+            
             var schedules = await result
                     .OrderBy(input.Sorting).AsNoTracking()
                     .PageBy(input)

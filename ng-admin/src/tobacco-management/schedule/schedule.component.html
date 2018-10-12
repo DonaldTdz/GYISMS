@@ -13,9 +13,9 @@
             </div>
             <div nz-col [nzSpan]="8" class="mb-md">
                 <nz-form-item class="d-flex">
-                    <nz-form-label nzFor="scheduleType">计划类型</nz-form-label>
+                    <nz-form-label nzFor="scheduleType">计划周期</nz-form-label>
                     <nz-form-control class="flex-1">
-                        <nz-select [nzPlaceHolder]="'请选择计划类型'" name="scheduleType" [(ngModel)]="search.scheduleType" [nzShowSearch]="true">
+                        <nz-select [nzPlaceHolder]="'请选择计划周期'" name="scheduleType" [(ngModel)]="search.scheduleType" [nzShowSearch]="true">
                             <nz-option *ngFor="let i of scheduleTypes" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>

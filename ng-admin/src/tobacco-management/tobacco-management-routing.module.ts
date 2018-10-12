@@ -44,7 +44,7 @@ const routes: Routes = [
         canActivate: [AppRouteGuard],
     },
     {
-        path: 'assign-task/:id/:taskId/:visitNum/:scheduleId/:isPush',
+        path: 'assign-task/:id/:taskId/:visitNum/:scheduleId/:isPush/:allPercentage',
         component: AssignTaskComponent,
         canActivate: [AppRouteGuard],
     },

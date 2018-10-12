@@ -41,6 +41,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     checkedLength: number = 0; // 已选中的数量
     checked = true;
     isPush: string = 'false';
+    allPercentage: string = "0";
 
     constructor(injector: Injector, private taskService: VisitTaskServiceProxy
         , private organizationService: OrganizationServiceProxy
@@ -53,6 +54,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
         this.visitNum = this.actRouter.snapshot.params['visitNum'];
         this.scheduleId = this.actRouter.snapshot.params['scheduleId'];
         this.isPush = this.actRouter.snapshot.params['isPush'];
+        this.allPercentage = this.actRouter.snapshot.params['allPercentage'];
     }
 
     ngOnInit(): void {
@@ -176,6 +178,6 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     }
 
     return() {
-        this.router.navigate(['app/task/schedule-detail', this.scheduleId]);
+        this.router.navigate(['app/task/schedule-detail', this.scheduleId, this.allPercentage]);
     }
 }
