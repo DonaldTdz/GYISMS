@@ -22,6 +22,12 @@ export class DataConfigCreateComponent extends AppComponentBase implements OnIni
     configMetting = [
         { value: 1, text: '设备配置' },
         { value: 2, text: '会议物资' },
+    ];
+    configDing = [
+        { value: 6, text: '钉钉配置', selected: true },
+        { value: 7, text: '任务拜访', selected: false },
+        { value: 8, text: '智能报表', selected: false },
+        { value: 9, text: '会议申请', selected: false },
     ]
     config: any = [];
     form: FormGroup;
@@ -45,8 +51,10 @@ export class DataConfigCreateComponent extends AppComponentBase implements OnIni
         this.dataconfig.init({ modelId: modeId, type: type });
         if (modeId == 1) {
             this.config = this.configMetting;
-        } else {
+        } else if (modeId == 2) {
             this.config = this.configLeaf;
+        } else {
+            this.config = this.configDing;
         }
         this.modalVisible = true;
     }

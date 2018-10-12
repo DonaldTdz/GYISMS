@@ -20,9 +20,17 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
 
     systemDataLeafs: SystemData[] = [];
     systemDataMettings: SystemData[] = [];
+    systemDataDings: SystemData[] = [];
     paramLe: any = { Type: 3 };
     paramMe: any = { Type: 1 };
+    paramDi: any = { Type: 6 };
     queryMe: any = {
+        pageIndex: 1,
+        pageSize: 10,
+        skipCount: function () { return (this.pageIndex - 1) * this.pageSize; },
+        total: 0,
+    };
+    queryDi: any = {
         pageIndex: 1,
         pageSize: 10,
         skipCount: function () { return (this.pageIndex - 1) * this.pageSize; },
@@ -31,16 +39,23 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
     mettingName = '';
     leafName = '';
     configLeaf = [
-        { value: 3, text: '烟农单位' },
-        { value: 4, text: '烟农村组' },
-        { value: 5, text: '烟叶公共' },
+        { value: 3, text: '烟农单位', selected: true },
+        { value: 4, text: '烟农村组', selected: false },
+        { value: 5, text: '烟叶公共', selected: false },
     ];
     configMetting = [
-        { value: 1, text: '设备配置' },
-        { value: 2, text: '会议物资' },
+        { value: 1, text: '设备配置', selected: true },
+        { value: 2, text: '会议物资', selected: false },
+    ]
+    configDing = [
+        { value: 6, text: '钉钉配置', selected: true },
+        { value: 7, text: '任务拜访', selected: false },
+        { value: 8, text: '智能报表', selected: false },
+        { value: 9, text: '会议申请', selected: false },
     ]
     loading = false;
     loadingMe = false;
+    loadingDi = false;
     constructor(injector: Injector, private systemDataSerice: DataConfigServiceProxy, private modal: NzModalService) {
         super(injector);
     }
@@ -48,13 +63,16 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
     ngOnInit(): void {
         this.getAllLeafs();
         this.getAllMetting();
+        this.getAllDing();
     }
 
     refureshData(type) {
         if (type == 1) {
             this.getAllMetting();
-        } else {
+        } else if (type == 2) {
             this.getAllLeafs();
+        } else {
+            this.getAllDing();
         }
 
     }
@@ -92,7 +110,8 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
         });
     }
 
-    checkChangeLeaf() {
+    checkChangeLeaf(item) {
+        this.paramLe.Type = item.value;
         this.getAllLeafs();
     }
     addLeaf() {
@@ -140,7 +159,8 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
         })
     }
 
-    checkChangeMetting() {
+    checkChangeMetting(item) {
+        this.paramMe.Type = item.value;
         this.getAllMetting();
     }
 
@@ -149,5 +169,46 @@ export class DataConfigComponent extends AppComponentBase implements OnInit {
     }
     //#endregion 
 
+    //#region 钉钉配置
+    getAllDing() {
+        this.paramDi.skipCount = this.queryDi.skipCount();
+        this.paramDi.maxResultCount = this.queryDi.pageSize;
+        this.paramDi.ModelId = 3;
+        this.loadingDi = true;
+        this.systemDataSerice.getAll(this.paramDi).subscribe(data => {
+            this.loadingDi = false;
+            this.systemDataDings = data.items.map(i => {
+                return i;
+            });
+            this.queryDi.total = data.totalCount;
+
+        });
+    }
+    editDing(ding: SystemData) {
+        this.editDataConfigModal.show(3, ding.id);
+    }
+
+    deleteDing(ding, tplContent) {
+        this.mettingName = ding.code;
+        this.modal.warning({
+            nzContent: tplContent,
+            nzOkText: '确定',
+            nzCancelText: '取消',
+            nzOnOk: () => {
+                this.systemDataSerice.delete({ id: ding.id }).subscribe(() => {
+                    this.notify.info(this.l('删除成功！'), '');
+                    this.getAllDing();
+                })
+            }
+        })
+    }
+    checkChangeconfigDing(item) {
+        this.paramDi.Type = item.value;
+        this.getAllDing();
+    }
+    addConfigDing() {
+        this.createDataConfigModal.show(3, this.paramDi.Type);//1表示会议室模块2表示烟服务3表示钉钉配置
+    }
+    //#endregion
 
 }

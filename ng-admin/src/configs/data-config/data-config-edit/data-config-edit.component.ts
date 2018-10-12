@@ -26,6 +26,12 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
     configMetting = [
         { value: 1, text: '设备配置' },
         { value: 2, text: '会议物资' },
+    ];
+    configDing = [
+        { value: 6, text: '钉钉配置', selected: true },
+        { value: 7, text: '任务拜访', selected: false },
+        { value: 8, text: '智能报表', selected: false },
+        { value: 9, text: '会议申请', selected: false },
     ]
     confige = [];
     constructor(injector: Injector, private dataConfigService: DataConfigServiceProxy, private fb: FormBuilder) {
@@ -43,8 +49,10 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
         this.modelId = modelId;
         if (modelId == 1) {
             this.confige = this.configMetting;
-        } else {
+        } else if (modelId == 2) {
             this.confige = this.configLeaf;
+        } else {
+            this.confige = this.configDing;
         }
         this.getSingleConfigById(id);
         this.emodalVisible = true;
