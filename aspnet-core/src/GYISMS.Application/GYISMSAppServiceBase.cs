@@ -49,7 +49,7 @@ namespace GYISMS
         {
             var user = await GetCurrentUserAsync();
             var roles = await UserManager.GetRolesAsync(user);
-            if (roles.Contains("DistrictAdmin"))// 如果是区县管理员
+            if (roles.Contains(RoleCodes.DistrictAdmin))// 如果是区县管理员
             {
                 return user.AreaCode.HasValue? user.AreaCode : AreaCodeEnum.None;
             }
