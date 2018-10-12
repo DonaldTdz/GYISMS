@@ -61,6 +61,8 @@ namespace GYISMS.Employees
         Task<DingDingUserDto> GetDingDingUserByCodeAsync(string code, DingDingAppEnum appId);
 
         Task<EmployeeListDto> EditEmployeeAreaInfoAsync(EmployeeEditDto input);
-        List<EmployeeNzTreeNode> GetTrees();
+        //List<EmployeeNzTreeNode> GetTrees();
+
+        Task<List<EmployeeNzTreeNode>> GetTreesAsync();
     }
 }
