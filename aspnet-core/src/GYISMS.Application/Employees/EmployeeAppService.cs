@@ -240,8 +240,8 @@ namespace GYISMS.Employees
         /// 获取区县树
         /// </summary>
         /// <returns></returns>
-        //public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
-        public List<EmployeeNzTreeNode> GetTrees()
+        public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
+        //public List<EmployeeNzTreeNode> GetTrees()
         {
             List<EmployeeNzTreeNode> treeNodeList = new List<EmployeeNzTreeNode>();
             //var AreaInfo = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟农村组 && v.ModelId == ConfigModel.烟叶服务).OrderBy(v => v.Seq).AsNoTracking()
@@ -256,30 +256,43 @@ namespace GYISMS.Employees
             //    };
             //    treeNodeList.Add(treeNode);
             //}
+            var areaCode = await GetCurrentUserAreaCodeAsync();
+            
             var key = AreaCodeEnum.昭化区.GetHashCode().ToString();
-            EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+            if (!areaCode.HasValue || areaCode == AreaCodeEnum.昭化区)
             {
-                key = key,
-                title = AreaCodeEnum.昭化区.ToString(),
-                children = GetAreaEmoloyee(key)
-            };
-            treeNodeList.Add(treeNode);
-            key = AreaCodeEnum.剑阁县.GetHashCode().ToString();
-            EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
+                EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
+                {
+                    key = key,
+                    title = AreaCodeEnum.昭化区.ToString(),
+                    children = GetAreaEmoloyee(key)
+                };
+                treeNodeList.Add(treeNode);
+            }
+            if (!areaCode.HasValue || areaCode == AreaCodeEnum.剑阁县)
             {
-                key = key,
-                title = AreaCodeEnum.剑阁县.ToString(),
-                children = GetAreaEmoloyee(key)
-            };
-            treeNodeList.Add(treeNode2);
-            key = AreaCodeEnum.旺苍县.GetHashCode().ToString();
-            EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
+                key = AreaCodeEnum.剑阁县.GetHashCode().ToString();
+                EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
+                {
+                    key = key,
+                    title = AreaCodeEnum.剑阁县.ToString(),
+                    children = GetAreaEmoloyee(key)
+                };
+                treeNodeList.Add(treeNode2);
+            }
+
+            if (!areaCode.HasValue || areaCode == AreaCodeEnum.旺苍县)
             {
-                key = key,
-                title = AreaCodeEnum.旺苍县.ToString(),
-                children = GetAreaEmoloyee(key),
-            };
-            treeNodeList.Add(treeNode3);
+                key = AreaCodeEnum.旺苍县.GetHashCode().ToString();
+                EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
+                {
+                    key = key,
+                    title = AreaCodeEnum.旺苍县.ToString(),
+                    children = GetAreaEmoloyee(key),
+                };
+                treeNodeList.Add(treeNode3);
+            }
+           
             return treeNodeList;
         }
 
