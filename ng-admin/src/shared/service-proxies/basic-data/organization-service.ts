@@ -54,7 +54,7 @@ export class OrganizationServiceProxy {
     }
 
     GetEmployeeTreesAsync(): Observable<NzTreeNode[]> {
-        let url = "/api/services/app/Employee/GetTrees";
+        let url = "/api/services/app/Employee/GetTreesAsync";
         return this._gyhttp.get(url).map(data => {
             let arry = [];
             data.map(d => {
