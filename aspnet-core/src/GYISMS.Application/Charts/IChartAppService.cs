@@ -20,6 +20,6 @@ namespace GYISMS.Charts
 
         Task<ChartByTaskDto> GetChartByMothAsync(int searchMoth);
 
-        Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, string DateString, AreaTypeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus);
+        Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus);
     }
 }

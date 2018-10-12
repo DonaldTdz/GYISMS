@@ -74,18 +74,18 @@ namespace GYISMS.Charts
                 //完成数
                 var cnum = query.Sum(q => q.CompleteNum);
                 cnum = cnum ?? 0;
-                var cpercent = Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
+                var cpercent = tnum == 0? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
                 dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "完成", ClassName = "complete", Percent = cpercent*100, Seq = 1,Status=2 });
 
                 //逾期数
                 var etnum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
                 etnum = etnum ?? 0;
-                var etpercent = Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
+                var etpercent = tnum == 0 ? 0 : Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
                 dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3,Status=0 });
 
                 //进行中数
                 var pnum = tnum - cnum - etnum;
-                var ppercent = 1M - cpercent - etpercent;
+                var ppercent = tnum == 0 ? 0 : (1M - cpercent - etpercent);
                 dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "进行中", ClassName = "process", Percent = ppercent*100, Seq = 2 ,Status=3});
 
                 return dataList.OrderBy(d => d.Seq).ToList();
@@ -118,12 +118,12 @@ namespace GYISMS.Charts
                         where s.Status == ScheduleMasterStatusEnum.已发布
                         select new
                         {
-                            g.CountyCode,
+                            g.AreaCode,
                             sd.VisitNum,
                             sd.CompleteNum,
                             sd.Status
                         };
-            var rquery = query.GroupBy(g => g.CountyCode).Select(g1 =>
+            var rquery = query.GroupBy(g => g.AreaCode).Select(g1 =>
                          new DistrictDto()
                          {
                              AreaType = g1.Key,
@@ -248,18 +248,18 @@ namespace GYISMS.Charts
                 //完成数
                 var cnum = query.Sum(q => q.CompleteNum);
                 cnum = cnum ?? 0;
-                var cpercent = Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
+                var cpercent = cnum == 0? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
                 dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "已完成", ClassName = "complete", Percent = cpercent*100, Seq = 1 });
 
                 //逾期数
                 var etnum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
                 etnum = etnum ?? 0;
-                var etpercent = Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
+                var etpercent = cnum == 0 ? 0 : Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
                 dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "已逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3 });
 
                 //进行中数
                 var pnum = tnum - cnum - etnum;
-                var ppercent = 1M - cpercent - etpercent;
+                var ppercent = cnum == 0 ? 0 : (1M - cpercent - etpercent);
                 dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "进行中", ClassName = "process", Percent = ppercent*100, Seq = 2 });
 
                 return dataList.OrderBy(d => d.Seq).ToList();
@@ -270,7 +270,7 @@ namespace GYISMS.Charts
         /// 获取任务的明细信息
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, string DateString, AreaTypeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus)
+        public async Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus)
         {
             if (!string.IsNullOrEmpty(DateString))
             {
@@ -310,12 +310,12 @@ namespace GYISMS.Charts
                                                       .WhereIf(TaskId.HasValue, t => t.Id == TaskId)
                          on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(AreaCode.HasValue, g => g.CountyCode == AreaCode)
+                                                     .WhereIf(AreaCode.HasValue, g => g.AreaCode == AreaCode)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailDto
                         {
                             Id = sd.Id,
-                            AreaCode = g.CountyCode,
+                            AreaCode = g.AreaCode,
                             TaskType = t.Type,
                             TaskName = t.Name,
                             BeginTime = s.BeginTime,

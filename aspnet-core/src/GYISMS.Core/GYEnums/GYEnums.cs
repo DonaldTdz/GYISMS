@@ -83,8 +83,9 @@ namespace GYISMS.GYEnums
         提前10分钟 = 1,
         提前30分钟 = 2
     }
-    public enum AreaTypeEnum
+    public enum AreaCodeEnum
     {
+        None = 0,
         昭化区 = 1,
         剑阁县 = 2,
         旺苍县 = 3

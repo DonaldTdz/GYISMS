@@ -33,7 +33,7 @@ namespace GYISMS.ScheduleDetails
         /// <summary>
         /// 区域
         /// </summary>
-        public AreaTypeEnum? AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 任务名
@@ -61,9 +61,14 @@ namespace GYISMS.ScheduleDetails
         public int? Expired { get; set; }
 
         /// <summary>
-        /// 计划开始
+        /// 计划时间
         /// </summary>
-        public DateTime BeginTime { get; set; }
+        public string  Time { get; set; }
+
+        /// <summary>
+        /// 计划名称
+        /// </summary>
+        public string SheduleName { get; set; }
 
         /// <summary>
         /// 区域名

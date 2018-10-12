@@ -7,7 +7,7 @@ namespace GYISMS.Charts.Dtos
 {
     public class DistrictDto
     {
-        public AreaTypeEnum? AreaType { get; set; }
+        public AreaCodeEnum? AreaType { get; set; }
 
         public string District
         {
@@ -50,7 +50,7 @@ namespace GYISMS.Charts.Dtos
         public int? Num { get; set; }
 
         public int? Status { get; set; }
-        public AreaTypeEnum? AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
         public string TimeGroup { get; set; }
     }
 
@@ -175,7 +175,7 @@ namespace GYISMS.Charts.Dtos
     public class SheduleDetailDto
     {
         public Guid Id { get; set; }
-        public AreaTypeEnum? AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         public TaskTypeEnum? TaskType { get; set; }
 

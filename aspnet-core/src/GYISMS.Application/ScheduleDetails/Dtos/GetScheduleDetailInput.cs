@@ -18,7 +18,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// <summary>
         /// 区域
         /// </summary>
-        public AreaTypeEnum? AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 开始时间
@@ -31,7 +31,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         public DateTime? EndTime { get; set; }
 
         /// <summary>
-        /// 计划名称
+        /// 任务名称
         /// </summary>
         public int? TaskId { get; set; }
 
@@ -45,6 +45,11 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// </summary>
         public string EmployeeName { get; set; }
 
+
+        /// <summary>
+        /// 计划名称
+        /// </summary>
+        public string SheduleName { get; set; }
         //// custom codes
 
         //// custom codes end
@@ -75,7 +80,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// <summary>
         /// 区域
         /// </summary>
-        public AreaTypeEnum? AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 开始时间
@@ -88,8 +93,12 @@ namespace GYISMS.ScheduleDetails.Dtos
         public DateTime? EndTime { get; set; }
 
         /// <summary>
-        /// 计划名称
+        /// 任务Id
         /// </summary>
         public int? TaskId { get; set; }
+        /// <summary>
+        /// 计划名称
+        /// </summary>
+        public string SheduleName { get; set; }
     }
 }

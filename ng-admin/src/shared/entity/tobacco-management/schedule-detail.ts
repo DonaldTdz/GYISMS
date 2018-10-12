@@ -137,6 +137,8 @@ export class ScheduleSum implements IScheduleSum {
     areaName: string;
     taskTypeName: string;
     completeRate: string;
+    time: string;
+    sheduleName: string;
     constructor(data?: IScheduleSum) {
         if (data) {
             for (var property in data) {
@@ -158,6 +160,8 @@ export class ScheduleSum implements IScheduleSum {
             this.areaName = data["areaName"];
             this.taskTypeName = data["taskTypeName"];
             this.completeRate = data["completeRate"];
+            this.sheduleName = data["sheduleName"];
+            this.time = data["time"];
         }
     }
 
@@ -190,6 +194,8 @@ export class ScheduleSum implements IScheduleSum {
         data["areaName"] = this.areaName;
         data["taskTypeName"] = this.taskTypeName;
         data["completeRate"] = this.completeRate;
+        data["sheduleName"] = this.sheduleName;
+        data["time"] = this.time;
         return data;
     }
 
@@ -211,6 +217,8 @@ export interface IScheduleSum {
     areaName: string;
     taskTypeName: string;
     completeRate: string;
+    time: string;
+    sheduleName: string;
 }
 
 
@@ -229,6 +237,8 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
     areaName: string;
     typeName: string;
     statusName: string;
+    time: string;
+    sheduleName: string;
     constructor(data?: IScheduleDetailTask) {
         if (data) {
             for (var property in data) {
@@ -254,7 +264,8 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
             this.typeName = data["typeName"];
             this.statusName = data["statusName"];
             this.growerId = data["growerId"];
-
+            this.time = data["time"];
+            this.sheduleName = data["sheduleName"];
         }
     }
 
@@ -291,6 +302,8 @@ export class ScheduleDetailTask implements IScheduleDetailTask {
         data["typeName"] = this.typeName;
         data["statusName"] = this.statusName;
         data["growerId"] = this.growerId;
+        data["time"] = this.time;
+        data["sheduleName"] = this.sheduleName;
         return data;
     }
 
@@ -316,6 +329,8 @@ export interface IScheduleDetailTask {
     areaName: string;
     typeName: string;
     statusName: string;
+    time: string;
+    sheduleName: string;
 }
 
 

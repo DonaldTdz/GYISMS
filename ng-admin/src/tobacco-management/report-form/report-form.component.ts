@@ -21,8 +21,8 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     expiredSum = 0;
     completeRate = '';
     sheduleDetailTask: ScheduleDetailTask[] = [];
-    sumSearch: any = { areaCode: null, startTime: null, endTime: null, taskId: null }
-    detailSearch: any = { areaCode: null, startTime: null, endTime: null, taskId: null, growerName: '', employeeName: '' }
+    sumSearch: any = { areaCode: null, startTime: null, endTime: null, taskId: null, sheduleName: '' }
+    detailSearch: any = { areaCode: null, startTime: null, endTime: null, taskId: null, growerName: '', employeeName: '', sheduleName: '' }
     areas = [
         { text: '昭化区', value: 1 },
         { text: '剑阁县', value: 2 },

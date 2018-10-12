@@ -1,14 +1,16 @@
 ﻿using System;
 using Abp.Authorization.Users;
 using Abp.Extensions;
+using GYISMS.GYEnums;
+using GYISMS.Interfaces;
 
 namespace GYISMS.Authorization.Users
 {
-    public class User : AbpUser<User>
+    public class User : AbpUser<User> , IMayArea
     {
         public const string DefaultPassword = "123qwe";
-        public string Area { get; set; }
-        public string AreaCode { get; set; }
+        public virtual string Area { get; set; }
+        public virtual AreaCodeEnum? AreaCode { get; set; }
         public string EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public static string CreateRandomPassword()

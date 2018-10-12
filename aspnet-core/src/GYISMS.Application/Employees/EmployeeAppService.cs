@@ -256,27 +256,27 @@ namespace GYISMS.Employees
             //    };
             //    treeNodeList.Add(treeNode);
             //}
-            var key = AreaTypeEnum.昭化区.GetHashCode().ToString();
+            var key = AreaCodeEnum.昭化区.GetHashCode().ToString();
             EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
             {
                 key = key,
-                title = AreaTypeEnum.昭化区.ToString(),
+                title = AreaCodeEnum.昭化区.ToString(),
                 children = GetAreaEmoloyee(key)
             };
             treeNodeList.Add(treeNode);
-            key = AreaTypeEnum.剑阁县.GetHashCode().ToString();
+            key = AreaCodeEnum.剑阁县.GetHashCode().ToString();
             EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
             {
                 key = key,
-                title = AreaTypeEnum.剑阁县.ToString(),
+                title = AreaCodeEnum.剑阁县.ToString(),
                 children = GetAreaEmoloyee(key)
             };
             treeNodeList.Add(treeNode2);
-            key = AreaTypeEnum.旺苍县.GetHashCode().ToString();
+            key = AreaCodeEnum.旺苍县.GetHashCode().ToString();
             EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
             {
                 key = key,
-                title = AreaTypeEnum.旺苍县.ToString(),
+                title = AreaCodeEnum.旺苍县.ToString(),
                 children = GetAreaEmoloyee(key),
             };
             treeNodeList.Add(treeNode3);

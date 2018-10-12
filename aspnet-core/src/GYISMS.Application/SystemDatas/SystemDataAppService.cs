@@ -176,7 +176,11 @@ systemdataListDtos
             await _systemdataRepository.DeleteAsync(input.Id);
         }
 
-
+        public async Task DeleteSystemDataById(int Id)
+        {
+            //TODO:删除前的逻辑判断，是否允许删除
+            await _systemdataRepository.DeleteAsync(Id);
+        }
 
         /// <summary>
         /// 批量删除SystemData的方法
