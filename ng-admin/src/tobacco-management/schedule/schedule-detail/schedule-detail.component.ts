@@ -35,9 +35,9 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     isSaved = false;
     taskList: VisitTask[] = [];
     loading = false;
-    isNewInfo: boolean;
+    isNewInfo: boolean = false;
     weekTempTime: string;
-    // isExpired: boolean = false;//是否过期
+    isExpired: boolean = false;//是否过期
     // expiredText: string = '';
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private taskService: VisitTaskServiceProxy,
@@ -56,8 +56,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             // taskName: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
             // visitNum: [null, Validators.compose([Validators.pattern("^\\d+$")])]
         });
-        this.getWeekType();
         this.isNewInfo = typeof (this.id) == 'undefined';
+        this.getWeekType();
     }
 
     getTaskList() {
@@ -71,33 +71,37 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     }
 
     getWeekType() {
+        if (this.isNewInfo == true)
+            this.id = '00000000-0000-0000-0000-000000000000';
         this.scheduleService.getWeekOfMonth(this.id).subscribe((result: SelectGroup[]) => {
             this.weekTypes = result;
             this.getScheduleInfo();
         });
     }
+
     getScheduleInfo() {
-        if (this.id) {
+        if (this.id && this.id != '00000000-0000-0000-0000-000000000000') {
             let params: any = {};
             params.id = this.id;
             this.scheduleService.getScheduleById(params).subscribe((result: Schedule) => {
                 this.schedule = result;
                 this.isPush = result.status == 1 ? false : true;
                 this.isDelete = true;
-                // if (result.type == 2) {
-                //     if (result.beginTime && result.endTime) {
-                //         var currentdate = new Date();
-                //         var y = currentdate.getFullYear();
-                //         var month = currentdate.getMonth() + 1;
-                //         var m = (month < 10 ? "0" + month : month).toString();
-                //         if (result.beginTime.substring(0, 4) != y.toString() || result.beginTime.substring(5, 7) != m) {
-                //             this.expiredText = result.beginTime.substring(0, 10) + '至' + result.endTime.substring(0, 10);
-                //             this.isExpired = true;
-                //         } else {
-                //             this.weekTempTime = result.beginTime.substring(0, 10) + ',' + result.endTime.substring(0, 10);
-                //         }
-                //     }
-                // }
+                if (result.type == 2) {
+                    if (result.beginTime && result.endTime) {
+                        var currentdate = new Date();
+                        var y = currentdate.getFullYear();
+                        var month = currentdate.getMonth() + 1;
+                        var m = (month < 10 ? "0" + month : month).toString();
+                        if (result.beginTime.substring(0, 4) != y.toString() || result.beginTime.substring(5, 7) != m) {
+                            // this.expiredText = result.beginTime.substring(0, 10) + '至' + result.endTime.substring(0, 10);
+                            this.isExpired = true;
+                            this.weekTempTime = result.beginTime.substring(0, 10) + ',' + result.endTime.substring(0, 10);
+                        } else {
+                            this.weekTempTime = result.beginTime.substring(0, 10) + ',' + result.endTime.substring(0, 10);
+                        }
+                    }
+                }
                 // if (!this.isPush) {
                 this.getTaskList();
                 this.isSaved = true;
@@ -129,13 +133,13 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                     this.schedule.endTime = this.dateFormat(timeList[1]);
                 }
                 else {
-                    // if (this.isExpired) {
-                    //     this.schedule.beginTime = this.schedule.beginTime;
-                    //     this.schedule.endTime = this.schedule.endTime;
-                    // } else {
-                    //     this.schedule.beginTime = null;
-                    //     this.schedule.endTime = null;
-                    // }
+                    if (this.isExpired) {
+                        this.schedule.beginTime = this.schedule.beginTime;
+                        this.schedule.endTime = this.schedule.endTime;
+                    } else {
+                        this.schedule.beginTime = null;
+                        this.schedule.endTime = null;
+                    }
                 }
             }
             else {// type =1

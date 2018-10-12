@@ -40,6 +40,9 @@
                 <th>计划名称</th>
                 <th>计划类型</th>
                 <th>计划状态</th>
+                <th>创建人</th>
+                <th>区县</th>
+                <th>完成度</th>
                 <th>发布时间</th>
                 <th>操作</th>
             </tr>
@@ -49,6 +52,9 @@
                 <td>{{data.name}}</td>
                 <td>{{data.typeName}}</td>
                 <td>{{data.status==true?"已发布":"草稿"}}</td>
+                <td>{{data.createUserName}}</td>
+                <td>{{data.area}}</td>
+                <td>100%</td>
                 <td>{{data.publishTime| _date}}</td>
                 <td>
                     <a (click)="goDetail(data.id)">查看详情</a>

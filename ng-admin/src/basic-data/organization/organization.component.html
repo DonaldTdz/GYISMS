@@ -48,8 +48,8 @@
                 </button>
             </div>
             <div style="padding-left:10px; padding-right:10px;">
-                <nz-tree [(ngModel)]="nodes" [nzShowExpand]="true" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
-                    <ng-template #nzTreeTemplate let-node>
+                <nz-tree style="margin:0px;" [(ngModel)]="nodes" [nzShowExpand]="true" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
+                    <ng-template style="margin:0px;" #nzTreeTemplate let-node>
                         <span class="custom-node" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
                             <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading">
                                 <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
