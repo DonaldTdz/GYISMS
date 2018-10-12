@@ -87,7 +87,7 @@ export class EditUserComponent extends ModalFormComponentBase<UserDto> implement
     this._userService.update(this.user)
       .finally(() => { this.saving = false; })
       .subscribe(() => {
-        this.notify.info(this.l('SavedSuccessfully'));
+        this.notify.info(this.l('SavedSuccessfully'), '');
         this.success(true);
       });
   }

@@ -61,7 +61,7 @@ export class CreateRoleComponent extends ModalFormComponentBase<CreateRoleDto> i
         finisheCallback();
       })
       .subscribe(() => {
-        this.notify.info(this.l('SavedSuccessfully'));
+        this.notify.info(this.l('SavedSuccessfully'), '');
         this.success(true);
       });
   }

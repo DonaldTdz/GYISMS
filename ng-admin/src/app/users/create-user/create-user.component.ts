@@ -78,7 +78,7 @@ export class CreateUserComponent extends ModalFormComponentBase<CreateUserDto> i
     this._userService.create(this.user)
       .finally(() => { this.saving = false; })
       .subscribe(() => {
-        this.notify.info(this.l('SavedSuccessfully'));
+        this.notify.info(this.l('SavedSuccessfully'), '');
         this.success(true);
       });
   }

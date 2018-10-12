@@ -83,7 +83,7 @@ export class EditRoleComponent extends ModalFormComponentBase<RoleDto> implement
         finisheCallback();
       })
       .subscribe(() => {
-        this.notify.info(this.l('SavedSuccessfully'));
+        this.notify.info(this.l('SavedSuccessfully'), '');
         this.success(true);
       });
   }

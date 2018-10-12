@@ -44,7 +44,7 @@ export class RolesComponent extends PagedListingComponentBase<RoleDto> {
           this.rolesService
             .delete(entity.id)
             .finally(() => {
-              abp.notify.info('删除成功');
+              abp.notify.info(this.l('删除成功'), '');
               this.refresh();
             })
             .subscribe(() => { });
