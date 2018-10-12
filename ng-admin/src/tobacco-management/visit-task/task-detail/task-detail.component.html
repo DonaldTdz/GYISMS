@@ -3,14 +3,6 @@
     <form nz-form [formGroup]="validateForm" *ngIf="task">
         <div nz-row>
             <div nz-col [nzSpan]="16">
-                <nz-form-item nz-row>
-                    <nz-form-label nz-col [nzSm]="4" nzRequired>任务名称</nz-form-label>
-                    <nz-form-control [nzSm]="20" nzHasFeedback>
-                        <input nz-input formControlName="name" [(ngModel)]="task.name" id="name">
-                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">字符长度小于等于50</nz-form-explain>
-                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">请输入任务名称</nz-form-explain>
-                    </nz-form-control>
-                </nz-form-item>
                 <nz-form-item nz-row style="margin-bottom: 0px;">
                     <nz-form-label nz-col [nzSm]="4" nzRequired>任务类型</nz-form-label>
                     <nz-form-control nz-col [nzSm]="20">
@@ -19,6 +11,14 @@
                                 <span>{{o.text}}</span>
                             </label>
                         </nz-radio-group>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row>
+                    <nz-form-label nz-col [nzSm]="4" nzRequired>任务名称</nz-form-label>
+                    <nz-form-control [nzSm]="20" nzHasFeedback>
+                        <input nz-input formControlName="name" [(ngModel)]="task.name" id="name">
+                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">字符长度小于等于50</nz-form-explain>
+                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">请输入烟农姓名</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row style="margin-bottom: 0px;">

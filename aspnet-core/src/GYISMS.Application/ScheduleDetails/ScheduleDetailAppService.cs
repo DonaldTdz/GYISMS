@@ -36,6 +36,7 @@ using System.IO;
 using NPOI.XSSF.UserModel;
 using Microsoft.AspNetCore.Hosting;
 using Abp.Domain.Uow;
+using GYISMS.SystemDatas;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -53,6 +54,7 @@ namespace GYISMS.ScheduleDetails
         private readonly ISheduleDetailRepository _scheduledetailRepository;
         private readonly IRepository<VisitTask, int> _visittaskRepository;
         private readonly IDingDingAppService _dingDingAppService;
+        private readonly IRepository<SystemData> _systemdataRepository;
 
         private string accessToken;
         private DingDingAppConfig ddConfig;
@@ -64,7 +66,7 @@ namespace GYISMS.ScheduleDetails
         public ScheduleDetailAppService(//IRepository<ScheduleDetail, Guid> scheduledetailRepository
            ISheduleDetailRepository scheduledetailRepository, IScheduleDetailManager scheduledetailManager, IRepository<Grower, int> growerRepository,
             IRepository<Schedule, Guid> scheduleRepository, IRepository<VisitTask, int> visittaskRepository, IDingDingAppService dingDingAppService,
-             IHostingEnvironment hostingEnvironment)
+             IHostingEnvironment hostingEnvironment, IRepository<SystemData> systemdataRepository)
         {
             _growerRepository = growerRepository;
             _scheduledetailRepository = scheduledetailRepository;
@@ -76,6 +78,7 @@ namespace GYISMS.ScheduleDetails
             ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
             accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
             _hostingEnvironment = hostingEnvironment;
+            _systemdataRepository = systemdataRepository;
         }
 
 
@@ -262,7 +265,7 @@ namespace GYISMS.ScheduleDetails
             homeInfo.Total = totalCount.HasValue ? totalCount.Value : 0;
             var compCount = query.Sum(s => s.CompleteNum);
             homeInfo.Completed = compCount.HasValue ? compCount.Value : 0;
-            if (!compCount.HasValue)
+            if (homeInfo.Total==0)
             {
                 homeInfo.CompletedRate = "0%";
             }
@@ -363,6 +366,8 @@ namespace GYISMS.ScheduleDetails
         /// <returns></returns>
         public async Task<SheduleSumStatisDto> GetSumShedule(SheduleSumInput input)
         {
+            var areaCode = await GetCurrentUserAreaCodeAsync();
+            var areaCodeE = areaCode.HasValue ? areaCode : input.AreaCode;
             var timeNow = DateTime.Today;
             //input.StartTime = input.StartTime.HasValue ? input.StartTime : timeNow.AddDays(1 - timeNow.Day);
             //input.EndTime = input.EndTime.HasValue ? input.EndTime : timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
@@ -378,7 +383,8 @@ namespace GYISMS.ScheduleDetails
                             .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                             on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll()
-                        .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
+                        .WhereIf(areaCodeE.HasValue, g => g.AreaCode == areaCodeE)
+                        //.WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
                         on sd.GrowerId equals g.Id
                         select new
                         {
@@ -465,6 +471,8 @@ namespace GYISMS.ScheduleDetails
             //var query = _scheduledetailRepository.GetAll();
             // TODO:根据传入的参数添加过滤条件
 
+            var areaCode = await GetCurrentUserAreaCodeAsync();
+            var areaCodeE = areaCode.HasValue ? areaCode : input.AreaCode;
             var query = from sd in _scheduledetailRepository.GetAll()
                                                         .WhereIf(!string.IsNullOrEmpty(input.EmployeeName), sd => sd.EmployeeName.Contains(input.EmployeeName))
                                                         .WhereIf(!string.IsNullOrEmpty(input.GrowerName), sd => sd.GrowerName.Contains(input.GrowerName))
@@ -478,7 +486,7 @@ namespace GYISMS.ScheduleDetails
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
                         on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
+                                                     .WhereIf(areaCodeE.HasValue, g => g.AreaCode == areaCodeE)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailTaskListDto
                         {
@@ -602,6 +610,7 @@ namespace GYISMS.ScheduleDetails
                             s.EndTime
                         };
             var overdueList = await query.ToListAsync();
+            string messageMediaId = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MediaId).Select(v => v.Desc).FirstOrDefaultAsync();
             foreach (var item in overdueList)
             {
                 //发送工作消息
@@ -616,7 +625,7 @@ namespace GYISMS.ScheduleDetails
                 msg.Msgtype = "link";
                 msg.Link.Title = "任务过期提醒";
                 msg.Link.Text = string.Format("{0}：您有任务[{1}]即将过期，过期日期：{2}，点击查看详细", item.EmployeeName, item.Name, item.EndTime.Value.ToString("yyyy-MM-dd"));
-                msg.Link.PicUrl = "@lALPBY0V4-AiG7vMgMyA";
+                msg.Link.PicUrl = messageMediaId;
                 msg.Link.MessageUrl = "eapp://";
                 request.Msg_ = msg;
                 OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);
@@ -753,6 +762,8 @@ namespace GYISMS.ScheduleDetails
         /// <returns></returns>
         public async Task<List<SheduleDetailTaskListDto>> GetNoPageScheduleDetailsByOtherTable(GetScheduleDetailsInput input)
         {
+            var areaCode = await GetCurrentUserAreaCodeAsync();
+            var areaCodeE = areaCode.HasValue ? areaCode : input.AreaCode;
             var query = from sd in _scheduledetailRepository.GetAll()
                                                         .WhereIf(!string.IsNullOrEmpty(input.EmployeeName), sd => sd.EmployeeName.Contains(input.EmployeeName))
                                                         .WhereIf(!string.IsNullOrEmpty(input.GrowerName), sd => sd.GrowerName.Contains(input.GrowerName))
@@ -766,7 +777,7 @@ namespace GYISMS.ScheduleDetails
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
                         on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(input.AreaCode.HasValue, g => g.AreaCode == input.AreaCode)
+                                                     .WhereIf(areaCodeE.HasValue, g => g.AreaCode == areaCodeE)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailTaskListDto
                         {

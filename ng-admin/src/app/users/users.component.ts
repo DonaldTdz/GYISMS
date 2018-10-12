@@ -44,7 +44,7 @@ export class UsersComponent extends PagedListingComponentBase<UserDto> {
       (result: boolean) => {
         if (result) {
           this._userService.delete(entity.id).subscribe(() => {
-            abp.notify.info('删除成功');
+            abp.notify.info(this.l('删除成功'), '');
             this.refresh();
           });
         }

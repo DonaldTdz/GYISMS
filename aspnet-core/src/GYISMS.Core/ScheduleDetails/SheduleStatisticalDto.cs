@@ -93,7 +93,7 @@ namespace GYISMS.ScheduleDetails
         {
             get
             {
-                if (Complete.HasValue && Total.HasValue && Complete!=0)
+                if (Complete.HasValue && Total.HasValue && Total!= 0)
                 {
                     return (Math.Round((double)Complete.Value / Total.Value, 2) * 100).ToString() + "%";
                 }

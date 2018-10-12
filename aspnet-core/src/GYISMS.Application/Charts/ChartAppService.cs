@@ -248,18 +248,18 @@ namespace GYISMS.Charts
                 //完成数
                 var cnum = query.Sum(q => q.CompleteNum);
                 cnum = cnum ?? 0;
-                var cpercent = cnum == 0? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
+                var cpercent = tnum == 0? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
                 dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "已完成", ClassName = "complete", Percent = cpercent*100, Seq = 1 });
 
                 //逾期数
                 var etnum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
                 etnum = etnum ?? 0;
-                var etpercent = cnum == 0 ? 0 : Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
+                var etpercent = tnum == 0 ? 0 : Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
                 dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "已逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3 });
 
                 //进行中数
                 var pnum = tnum - cnum - etnum;
-                var ppercent = cnum == 0 ? 0 : (1M - cpercent - etpercent);
+                var ppercent = tnum == 0 ? 0 : (1M - cpercent - etpercent);
                 dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "进行中", ClassName = "process", Percent = ppercent*100, Seq = 2 });
 
                 return dataList.OrderBy(d => d.Seq).ToList();

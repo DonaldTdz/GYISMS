@@ -79,7 +79,7 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
                 .finally(() => { this.iseConfirmLoading = false; })
                 .subscribe(() => {
                     this.emodalVisible = false;
-                    this.notify.info(this.l("保存成功！"));
+                    this.notify.info(this.l("保存成功！"), '');
                     this.modalSave.emit(this.modelId);
                 });
         }
