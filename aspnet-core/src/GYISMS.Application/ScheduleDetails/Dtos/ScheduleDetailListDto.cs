@@ -60,13 +60,21 @@ namespace GYISMS.ScheduleDetails.Dtos
 
 
         public ScheduleStatusEnum Status { get; set; }
-
+        public string StatusName
+        {
+            get
+            {
+                return Status.ToString();
+            }
+        }
 
         public Guid ScheduleTaskId { get; set; }
 
         public string EmployeeName { get; set; }
 
         public string GrowerName { get; set; }
+        public string TaskName { get; set; }
+        public float Percentage { get; set; }
     }
     public class HomeInfo
     {

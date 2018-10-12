@@ -17,6 +17,7 @@ export class Schedule implements IScheduleom {
     name: string;
     createUserName: string;
     area: string;
+    percentage: number;
     constructor(data?: IScheduleom) {
         if (data) {
             for (var property in data) {
@@ -47,6 +48,7 @@ export class Schedule implements IScheduleom {
             this.name = data["name"];
             this.createUserName = data["createUserName"];
             this.area = data["area"];
+            this.percentage = data["percentage"];
         }
     }
 
@@ -115,4 +117,5 @@ export interface IScheduleom {
     name: string;
     createUserName: string;
     area: string;
+    percentage: number;
 }

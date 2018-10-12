@@ -1,7 +1,7 @@
 import { Component, Injector, OnInit, Output, ViewChild, EventEmitter } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import { Schedule, VisitTask, ScheduleTask } from '@shared/entity/tobacco-management';
-import { ScheduleServiceProxy, VisitTaskServiceProxy } from '@shared/service-proxies/tobacco-management';
+import { Schedule, VisitTask, ScheduleTask, ScheduleDetail } from '@shared/entity/tobacco-management';
+import { ScheduleServiceProxy, VisitTaskServiceProxy, PagedResultDtoOfScheduleDetail } from '@shared/service-proxies/tobacco-management';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -38,12 +38,29 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     isNewInfo: boolean = false;
     weekTempTime: string;
     isExpired: boolean = false;//是否过期
+    recordList: ScheduleDetail[] = [];
+    recordTitle: string = '';
+    loadingRecord = false;
+    allPercentage: string = "0";
+    queryRecord: any = {
+        pageIndex: 1,
+        pageSize: 10,
+        skipCount: function () { return (this.pageIndex - 1) * this.pageSize; },
+        total: 0,
+        sorter: '',
+        status: -1,
+        statusList: []
+    };
     // expiredText: string = '';
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private taskService: VisitTaskServiceProxy,
         private router: Router, private fb: FormBuilder, private actRouter: ActivatedRoute, private modal: NzModalService) {
         super(injector);
         this.id = this.actRouter.snapshot.params['id'];
+        this.allPercentage = this.actRouter.snapshot.params['allPercentage'];
+        this.recordTitle = '计划完成总进度:' + this.allPercentage + '%';
+        console.log(this.recordTitle);
+
     }
     ngOnInit(): void {
         this.validateForm = this.fb.group({
@@ -65,8 +82,23 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         // params.SkipCount = this.query.skipCount();
         // params.MaxResultCount = this.query.pageSize;
         this.taskService.getScheduleTaskListNoPage(this.schedule.id).subscribe((result: ScheduleTask[]) => {
-            this.loading = false;
+            this.loadingRecord = false;
             this.scheduleTaskList = result;
+        });
+    }
+
+    getScheduleRecordDetail() {
+        let params: any = {};
+        params.ScheduleId = this.id;
+        params.SkipCount = this.queryRecord.skipCount();
+        params.MaxResultCount = this.queryRecord.pageSize;
+        this.scheduleService.getPagedScheduleDetailRecordAsync(params).subscribe((result: PagedResultDtoOfScheduleDetail) => {
+            this.loading = false;
+            this.recordList = result.items;
+            this.recordList.map(i => {
+                i.percentage = Math.round(i.completeNum / i.visitNum * 100).toString() + '%';
+            });;
+            this.queryRecord.total = result.totalCount;
         });
     }
 
@@ -76,6 +108,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         this.scheduleService.getWeekOfMonth(this.id).subscribe((result: SelectGroup[]) => {
             this.weekTypes = result;
             this.getScheduleInfo();
+            this.getScheduleRecordDetail();
         });
     }
 

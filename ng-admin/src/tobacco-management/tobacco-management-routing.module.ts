@@ -34,7 +34,7 @@ const routes: Routes = [
         canActivate: [AppRouteGuard],
     },
     {
-        path: 'schedule-detail/:id',
+        path: 'schedule-detail/:id/:allPercentage',
         component: ScheduleDetailComponent,
         canActivate: [AppRouteGuard],
     },
