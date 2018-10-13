@@ -55,7 +55,8 @@
                         <nz-form-item nz-row *ngIf="schedule.type == 3">
                             <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划执行时间</nz-form-label>
                             <nz-form-control [nzSm]="20">
-                                <nz-date-picker formControlName="beginTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="schedule.beginTime" nzPlaceHolder="请选择日期"></nz-date-picker>
+                                <nz-date-picker formControlName="beginTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="schedule.beginTime"
+                                    nzPlaceHolder="请选择日期"></nz-date-picker>
                             </nz-form-control>
                         </nz-form-item>
                         <nz-form-item nz-row *ngIf="schedule.type == 2">
@@ -73,7 +74,8 @@
                         <nz-form-item nz-row *ngIf="schedule.type == 1">
                             <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划时间</nz-form-label>
                             <nz-form-control [nzSm]="20">
-                                <nz-month-picker formControlName="beginTime" (ngModelChange)="onChange($event)" [(ngModel)]="showTime" nzPlaceHolder="请选择日期"></nz-month-picker>
+                                <nz-month-picker formControlName="beginTime" (ngModelChange)="onChange($event)"
+                                    [(ngModel)]="showTime" nzPlaceHolder="请选择日期"></nz-month-picker>
                                 <nz-form-control *ngIf="isMonthText && schedule.beginTime " [nzSm]="20">
                                     {{monthText}}
                                 </nz-form-control>
@@ -109,7 +111,8 @@
                 </div>
             </form>
             <!-- <ng-template *ngIf="isPush" #totalTemplate let-total>共 {{query.total}} 条</ng-template> -->
-            <nz-table *ngIf="isSaved" #nzTable [nzData]="scheduleTaskList" [nzShowPagination]="false" [nzFrontPagination]="false" [nzLoading]="loading">
+            <nz-table *ngIf="isSaved" #nzTable [nzData]="scheduleTaskList" [nzShowPagination]="false"
+                [nzFrontPagination]="false" [nzLoading]="loading">
                 <thead>
                     <tr>
                         <th>任务名称</th>
@@ -145,10 +148,12 @@
                 <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading">
                     {{l("删除")}}
                 </button>
-                <button nz-button *ngIf="isPush == true&&!isNewInfo" [nzType]="'primary'" type="button" (click)="push()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+                <button nz-button *ngIf="isPush == true&&!isNewInfo" [nzType]="'primary'" type="button" (click)="push()"
+                    [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
                     {{l("发布")}}
                 </button>
-                <button nz-button *ngIf="isPush" [nzType]=" 'primary' " type="button " (click)="save() " [nzLoading]="isConfirmLoading " [disabled]="!validateForm.valid ">
+                <button nz-button *ngIf="isPush" [nzType]=" 'primary' " type="button " (click)="save() " [nzLoading]="isConfirmLoading "
+                    [disabled]="!validateForm.valid ">
                     {{l("保存 ")}}
                 </button>
             </footer-toolbar>
@@ -158,8 +163,10 @@
     <nz-tab nzTitle="计划明细">
         <nz-card [nzBordered]="false" nzTitle={{recordTitle}}>
             <ng-template #totalTemplate let-total>共 {{queryRecord.total}} 条</ng-template>
-            <nz-table #nzTableRecord [nzData]="recordList" [nzFrontPagination]="false" [nzTotal]="queryRecord.total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="queryRecord.pageIndex" [(nzPageSize)]="queryRecord.pageSize" [nzLoading]="loadingRecord" [nzShowSizeChanger]="true"
-                (nzPageIndexChange)="getScheduleRecordDetail()" (nzPageSizeChange)="getScheduleRecordDetail()">
+            <nz-table #nzTableRecord [nzData]="recordList" [nzFrontPagination]="false" [nzTotal]="queryRecord.total"
+                [nzShowTotal]="totalTemplate" [(nzPageIndex)]="queryRecord.pageIndex" [(nzPageSize)]="queryRecord.pageSize"
+                [nzLoading]="loadingRecord" [nzShowSizeChanger]="true" (nzPageIndexChange)="getScheduleRecordDetail()"
+                (nzPageSizeChange)="getScheduleRecordDetail()">
                 <thead>
                     <tr>
                         <th>任务名称</th>
@@ -185,8 +192,8 @@
             </nz-table>
             <footer-toolbar errorCollect>
                 <button nz-button [nzType]="'default'" (click)="return()">
-                        {{l("返回")}}
-                    </button>
+                    {{l("返回")}}
+                </button>
             </footer-toolbar>
         </nz-card>
     </nz-tab>

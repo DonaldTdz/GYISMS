@@ -103,6 +103,6 @@ namespace GYISMS.Schedules.Dtos
         public string Name { get; set; }
         public string CreateUserName { get; set; }
         public string Area { get; set; }
-        public decimal Percentage { get; set; }
+        public int Percentage { get; set; }
     }
 }

@@ -15,7 +15,8 @@
                 <nz-form-item class="d-flex">
                     <nz-form-label nzFor="scheduleType">计划周期</nz-form-label>
                     <nz-form-control class="flex-1">
-                        <nz-select [nzPlaceHolder]="'请选择计划周期'" name="scheduleType" [(ngModel)]="search.scheduleType" [nzShowSearch]="true">
+                        <nz-select [nzPlaceHolder]="'请选择计划周期'" name="scheduleType" [(ngModel)]="search.scheduleType"
+                            [nzShowSearch]="true">
                             <nz-option *ngFor="let i of scheduleTypes" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>
@@ -33,8 +34,9 @@
         </div>
     </form>
     <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-    <nz-table #nzTable [nzData]="scheduleList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()"
-        (nzPageSizeChange)="refreshData()">
+    <nz-table #nzTable [nzData]="scheduleList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate"
+        [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true"
+        (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
         <thead>
             <tr>
                 <th>计划名称</th>
@@ -54,11 +56,11 @@
                 <td>{{data.status==true?"已发布":"草稿"}}</td>
                 <td>{{data.createUserName}}</td>
                 <td>{{data.area}}</td>
-                <td *ngIf="data.status==true">{{data.percentage*100}}%</td>
+                <td *ngIf="data.status==true">{{data.percentage}}%</td>
                 <td *ngIf="data.status==false"> - </td>
                 <td>{{data.publishTime| _date}}</td>
                 <td>
-                    <a (click)="goDetail(data.id,data.percentage*100)">查看详情</a>
+                    <a (click)="goDetail(data.id,data.percentage)">查看详情</a>
                 </td>
             </tr>
         </tbody>

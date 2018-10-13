@@ -89,7 +89,7 @@ export class ScheduleServiceProxy {
     }
 
     sendMessageToEmployee(input: any): Observable<ApiResult> {
-        let url_ = "/api/services/app/ScheduleDetail/SendMessageToEmployeeAsync";
+        let url_ = "/api/services/app/Schedule/SendMessageToEmployeeAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data.result;
         });

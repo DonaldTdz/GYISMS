@@ -99,7 +99,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             this.loading = false;
             this.recordList = result.items;
             this.recordList.map(i => {
-                i.percentage = Math.round(i.completeNum / i.visitNum * 100).toString() + '%';
+                i.percentage = (i.visitNum != 0 ? Math.round(i.completeNum / i.visitNum * 100) : 0).toString() + '%';
             });;
             this.queryRecord.total = result.totalCount;
         });
@@ -155,6 +155,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             var d = currentdate.getDate();
             var beginTime = y + '-' + (m > 9 ? m : '0' + m) + '-' + '01';
             this.showTime = beginTime;
+            this.allPercentage = "0";
         }
     }
     onChange(result: Date): void {

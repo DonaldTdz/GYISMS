@@ -126,13 +126,13 @@ namespace GYISMS.Schedules
                         PublishTime = e.PublishTime,
                         CreateUserName = e.CreateUserName,
                         Area = e.Area,
-                        Percentage = table != null ? Math.Round((Convert.ToDecimal((double)table.CompleteCount/table.VisitCount)),2) : 0
-                    });
+                        Percentage = table != null ?(int)(table.VisitCount!=0? (Math.Round(table.CompleteCount.Value / (decimal)table.VisitCount.Value, 2))*100 : 0) : 0
+        });
 
             var scheduleCount = await query.CountAsync();
             
             var schedules = await result
-                    .OrderBy(input.Sorting).AsNoTracking()
+                    .OrderBy(v=>v.Status).ThenByDescending(v=>v.PublishTime).AsNoTracking()
                     .PageBy(input)
                     .ToListAsync();
 
@@ -328,38 +328,46 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         public async Task<APIResultDto> SendMessageToEmployeeAsync(GetSchedulesInput input)
         {
-            //获取消息模板配置
-            string messageTitle = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MessageTitle).Select(v => v.Desc).FirstOrDefaultAsync();
-            string messageMediaId = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MediaId).Select(v => v.Desc).FirstOrDefaultAsync();
-            //获取UserIds
-            int pageIndex = 1; //skip
-            int pageSize = 20; //take
-            int count = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId).Select(v => v.EmployeeId).Distinct().AsNoTracking().CountAsync();
-            var ids = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId).Select(v => v.EmployeeId).Distinct().AsNoTracking().ToListAsync();
-            float frequency = (float)count / pageSize;//计算次数
-            for (int i = 0; i < Math.Ceiling(frequency); i++)
+            try
             {
-                var temp = ids.Skip((pageIndex - 1) * pageSize).Take(pageSize);
-                string tempIds = string.Join(",", temp.ToArray());
-                //发送工作消息
-                IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
-                OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
-                request.UseridList = tempIds;
-                request.ToAllUser = false;
-                request.AgentId = ddConfig.AgentID;
+                //获取消息模板配置
+                string messageTitle = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MessageTitle).Select(v => v.Desc).FirstOrDefaultAsync();
+                string messageMediaId = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MediaId).Select(v => v.Desc).FirstOrDefaultAsync();
+                //获取UserIds
+                int pageIndex = 1; //skip
+                int pageSize = 20; //take
+                int count = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId).Select(v => v.EmployeeId).Distinct().AsNoTracking().CountAsync();
+                var ids = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId).Select(v => v.EmployeeId).Distinct().AsNoTracking().ToListAsync();
+                float frequency = (float)count / pageSize;//计算次数
+                for (int i = 0; i < Math.Ceiling(frequency); i++)
+                {
+                    var temp = ids.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+                    string tempIds = string.Join(",", temp.ToArray());
+                    //发送工作消息
+                    IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+                    OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
+                    request.UseridList = tempIds;
+                    request.ToAllUser = false;
+                    request.AgentId = ddConfig.AgentID;
 
-                OapiMessageCorpconversationAsyncsendV2Request.MsgDomain msg = new OapiMessageCorpconversationAsyncsendV2Request.MsgDomain();
-                msg.Link = new OapiMessageCorpconversationAsyncsendV2Request.LinkDomain();
-                msg.Msgtype = "link";
-                msg.Link.Title = messageTitle;
-                msg.Link.Text = input.ScheduleName + " " + DateTime.Now.ToString();
-                msg.Link.PicUrl = messageMediaId;
-                msg.Link.MessageUrl = "eapp://";
-                request.Msg_ = msg;
-                OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);
-                pageIndex++;
+                    OapiMessageCorpconversationAsyncsendV2Request.MsgDomain msg = new OapiMessageCorpconversationAsyncsendV2Request.MsgDomain();
+                    msg.Link = new OapiMessageCorpconversationAsyncsendV2Request.LinkDomain();
+                    msg.Msgtype = "link";
+                    msg.Link.Title = messageTitle;
+                    msg.Link.Text = input.ScheduleName + " " + DateTime.Now.ToString();
+                    msg.Link.PicUrl = messageMediaId;
+                    msg.Link.MessageUrl = "eapp://";
+                    request.Msg_ = msg;
+                    OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);
+                    pageIndex++;
+                }
+                return new APIResultDto() { Code = 0, Msg = "钉钉消息发送成功" };
             }
-            return new APIResultDto() { Code = 0, Msg = "钉钉消息发送成功" };
+            catch (Exception ex)
+            {
+                Logger.ErrorFormat("SendMessageToEmployeeAsync errormsg{0} Exception{1}", ex.Message, ex);
+                return new APIResultDto() { Code = 901, Msg = "钉钉消息发送失败" };
+            }         
         }
     }
 }
