@@ -91,7 +91,7 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
         this.employeeService.updateEmployeeArea(params).finally(() => { this.eloading = false; })
             .subscribe((result: Employee) => {
                 this.employee = result;
-                this.notify.info(this.successMsg);
+                this.notify.info(this.successMsg, '');
                 this.isVisible = false;
             });
     }

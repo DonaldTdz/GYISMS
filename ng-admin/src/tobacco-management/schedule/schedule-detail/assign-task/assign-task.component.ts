@@ -173,7 +173,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
                         }
                     });
                 });
-                this.notify.info(this.l(this.successMsg));
+                this.notify.info(this.l(this.successMsg), '');
             });
     }
 

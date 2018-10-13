@@ -124,12 +124,12 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
                 //     this.taskService.updateTaskExamineInfo(this.taskExamine).subscribe((res: TaskExamine) => {
                 //         this.taskExamine = res;
                 //         this.isDelete = true;
-                //         this.notify.info(this.l(this.successMsg));
+                //         this.notify.info(this.l(this.successMsg), '');
                 //     });
                 // } else {
                 this.isDelete = true;
                 this.taskExamineList = this.task.taskExamineList;
-                this.notify.info(this.l(this.successMsg));
+                this.notify.info(this.l(this.successMsg), '');
                 // }
             });
     }
@@ -139,7 +139,7 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
             nzContent: '是否删除任务信息?',
             nzOnOk: () => {
                 this.taskService.deleteVisitTask(this.task).subscribe(() => {
-                    this.notify.info(this.l('删除成功！'));
+                    this.notify.info(this.l('删除成功！'), '');
                     this.return();
                 });
             }
@@ -173,7 +173,7 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
                 nzContent: '是否删除考核项目?',
                 nzOnOk: () => {
                     this.taskService.deleteTaskExamine(examine).subscribe(() => {
-                        this.notify.info(this.l('删除成功！'));
+                        this.notify.info(this.l('删除成功！'), '');
                         this.getTaskExamineList();
                     });
                 }

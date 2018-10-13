@@ -5,7 +5,7 @@
         <nz-form-item>
             <nz-form-control>
                 <nz-input-group nzPrefixIcon="anticon anticon-user">
-                    <input nz-input formControlName="userName" placeholder="{{l('UserNameOrEmail')}}">
+                    <input nz-input formControlName="userName" placeholder="用户名或邮箱地址">
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
@@ -14,7 +14,7 @@
         <nz-form-item>
             <nz-form-control>
                 <nz-input-group nzPrefixIcon="anticon anticon-lock">
-                    <input nz-input formControlName="password" placeholder="{{l('Password')}}" type="password">
+                    <input nz-input formControlName="password" placeholder="密码" type="password">
                 </nz-input-group>
             </nz-form-control>
         </nz-form-item>
@@ -24,13 +24,13 @@
         <nz-form-item>
             <nz-col [nzSpan]="12">
                 <label nz-checkbox formControlName="rememberMe">
-          <span>{{l("RememberMe")}}</span>
-        </label>
+                    <span>记住我</span>
+                </label>
             </nz-col>
         </nz-form-item>
 
         <!-- 登陆按钮 -->
-        <button nz-button nzType="primary" type="submit" class="ant-btn__block" [disabled]="!validateForm.valid">{{l("LogIn")}}</button>
+        <button nz-button nzType="primary" type="submit" class="ant-btn__block" [disabled]="!validateForm.valid">登陆</button>
 
         <!-- 注册 -->
         <!-- <nz-form-item>

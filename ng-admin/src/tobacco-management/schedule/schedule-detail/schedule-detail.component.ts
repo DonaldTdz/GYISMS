@@ -251,7 +251,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 }
 
                 if (result.status == 0) {
-                    this.notify.info(this.l(this.successMsg));
+                    this.notify.info(this.l(this.successMsg), '');
                 }
                 this.isSaved = true;
                 this.getTaskList();
@@ -261,7 +261,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             input.ScheduleId = this.schedule.id;
             input.ScheduleName = this.schedule.name;
             this.scheduleService.sendMessageToEmployee(input).subscribe(() => {
-                this.notify.info(this.l('发布成功'));
+                this.notify.info(this.l('发布成功'), '');
             });
         }
     }
@@ -280,7 +280,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             nzContent: '是否移除任务信息?',
             nzOnOk: () => {
                 this.scheduleService.deleteSchedule(this.schedule).subscribe(() => {
-                    this.notify.info(this.l('删除成功！'));
+                    this.notify.info(this.l('删除成功！'), '');
                     this.return();
                 });
             }
@@ -333,7 +333,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             nzContent: '是否删除指派任务?',
             nzOnOk: () => {
                 this.taskService.deleteScheduleTask(data).subscribe(() => {
-                    this.notify.info(this.l('删除成功！'));
+                    this.notify.info(this.l('删除成功！'), '');
                     this.getTaskList();
                 });
             }
@@ -358,7 +358,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 input.ScheduleId = this.id;
                 input.TaskId = taskId;
                 this.taskService.createAllScheduleTask(input).subscribe(() => {
-                    this.notify.info(this.l('任务指派成功！'));
+                    this.notify.info(this.l('任务指派成功！'), '');
                 });
             }
         });

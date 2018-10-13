@@ -154,7 +154,7 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
                     this.room.showPhoto = this.host + this.room.photo;
                 }
                 this.isDelete = true;
-                this.notify.info(this.l(this.successMsg));
+                this.notify.info(this.l(this.successMsg), '');
             });
     }
     delete(): void {
@@ -162,7 +162,7 @@ export class RoomDetailComponent extends AppComponentBase implements OnInit {
             nzContent: '是否删除会议室信息?',
             nzOnOk: () => {
                 this.meetingService.deleteMeetingRoom(this.room).subscribe(() => {
-                    this.notify.info(this.l('删除成功！'));
+                    this.notify.info(this.l('删除成功！'), '');
                     this.return();
                 });
             }

@@ -62,7 +62,7 @@ export class ChangePasswordComponent extends AppComponentBase implements OnInit 
                     this._userService.updatePassword(this.changePassword.newPassword)
                         .finally(() => { this.isConfirmLoading = false; })
                         .subscribe(() => {
-                            this.notify.info(this.l('修改成功！'));
+                            this.notify.info(this.l('修改成功！'), '');
                             this.close();
                             this.modalSave.emit(null);
                         });

@@ -150,7 +150,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
                 this.grower = result;
                 this.grower.plantingArea = Number(this.grower.plantingArea).toFixed(2);
                 this.isDelete = true;
-                this.notify.info(this.l(this.successMsg));
+                this.notify.info(this.l(this.successMsg), '');
             });
     }
 
@@ -159,7 +159,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             nzContent: '是否删除烟农信息?',
             nzOnOk: () => {
                 this.growerService.deleteGrower(this.grower).subscribe(() => {
-                    this.notify.info(this.l('删除成功！'));
+                    this.notify.info(this.l('删除成功！'), '');
                     this.return();
                 });
             }

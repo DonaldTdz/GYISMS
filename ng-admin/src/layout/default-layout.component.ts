@@ -225,7 +225,7 @@ export class DefaultLayoutComponent extends AppComponentBase
     ngOnInit(): void {
         this.router.events
             .pipe(filter(evt => evt instanceof NavigationEnd))
-            .subscribe(() => this.titleSrv.setTitle());
+            .subscribe(() => this.titleSrv.setTitle('广元烟草信息化平台'));
 
         // 注册通知信息
         // SignalRAspNetCoreHelper.initSignalR();
