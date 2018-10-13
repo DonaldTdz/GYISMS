@@ -363,6 +363,7 @@ namespace GYISMS.ScheduleTasks
             //详情
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        join s in _scheduleRepository.GetAll() on sd.ScheduleId equals s.Id
                         where sd.Id == scheduleDetailId
                         select new DingDingVisitGrowerDetailDto()
                         {
@@ -372,7 +373,9 @@ namespace GYISMS.ScheduleTasks
                             GrowerId = sd.GrowerId,
                             VisitNum = sd.VisitNum,
                             CompleteNum = sd.CompleteNum,
-                            ScheduleStatus = sd.Status
+                            ScheduleStatus = sd.Status,
+                            BeginTime = s.BeginTime,
+                            EndTime = s.EndTime
                         };
 
             var taskDetailDto = await query.FirstOrDefaultAsync();
