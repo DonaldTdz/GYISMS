@@ -367,6 +367,34 @@ namespace GYISMS.ScheduleTasks.Dtos
 
         public int? GrowerId { get; set; }
 
+        public DateTime? BeginTime { get; set; }
+
+        public string BeginTimeFormat
+        {
+            get
+            {
+                if (BeginTime.HasValue)
+                {
+                    return BeginTime.Value.ToString("yyyy-MM-dd");
+                }
+                return string.Empty;
+            }
+        }
+
+        public DateTime? EndTime { get; set; }
+
+        public string EndTimeFormat
+        {
+            get
+            {
+                if (EndTime.HasValue)
+                {
+                    return EndTime.Value.ToString("yyyy-MM-dd");
+                }
+                return string.Empty;
+            }
+        }
+
         public string Footer
         {
             get
