@@ -1,10 +1,20 @@
-<page-header title="烟农详细信息"></page-header>
 <nz-tabset>
-    <nz-tab nzTitle="信息维护">
+    <nz-tab nzTitle="烟农信息">
         <nz-card [nzBordered]="false">
             <form nz-form [formGroup]="validateForm" *ngIf="grower">
                 <div nz-row>
                     <div nz-col [nzSpan]="16">
+                        <nz-form-item nz-row style="margin-bottom: 0px;">
+                            <nz-form-label nz-col [nzSm]="4" nzFor="areaCode">所属区县</nz-form-label>
+                            <nz-form-control nz-col [nzSm]="20">
+                                <nz-radio-group formControlName="areaCode" [(ngModel)]="grower.areaCode"
+                                    (ngModelChange)="areaCodeChange()" class="mb-md">
+                                    <label nz-radio [nzValue]="o.value" *ngFor="let o of countyCodes">
+                                        <span>{{o.text}}</span>
+                                    </label>
+                                </nz-radio-group>
+                            </nz-form-control>
+                        </nz-form-item>
                         <nz-form-item nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzRequired>烟农姓名</nz-form-label>
                             <nz-form-control [nzSm]="20" nzHasFeedback>
@@ -26,17 +36,6 @@
                                 <nz-form-explain *ngIf="validateForm.get('unitCode').dirty&&validateForm.get('unitCode').hasError('required')">请选择单位</nz-form-explain>
                             </nz-form-control>
                         </nz-form-item>
-                        <nz-form-item nz-row style="margin-bottom: 0px;">
-                            <nz-form-label nz-col [nzSm]="4" nzFor="areaCode">所属区县</nz-form-label>
-                            <nz-form-control nz-col [nzSm]="20">
-                                <nz-radio-group formControlName="areaCode" [(ngModel)]="grower.areaCode" class="mb-md">
-                                    <label nz-radio [nzValue]="o.value" *ngFor="let o of countyCodes">
-                                        <span>{{o.text}}</span>
-                                    </label>
-                                </nz-radio-group>
-                            </nz-form-control>
-                        </nz-form-item>
-
                         <nz-form-item nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="employeeName">所属烟技员</nz-form-label>
                             <nz-form-control [nzSm]="16" nzHasFeedback>

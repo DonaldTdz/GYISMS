@@ -3,6 +3,7 @@
 using Abp.Runtime.Validation;
 using GYISMS.Dtos;
 using GYISMS.Employees;
+using GYISMS.GYEnums;
 
 namespace GYISMS.Employees.Dtos
 {
@@ -14,6 +15,8 @@ namespace GYISMS.Employees.Dtos
         public string Name { get; set; }
         public string DepartId { get; set; }
         public string Mobile { get; set; }
+
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 正常化排序使用

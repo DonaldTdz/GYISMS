@@ -176,7 +176,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
         }
     }
     showModal(): void {
-        this.selectsEmployeeModal.show();
+        this.selectsEmployeeModal.show(this.grower.areaCode);
     }
     return() {
         this.router.navigate(['app/basic/grower']);
@@ -190,5 +190,10 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             this.previewImage = url;
         }
         this.previewVisible = true;
+    }
+
+    areaCodeChange() {
+        this.grower.employeeName = null;
+        this.grower.employeeId = null;
     }
 }

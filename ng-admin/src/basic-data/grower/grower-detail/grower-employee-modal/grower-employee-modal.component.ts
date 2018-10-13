@@ -18,6 +18,7 @@ export class GrowerEmployeeModalComponent implements OnInit {
     eloading = false;
     isVisible = false;
     employee: Employee[] = [];
+    areaCode: number = 0;
     status = [
         { text: '启用', value: false, type: 'success' },
         { text: '禁用', value: false, type: 'default' }
@@ -28,9 +29,10 @@ export class GrowerEmployeeModalComponent implements OnInit {
     ngOnInit(): void {
     }
     //isManger用判断模态框是否只显示经理级的员工
-    show() {
+    show(areaCode) {
         this.employee = new Array<Employee>();
         this.isVisible = true;
+        this.areaCode = areaCode;
         // this.refreshData();
     }
 
@@ -45,6 +47,7 @@ export class GrowerEmployeeModalComponent implements OnInit {
             params.MaxResultCount = this.q.ps;
             params.Name = this.q.name;
             params.DepartId = '1';
+            params.AreaCode = this.areaCode;
             this.employeeService.getAll(params).subscribe((result: PagedResultDtoOfEmployee) => {
                 this.eloading = false;
                 this.employee = result.items;

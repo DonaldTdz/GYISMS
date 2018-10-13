@@ -27,6 +27,7 @@ using Abp.Auditing;
 using GYISMS.DingDing;
 using GYISMS.DingDing.Dtos;
 using GYISMS.GYEnums;
+using GYISMS.SystemDatas;
 
 namespace GYISMS.Organizations
 {
@@ -40,6 +41,7 @@ namespace GYISMS.Organizations
         private readonly IRepository<Organization, long> _organizationRepository;
         private readonly IOrganizationManager _organizationManager;
         private readonly IRepository<Employee, string> _employeeRepository;
+        private readonly IRepository<SystemData> _systemDataRepository;
         private readonly IDingDingAppService _dingDingAppService;
 
         /// <summary>
@@ -49,12 +51,14 @@ namespace GYISMS.Organizations
             , IOrganizationManager organizationManager
             , IRepository<Employee, string> employeeRepository
             , IDingDingAppService dingDingAppService
+            , IRepository<SystemData> systemDataRepository
             )
         {
             _organizationRepository = organizationRepository;
             _organizationManager = organizationManager;
             _employeeRepository = employeeRepository;
             _dingDingAppService = dingDingAppService;
+            _systemDataRepository = systemDataRepository;
         }
 
 
@@ -219,14 +223,45 @@ namespace GYISMS.Organizations
         //    return entity;
         //}
 
-
+        private AreaCodeArray GetAreaCodeArray()
+        {
+            AreaCodeArray array = new AreaCodeArray();
+            var zhqpids = _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.ZHQPID).Select(s => s.Desc).FirstOrDefault();
+            if (zhqpids != null)
+            {
+                array.ZHQPIDArray = Array.ConvertAll(zhqpids.Split(','), z => long.Parse(z));
+            }
+            else
+            {
+                array.ZHQPIDArray = new long[0];
+            }
+            var jgxpids = _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.JGXPID).Select(s => s.Desc).FirstOrDefault();
+            if (jgxpids != null)
+            {
+                array.JGXPIDArray = Array.ConvertAll(jgxpids.Split(','), z => long.Parse(z));
+            }
+            else
+            {
+                array.JGXPIDArray = new long[0];
+            }
+            var wcxpids = _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.WCXPID).Select(s => s.Desc).FirstOrDefault();
+            if (wcxpids != null)
+            {
+                array.WCXPIDArray = Array.ConvertAll(wcxpids.Split(','), z => long.Parse(z));
+            }
+            else
+            {
+                array.WCXPIDArray = new long[0];
+            }
+            return array;
+        }
 
         /// <summary>
         /// 同步组织架构&内部员工
         /// </summary>
-        /// <returns></returns>
         public async Task<APIResultDto> SynchronousOrganizationAsync()
         {
+            var arr = GetAreaCodeArray();
             string accessToken = _dingDingAppService.GetAccessTokenByApp(DingDingAppEnum.会议申请); //GetAccessToken();
             IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
             OapiDepartmentListRequest request = new OapiDepartmentListRequest();
@@ -252,7 +287,7 @@ namespace GYISMS.Organizations
                     o.CreationTime = DateTime.Now;
                     if (o.Id != 1)
                     {
-                        await SynchronousEmployeeAsync(o.Id, accessToken, o.ParentId);
+                        await SynchronousEmployeeAsync(o.Id, accessToken, arr);
                     }
                 }
                 else
@@ -265,7 +300,7 @@ namespace GYISMS.Organizations
                     await CreateSyncOrganizationAsync(organization);
                     if (organization.Id != 1)
                     {
-                        await SynchronousEmployeeAsync(organization.Id, accessToken,organization.ParentId);
+                        await SynchronousEmployeeAsync(organization.Id, accessToken, arr);
                     }
                 }
             }
@@ -279,7 +314,7 @@ namespace GYISMS.Organizations
         /// <param name="departId"></param>
         /// <param name="accessToken"></param>
         /// <returns></returns>
-        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken, long? parentId)
+        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken, AreaCodeArray pidArr)
         {
             try
             {
@@ -319,20 +354,20 @@ namespace GYISMS.Organizations
                         e.HiredDate = item.HiredDate;
                         e.Avatar = item.Avatar;
                         e.Active = item.Active;
-                        if ( departId == 59569075||parentId == 59569075)
+                        if (pidArr.ZHQPIDArray.Contains(departId))
                         {
-                            e.Area = AreaCodeEnum.旺苍县.ToString();
-                            e.AreaCode = AreaCodeEnum.昭化区.GetHashCode().ToString();
+                            e.Area = AreaCodeEnum.昭化区.ToString();
+                            e.AreaCode = AreaCodeEnum.昭化区;
                         }
-                        else if (departId == 59594070 || parentId == 59594070)
+                        else if (pidArr.JGXPIDArray.Contains(departId))
                         {
                             e.Area = AreaCodeEnum.剑阁县.ToString();
-                            e.AreaCode = AreaCodeEnum.剑阁县.GetHashCode().ToString();
+                            e.AreaCode = AreaCodeEnum.剑阁县;
                         }
-                        else if (departId == 59617065 || parentId == 59617065)
+                        else if (pidArr.WCXPIDArray.Contains(departId))
                         {
                             e.Area = AreaCodeEnum.旺苍县.ToString();
-                            e.AreaCode = AreaCodeEnum.旺苍县.GetHashCode().ToString();
+                            e.AreaCode = AreaCodeEnum.旺苍县;
                         }
                     }
                     else
@@ -349,21 +384,21 @@ namespace GYISMS.Organizations
                         employee.HiredDate = item.HiredDate;
                         employee.Avatar = item.Avatar;
                         employee.Active = item.Active;
-                        if ( departId == 59569075 || parentId == 59569075)
+                        if (pidArr.ZHQPIDArray.Contains(departId))
                         {
-                            e.Area = AreaCodeEnum.旺苍县.ToString();
-                            e.AreaCode = AreaCodeEnum.昭化区.GetHashCode().ToString();
+                            e.Area = AreaCodeEnum.昭化区.ToString();
+                            e.AreaCode = AreaCodeEnum.昭化区;
                         }
-                        else if (departId == 59594070 || parentId == 59594070)
+                        else if (pidArr.JGXPIDArray.Contains(departId))
                         {
                             e.Area = AreaCodeEnum.剑阁县.ToString();
-                            e.AreaCode = AreaCodeEnum.剑阁县.GetHashCode().ToString();
+                            e.AreaCode = AreaCodeEnum.剑阁县;
                         }
-                        else if (departId == 59617065 || parentId == 59617065)
+                        else if (pidArr.WCXPIDArray.Contains(departId))
                         {
                             e.Area = AreaCodeEnum.旺苍县.ToString();
-                            e.AreaCode = AreaCodeEnum.旺苍县.GetHashCode().ToString();
-                        }      
+                            e.AreaCode = AreaCodeEnum.旺苍县;
+                        }
                         await CreateSyncEmployeeAsync(employee);
                     }
                 }
@@ -448,5 +483,15 @@ namespace GYISMS.Organizations
             }).ToList();
             return treeNodeList;
         }
+    }
+
+    public class AreaCodeArray
+    {
+        public long[] ZHQPIDArray { get; set; }
+
+        public long[] JGXPIDArray { get; set; }
+
+
+        public long[] WCXPIDArray { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 <!--component html goes here -->
 <form nz-form [formGroup]="form" *ngIf="modalVisible" id="frm_create_employee" (ngSubmit)="save()">
-    <nz-modal [nzVisible]="modalVisible" [nzTitle]="'创建基础信息'" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="chandleCancel($event)">
+    <nz-modal [nzVisible]="modalVisible" [nzTitle]="'创建基础信息'" [nzContent]="modalContent" [nzFooter]="modalFooter"
+        (nzOnCancel)="chandleCancel($event)">
         <ng-template #modalContent>
             <ng-template #nzTabHeading>
                 基础信息
@@ -11,7 +12,8 @@
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="5" nzRequired nzFor="type">配置类型</nz-form-label>
                     <nz-form-control [nzSm]="19" nzHasFeedback>
-                        <nz-select formControlName="type" [nzPlaceHolder]="'配置类型'" [(ngModel)]="dataconfig.type" [nzShowSearch]="true" style="width:100%;">
+                        <nz-select formControlName="type" [nzPlaceHolder]="'配置类型'" [(ngModel)]="dataconfig.type"
+                            [nzShowSearch]="true" style="width:100%;">
                             <nz-option *ngFor="let i of config" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>
@@ -26,9 +28,8 @@
                         <nz-form-explain *ngIf="form.get('code').dirty&&form.get('code').hasError('required')">请输入编码</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
-
                 <nz-form-item nz-row>
-                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="desc">描述</nz-form-label>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="desc">配置项</nz-form-label>
                     <nz-form-control [nzSm]="19" nzHasFeedback>
                         <input nz-input formControlName="desc" [(ngModel)]="dataconfig.desc" id="desc">
                         <nz-form-explain *ngIf="form.get('desc').dirty&&form.get('desc').hasError('maxlength')">字符长度小于等于500</nz-form-explain>

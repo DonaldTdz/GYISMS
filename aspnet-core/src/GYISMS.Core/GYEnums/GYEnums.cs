@@ -96,5 +96,8 @@ namespace GYISMS.GYEnums
         public static string SignRange = "SignRange";
         public static string MessageTitle = "MessageTitle";
         public static string MediaId = "MediaId";
+        public static string ZHQPID = "ZHQPID";
+        public static string JGXPID = "JGXPID";
+        public static string WCXPID = "WCXPID";
     }
 }

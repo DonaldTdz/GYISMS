@@ -180,7 +180,7 @@ namespace GYISMS.Employees
         {
             if (input.DepartId == "1" || input.DepartId == null)
             {
-                var query = _employeeRepository.GetAll()
+                var query = _employeeRepository.GetAll().Where(e => e.AreaCode == input.AreaCode)
                     .WhereIf(!string.IsNullOrEmpty(input.Mobile), u => u.Mobile.Contains(input.Mobile))
                 .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
                 var employeeCount = await query.CountAsync();
@@ -222,7 +222,7 @@ namespace GYISMS.Employees
         /// </summary>
         /// <param name="area"></param>
         /// <returns></returns>
-        private List<EmployeeNzTreeNode> GetAreaEmoloyee(string area)
+        private List<EmployeeNzTreeNode> GetAreaEmoloyee(AreaCodeEnum? area)
         {
             var employeeList = (from o in _employeeRepository.GetAll()
                                      .Where(v => v.AreaCode == area)
@@ -258,12 +258,12 @@ namespace GYISMS.Employees
             //}
             var areaCode = await GetCurrentUserAreaCodeAsync();
             
-            var key = AreaCodeEnum.昭化区.GetHashCode().ToString();
+            var key = AreaCodeEnum.昭化区;
             if (!areaCode.HasValue || areaCode == AreaCodeEnum.昭化区)
             {
                 EmployeeNzTreeNode treeNode = new EmployeeNzTreeNode()
                 {
-                    key = key,
+                    key = key.GetHashCode().ToString(),
                     title = AreaCodeEnum.昭化区.ToString(),
                     children = GetAreaEmoloyee(key)
                 };
@@ -271,10 +271,10 @@ namespace GYISMS.Employees
             }
             if (!areaCode.HasValue || areaCode == AreaCodeEnum.剑阁县)
             {
-                key = AreaCodeEnum.剑阁县.GetHashCode().ToString();
+                key = AreaCodeEnum.剑阁县;
                 EmployeeNzTreeNode treeNode2 = new EmployeeNzTreeNode()
                 {
-                    key = key,
+                    key = key.GetHashCode().ToString(),
                     title = AreaCodeEnum.剑阁县.ToString(),
                     children = GetAreaEmoloyee(key)
                 };
@@ -283,10 +283,10 @@ namespace GYISMS.Employees
 
             if (!areaCode.HasValue || areaCode == AreaCodeEnum.旺苍县)
             {
-                key = AreaCodeEnum.旺苍县.GetHashCode().ToString();
+                key = AreaCodeEnum.旺苍县;
                 EmployeeNzTreeNode treeNode3 = new EmployeeNzTreeNode()
                 {
-                    key = key,
+                    key = key.GetHashCode().ToString(),
                     title = AreaCodeEnum.旺苍县.ToString(),
                     children = GetAreaEmoloyee(key),
                 };

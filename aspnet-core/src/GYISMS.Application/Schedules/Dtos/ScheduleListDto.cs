@@ -39,11 +39,35 @@ namespace GYISMS.Schedules.Dtos
         /// </summary>
         public DateTime? BeginTime { get; set; }
 
+        public string BeginTimeFormat
+        {
+            get
+            {
+                if (BeginTime.HasValue)
+                {
+                    return BeginTime.Value.ToString("yyyy-MM-dd");
+                }
+                return string.Empty;
+            }
+        }
+
 
         /// <summary>
         /// EndTime
         /// </summary>
         public DateTime? EndTime { get; set; }
+
+        public string EndTimeFormat
+        {
+            get
+            {
+                if (EndTime.HasValue)
+                {
+                    return EndTime.Value.ToString("yyyy-MM-dd");
+                }
+                return string.Empty;
+            }
+        }
 
 
         /// <summary>
@@ -103,6 +127,20 @@ namespace GYISMS.Schedules.Dtos
         public string Name { get; set; }
         public string CreateUserName { get; set; }
         public string Area { get; set; }
-        public int Percentage { get; set; }
+
+        public int? CompleteCount { get; set; }
+
+        public int? VisitCount { get; set; }
+        public int Percentage
+        {
+            get
+            {
+                if (VisitCount > 0)
+                {
+                    return (int)((CompleteCount.Value / ((decimal)VisitCount.Value)) * 100);
+                }
+                return 0;
+            }
+        }
     }
 }

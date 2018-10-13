@@ -1,4 +1,5 @@
 ﻿using Abp.Domain.Entities;
+using GYISMS.GYEnums;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -98,7 +99,7 @@ namespace GYISMS.Employees
         /// <summary>
         /// 区县Code
         /// </summary>
-        public virtual string AreaCode{ get; set; }
+        public virtual AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 区县名称

@@ -1,34 +1,41 @@
 <nz-card [nzBordered]="false" nzTitle="任务指派">
     <nz-card [nzBordered]="false">
         <div nz-row>
-            <div nz-col nzSpan="8">
+            <div nz-col nzSpan="6">
                 <div style="padding-left:10px; padding-right:10px;">
                     <!-- <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultSelectedKeys]="selectedKeys" [nzDefaultExpandAll]="true"> -->
-                    <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultExpandAll]="true">
+                    <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultSelectedKeys]="'1'"
+                        [nzDefaultExpandAll]="true">
                     </nz-tree>
                 </div>
             </div>
-            <div nz-col nzSpan="16">
+            <div nz-col nzSpan="18">
                 <div nz-row [nzGutter]="24">
+                    <div nz-col [nzSpan]="18">
+                        <nz-alert nzType="info" nzMessage="注意：选中需要指派的烟农和修改拜访次数后，请点击‘任务指派’按钮完成指派" nzShowIcon>
+                        </nz-alert>
+                    </div>
                     <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                         <!-- <button nz-button [nzType]="'default'" (click)="return()">
                                 {{l("返回")}}
                             </button> -->
                         <!-- <button *ngIf="isPush == 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading"> -->
-                        <button *ngIf="isPush === 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading">
-                            {{l("保存当前")}}
-                            </button>
+                        <button *ngIf="isPush === 'true'" nz-button [nzType]="'primary'" type="button" (click)="save()"
+                            [nzLoading]="isConfirmLoading">
+                            任务指派
+                        </button>
                     </div>
                 </div>
-                <nz-table #nzTable [nzData]="growerList" [nzShowPagination]="false" [nzScroll]="{ y: '700px' }">
+                <nz-table #nzTable [nzData]="growerList" [nzShowPagination]="false">
                     <thead>
                         <tr>
                             <th nz-th>
                                 <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">
                                 </label>
                             </th>
-                            <th>姓名</th>
-                            <th>单位名称</th>
+                            <th>烟农</th>
+                            <th>所属烟技员</th>
+                            <th>所属单位</th>
                             <th>电话号码</th>
                             <th>拜访次数</th>
                         </tr>
@@ -40,6 +47,7 @@
                                 </label>
                             </td>
                             <td>{{item.name}}</td>
+                            <td>{{item.employeeName}}</td>
                             <td>{{item.unitName}}</td>
                             <td>{{item.tel}}</td>
                             <td>

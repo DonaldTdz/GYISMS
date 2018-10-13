@@ -1,6 +1,7 @@
 <!--component html goes here -->
 <form nz-form [formGroup]="forme" *ngIf="emodalVisible" id="frm_edit_employee" (ngSubmit)="saveEd()">
-    <nz-modal [nzVisible]="emodalVisible" [nzTitle]="'修改基础信息'" [nzContent]="modalContent" [nzFooter]="modalFooter" (nzOnCancel)="ehandleCancel($event)">
+    <nz-modal [nzVisible]="emodalVisible" [nzTitle]="'修改基础信息'" [nzContent]="modalContent" [nzFooter]="modalFooter"
+        (nzOnCancel)="ehandleCancel($event)">
         <ng-template #modalContent>
             <ng-template #nzTabHeading>
                 基础信息
@@ -9,7 +10,8 @@
                 <nz-form-item nz-row>
                     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="type">配置类型</nz-form-label>
                     <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
-                        <nz-select formControlName="type" [nzPlaceHolder]="'配置类型'" [(ngModel)]="systemData.type" [nzShowSearch]="true" style="width:100%;">
+                        <nz-select formControlName="type" [nzPlaceHolder]="'配置类型'" [(ngModel)]="systemData.type"
+                            [nzShowSearch]="true" style="width:100%;">
                             <nz-option *ngFor="let i of confige" [nzLabel]="i.text" [nzValue]="i.value">
                             </nz-option>
                         </nz-select>
@@ -25,8 +27,7 @@
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
-
-                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="desc">描述</nz-form-label>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="desc">配置项</nz-form-label>
                     <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
                         <input nz-input formControlName="desc" [(ngModel)]="systemData.desc" id="desc">
                         <nz-form-explain *ngIf="forme.get('desc').dirty&&forme.get('desc').hasError('maxlength')">字符长度小于等于500</nz-form-explain>

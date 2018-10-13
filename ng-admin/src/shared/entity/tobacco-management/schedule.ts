@@ -4,6 +4,8 @@ export class Schedule implements IScheduleom {
     type: number;
     beginTime: string;
     endTime: string;
+    beginTimeFormat: string;
+    endTimeFormat: string;
     status: number;
     publishTime: Date;
     isDeleted: boolean;
@@ -34,6 +36,8 @@ export class Schedule implements IScheduleom {
             this.type = data["type"];
             this.beginTime = data["beginTime"];
             this.endTime = data["endTime"];
+            this.beginTimeFormat = data["beginTimeFormat"];
+            this.endTimeFormat = data["endTimeFormat"];
             this.status = data["status"];
             this.publishTime = data["publishTime"];
             this.isDeleted = data["isDeleted"];
@@ -76,6 +80,8 @@ export class Schedule implements IScheduleom {
         data["type"] = this.type;
         data["beginTime"] = this.beginTime;
         data["endTime"] = this.endTime;
+        data["beginTimeFormat"] = this.beginTimeFormat;
+        data["endTimeFormat"] = this.endTimeFormat;
         data["status"] = this.status;
         data["publishTime"] = this.publishTime;
         data["isDeleted"] = this.isDeleted;
@@ -104,6 +110,8 @@ export interface IScheduleom {
     type: number;
     beginTime: string;
     endTime: string;
+    beginTimeFormat: string;
+    endTimeFormat: string;
     status: number;
     publishTime: Date;
     isDeleted: boolean;

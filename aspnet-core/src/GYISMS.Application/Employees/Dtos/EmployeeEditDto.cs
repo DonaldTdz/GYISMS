@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.Employees;
+using GYISMS.GYEnums;
 
 namespace GYISMS.Employees.Dtos
 {
@@ -105,7 +106,7 @@ namespace GYISMS.Employees.Dtos
         /// <summary>
         /// 区县Code
         /// </summary>
-        public string AreaCode { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
 
         /// <summary>
         /// 区县名称

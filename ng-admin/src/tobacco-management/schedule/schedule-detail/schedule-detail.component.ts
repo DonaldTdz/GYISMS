@@ -62,7 +62,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         super(injector);
         this.id = this.actRouter.snapshot.params['id'];
         this.allPercentage = this.actRouter.snapshot.params['allPercentage'];
-        this.recordTitle = '计划完成总进度:' + this.allPercentage + '%';
+        this.recordTitle = '完成总进度：' + this.allPercentage + '%';
     }
 
     ngOnInit(): void {
@@ -198,19 +198,23 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 }
             }
             else {// type =1
-                if (this.schedule.beginTime != 'NaN-0NaN-01' && this.schedule.beginTime == '1970-01-01') {
+                if (this.schedule.beginTime != 'NaN-0NaN-01' && this.schedule.beginTime != '1970-01-01') {
                     // this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
                     // this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
                     this.schedule.beginTime = this.schedule.beginTime;
                     console.log(this.schedule.beginTime);
                 }
-                else
+                else {
                     this.schedule.beginTime = null;
-                if (this.schedule.endTime != 'NaN-NaN-NaN' && this.schedule.endTime != '1970-01-31')
+                }
+
+                if (this.schedule.endTime != 'NaN-NaN-NaN' && this.schedule.endTime != '1970-01-31') {
                     // this.schedule.endTime = this.dateFormat(this.schedule.endTime);
                     this.schedule.endTime = this.schedule.endTime;
-                else
+                }
+                else {
                     this.schedule.endTime = null;
+                }
             }
             this.successMsg = isPulish == false ? '保存成功！' : '发布成功！';
             if (!this.schedule.beginTime) {
@@ -267,6 +271,11 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         }
     }
     push() {
+        //验证
+        if (this.recordList.length == 0) {
+            this.notify.error('请先添加任务并指派');
+            return;
+        }
         this.confirmModal = this.modal.confirm({
             nzContent: '发布后不可修改，是否确认发布?',
             nzOnOk: () => {
@@ -351,7 +360,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     }
     assignAll(id: number, taskId: string, visitNum: number): void {
         this.confirmModal = this.modal.confirm({
-            nzContent: '即将指派所有烟农，是否继续?',
+            nzContent: '即将指派全部人员，是否继续?',
             nzOnOk: () => {
                 let input: any = {};
                 input.VisitNum = visitNum;

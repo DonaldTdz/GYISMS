@@ -77,7 +77,7 @@ namespace GYISMS.Schedules
         ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
+        public Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
         {
             var detail = _scheduledetailRepository.GetAll();
             var query = _scheduleRepository.GetAll()
@@ -96,10 +96,12 @@ namespace GYISMS.Schedules
                                     Status = q.Status,
                                     PublishTime = q.PublishTime,
                                     CreateUserName = t.Name,
-                                    Area = t.Area != null ? t.Area : " - "
+                                    Area = t.Area != null ? t.Area : " - ",
+                                    BeginTime = q.BeginTime,
+                                    EndTime = q.EndTime
                                 };
 
-           var temp = await (from d in detail
+           var percentageQuery = (from d in detail
                               group new
                               {
                                   d.ScheduleId,
@@ -114,8 +116,8 @@ namespace GYISMS.Schedules
                                   Id = g.Key.ScheduleId,
                                   CompleteCount = g.Sum(v => v.CompleteNum),
                                   VisitCount = g.Sum(v=>v.VisitNum),
-                              }).ToListAsync();
-            var result = (from e in entity
+                              });
+            /*var result = (from e in entity
                     join t in temp on e.Id equals t.Id into g
                     from table in g.DefaultIfEmpty()
                     select new ScheduleListDto() {
@@ -126,20 +128,34 @@ namespace GYISMS.Schedules
                         PublishTime = e.PublishTime,
                         CreateUserName = e.CreateUserName,
                         Area = e.Area,
-                        Percentage = table != null ?(int)(table.VisitCount!=0? (Math.Round(table.CompleteCount.Value / (decimal)table.VisitCount.Value, 2))*100 : 0) : 0
-        });
+                        BeginTime = e.BeginTime,
+                        EndTime = e.EndTime//,
+                        //VisitCount = table == null? 0 : table.VisitCount,
+                        //CompleteCount = table == null? 0 : table.CompleteCount
+                        //Percentage = table != null ?(int)(table.VisitCount!=0? (Math.Round(table.CompleteCount.Value / (decimal)table.VisitCount.Value, 2))*100 : 0) : 0
+        });*/
 
-            var scheduleCount = await query.CountAsync();
+            var scheduleCount = query.Count();
             
-            var schedules = await result
+            var schedules = entity
                     .OrderBy(v=>v.Status).ThenByDescending(v=>v.PublishTime).AsNoTracking()
                     .PageBy(input)
-                    .ToListAsync();
-
-            return new PagedResultDto<ScheduleListDto>(
+                    .ToList();
+            var ids = schedules.Select(s => s.Id).ToArray();
+            var percentageList = percentageQuery.Where(p => ids.Contains(p.Id)).ToList();
+            foreach (var item in schedules)
+            {
+                var percentage = percentageList.Where(p => p.Id == item.Id).FirstOrDefault();
+                if (percentage != null)
+                {
+                    item.VisitCount = percentage.VisitCount;
+                    item.CompleteCount = percentage.CompleteCount;
+                }
+            }
+            return Task.FromResult(new PagedResultDto<ScheduleListDto>(
                     scheduleCount,
                     schedules
-                );
+                ));
         }
 
         /// <summary>

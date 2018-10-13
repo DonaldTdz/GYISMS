@@ -22,6 +22,8 @@ using GYISMS.ScheduleDetails;
 using GYISMS.Employees;
 using Abp.Auditing;
 using GYISMS.Dtos;
+using GYISMS.GYEnums;
+using Abp.Domain.Uow;
 
 namespace GYISMS.Growers
 {
@@ -86,16 +88,17 @@ namespace GYISMS.Growers
         /// 获取烟农信息（不分页）
         /// </summary>
         /// <param name="input"></param>
-        /// <returns></returns>
+        [UnitOfWork(isTransactional: false)]
         public async Task<List<GrowerListDto>> GetGrowersNoPageAsync(GetGrowersInput input)
         {
             int count = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.Id).CountAsync();
             if (count != 0)
             {
-                if(input.EmployeeId == "1"|| input.EmployeeId == "2"|| input.EmployeeId == "3")
+                if(input.EmployeeId == "1" || input.EmployeeId == "2"|| input.EmployeeId == "3")
                 {
+                    var areaCode = (AreaCodeEnum)int.Parse(input.EmployeeId);
                     var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
-                    var employeeIds = _employeeRepository.GetAll().Where(v=>v.AreaCode ==input.EmployeeId).Select(v => v.Id);
+                    var employeeIds = _employeeRepository.GetAll().Where(v=> v.AreaCode == areaCode).Select(v => v.Id);
                     var areaGrowerList = growerList.Where(v =>v.IsDeleted==false && employeeIds.Contains(v.EmployeeId));
                     var scheduleDetailList = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId && v.TaskId == input.TaskId);
                     var query = await (from g in areaGrowerList
@@ -171,8 +174,9 @@ namespace GYISMS.Growers
             {
                 if (input.EmployeeId == "1" || input.EmployeeId == "2" || input.EmployeeId == "3")
                 {
+                    var areaCode = (AreaCodeEnum)int.Parse(input.EmployeeId);
                     var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
-                    var employeeIds = _employeeRepository.GetAll().Where(v => v.AreaCode == input.EmployeeId).Select(v => v.Id);
+                    var employeeIds = _employeeRepository.GetAll().Where(v => v.AreaCode == areaCode).Select(v => v.Id);
                     var areaGrowerList = growerList.Where(v => v.IsDeleted == false && employeeIds.Contains(v.EmployeeId));
                     var query = await (from g in areaGrowerList
                                        select new GrowerListDto()
@@ -183,7 +187,7 @@ namespace GYISMS.Growers
                                            EmployeeId = g.EmployeeId,
                                            UnitName = g.UnitName,
                                            Tel = g.Tel,
-                                           Checked = true
+                                           //Checked = true
                                        }).AsNoTracking().ToListAsync();
                     return query;
                 }
@@ -199,7 +203,7 @@ namespace GYISMS.Growers
                                            EmployeeId = g.EmployeeId,
                                            UnitName = g.UnitName,
                                            Tel = g.Tel,
-                                           Checked = true
+                                           //Checked = true
                                        }).AsNoTracking().ToListAsync();
                     return query;
                 }

@@ -59,7 +59,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
 
     ngOnInit(): void {
         this.getTrees();
-        this.refreshData(null);
+        this.refreshData('1');
     }
 
     isCancelCheck(x: any) {
@@ -158,7 +158,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
             this.scheduleDetail = new ScheduleDetail();
         })
         this.isConfirmLoading = true;
-        this.successMsg = '保存成功';
+        this.successMsg = '任务指派成功';
         this.saveAssignInfo();
     }
     saveAssignInfo() {
@@ -173,7 +173,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
                         }
                     });
                 });
-                this.notify.info(this.l(this.successMsg), '');
+                this.notify.info(this.successMsg, '');
             });
     }
 
