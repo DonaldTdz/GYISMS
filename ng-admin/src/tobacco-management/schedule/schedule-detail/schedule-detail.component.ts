@@ -62,7 +62,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         super(injector);
         this.id = this.actRouter.snapshot.params['id'];
         this.allPercentage = this.actRouter.snapshot.params['allPercentage'];
-        this.recordTitle = '完成总进度：' + this.allPercentage + '%';
+        this.recordTitle = this.allPercentage ? '完成总进度：' + this.allPercentage + '%' : '完成总进度：0%';
     }
 
     ngOnInit(): void {

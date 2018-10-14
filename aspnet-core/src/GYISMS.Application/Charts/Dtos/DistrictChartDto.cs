@@ -144,19 +144,19 @@ namespace GYISMS.Charts.Dtos
                 {
                     items.Add(new DistrictChartItemDto()
                     {
-                        Id=item.Id,
-                        District = item.TaskName,
-                        Name = "计划",
-                        Num = item.VisitNum,
-                        Status=1,
-                    });
-                    items.Add(new DistrictChartItemDto()
-                    {
                         Id = item.Id,
                         District = item.TaskName,
                         Name = "完成",
                         Num = item.CompleteNum,
                         Status = 2,
+                    });
+                    items.Add(new DistrictChartItemDto()
+                    {
+                        Id = item.Id,
+                        District = item.TaskName,
+                        Name = "待完成",
+                        Num = item.VisitNum - item.CompleteNum,
+                        Status = 3,
                     });
                     items.Add(new DistrictChartItemDto()
                     {

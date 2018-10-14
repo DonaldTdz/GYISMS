@@ -77,13 +77,14 @@ namespace GYISMS.Schedules
         ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
+        public async Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
         {
+            var isAdmin = await CheckAdminAsync();
             var detail = _scheduledetailRepository.GetAll();
             var query = _scheduleRepository.GetAll()
                      .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
                      .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType)
-                     .Where(s =>s.IsDeleted == false && s.Status == ScheduleMasterStatusEnum.已发布 || (s.Status == ScheduleMasterStatusEnum.草稿 && s.CreatorUserId == AbpSession.UserId));
+                     .WhereIf(!isAdmin, s => s.Status == ScheduleMasterStatusEnum.已发布 || (s.Status == ScheduleMasterStatusEnum.草稿 && s.CreatorUserId == AbpSession.UserId));
             var user = _userRepository.GetAll();
             var entity = from q in query
                                 join u in user on q.CreatorUserId equals u.Id into table
@@ -152,10 +153,10 @@ namespace GYISMS.Schedules
                     item.CompleteCount = percentage.CompleteCount;
                 }
             }
-            return Task.FromResult(new PagedResultDto<ScheduleListDto>(
+            return new PagedResultDto<ScheduleListDto>(
                     scheduleCount,
                     schedules
-                ));
+                );
         }
 
         /// <summary>
@@ -299,12 +300,13 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         public async Task ScheduleDeleteByIdAsync(ScheduleEditDto input)
         {
-            var entity = await _scheduleRepository.GetAsync(input.Id.Value);
-            input.MapTo(entity);
-            entity.IsDeleted = true;
-            entity.DeletionTime = DateTime.Now;
-            entity.DeleterUserId = AbpSession.UserId;
-            await _scheduleRepository.UpdateAsync(entity);
+            await _scheduleRepository.DeleteAsync(input.Id.Value);
+            //var entity = await _scheduleRepository.GetAsync(input.Id.Value);
+            //input.MapTo(entity);
+            //entity.IsDeleted = true;
+            //entity.DeletionTime = DateTime.Now;
+            //entity.DeleterUserId = AbpSession.UserId;
+            //await _scheduleRepository.UpdateAsync(entity);
         }
 
         /// <summary>

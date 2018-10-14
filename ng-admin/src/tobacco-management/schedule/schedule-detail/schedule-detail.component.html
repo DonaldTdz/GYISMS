@@ -145,7 +145,7 @@
                 <button nz-button [nzType]="'default'" (click)="return()">
                     {{l("返回")}}
                 </button>
-                <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete(deleteContent)" [nzLoading]="isConfirmLoading">
+                <button nz-button *ngIf="isDelete && isPush" [nzType]="'danger'" (click)="delete()" [nzLoading]="isConfirmLoading">
                     {{l("删除")}}
                 </button>
                 <button nz-button *ngIf="isPush == true&&!isNewInfo" [nzType]="'primary'" type="button" (click)="push()"

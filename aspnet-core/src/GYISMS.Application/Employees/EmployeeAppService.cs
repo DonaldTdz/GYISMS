@@ -180,7 +180,7 @@ namespace GYISMS.Employees
         {
             if (input.DepartId == "1" || input.DepartId == null)
             {
-                var query = _employeeRepository.GetAll().Where(e => e.AreaCode == input.AreaCode)
+                var query = _employeeRepository.GetAll().WhereIf(input.AreaCode.HasValue, e => e.AreaCode == input.AreaCode)
                     .WhereIf(!string.IsNullOrEmpty(input.Mobile), u => u.Mobile.Contains(input.Mobile))
                 .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
                 var employeeCount = await query.CountAsync();

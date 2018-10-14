@@ -83,10 +83,10 @@ namespace GYISMS.Charts
                 var etpercent = tnum == 0 ? 0 : Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
                 dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3,Status=0 });
 
-                //进行中数
+                //待完成数
                 var pnum = tnum - cnum - etnum;
                 var ppercent = tnum == 0 ? 0 : (1M - cpercent - etpercent);
-                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "进行中", ClassName = "process", Percent = ppercent*100, Seq = 2 ,Status=3});
+                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "待完成", ClassName = "process", Percent = ppercent*100, Seq = 2 ,Status=3});
 
                 return dataList.OrderBy(d => d.Seq).ToList();
             });
@@ -170,7 +170,7 @@ namespace GYISMS.Charts
                  ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
              });
             var result = new ChartByTaskDto();
-            result.Tasks = await list.ToListAsync();
+            result.Tasks = await list.OrderBy(l => l.TaskName).ToListAsync();
             return result;
         }
 
@@ -257,10 +257,10 @@ namespace GYISMS.Charts
                 var etpercent = tnum == 0 ? 0 : Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
                 dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "已逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3 });
 
-                //进行中数
+                //待完成数
                 var pnum = tnum - cnum - etnum;
                 var ppercent = tnum == 0 ? 0 : (1M - cpercent - etpercent);
-                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "进行中", ClassName = "process", Percent = ppercent*100, Seq = 2 });
+                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "待完成", ClassName = "process", Percent = ppercent*100, Seq = 2 });
 
                 return dataList.OrderBy(d => d.Seq).ToList();
             });

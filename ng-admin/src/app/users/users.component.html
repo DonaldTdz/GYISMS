@@ -5,20 +5,23 @@
 
     <ng-template #extraTpl>
         <button nz-button (click)="refresh()" nzShape="circle">
-      <i class="anticon anticon-reload"></i>
-    </button>
+            <i class="anticon anticon-reload"></i>
+        </button>
         <button nz-button (click)="create()" nzShape="circle" nzType="primary">
-      <i class="anticon anticon-plus"></i>
-    </button>
+            <i class="anticon anticon-plus"></i>
+        </button>
     </ng-template>
 
 
-    <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()" [nzFrontPagination]="false">
+    <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
+        [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()"
+        [nzFrontPagination]="false">
         <thead>
             <tr>
-                <th>{{l("UserName")}}</th>
-                <th>真实姓名</th>
+                <th>登录账号</th>
+                <th>姓名</th>
                 <th>{{l("EmailAddress")}}</th>
+                <th>角色</th>
                 <th>区县</th>
                 <th>{{l("IsActive")}}</th>
                 <th>{{l("Actions")}}</th>
@@ -29,6 +32,7 @@
                 <td>{{item.userName}}</td>
                 <td>{{item.name}}</td>
                 <td>{{item.emailAddress}}</td>
+                <td>{{item.roleNames}}</td>
                 <td>{{item.area}}</td>
                 <td>
                     <nz-badge *ngIf="item.isActive" [nzStatus]="'success'" [nzText]="l('Yes')"></nz-badge>

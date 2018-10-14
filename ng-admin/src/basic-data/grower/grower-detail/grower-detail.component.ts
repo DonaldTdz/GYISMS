@@ -40,6 +40,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     previewImage = ''
     defalutImg = '/visit/defaultRecord.png';
     previewVisible = false;
+    initflag = true;
 
     constructor(injector: Injector, private fb: FormBuilder
         , private growerService: GrowerServiceProxy
@@ -69,6 +70,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             contractTime: null,
             type: null
         });
+        this.initflag = true;
         this.getUnitType();
         // this.getCountyCode();
     }
@@ -193,7 +195,13 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     }
 
     areaCodeChange() {
-        this.grower.employeeName = null;
-        this.grower.employeeId = null;
+        if (this.grower.areaCode) {
+            if (!this.initflag) {
+                this.grower.employeeName = null;
+                this.grower.employeeId = null;
+            } else {
+                this.initflag = false;
+            }
+        }
     }
 }

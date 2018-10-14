@@ -11,7 +11,7 @@
                 <!-- 用户账号 -->
                 <nz-form-item>
                     <nz-form-control nzHasFeedback>
-                        <input nz-input formControlName="userName" [placeholder]="l('UserName')">
+                        <input nz-input formControlName="userName" [placeholder]="'登录账号'">
                         <nz-form-explain *ngIf="validateForm.get('userName').dirty&&validateForm.get('userName').errors">
                             <ng-container *ngIf="validateForm.get('userName').hasError('required')">{{l('CanNotNull')}}</ng-container>
                         </nz-form-explain>
@@ -22,7 +22,8 @@
                 <nz-form-item>
                     <nz-form-control nzHasFeedback>
                         <nz-input-group nzSearch [nzSuffix]="suffixIconButton">
-                            <input readonly="readonly" [(ngModel)]="user.name" nz-input formControlName="name" id="name" placeholder="请选择员工">
+                            <input readonly="readonly" [(ngModel)]="user.name" nz-input formControlName="name" id="name"
+                                placeholder="请选择员工">
                             <ng-template #suffixIconButton>
                                 <button nz-button type="button" nzType="primary" (click)="showModal()" nzSearch>选择员工</button>
                             </ng-template>
@@ -76,11 +77,11 @@
         <div class="custom-modal-footer">
             <div class="custom-modal-footter-group">
                 <button nz-button type="button" [disabled]="saving" (click)="close()">
-          {{l("Cancel")}}
-        </button>
+                    {{l("Cancel")}}
+                </button>
                 <button nz-button [nzType]="'primary'" type="button" (click)="submit()" [disabled]="!validateForm.valid">
-          {{l("Save")}}
-        </button>
+                    {{l("Save")}}
+                </button>
             </div>
         </div>
     </form>

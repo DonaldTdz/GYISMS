@@ -318,7 +318,7 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         [AbpAllowAnonymous]
         [Audited]
-        public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId)
+        public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId, string uid)
         {
             //基本信息
             var query = from st in _scheduletaskRepository.GetAll()
@@ -340,6 +340,7 @@ namespace GYISMS.ScheduleTasks
             var growerQuery = from sd in _scheduleDetailRepository.GetAll()
                               join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
                               where sd.ScheduleTaskId == scheduleTaskId
+                              && sd.EmployeeId == uid
                               select new DingDingTaskGrowerDto()
                               {
                                   Id = sd.Id,

@@ -11,7 +11,7 @@ namespace GYISMS.Schedules
     /// 计划表
     /// </summary>
     [Table("Schedules")]
-    public class Schedule : AuditedEntity<Guid>
+    public class Schedule : FullAuditedEntity<Guid>
     {
         /// <summary>
         /// 计划说明
@@ -44,21 +44,6 @@ namespace GYISMS.Schedules
         /// 发布时间
         /// </summary>
         public virtual DateTime? PublishTime { get; set; }
-
-        /// <summary>
-        /// IsDeleted
-        /// </summary>
-        public virtual bool? IsDeleted { get; set; }
-
-        /// <summary>
-        /// DeletionTime
-        /// </summary>
-        public virtual DateTime? DeletionTime { get; set; }
-
-        /// <summary>
-        /// DeleterUserId
-        /// </summary>
-        public virtual long? DeleterUserId { get; set; }
 
         [Required]
         [StringLength(200)]

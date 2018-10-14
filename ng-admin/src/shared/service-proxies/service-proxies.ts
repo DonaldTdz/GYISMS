@@ -2407,6 +2407,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
     userName: string | undefined;
     emailAddress: string | undefined;
     id: number | undefined;
+    avatar: string | undefined;
 
     constructor(data?: IUserLoginInfoDto) {
         if (data) {
@@ -2424,6 +2425,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
             this.userName = data["userName"];
             this.emailAddress = data["emailAddress"];
             this.id = data["id"];
+            this.avatar = data["avatar"];
         }
     }
 
@@ -2441,6 +2443,7 @@ export class UserLoginInfoDto implements IUserLoginInfoDto {
         data["userName"] = this.userName;
         data["emailAddress"] = this.emailAddress;
         data["id"] = this.id;
+        data["avatar"] = this.avatar;
         return data;
     }
 

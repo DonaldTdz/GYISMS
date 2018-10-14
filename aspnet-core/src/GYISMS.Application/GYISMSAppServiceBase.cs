@@ -55,5 +55,12 @@ namespace GYISMS
             }
             return null;
         }
+
+        protected async Task<bool> CheckAdminAsync()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var roles = await UserManager.GetRolesAsync(currentUser);
+            return roles.Contains(RoleCodes.Admin);
+        }
     }
 }

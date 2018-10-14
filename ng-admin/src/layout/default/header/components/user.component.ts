@@ -25,12 +25,12 @@ import { ChangePasswordComponent } from '../../change-password/change-password.c
   template: `
   <nz-dropdown nzPlacement="bottomRight">
     <div class="item d-flex align-items-center px-sm" nz-dropdown>
-      <nz-avatar [nzSrc]="" nzSize="small" class="mr-sm"></nz-avatar>
+      <nz-avatar [nzSrc]="avatar" nzSize="small" class="mr-sm"></nz-avatar>
     </div>
      <div nz-menu class="width-sm">
        <div nz-menu-item (click)="changePassword()"><i class="anticon anticon-user mr-sm"></i>修改密码</div>
        <li nz-menu-divider></li>
-       <div nz-menu-item (click)="logout()"><i class="anticon anticon-setting mr-sm"></i> {{l('Logout')}}</div>
+       <div nz-menu-item (click)="logout()"><i class="anticon anticon-setting mr-sm"></i>退出登录</div>
      </div>
   </nz-dropdown>
   <change-password-modal #changePasswordModal (modalSave)="callBack()"></change-password-modal>
@@ -38,11 +38,14 @@ import { ChangePasswordComponent } from '../../change-password/change-password.c
 })
 export class HeaderUserComponent extends AppComponentBase implements OnInit {
   @ViewChild('changePasswordModal') changePasswordModal: ChangePasswordComponent;
+  avatar = '';
 
   constructor(injector: Injector, private _authService: AppAuthService) {
     super(injector);
   }
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.avatar = this.appSession.user.avatar;
+  }
   logout(): void {
     this._authService.logout();
   }
