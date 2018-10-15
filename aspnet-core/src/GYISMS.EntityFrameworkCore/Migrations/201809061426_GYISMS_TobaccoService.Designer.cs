@@ -1299,7 +1299,7 @@ namespace GYISMS.Migrations
                 b.Property<long?>("RoleId");
                 b.Property<string>("Remark").HasMaxLength(500);
                 b.Property<string>("Area").HasMaxLength(50);
-                b.Property<string>("AreaCode").HasMaxLength(50);
+                b.Property<int?>("AreaCode");
                 b.HasKey("Id");
 
                 //b.HasIndex("TargetTenantId", "TargetUserId", "ReadState");
