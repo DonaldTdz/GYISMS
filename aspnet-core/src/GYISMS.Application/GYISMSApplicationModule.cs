@@ -35,6 +35,7 @@ namespace GYISMS
                 // Scan the assembly for classes which inherit from AutoMapper.Profile
                 cfg => cfg.AddProfiles(thisAssembly)
             );
+            //Configuration.Modules.AbpWebApi().DynamicApiControllerBuilder.For<IDingDingAppService>("tasksystem/task").ForMethod("CreateTask").DontCreateAction().Build();
         }
 
         public override void PostInitialize()
