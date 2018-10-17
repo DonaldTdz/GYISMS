@@ -91,6 +91,14 @@ namespace GYISMS.GYEnums
         旺苍县 = 3
     }
 
+    public enum FileTypeEnum
+    {
+        PDF = 1,
+        Word = 2,
+        Excel = 3,
+        Other = 4
+    }
+
     public static class GYCode
     {
         public static string SignRange = "SignRange";

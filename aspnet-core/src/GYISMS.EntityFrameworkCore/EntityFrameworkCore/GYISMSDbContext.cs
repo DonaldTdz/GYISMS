@@ -20,6 +20,9 @@ using GYISMS.VisitTasks;
 using GYISMS.Employees;
 using GYISMS.Interfaces;
 using GYISMS.GYEnums;
+using GYISMS.DocCategories;
+using GYISMS.Documents;
+using GYISMS.DocAttachments;
 
 namespace GYISMS.EntityFrameworkCore
 {
@@ -55,6 +58,12 @@ namespace GYISMS.EntityFrameworkCore
         public virtual DbSet<VisitExamine> VisitExamines { get; set; }
 
         public virtual DbSet<VisitRecord> VisitRecords { get; set; }
+
+        public virtual DbSet<DocCategory> DocCategories { get; set; }
+
+        public virtual DbSet<Document> Documents { get; set; }
+
+        public virtual DbSet<DocAttachment> DocAttachments { get; set; }
 
     }
 }
