@@ -52,6 +52,14 @@ namespace GYISMS.Documents
         /// </summary>
         [StringLength(200)]
         public virtual string QrCodeUrl { get; set; }
-
+        /// <summary>
+        /// 授权部门名称（以逗号分隔）
+        /// </summary>
+        [StringLength(1000)]
+        public virtual string DeptDesc { get; set; }
+        /// <summary>
+        /// 授权员工名称（以逗号分隔）
+        /// </summary>
+        public virtual string EmployeeDes { get; set; }
     }
 }

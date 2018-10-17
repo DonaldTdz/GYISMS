@@ -1,0 +1,48 @@
+<div nz-row>
+    <div nz-col nzSpan="18" style="padding-right:10px;">
+        <nz-input-group nzSearch [nzSuffix]="suffixButton">
+            <input type="text" [(ngModel)]="name" nz-input placeholder="资料名称、摘要">
+        </nz-input-group>
+        <ng-template #suffixButton>
+            <button nz-button nzType="default" nzSearch>搜索</button>
+        </ng-template>
+    </div>
+    <div nz-col nzSpan="6" style="text-align:center;">
+        <button nz-button nzType="default"><i class="anticon anticon-download"></i>下载二维码</button>
+        <button nz-button (click)="refresh()" nzShape="circle">
+            <i class="anticon anticon-reload"></i>
+        </button>
+        <button nz-button (click)="create()" nzShape="circle" nzType="primary">
+            <i class="anticon anticon-plus"></i>
+        </button>
+    </div>
+</div>
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
+        <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total" [nzData]="docs"
+            [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true"
+            (nzPageIndexChange)="refreshData(tempNode)" (nzPageSizeChange)="refreshData(tempNode)">
+            <thead>
+                <tr>
+                    <th>资料名称</th>
+                    <th>资料分类</th>
+                    <th>摘要</th>
+                    <th>授权部门</th>
+                    <th>授权用户</th>
+                    <th>发布时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of nzTable.data">
+                    <td>{{item.name}}</td>
+                    <td>{{item.categoryDesc}}</td>
+                    <td>{{item.summary}}</td>
+                    <td>{{item.deptDesc}}</td>
+                    <td>{{item.employeeDes}}</td>
+                    <td>{{item.releaseDate}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>

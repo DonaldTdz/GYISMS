@@ -79,7 +79,11 @@ namespace  GYISMS.Documents.Dtos
 		public string QrCodeUrl { get; set; }
 
 
-
+        public string DeptDesc { get; set; }
+        /// <summary>
+        /// 授权员工名称（以逗号分隔）
+        /// </summary>
+        public string EmployeeDes { get; set; }
 
     }
 }

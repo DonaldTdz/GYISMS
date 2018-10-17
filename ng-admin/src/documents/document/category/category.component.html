@@ -1,0 +1,45 @@
+<div nz-row>
+    <div nz-col nzSpan="18" style="padding-right:10px;">
+        <nz-input-group nzSearch [nzSuffix]="suffixButton">
+            <input type="text" [(ngModel)]="name" nz-input placeholder="分类名称">
+        </nz-input-group>
+        <ng-template #suffixButton>
+            <button nz-button nzType="default" nzSearch><i class="anticon anticon-search"></i></button>
+        </ng-template>
+    </div>
+    <div nz-col nzSpan="6" style="text-align:center;">
+        <button nz-button type="button" nzType="primary">添加分类</button>
+    </div>
+</div>
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <div *ngIf="nodes && nodes.length > 0">
+            <nz-tree #treeCom [nzData]="nodes" nzMultiple="true" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
+                <ng-template #contextTemplate>
+                    <ul nz-menu nzInDropDown>
+                        <li nz-menu-item (click)="edit()">修改分类</li>
+                        <li nz-menu-item (click)="create()">新建子类</li>
+                    </ul>
+                </ng-template>
+                <ng-template #nzTreeTemplate let-node>
+                    <span class="custom-node" [class.active]="activedNode?.key===node.key">
+                        <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate)">
+                            <i class="anticon" [ngClass]="node.isExpanded ? 'anticon-folder-open' : 'anticon-folder'"
+                                (click)="openFolder(node)"></i>
+                            <span class="folder-name">{{node.title}}</span>
+                            <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
+                        </span>
+                        <span *ngIf="node.isLeaf">
+                            <i class="anticon anticon-folder"></i>
+                            <span class="file-name">{{node.title}}</span>
+                            <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
+                        </span>
+                    </span>
+                </ng-template>
+            </nz-tree>
+        </div>
+        <div *ngIf="!nodes || nodes.length == 0" style="width:100%; text-align:center;">
+            没有分类数据，点击“添加分类”进行添加
+        </div>
+    </div>
+</div>
