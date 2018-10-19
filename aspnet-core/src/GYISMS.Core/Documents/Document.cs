@@ -61,5 +61,10 @@ namespace GYISMS.Documents
         /// 授权员工名称（以逗号分隔）
         /// </summary>
         public virtual string EmployeeDes { get; set; }
+
+        /// <summary>
+        /// 是否是全部用户
+        /// </summary>
+        public virtual bool IsAllUser { get; set; }
     }
 }

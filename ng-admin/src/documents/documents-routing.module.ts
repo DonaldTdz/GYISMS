@@ -3,11 +3,18 @@ import { Routes, RouterModule } from '@angular/router';
 import { AppRouteGuard } from '@shared/auth/auth-route-guard';
 import { ACLGuard } from '@delon/acl';
 import { DocumentComponent } from './document/document.component';
+import { DocumentDetailComponent } from './document/detail/document-detail.component';
 
 const routes: Routes = [
     {
         path: 'document',
         component: DocumentComponent,
+        canActivate: [AppRouteGuard, ACLGuard],
+        data: { guard: 'CityAdmin' },
+    },
+    {
+        path: 'doc-detail',
+        component: DocumentDetailComponent,
         canActivate: [AppRouteGuard, ACLGuard],
         data: { guard: 'CityAdmin' },
     }

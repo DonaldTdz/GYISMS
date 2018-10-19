@@ -1,11 +1,12 @@
 import { HttpClient } from "@angular/common/http";
 import { GyismsHttpClient } from "@shared/service-proxies/gyisms-httpclient";
-import { Inject, Optional } from "@angular/core";
+import { Injectable, Inject, Optional } from "@angular/core";
 import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { SystemData } from "@shared/entity/config/system-data";
 import { Observable } from "rxjs";
 import { Parameter } from "@shared/service-proxies/entity/parameter";
 
+@Injectable()
 export class DataConfigServiceProxy {
     private http: HttpClient;
     private _gyhttp: GyismsHttpClient;

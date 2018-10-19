@@ -1,12 +1,5 @@
 import { Component, OnInit, Injector } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
-import {
-    NzDropdownContextComponent,
-    NzDropdownService,
-    NzFormatEmitEvent,
-    NzTreeComponent,
-    NzTreeNode
-} from 'ng-zorro-antd';
 
 @Component({
     moduleId: module.id,

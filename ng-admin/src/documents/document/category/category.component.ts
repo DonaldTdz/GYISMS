@@ -7,6 +7,9 @@ import {
     NzTreeComponent,
     NzTreeNode
 } from 'ng-zorro-antd';
+import { CreateCategoryComponent } from './create-category/create-category.component';
+import { EditCategoryComponent } from './edit-category/edit-category.component';
+import { Category } from '@shared/entity/documents';
 
 @Component({
     selector: 'doc-category',
@@ -21,20 +24,23 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
     dropdown: NzDropdownContextComponent;
     // actived node
     activedNode: NzTreeNode;
+    rkeyNode: { key: '', title: '' };
     nodes = [{
-        title: '信息类（5）',
+        title: '信息类',
         key: '100',
         //expanded: true,
+        desc: '（5）',
         children: [
-            { title: '信息A类（3）', key: '1000', isLeaf: true },
-            { title: '信息B类（5）', key: '1001', isLeaf: true }
+            { title: '信息A类', key: '1000', isLeaf: true, desc: '（3）' },
+            { title: '信息B类', key: '1001', isLeaf: true, desc: '（5）' }
         ]
     }, {
-        title: '机械类（20）',
+        title: '机械类',
         key: '101',
+        desc: '（20）',
         children: [
-            { title: '机械A类（10）', key: '1010', isLeaf: true },
-            { title: '机械B类（12）', key: '1011', isLeaf: true }
+            { title: '机械A类', key: '1010', isLeaf: true, desc: '（10）' },
+            { title: '机械B类', key: '1011', isLeaf: true, desc: '（12）' }
         ]
     }];
 
@@ -67,16 +73,52 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
         this.treeCom.nzTreeService.setSelectedNodeList(this.activedNode, false);
     }
 
-    contextMenu($event: MouseEvent, template: TemplateRef<void>): void {
+    contextMenu($event: MouseEvent, template: TemplateRef<void>, node): void {
         this.dropdown = this.nzDropdownService.create($event, template);
+        this.rkeyNode = node;
     }
 
     edit(): void {
-        this.dropdown.close();
+        if (this.dropdown) {
+            this.dropdown.close();
+        }
+        var category = new Category();
+        category.id = parseInt(this.rkeyNode.key);
+        category.name = this.rkeyNode.title;
+
+        this.modalHelper
+            .open(EditCategoryComponent, { category: category }, 'md', {
+                nzMask: true,
+                nzClosable: false,
+            })
+            .subscribe(isSave => {
+                if (isSave) {
+                    //this.refresh();
+                }
+            });
     }
 
-    create(): void {
-        this.dropdown.close();
+    create(key: 'click' | 'r-key'): void {
+        console.table(key);
+        if (this.dropdown) {
+            this.dropdown.close();
+        }
+        var pid;
+        var pname;
+        if (key === 'r-key') {
+            pid = this.rkeyNode.key;
+            pname = this.rkeyNode.title;
+        }
+        this.modalHelper
+            .open(CreateCategoryComponent, { pid: pid, pname: pname }, 'md', {
+                nzMask: true,
+                nzClosable: false,
+            })
+            .subscribe(isSave => {
+                if (isSave) {
+                    //this.refresh();
+                }
+            });
     }
 
 }

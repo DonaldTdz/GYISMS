@@ -8,7 +8,7 @@
         </ng-template>
     </div>
     <div nz-col nzSpan="6" style="text-align:center;">
-        <button nz-button type="button" nzType="primary">添加分类</button>
+        <button nz-button type="button" (click)="create('click')" nzType="primary">添加分类</button>
     </div>
 </div>
 <div nz-row>
@@ -18,21 +18,21 @@
                 <ng-template #contextTemplate>
                     <ul nz-menu nzInDropDown>
                         <li nz-menu-item (click)="edit()">修改分类</li>
-                        <li nz-menu-item (click)="create()">新建子类</li>
+                        <li nz-menu-item (click)="create('r-key')">新建子类</li>
                     </ul>
                 </ng-template>
                 <ng-template #nzTreeTemplate let-node>
                     <span class="custom-node" [class.active]="activedNode?.key===node.key">
-                        <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate)">
+                        <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate,node)">
                             <i class="anticon" [ngClass]="node.isExpanded ? 'anticon-folder-open' : 'anticon-folder'"
                                 (click)="openFolder(node)"></i>
-                            <span class="folder-name">{{node.title}}</span>
-                            <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
+                            <span class="folder-name">{{node.title}}{{node?.origin?.desc}}</span>
+                            <!--<span class="file-desc">{{node?.origin?.desc}}</span>-->
                         </span>
-                        <span *ngIf="node.isLeaf">
+                        <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate,node)">
                             <i class="anticon anticon-folder"></i>
-                            <span class="file-name">{{node.title}}</span>
-                            <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
+                            <span class="file-name">{{node.title}}{{node?.origin?.desc}}</span>
+                            <!--<span class="file-desc">{{node?.origin?.desc}}</span>-->
                         </span>
                     </span>
                 </ng-template>

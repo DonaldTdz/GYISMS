@@ -85,5 +85,7 @@ namespace  GYISMS.Documents.Dtos
         /// </summary>
         public string EmployeeDes { get; set; }
 
+        public bool IsAllUser { get; set; }
+
     }
 }
