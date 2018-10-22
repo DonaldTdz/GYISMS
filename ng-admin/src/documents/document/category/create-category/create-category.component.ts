@@ -13,7 +13,7 @@ export class CreateCategoryComponent extends ModalFormComponentBase<Category> im
     @Output() modalSelect: EventEmitter<any> = new EventEmitter<any>();
     category: Category = new Category();
 
-    @Input() pid: number;
+    @Input() pid: number = 0;
     @Input() pname: string;
     @Input() names: any[];
 
@@ -42,7 +42,12 @@ export class CreateCategoryComponent extends ModalFormComponentBase<Category> im
 
 
     protected submitExecute(finisheCallback: Function): void {
-
+        this._categoryService.createOrUpdate(this.category)
+            .finally(() => { this.saving = false; })
+            .subscribe(res => {
+                this.notify.info(this.l('SavedSuccessfully'), '');
+                this.success(true);
+            });
     }
 
     protected setFormValues(entity: Category): void {
@@ -51,6 +56,5 @@ export class CreateCategoryComponent extends ModalFormComponentBase<Category> im
 
     protected getFormValues(): void {
         this.category.name = this.getControlVal('name');
-
     }
 }

@@ -1,21 +1,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
-using Abp.Domain.Entities.Auditing;
-using GYISMS.DocCategories;
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 
 namespace  GYISMS.DocCategories.Dtos
 {
-    public class DocCategoryEditDto
+    [AutoMapTo(typeof(DocCategory))]
+    public class DocCategoryEditDto : FullAuditedEntityDto
     {
-
-        /// <summary>
-        /// Id
-        /// </summary>
-        public int? Id { get; set; }         
-
-
-        
 		/// <summary>
 		/// Name
 		/// </summary>

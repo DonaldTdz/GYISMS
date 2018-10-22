@@ -1,7 +1,7 @@
 <div nz-row>
     <div nz-col nzSpan="18" style="padding-right:10px;">
         <nz-input-group nzSearch [nzSuffix]="suffixButton">
-            <input type="text" [(ngModel)]="name" nz-input placeholder="分类名称">
+            <input type="text" [(ngModel)]="searchName" nz-input placeholder="分类名称">
         </nz-input-group>
         <ng-template #suffixButton>
             <button nz-button nzType="default" nzSearch><i class="anticon anticon-search"></i></button>
@@ -14,7 +14,8 @@
 <div nz-row>
     <div nz-col nzSpan="24">
         <div *ngIf="nodes && nodes.length > 0">
-            <nz-tree #treeCom [nzData]="nodes" nzMultiple="true" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
+            <nz-tree #treeCom [nzData]="nodes" nzMultiple="true" (nzClick)="activeNode($event)" [nzSearchValue]="searchName"
+                (nzSearchValueChange)="nzEvent($event)" (nzDblClick)="openFolder($event)">
                 <ng-template #contextTemplate>
                     <ul nz-menu nzInDropDown>
                         <li nz-menu-item (click)="edit()">修改分类</li>
@@ -26,19 +27,19 @@
                         <span *ngIf="!node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate,node)">
                             <i class="anticon" [ngClass]="node.isExpanded ? 'anticon-folder-open' : 'anticon-folder'"
                                 (click)="openFolder(node)"></i>
-                            <span class="folder-name">{{node.title}}{{node?.origin?.desc}}</span>
+                            <span class="folder-name" [innerHTML]="node.title | keyHighlight: searchName"></span>
                             <!--<span class="file-desc">{{node?.origin?.desc}}</span>-->
                         </span>
                         <span *ngIf="node.isLeaf" (contextmenu)="contextMenu($event,contextTemplate,node)">
                             <i class="anticon anticon-folder"></i>
-                            <span class="file-name">{{node.title}}{{node?.origin?.desc}}</span>
+                            <span class="file-name" [innerHTML]="node.title | keyHighlight: searchName"></span>
                             <!--<span class="file-desc">{{node?.origin?.desc}}</span>-->
                         </span>
                     </span>
                 </ng-template>
             </nz-tree>
         </div>
-        <div *ngIf="!nodes || nodes.length == 0" style="width:100%; text-align:center;">
+        <div *ngIf="!nodes || nodes.length == 0" style="width:100%; text-align:left; padding-top: 15px; padding-bottom: 15px; color: grey;">
             没有分类数据，点击“添加分类”进行添加
         </div>
     </div>

@@ -10,6 +10,8 @@ import {
 import { CreateCategoryComponent } from './create-category/create-category.component';
 import { EditCategoryComponent } from './edit-category/edit-category.component';
 import { Category } from '@shared/entity/documents';
+import { CategoryService } from '@shared/service-proxies/documents';
+
 
 @Component({
     selector: 'doc-category',
@@ -25,32 +27,16 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
     // actived node
     activedNode: NzTreeNode;
     rkeyNode: { key: '', title: '' };
-    nodes = [{
-        title: '信息类',
-        key: '100',
-        //expanded: true,
-        desc: '（5）',
-        children: [
-            { title: '信息A类', key: '1000', isLeaf: true, desc: '（3）' },
-            { title: '信息B类', key: '1001', isLeaf: true, desc: '（5）' }
-        ]
-    }, {
-        title: '机械类',
-        key: '101',
-        desc: '（20）',
-        children: [
-            { title: '机械A类', key: '1010', isLeaf: true, desc: '（10）' },
-            { title: '机械B类', key: '1011', isLeaf: true, desc: '（12）' }
-        ]
-    }];
+    nodes = [];
+    searchName;
 
 
-    constructor(injector: Injector, private nzDropdownService: NzDropdownService) {
+    constructor(injector: Injector, private nzDropdownService: NzDropdownService, private categoryService: CategoryService) {
         super(injector);
     }
 
     ngOnInit(): void {
-
+        this.getTreeAsync();
     }
 
     openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
@@ -93,7 +79,7 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
             })
             .subscribe(isSave => {
                 if (isSave) {
-                    //this.refresh();
+                    this.getTreeAsync();
                 }
             });
     }
@@ -116,9 +102,34 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
             })
             .subscribe(isSave => {
                 if (isSave) {
-                    //this.refresh();
+                    this.getTreeAsync();
                 }
             });
     }
+
+    getTreeAsync() {
+        this.categoryService.getTreeAsync().subscribe(res => {
+            /*if (this.treeCom) {
+                let expNodes = this.treeCom.getExpandedNodeList();
+                //console.table(expNodes);
+                if (expNodes.length > 0) {
+                    for (let i in res) {
+                        for (let en of expNodes) {
+                            if (en.key == res[i].key) {
+                                res[i].expanded = true;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }*/
+            this.nodes = res;
+        });
+    }
+
+    nzEvent(event: NzFormatEmitEvent): void {
+        //console.log(event, this.treeCom.getMatchedNodeList().map(v => v.title));
+    }
+
 
 }

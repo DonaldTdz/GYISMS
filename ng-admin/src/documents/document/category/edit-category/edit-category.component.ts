@@ -37,9 +37,13 @@ export class EditCategoryComponent extends ModalFormComponentBase<Category> impl
         }
     }
 
-
     protected submitExecute(finisheCallback: Function): void {
-
+        this._categoryService.createOrUpdate(this.category)
+            .finally(() => { this.saving = false; })
+            .subscribe(res => {
+                this.notify.info(this.l('SavedSuccessfully'), '');
+                this.success(true);
+            });
     }
 
     protected setFormValues(entity: Category): void {

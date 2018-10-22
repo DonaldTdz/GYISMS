@@ -41,11 +41,11 @@ namespace GYISMS.DocCategories
         ///</summary>
         public DocCategoryAppService(
         IRepository<DocCategory, int> entityRepository
-        ,IDocCategoryManager entityManager
+        , IDocCategoryManager entityManager
         )
         {
-            _entityRepository = entityRepository; 
-             _entityManager=entityManager;
+            _entityRepository = entityRepository;
+            _entityManager = entityManager;
         }
 
 
@@ -54,157 +54,175 @@ namespace GYISMS.DocCategories
         ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-		 
+
         public async Task<PagedResultDto<DocCategoryListDto>> GetPaged(GetDocCategorysInput input)
-		{
+        {
 
-		    var query = _entityRepository.GetAll();
-			// TODO:根据传入的参数添加过滤条件
-            
-
-			var count = await query.CountAsync();
-
-			var entityList = await query
-					.OrderBy(input.Sorting).AsNoTracking()
-					.PageBy(input)
-					.ToListAsync();
-
-			// var entityListDtos = ObjectMapper.Map<List<DocCategoryListDto>>(entityList);
-			var entityListDtos =entityList.MapTo<List<DocCategoryListDto>>();
-
-			return new PagedResultDto<DocCategoryListDto>(count,entityListDtos);
-		}
+            var query = _entityRepository.GetAll();
+            // TODO:根据传入的参数添加过滤条件
 
 
-		/// <summary>
-		/// 通过指定id获取DocCategoryListDto信息
-		/// </summary>
-		 
-		public async Task<DocCategoryListDto> GetById(EntityDto<int> input)
-		{
-			var entity = await _entityRepository.GetAsync(input.Id);
+            var count = await query.CountAsync();
 
-		    return entity.MapTo<DocCategoryListDto>();
-		}
+            var entityList = await query
+                    .OrderBy(input.Sorting).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
 
-		/// <summary>
-		/// 获取编辑 DocCategory
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		
-		public async Task<GetDocCategoryForEditOutput> GetForEdit(NullableIdDto<int> input)
-		{
-			var output = new GetDocCategoryForEditOutput();
-DocCategoryEditDto editDto;
+            // var entityListDtos = ObjectMapper.Map<List<DocCategoryListDto>>(entityList);
+            var entityListDtos = entityList.MapTo<List<DocCategoryListDto>>();
 
-			if (input.Id.HasValue)
-			{
-				var entity = await _entityRepository.GetAsync(input.Id.Value);
-
-				editDto = entity.MapTo<DocCategoryEditDto>();
-
-				//docCategoryEditDto = ObjectMapper.Map<List<docCategoryEditDto>>(entity);
-			}
-			else
-			{
-				editDto = new DocCategoryEditDto();
-			}
-
-			output.DocCategory = editDto;
-			return output;
-		}
+            return new PagedResultDto<DocCategoryListDto>(count, entityListDtos);
+        }
 
 
-		/// <summary>
-		/// 添加或者修改DocCategory的公共方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		
-		public async Task CreateOrUpdate(CreateOrUpdateDocCategoryInput input)
-		{
+        /// <summary>
+        /// 通过指定id获取DocCategoryListDto信息
+        /// </summary>
 
-			if (input.DocCategory.Id.HasValue)
-			{
-				await Update(input.DocCategory);
-			}
-			else
-			{
-				await Create(input.DocCategory);
-			}
-		}
+        public async Task<DocCategoryListDto> GetById(EntityDto<int> input)
+        {
+            var entity = await _entityRepository.GetAsync(input.Id);
+
+            return entity.MapTo<DocCategoryListDto>();
+        }
+
+        /// <summary>
+        /// 获取编辑 DocCategory
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+
+        public async Task<GetDocCategoryForEditOutput> GetForEdit(NullableIdDto<int> input)
+        {
+            var output = new GetDocCategoryForEditOutput();
+            DocCategoryEditDto editDto;
+
+            if (input.Id.HasValue)
+            {
+                var entity = await _entityRepository.GetAsync(input.Id.Value);
+
+                editDto = entity.MapTo<DocCategoryEditDto>();
+
+                //docCategoryEditDto = ObjectMapper.Map<List<docCategoryEditDto>>(entity);
+            }
+            else
+            {
+                editDto = new DocCategoryEditDto();
+            }
+
+            output.DocCategory = editDto;
+            return output;
+        }
 
 
-		/// <summary>
-		/// 新增DocCategory
-		/// </summary>
-		
-		protected virtual async Task<DocCategoryEditDto> Create(DocCategoryEditDto input)
-		{
-			//TODO:新增前的逻辑判断，是否允许新增
+        /// <summary>
+        /// 添加或者修改DocCategory的公共方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+
+        public async Task CreateOrUpdate(CreateOrUpdateDocCategoryInput input)
+        {
+            input.DocCategory.ParentId = input.DocCategory.ParentId ?? 0;
+            if (input.DocCategory.Id != 0)
+            {
+                await Update(input.DocCategory);
+            }
+            else
+            {
+                await Create(input.DocCategory);
+            }
+        }
+
+
+        /// <summary>
+        /// 新增DocCategory
+        /// </summary>
+
+        protected virtual async Task<DocCategoryEditDto> Create(DocCategoryEditDto input)
+        {
+            //TODO:新增前的逻辑判断，是否允许新增
 
             // var entity = ObjectMapper.Map <DocCategory>(input);
-            var entity=input.MapTo<DocCategory>();
-			
-
-			entity = await _entityRepository.InsertAsync(entity);
-			return entity.MapTo<DocCategoryEditDto>();
-		}
-
-		/// <summary>
-		/// 编辑DocCategory
-		/// </summary>
-		
-		protected virtual async Task Update(DocCategoryEditDto input)
-		{
-			//TODO:更新前的逻辑判断，是否允许更新
-
-			var entity = await _entityRepository.GetAsync(input.Id.Value);
-			input.MapTo(entity);
-
-			// ObjectMapper.Map(input, entity);
-		    await _entityRepository.UpdateAsync(entity);
-		}
+            var entity = input.MapTo<DocCategory>();
 
 
+            entity = await _entityRepository.InsertAsync(entity);
+            return entity.MapTo<DocCategoryEditDto>();
+        }
 
-		/// <summary>
-		/// 删除DocCategory信息的方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		
-		public async Task Delete(EntityDto<int> input)
-		{
-			//TODO:删除前的逻辑判断，是否允许删除
-			await _entityRepository.DeleteAsync(input.Id);
-		}
+        /// <summary>
+        /// 编辑DocCategory
+        /// </summary>
+
+        protected virtual async Task Update(DocCategoryEditDto input)
+        {
+            //TODO:更新前的逻辑判断，是否允许更新
+
+            var entity = await _entityRepository.GetAsync(input.Id);
+            input.MapTo(entity);
+
+            // ObjectMapper.Map(input, entity);
+            await _entityRepository.UpdateAsync(entity);
+        }
 
 
 
-		/// <summary>
-		/// 批量删除DocCategory的方法
-		/// </summary>
-		
-		public async Task BatchDelete(List<int> input)
-		{
-			// TODO:批量删除前的逻辑判断，是否允许删除
-			await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
-		}
+        /// <summary>
+        /// 删除DocCategory信息的方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+
+        public async Task Delete(EntityDto<int> input)
+        {
+            //TODO:删除前的逻辑判断，是否允许删除
+            await _entityRepository.DeleteAsync(input.Id);
+        }
 
 
-		/// <summary>
-		/// 导出DocCategory为excel表,等待开发。
-		/// </summary>
-		/// <returns></returns>
-		//public async Task<FileDto> GetToExcel()
-		//{
-		//	var users = await UserManager.Users.ToListAsync();
-		//	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-		//	await FillRoleNames(userListDtos);
-		//	return _userListExcelExporter.ExportToFile(userListDtos);
-		//}
+
+        /// <summary>
+        /// 批量删除DocCategory的方法
+        /// </summary>
+
+        public async Task BatchDelete(List<int> input)
+        {
+            // TODO:批量删除前的逻辑判断，是否允许删除
+            await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
+
+        private List<CategoryTreeNode> GetTrees(int pid, List<DocCategory> categoryList)
+        {
+            var catQuery = categoryList.Where(c => c.ParentId == pid)
+                            .Select(c => new CategoryTreeNode()
+                            {
+                                key = c.Id.ToString(),
+                                title = c.Name,
+                                ParentId = c.ParentId,
+                                children = GetTrees(c.Id, categoryList)
+                            });
+            return catQuery.ToList();
+        }
+
+        public async Task<List<CategoryTreeNode>> GetTreeAsync()
+        {
+            var categoryList = await _entityRepository.GetAllListAsync();
+            return GetTrees(0, categoryList);
+        }
+
+        /// <summary>
+        /// 导出DocCategory为excel表,等待开发。
+        /// </summary>
+        /// <returns></returns>
+        //public async Task<FileDto> GetToExcel()
+        //{
+        //	var users = await UserManager.Users.ToListAsync();
+        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
+        //	await FillRoleNames(userListDtos);
+        //	return _userListExcelExporter.ExportToFile(userListDtos);
+        //}
 
     }
 }

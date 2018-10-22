@@ -72,11 +72,13 @@ namespace GYISMS.DocCategories
         Task BatchDelete(List<int> input);
 
 
-		/// <summary>
+        /// <summary>
         /// 导出DocCategory为excel表
         /// </summary>
         /// <returns></returns>
-		//Task<FileDto> GetToExcel();
+        //Task<FileDto> GetToExcel();
+
+        Task<List<CategoryTreeNode>> GetTreeAsync();
 
     }
 }
