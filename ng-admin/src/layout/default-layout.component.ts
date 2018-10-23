@@ -102,7 +102,6 @@ export class DefaultLayoutComponent extends AppComponentBase
                 // ),
             ]
         ),
-
         // 会议管理
         new MenuItem(
             '会议申请',
@@ -145,7 +144,19 @@ export class DefaultLayoutComponent extends AppComponentBase
             ),
             ], null, 'CityAdmin'
         ),
-
+        new MenuItem(
+            '资料库',
+            '',
+            'anticon anticon-book',
+            '',
+            [new MenuItem(
+                '资料管理',
+                '',
+                '',
+                '/app/doc/document',
+            ),
+            ], null, 'CityAdmin'
+        ),
         // 配置管理
         new MenuItem(
             '配置管理',

@@ -63,7 +63,7 @@ namespace GYISMS.Migrations
                     RoleId = table.Column<long>(nullable: true),
                     Remark = table.Column<string>(maxLength: 500, nullable: true),
                     AreaCode = table.Column<string>(maxLength: 50, nullable: true),
-                    Area = table.Column<string>(maxLength: 50, nullable: true)
+                    Area = table.Column<int?>(nullable: true)
                 },
                 constraints: table =>
                 {

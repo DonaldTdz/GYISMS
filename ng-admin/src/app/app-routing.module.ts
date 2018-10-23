@@ -66,6 +66,11 @@ const routes: Routes = [
         data: { preload: true },
       },
       {
+        path: 'doc',
+        loadChildren: 'documents/documents.module#DocumentsModule', // Lazy load account module
+        data: { preload: true },
+      },
+      {
         path: '**',
         redirectTo: 'home',
       },

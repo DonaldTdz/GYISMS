@@ -6,6 +6,7 @@ using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.Organizations;
+using GYISMS.Dtos;
 
 namespace GYISMS.Organizations.Dtos
 {
@@ -47,18 +48,6 @@ namespace GYISMS.Organizations.Dtos
         /// CreationTime
         /// </summary>
         public DateTime? CreationTime { get; set; }
-    }
-
-    public class NzTreeNode
-    {
-        public virtual string title { get; set; }
-        public virtual string key { get; set; }
-
-        public virtual bool expanded { get; set; }//是否打开
-
-        public virtual bool isLeaf { get; set; } //是否是树叶
-
-        public virtual List<NzTreeNode> children { get; set; }
     }
 
     public class OrganizationNzTreeNode : NzTreeNode

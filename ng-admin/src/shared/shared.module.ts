@@ -20,10 +20,11 @@ import { NgZorroAntdModule } from 'ng-zorro-antd';
 import { CountdownModule } from 'ngx-countdown';
 import { LengthLimitPipe } from '@shared/pipe/length-limit.pipe';
 import { HostUrlPipe } from '@shared/pipe/host-url.pipe';
+import { KeyHighlightPipe } from './pipe/key-highlight.pipe';
 
 const THIRDMODULES = [NgZorroAntdModule, CountdownModule];
 // endregion
-const COMPONENTS = [HostUrlPipe, LengthLimitPipe];
+const COMPONENTS = [HostUrlPipe, LengthLimitPipe, KeyHighlightPipe];
 
 @NgModule({
   imports: [
