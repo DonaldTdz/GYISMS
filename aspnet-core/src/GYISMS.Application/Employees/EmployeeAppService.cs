@@ -304,8 +304,8 @@ namespace GYISMS.Employees
             ddConfig = _dingDingAppService.GetDingDingConfigByApp(appId);
             //测试环境注释
             var assessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
-            var userId = _dingDingAppService.GetUserId(assessToken, code);
-            //var userId = "165500493321719640";
+            //var userId = _dingDingAppService.GetUserId(assessToken, code);
+            var userId = "165500493321719640";
             var query = await _employeeRepository.GetAsync(userId);
             return query.MapTo<DingDingUserDto>();
         }
