@@ -1,21 +1,16 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.Documents;
 
 namespace  GYISMS.Documents.Dtos
 {
-    public class DocumentEditDto
-    {
-
-        /// <summary>
-        /// Id
-        /// </summary>
-        public Guid? Id { get; set; }         
-
-
-        
+    [AutoMapTo(typeof(Document))]
+    public class DocumentEditDto : FullAuditedEntityDto<Guid?>
+    {        
 		/// <summary>
 		/// Name
 		/// </summary>

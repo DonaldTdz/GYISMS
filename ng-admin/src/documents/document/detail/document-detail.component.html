@@ -1,11 +1,11 @@
-<nz-card [nzBordered]="false" nzTitle="资料维护">
+<nz-card [nzBordered]="false" nzTitle="资料详情">
     <form nz-form [formGroup]="validateForm">
         <div nz-row>
             <div nz-col [nzSpan]="16">
                 <nz-form-item nz-row style="margin-bottom: 0px;">
                     <nz-form-label nz-col [nzSm]="4" nzRequired>资料分类</nz-form-label>
                     <nz-form-control nz-col [nzSm]="20">
-                        <label> </label>
+                        <label>{{category.name}}</label>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
@@ -32,7 +32,7 @@
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzRequired>用户授权</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
-                        所有用户
+                        <label>所有用户</label>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
@@ -44,9 +44,11 @@
                 </nz-form-item>
             </div>
             <div nz-col [nzSpan]="8" class="text-center">
-                <qr [value]="qrCode.value" [background]="qrCode.background" [backgroundAlpha]="qrCode.backgroundAlpha"
-                    [foreground]="qrCode.foreground" [foregroundAlpha]="qrCode.foregroundAlpha" [level]="qrCode.level"
-                    [mime]="qrCode.mime" [padding]="qrCode.padding" [size]="qrCode.size" style="border:1px solid #999"></qr>
+                <div [style.display]="codeStyle">
+                    <qr [value]="qrCode.value" [background]="qrCode.background" [backgroundAlpha]="qrCode.backgroundAlpha"
+                        [foreground]="qrCode.foreground" [foregroundAlpha]="qrCode.foregroundAlpha" [level]="qrCode.level"
+                        [mime]="qrCode.mime" [padding]="qrCode.padding" [size]="qrCode.size" style="border:1px solid #999"></qr>
+                </div>
             </div>
         </div>
     </form>
@@ -92,10 +94,10 @@
         <button nz-button [nzType]="'default'" (click)="return()">
             {{l("返回")}}
         </button>
-        <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete()" [nzLoading]="isConfirmLoading">
+        <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete()" [nzLoading]="saving">
             {{l("删除")}}
         </button>
-        <button nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+        <button nz-button [nzType]="'primary'" type="button" (click)="submit()" [disabled]="!validateForm.valid">
             {{l("保存")}}
         </button>
     </footer-toolbar>

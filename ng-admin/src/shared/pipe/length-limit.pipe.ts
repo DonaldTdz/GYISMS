@@ -5,7 +5,7 @@ import { AppConsts } from '@shared/AppConsts';
 export class LengthLimitPipe implements PipeTransform {
     transform(value: string, length: number): string {
         if (value) {
-            if (value.length > 7) {
+            if (value.length > length) {
                 return value.substring(0, length) + '...';
             } else {
                 return value

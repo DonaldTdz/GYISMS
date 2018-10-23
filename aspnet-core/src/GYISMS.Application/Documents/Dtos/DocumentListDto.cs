@@ -5,13 +5,13 @@ using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using GYISMS.Documents;
+using Abp.AutoMapper;
 
 namespace GYISMS.Documents.Dtos
 {
+    [AutoMapFrom(typeof(Document))]
     public class DocumentListDto : FullAuditedEntityDto<Guid> 
-    {
-
-        
+    {       
 		/// <summary>
 		/// Name
 		/// </summary>
