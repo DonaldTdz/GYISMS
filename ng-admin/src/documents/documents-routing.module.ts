@@ -17,6 +17,12 @@ const routes: Routes = [
         component: DocumentDetailComponent,
         canActivate: [AppRouteGuard, ACLGuard],
         data: { guard: 'CityAdmin' },
+    },
+    {
+        path: 'doc-detail/:id',
+        component: DocumentDetailComponent,
+        canActivate: [AppRouteGuard, ACLGuard],
+        data: { guard: 'CityAdmin' },
     }
 ];
 

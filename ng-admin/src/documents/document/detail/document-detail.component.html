@@ -1,11 +1,11 @@
-<nz-card [nzBordered]="false" nzTitle="资料维护">
+<nz-card [nzBordered]="false" nzTitle="资料详情">
     <form nz-form [formGroup]="validateForm">
         <div nz-row>
             <div nz-col [nzSpan]="16">
                 <nz-form-item nz-row style="margin-bottom: 0px;">
                     <nz-form-label nz-col [nzSm]="4" nzRequired>资料分类</nz-form-label>
                     <nz-form-control nz-col [nzSm]="20">
-                        <label> </label>
+                        <label>{{category.name}}</label>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
@@ -32,7 +32,7 @@
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzRequired>用户授权</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
-                        所有用户
+                        <label>所有用户</label>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
@@ -44,32 +44,31 @@
                 </nz-form-item>
             </div>
             <div nz-col [nzSpan]="8" class="text-center">
-                <qr [value]="qrCode.value" [background]="qrCode.background" [backgroundAlpha]="qrCode.backgroundAlpha"
-                    [foreground]="qrCode.foreground" [foregroundAlpha]="qrCode.foregroundAlpha" [level]="qrCode.level"
-                    [mime]="qrCode.mime" [padding]="qrCode.padding" [size]="qrCode.size" style="border:1px solid #999"></qr>
+                <div [style.display]="codeStyle">
+                    <qr [value]="qrCode.value" [background]="qrCode.background" [backgroundAlpha]="qrCode.backgroundAlpha"
+                        [foreground]="qrCode.foreground" [foregroundAlpha]="qrCode.foregroundAlpha" [level]="qrCode.level"
+                        [mime]="qrCode.mime" [padding]="qrCode.padding" [size]="qrCode.size" style="border:1px solid #999"></qr>
+                </div>
             </div>
         </div>
     </form>
     <form nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
-                <button nz-button type="button" (click)="showModal(null)" nzType="primary">
+                <button nz-button type="button" (click)="uploadFile()" nzType="primary">
                     <i class="anticon anticon-plus"></i>
-                    <span>上传文档</span>
+                    <span>上传资料</span>
                 </button>
             </div>
         </div>
     </form>
-    <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-    <nz-table #nzTable [nzData]="attachments" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate"
-        [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true"
-        (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
+    <nz-table #nzTable [nzData]="attachments" [nzShowPagination]="false">
         <thead>
             <tr>
                 <th>文档名称</th>
                 <th>类型</th>
                 <th>大小</th>
-                <th>下载地址</th>
+                <th>下载</th>
                 <th>创建时间</th>
                 <th>操作</th>
             </tr>
@@ -77,13 +76,12 @@
         <tbody>
             <tr *ngFor="let item of nzTable.data">
                 <td>{{item.name}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.desc}}</td>
-                <td>{{item.seq}}</td>
+                <td>{{item.fileTypeName}}</td>
+                <td>{{item.fileSize}}</td>
+                <td><a href="{{item.path | hostUrl}}" target="_blank">{{item.name}}</a></td>
+                <td>{{item.creationTime | date:'yyyy-MM-dd'}}</td>
                 <td>
-                    <a (click)="deleteExamine(item)">修改</a>
-                    <a (click)="deleteExamine(item)">删除</a>
+                    <a (click)="deleteAttachment(item.id)" style=" color:red;">删除</a>
                 </td>
             </tr>
         </tbody>
@@ -92,10 +90,10 @@
         <button nz-button [nzType]="'default'" (click)="return()">
             {{l("返回")}}
         </button>
-        <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete()" [nzLoading]="isConfirmLoading">
+        <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete()" [nzLoading]="saving">
             {{l("删除")}}
         </button>
-        <button nz-button [nzType]="'primary'" type="button" (click)="save()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+        <button nz-button [nzType]="'primary'" type="button" (click)="submit()" [disabled]="!validateForm.valid">
             {{l("保存")}}
         </button>
     </footer-toolbar>

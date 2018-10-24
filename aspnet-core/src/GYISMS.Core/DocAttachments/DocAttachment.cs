@@ -9,7 +9,7 @@ using System.Text;
 namespace GYISMS.DocAttachments
 {
     [Table("DocAttachments")]
-    public class DocAttachment : FullAuditedEntity
+    public class DocAttachment : FullAuditedEntity<Guid>
     {
         /// <summary>
         /// 附件名

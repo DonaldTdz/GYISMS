@@ -2,10 +2,10 @@
 <nz-card>
     <div nz-row>
         <div nz-col nzSpan="6">
-            <doc-category></doc-category>
+            <doc-category (selectedCategory)="onSelectedCategory($event)"></doc-category>
         </div>
         <div nz-col nzSpan="18">
-            <doc-list></doc-list>
+            <doc-list #docList></doc-list>
         </div>
     </div>
 </nz-card>

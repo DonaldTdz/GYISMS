@@ -7,6 +7,9 @@ namespace GYISMS.Documents.Dtos
 {
     public class GetDocumentsInput : PagedSortedAndFilteredInputDto, IShouldNormalize
     {
+        public int? CategoryId { get; set; }
+
+        public string KeyWord { get; set; }
 
         /// <summary>
         /// 正常化排序使用
@@ -15,7 +18,7 @@ namespace GYISMS.Documents.Dtos
         {
             if (string.IsNullOrEmpty(Sorting))
             {
-                Sorting = "Id";
+                Sorting = "CreationTime Desc";
             }
         }
 

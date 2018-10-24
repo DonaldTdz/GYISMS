@@ -32,7 +32,7 @@ namespace GYISMS.DocAttachments
     [AbpAuthorize]
     public class DocAttachmentAppService : GYISMSAppServiceBase, IDocAttachmentAppService
     {
-        private readonly IRepository<DocAttachment, int> _entityRepository;
+        private readonly IRepository<DocAttachment, Guid> _entityRepository;
 
         private readonly IDocAttachmentManager _entityManager;
 
@@ -40,7 +40,7 @@ namespace GYISMS.DocAttachments
         /// 构造函数 
         ///</summary>
         public DocAttachmentAppService(
-        IRepository<DocAttachment, int> entityRepository
+        IRepository<DocAttachment, Guid> entityRepository
         , IDocAttachmentManager entityManager
         )
         {
@@ -80,7 +80,7 @@ namespace GYISMS.DocAttachments
         /// 通过指定id获取DocAttachmentListDto信息
         /// </summary>
 
-        public async Task<DocAttachmentListDto> GetById(EntityDto<int> input)
+        public async Task<DocAttachmentListDto> GetById(EntityDto<Guid> input)
         {
             var entity = await _entityRepository.GetAsync(input.Id);
 
@@ -93,7 +93,7 @@ namespace GYISMS.DocAttachments
         /// <param name="input"></param>
         /// <returns></returns>
 
-        public async Task<GetDocAttachmentForEditOutput> GetForEdit(NullableIdDto<int> input)
+        public async Task<GetDocAttachmentForEditOutput> GetForEdit(NullableIdDto<Guid> input)
         {
             var output = new GetDocAttachmentForEditOutput();
             DocAttachmentEditDto editDto;
@@ -175,7 +175,7 @@ namespace GYISMS.DocAttachments
         /// <param name="input"></param>
         /// <returns></returns>
 
-        public async Task Delete(EntityDto<int> input)
+        public async Task Delete(EntityDto<Guid> input)
         {
             //TODO:删除前的逻辑判断，是否允许删除
             await _entityRepository.DeleteAsync(input.Id);
@@ -187,24 +187,17 @@ namespace GYISMS.DocAttachments
         /// 批量删除DocAttachment的方法
         /// </summary>
 
-        public async Task BatchDelete(List<int> input)
+        public async Task BatchDelete(List<Guid> input)
         {
             // TODO:批量删除前的逻辑判断，是否允许删除
             await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
-
-        /// <summary>
-        /// 导出DocAttachment为excel表,等待开发。
-        /// </summary>
-        /// <returns></returns>
-        //public async Task<FileDto> GetToExcel()
-        //{
-        //	var users = await UserManager.Users.ToListAsync();
-        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-        //	await FillRoleNames(userListDtos);
-        //	return _userListExcelExporter.ExportToFile(userListDtos);
-        //}
+        public async Task<List<DocAttachmentListDto>> GetListByDocIdAsync(Guid? docId)
+        {
+            var query = _entityRepository.GetAll().Where(e => e.DocId == docId);
+            return (await query.ToListAsync()).MapTo<List<DocAttachmentListDto>>();
+        }
 
     }
 }

@@ -22,6 +22,7 @@ using GYISMS.Documents;
 using GYISMS.Documents.Dtos;
 using GYISMS.Documents.DomainService;
 using GYISMS.DocAttachments;
+using GYISMS.Dtos;
 
 namespace GYISMS.Documents
 {
@@ -59,9 +60,9 @@ namespace GYISMS.Documents
         public async Task<PagedResultDto<DocumentListDto>> GetPaged(GetDocumentsInput input)
         {
 
-            var query = _entityRepository.GetAll();
-            // TODO:根据传入的参数添加过滤条件
-
+            var query = _entityRepository.GetAll()
+                .WhereIf(input.CategoryId.HasValue, e => e.CategoryId == input.CategoryId)
+                .WhereIf(!string.IsNullOrEmpty(input.KeyWord), e => e.Name.Contains(input.KeyWord) || e.Summary.Contains(input.KeyWord));
 
             var count = await query.CountAsync();
 
@@ -123,16 +124,18 @@ namespace GYISMS.Documents
         /// <param name="input"></param>
         /// <returns></returns>
 
-        public async Task CreateOrUpdate(CreateOrUpdateDocumentInput input)
+        public async Task<APIResultDto> CreateOrUpdate(CreateOrUpdateDocumentInput input)
         {
 
             if (input.Document.Id.HasValue)
             {
                 await Update(input.Document);
+                return new APIResultDto() { Code = 0, Msg = "保存成功" };
             }
             else
             {
-                await Create(input.Document);
+                var entity = await Create(input.Document);
+                return new APIResultDto() { Code = 0, Msg = "保存成功", Data = entity.Id };
             }
         }
 
@@ -182,6 +185,30 @@ namespace GYISMS.Documents
             await _entityRepository.DeleteAsync(input.Id);
         }
 
+
+
+        /// <summary>
+        /// 批量删除Document的方法
+        /// </summary>
+
+        public async Task BatchDelete(List<Guid> input)
+        {
+            // TODO:批量删除前的逻辑判断，是否允许删除
+            await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
+
+
+        /// <summary>
+        /// 导出Document为excel表,等待开发。
+        /// </summary>
+        /// <returns></returns>
+        //public async Task<FileDto> GetToExcel()
+        //{
+        //	var users = await UserManager.Users.ToListAsync();
+        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
+        //	await FillRoleNames(userListDtos);
+        //	return _userListExcelExporter.ExportToFile(userListDtos);
+        //}
 
 
         /// <summary>

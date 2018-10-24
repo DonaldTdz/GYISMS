@@ -3,9 +3,10 @@ import { GyismsHttpClient } from "@shared/service-proxies/gyisms-httpclient";
 import { Injectable, Inject, Optional } from "@angular/core";
 import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
+import { PagedResultDtoOfDocument, DocumentDto } from "@shared/entity/documents";
 
 @Injectable()
-export class CategoryService {
+export class AttachmentService {
     private http: HttpClient;
     private _gyhttp: GyismsHttpClient;
     private baseUrl: string;
@@ -18,16 +19,24 @@ export class CategoryService {
     }
 
     createOrUpdate(input: any): Observable<any> {
-        let url_ = "/api/services/app/DocCategory/CreateOrUpdate";
-        let cat = { docCategory: input };
-        return this._gyhttp.post(url_, cat).map(data => {
+        let url_ = "/api/services/app/DocAttachment/CreateOrUpdate";
+        let attachment = { docAttachment: input };
+        return this._gyhttp.post(url_, attachment).map(data => {
             return data;
         });
     }
 
-    getTreeAsync(): Observable<any> {
-        let url_ = "/api/services/app/DocCategory/GetTreeAsync";
-        return this._gyhttp.get(url_, {}).map(data => {
+    getListByDocIdAsync(param: any): Observable<any> {
+        let url_ = "/api/services/app/DocAttachment/getListByDocIdAsync";
+        return this._gyhttp.get(url_, param).map(data => {
+            return data;
+        });
+    }
+
+    delete(id: any): Observable<any> {
+        let url_ = "/api/services/app/DocAttachment/Delete";
+        var param = { id: id };
+        return this._gyhttp.delete(url_, param).map(data => {
             return data;
         });
     }

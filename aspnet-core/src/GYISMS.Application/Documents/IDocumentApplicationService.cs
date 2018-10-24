@@ -20,6 +20,7 @@ using Abp.Application.Services.Dto;
 
 using GYISMS.Documents.Dtos;
 using GYISMS.Documents;
+using GYISMS.Dtos;
 
 namespace GYISMS.Documents
 {
@@ -55,7 +56,7 @@ namespace GYISMS.Documents
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task CreateOrUpdate(CreateOrUpdateDocumentInput input);
+        Task<APIResultDto> CreateOrUpdate(CreateOrUpdateDocumentInput input);
 
 
         /// <summary>

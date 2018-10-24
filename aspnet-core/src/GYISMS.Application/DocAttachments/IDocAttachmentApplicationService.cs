@@ -39,7 +39,7 @@ namespace GYISMS.DocAttachments
 		/// <summary>
 		/// 通过指定id获取DocAttachmentListDto信息
 		/// </summary>
-		Task<DocAttachmentListDto> GetById(EntityDto<int> input);
+		Task<DocAttachmentListDto> GetById(EntityDto<Guid> input);
 
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace GYISMS.DocAttachments
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<GetDocAttachmentForEditOutput> GetForEdit(NullableIdDto<int> input);
+        Task<GetDocAttachmentForEditOutput> GetForEdit(NullableIdDto<Guid> input);
 
 
         /// <summary>
@@ -63,20 +63,15 @@ namespace GYISMS.DocAttachments
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task Delete(EntityDto<int> input);
+        Task Delete(EntityDto<Guid> input);
 
 
         /// <summary>
         /// 批量删除DocAttachment
         /// </summary>
-        Task BatchDelete(List<int> input);
+        Task BatchDelete(List<Guid> input);
 
-
-		/// <summary>
-        /// 导出DocAttachment为excel表
-        /// </summary>
-        /// <returns></returns>
-		//Task<FileDto> GetToExcel();
+        Task<List<DocAttachmentListDto>> GetListByDocIdAsync(Guid? docId);
 
     }
 }

@@ -111,4 +111,12 @@ export abstract class AppComponentBase {
     // let dateStr:string = this.datePipe.transform(d,'yyyy-MM-dd');
     //return dateStr;
   }
+
+  getDateFormat(): string {
+    let d = new Date();
+    let y = d.getFullYear().toString();
+    let m = (d.getMonth() + 1).toString();
+    let day = d.getDate().toString();
+    return y + '-' + m + '-' + day;
+  }
 }

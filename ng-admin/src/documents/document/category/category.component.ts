@@ -1,4 +1,4 @@
-import { Component, OnInit, Injector, Input, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Injector, Input, Output, TemplateRef, ViewChild, EventEmitter } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import {
     NzDropdownContextComponent,
@@ -26,9 +26,10 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
     dropdown: NzDropdownContextComponent;
     // actived node
     activedNode: NzTreeNode;
-    rkeyNode: { key: '', title: '' };
+    rkeyNode = { key: '', title: '' };
     nodes = [];
     searchName;
+    @Output() selectedCategory = new EventEmitter<any>();
 
 
     constructor(injector: Injector, private nzDropdownService: NzDropdownService, private categoryService: CategoryService) {
@@ -55,6 +56,11 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
         }
         data.node.isSelected = true;
         this.activedNode = data.node;
+        //alert(this.activedNode.title);
+        if (this.selectedCategory) {
+            var catg = { id: this.activedNode.key, name: this.activedNode.title };
+            this.selectedCategory.emit(catg);
+        }
         // add selectedNodeList
         this.treeCom.nzTreeService.setSelectedNodeList(this.activedNode, false);
     }

@@ -3,9 +3,10 @@ import { GyismsHttpClient } from "@shared/service-proxies/gyisms-httpclient";
 import { Injectable, Inject, Optional } from "@angular/core";
 import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
+import { PagedResultDtoOfDocument, DocumentDto } from "@shared/entity/documents";
 
 @Injectable()
-export class CategoryService {
+export class DocumentService {
     private http: HttpClient;
     private _gyhttp: GyismsHttpClient;
     private baseUrl: string;
@@ -18,18 +19,24 @@ export class CategoryService {
     }
 
     createOrUpdate(input: any): Observable<any> {
-        let url_ = "/api/services/app/DocCategory/CreateOrUpdate";
-        let cat = { docCategory: input };
+        let url_ = "/api/services/app/Document/CreateOrUpdate";
+        let cat = { document: input };
         return this._gyhttp.post(url_, cat).map(data => {
             return data;
         });
     }
 
-    getTreeAsync(): Observable<any> {
-        let url_ = "/api/services/app/DocCategory/GetTreeAsync";
-        return this._gyhttp.get(url_, {}).map(data => {
-            return data;
+    getPaged(param: any): Observable<PagedResultDtoOfDocument> {
+        let url_ = "/api/services/app/Document/getPaged";
+        return this._gyhttp.get(url_, param).map(data => {
+            return PagedResultDtoOfDocument.fromJS(data);
         });
     }
 
+    getById(id: any): Observable<DocumentDto> {
+        let url_ = "/api/services/app/Document/getById";
+        return this._gyhttp.get(url_, { id: id }).map(data => {
+            return DocumentDto.fromJS(data);
+        });
+    }
 }

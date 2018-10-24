@@ -10,7 +10,8 @@ import { VisitTaskServiceProxy, ScheduleServiceProxy } from '@shared/service-pro
 import { DataConfigServiceProxy } from '@shared/service-proxies/config/data-config-service';
 import { HomeInfoServiceProxy } from '@shared/service-proxies/home/home-service';
 import { ScheduleDetailServiceProxy } from '@shared/service-proxies/tobacco-management/schdule-detail-service';
-import { CategoryService } from '@shared/service-proxies/documents';
+import { CategoryService, DocumentService, AttachmentService } from '@shared/service-proxies/documents';
+
 
 @NgModule({
   providers: [
@@ -32,6 +33,8 @@ import { CategoryService } from '@shared/service-proxies/documents';
     HomeInfoServiceProxy,
     ScheduleDetailServiceProxy,
     CategoryService,
+    DocumentService,
+    AttachmentService,
     { provide: HTTP_INTERCEPTORS, useClass: AbpHttpInterceptor, multi: true },
   ],
 })

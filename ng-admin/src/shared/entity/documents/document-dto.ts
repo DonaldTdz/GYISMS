@@ -12,6 +12,7 @@ export class DocumentDto implements IDocumentDto {
     creationTime: Date;
     deptDesc: string;
     employeeDes: string;
+    isAllUser: boolean;
 
     constructor(data?: IDocumentDto) {
         if (data) {
@@ -37,6 +38,7 @@ export class DocumentDto implements IDocumentDto {
             this.creationTime = data["creationTime"];
             this.deptDesc = data["deptDesc"];
             this.employeeDes = data["employeeDes"];
+            this.isAllUser = data["isAllUser"];
         }
     }
 
@@ -72,6 +74,7 @@ export class DocumentDto implements IDocumentDto {
         data["creationTime"] = this.creationTime;
         data["deptDesc"] = this.deptDesc;
         data["employeeDes"] = this.employeeDes;
+        data["isAllUser"] = this.isAllUser;
         return data;
     }
 
@@ -96,4 +99,59 @@ export interface IDocumentDto {
     creationTime: Date;
     deptDesc: string;
     employeeDes: string;
+    isAllUser: boolean;
+}
+
+export class PagedResultDtoOfDocument implements IPagedResultDtoOfDocument {
+    totalCount: number;
+    items: DocumentDto[];
+
+    constructor(data?: IPagedResultDtoOfDocument) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(DocumentDto.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfDocument {
+        let result = new PagedResultDtoOfDocument();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfDocument();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfDocument {
+    totalCount: number;
+    items: DocumentDto[];
 }
