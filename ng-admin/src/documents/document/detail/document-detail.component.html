@@ -55,9 +55,9 @@
     <form nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
-                <button nz-button type="button" (click)="showModal(null)" nzType="primary">
+                <button nz-button type="button" (click)="uploadFile()" nzType="primary">
                     <i class="anticon anticon-plus"></i>
-                    <span>上传文档</span>
+                    <span>上传资料</span>
                 </button>
             </div>
         </div>
@@ -84,7 +84,6 @@
                 <td>{{item.desc}}</td>
                 <td>{{item.seq}}</td>
                 <td>
-                    <a (click)="deleteExamine(item)">修改</a>
                     <a (click)="deleteExamine(item)">删除</a>
                 </td>
             </tr>

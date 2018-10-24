@@ -1,0 +1,48 @@
+<div class="padding-bottom-45">
+    <h3>
+        <i nz-icon type="upload" class="anticon anticon-upload"></i><span>上传资料</span>
+    </h3>
+    <form nz-form [formGroup]="validateForm" (ngSubmit)="submit()" *ngIf="attachment">
+        <!-- 文件名 -->
+        <nz-form-item>
+            <nz-form-control nzHasFeedback>
+                <nz-input-group [nzAddOnAfter]="addOnAfterIconTemplate">
+                    <input type="text" nz-input formControlName="name" [placeholder]="'文件名'">
+                </nz-input-group>
+                <ng-template #addOnAfterIconTemplate>
+                    <nz-upload nzAction="{{postUrl | hostUrl}}" [nzShowUploadList]="false" (nzChange)="handleChange($event)"
+                        [nzBeforeUpload]="beforeUpload">
+                        <i nz-icon type="upload" class="anticon anticon-upload"></i>
+                    </nz-upload>
+                </ng-template>
+                <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').errors">
+                    <ng-container *ngIf="validateForm.get('name').hasError('required')">文件名不能为空</ng-container>
+                </nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <nz-form-item>
+            <nz-form-control nzHasFeedback>
+                <nz-select formControlName="fileType" nzAllowClear nzPlaceHolder="文件类型">
+                    <nz-option nzValue="1" nzLabel="PDF"></nz-option>
+                    <nz-option nzValue="2" nzLabel="Word"></nz-option>
+                    <nz-option nzValue="3" nzLabel="Excel"></nz-option>
+                    <nz-option nzValue="4" nzLabel="Other"></nz-option>
+                </nz-select>
+                <nz-form-explain *ngIf="validateForm.get('fileType').dirty&&validateForm.get('fileType').errors">
+                    <ng-container *ngIf="validateForm.get('fileType').hasError('required')">请选择文件类型</ng-container>
+                </nz-form-explain>
+            </nz-form-control>
+        </nz-form-item>
+        <!-- 功能按钮 -->
+        <div class="custom-modal-footer">
+            <div class="custom-modal-footter-group">
+                <button nz-button type="button" [disabled]="saving" (click)="close()">
+                    {{l("Cancel")}}
+                </button>
+                <button nz-button [nzType]="'primary'" type="button" (click)="submit()" [disabled]="!validateForm.valid">
+                    {{l("Save")}}
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

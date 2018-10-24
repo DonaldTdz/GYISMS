@@ -1,22 +1,17 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.DocAttachments;
 using GYISMS.GYEnums;
 
 namespace  GYISMS.DocAttachments.Dtos
 {
-    public class DocAttachmentEditDto
+    [AutoMapTo(typeof(DocAttachment))]
+    public class DocAttachmentEditDto : FullAuditedEntityDto<Guid?>
     {
-
-        /// <summary>
-        /// Id
-        /// </summary>
-        public int? Id { get; set; }         
-
-
-        
 		/// <summary>
 		/// Name
 		/// </summary>

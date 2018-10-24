@@ -12,6 +12,7 @@ import { DocListComponent } from './document/list/list.component';
 import { CreateCategoryComponent } from './document/category/create-category/create-category.component';
 import { EditCategoryComponent } from './document/category/edit-category/edit-category.component';
 import { DocumentDetailComponent } from './document/detail/document-detail.component';
+import { UploadFileComponent } from './document/upload-file/upload-file.component';
 
 @NgModule({
     imports: [
@@ -28,12 +29,14 @@ import { DocumentDetailComponent } from './document/detail/document-detail.compo
         DocListComponent,
         CreateCategoryComponent,
         EditCategoryComponent,
-        DocumentDetailComponent
+        DocumentDetailComponent,
+        UploadFileComponent
     ],
     entryComponents: [
         CreateCategoryComponent,
         EditCategoryComponent,
-        DocumentDetailComponent
+        DocumentDetailComponent,
+        UploadFileComponent
     ],
     providers: [LocalizationService],
 })

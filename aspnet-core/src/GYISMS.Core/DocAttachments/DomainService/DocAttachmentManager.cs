@@ -28,13 +28,13 @@ namespace GYISMS.DocAttachments.DomainService
     public class DocAttachmentManager :GYISMSDomainServiceBase, IDocAttachmentManager
     {
 		
-		private readonly IRepository<DocAttachment,int> _repository;
+		private readonly IRepository<DocAttachment,Guid> _repository;
 
 		/// <summary>
 		/// DocAttachment的构造方法
 		///</summary>
 		public DocAttachmentManager(
-			IRepository<DocAttachment, int> repository
+			IRepository<DocAttachment, Guid> repository
 		)
 		{
 			_repository =  repository;

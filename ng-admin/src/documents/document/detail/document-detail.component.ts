@@ -4,6 +4,7 @@ import { DocumentDto } from '@shared/entity/documents';
 import { Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentService } from '@shared/service-proxies/documents';
+import { UploadFileComponent } from '../upload-file/upload-file.component';
 
 @Component({
     selector: 'doc-detail',
@@ -98,6 +99,20 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
 
     protected return() {
         this.router.navigate(['app/doc/document']);
+    }
+
+    uploadFile() {
+        let att = { docId: this.document.id };
+        this.modalHelper
+            .open(UploadFileComponent, { attachment: att }, 'md', {
+                nzMask: true,
+                nzClosable: false,
+            })
+            .subscribe(isSave => {
+                if (isSave) {
+
+                }
+            });
     }
 
 }
