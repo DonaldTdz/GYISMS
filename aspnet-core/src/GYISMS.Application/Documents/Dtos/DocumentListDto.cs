@@ -5,9 +5,13 @@ using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using GYISMS.Documents;
+using GYISMS.DocAttachments.Dtos;
+using System.Collections.Generic;
+using Abp.AutoMapper;
 
 namespace GYISMS.Documents.Dtos
 {
+    [AutoMapFrom(typeof(Document))]
     public class DocumentListDto : FullAuditedEntityDto<Guid> 
     {
 
@@ -83,6 +87,16 @@ namespace GYISMS.Documents.Dtos
         public string EmployeeDes { get; set; }
 
         public bool IsAllUser { get; set; }
+        public string TimeFormat
+        {
+            get
+            {
+                return ReleaseDate.Value.ToString("yyyy.MM.dd");
+            }
+        }
 
+        public string FileName { get; set; }
+        public string FileUrl { get; set; }
+        public List<DocAttachmentListDto> FileList { get; set; }
     }
 }

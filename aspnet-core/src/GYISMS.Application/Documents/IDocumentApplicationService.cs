@@ -72,11 +72,8 @@ namespace GYISMS.Documents
         Task BatchDelete(List<Guid> input);
 
 
-		/// <summary>
-        /// 导出Document为excel表
-        /// </summary>
-        /// <returns></returns>
-		//Task<FileDto> GetToExcel();
-
+        Task<DocumentListDto> GetDocInfoAsync(int id);
+        Task<DocumentListDto> GetDocInfoByScanAsync(Guid id);
+        Task<List<DocumentListDto>> GetDocListByParentIdAsync(int parentId);
     }
 }

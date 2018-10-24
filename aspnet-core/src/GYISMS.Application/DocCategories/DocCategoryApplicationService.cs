@@ -21,8 +21,8 @@ using Abp.Linq.Extensions;
 using GYISMS.DocCategories;
 using GYISMS.DocCategories.Dtos;
 using GYISMS.DocCategories.DomainService;
-
-
+using GYISMS.Documents.Dtos;
+using GYISMS.Documents;
 
 namespace GYISMS.DocCategories
 {
@@ -33,6 +33,7 @@ namespace GYISMS.DocCategories
     public class DocCategoryAppService : GYISMSAppServiceBase, IDocCategoryAppService
     {
         private readonly IRepository<DocCategory, int> _entityRepository;
+        private readonly IRepository<Document, Guid> _documentRepository;
 
         private readonly IDocCategoryManager _entityManager;
 
@@ -42,10 +43,12 @@ namespace GYISMS.DocCategories
         public DocCategoryAppService(
         IRepository<DocCategory, int> entityRepository
         , IDocCategoryManager entityManager
+            , IRepository<Document, Guid> documentRepository
         )
         {
             _entityRepository = entityRepository;
             _entityManager = entityManager;
+            _documentRepository = documentRepository;
         }
 
 
@@ -213,17 +216,84 @@ namespace GYISMS.DocCategories
         }
 
         /// <summary>
-        /// 导出DocCategory为excel表,等待开发。
+        /// 钉钉获取知识库类别
         /// </summary>
         /// <returns></returns>
-        //public async Task<FileDto> GetToExcel()
-        //{
-        //	var users = await UserManager.Users.ToListAsync();
-        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-        //	await FillRoleNames(userListDtos);
-        //	return _userListExcelExporter.ExportToFile(userListDtos);
-        //}
+        [AbpAllowAnonymous]
+        public async Task<List<GridListDto>> GetCategoryListAsync(string host)
+        {
+            var query = _entityRepository.GetAll().Where(v => v.ParentId == 0).OrderBy(v=>v.Id).AsNoTracking();
+            var entityList = await (from c in query
+                                    select new GridListDto()
+                                    {
+                                        Id = c.Id,
+                                        Text = c.Name,
+                                        Icon = host + "/knowledge/icon-tasknor.png"
+                                    }).ToListAsync();
+            return entityList;
+        }
 
+        /// <summary>
+        /// 获取子类列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>                                                                        
+        [AbpAllowAnonymous]
+        public async Task<List<DocCategoryListDto>> GetDocChildListAsync(int id)
+        {
+            var query =await _entityRepository.GetAll().Where(v => v.ParentId == id).OrderBy(v => v.Id).AsNoTracking().ToListAsync();
+            var entityListDtos = query.MapTo<List<DocCategoryListDto>>();
+            return entityListDtos;
+        }
+
+        /// <summary>
+        /// 搜索标题和摘要
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<List<DocCategoryListDto>> GetDocChildListByInputAsync(string input)
+        {
+            var doc =  _documentRepository.GetAll();
+            var category =  _entityRepository.GetAll();
+            var list = await(from c in category
+                       join d in doc on c.Id equals d.CategoryId
+                       select new DocCategoryListDto()
+                       {
+                           Id = c.Id,
+                           Name = c.Name,
+                           ParentId = c.ParentId,
+                           Desc = c.Desc,
+                           Summary = d.Summary
+                       }).WhereIf(!string.IsNullOrEmpty(input), v=>v.Name.Contains(input) || v.Summary.Contains(input)).AsNoTracking().ToListAsync();
+            return list;
+        }
+
+        /// <summary>
+        /// 钉钉获取Tab子列表
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<List<TabListDto>> GetTabChildListByIdAsync(int id)
+        {
+            var query = _entityRepository.GetAll().Where(v => v.ParentId == id).AsNoTracking();
+            List<TabListDto> list = new List<TabListDto>();
+            TabListDto item = new TabListDto();
+            item.Id = id;
+            item.ParentId = 0;
+            item.Title = "全部";
+            list.Add(item);
+            var result = await (from t in query
+                              select new TabListDto()
+                              {
+                                  Id = t.Id,
+                                  ParentId = t.ParentId,
+                                  Title = t.Name
+                              }).AsNoTracking().ToListAsync();
+            list.AddRange(result);
+            return list;
+        }
     }
 }
 

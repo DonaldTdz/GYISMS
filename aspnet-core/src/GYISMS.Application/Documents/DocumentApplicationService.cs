@@ -21,8 +21,7 @@ using Abp.Linq.Extensions;
 using GYISMS.Documents;
 using GYISMS.Documents.Dtos;
 using GYISMS.Documents.DomainService;
-
-
+using GYISMS.DocAttachments;
 
 namespace GYISMS.Documents
 {
@@ -33,7 +32,7 @@ namespace GYISMS.Documents
     public class DocumentAppService : GYISMSAppServiceBase, IDocumentAppService
     {
         private readonly IRepository<Document, Guid> _entityRepository;
-
+        private readonly IRepository<DocAttachment, int> _docAttachmentRepository;
         private readonly IDocumentManager _entityManager;
 
         /// <summary>
@@ -41,11 +40,13 @@ namespace GYISMS.Documents
         ///</summary>
         public DocumentAppService(
         IRepository<Document, Guid> entityRepository
-        ,IDocumentManager entityManager
+        , IDocumentManager entityManager
+            , IRepository<DocAttachment, int> docAttachmentRepository
         )
         {
-            _entityRepository = entityRepository; 
-             _entityManager=entityManager;
+            _entityRepository = entityRepository;
+            _entityManager = entityManager;
+            _docAttachmentRepository = docAttachmentRepository;
         }
 
 
@@ -54,158 +55,213 @@ namespace GYISMS.Documents
         ///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-		 
+
         public async Task<PagedResultDto<DocumentListDto>> GetPaged(GetDocumentsInput input)
-		{
+        {
 
-		    var query = _entityRepository.GetAll();
-			// TODO:根据传入的参数添加过滤条件
-            
-
-			var count = await query.CountAsync();
-
-			var entityList = await query
-					.OrderBy(input.Sorting).AsNoTracking()
-					.PageBy(input)
-					.ToListAsync();
-
-			// var entityListDtos = ObjectMapper.Map<List<DocumentListDto>>(entityList);
-			var entityListDtos =entityList.MapTo<List<DocumentListDto>>();
-
-			return new PagedResultDto<DocumentListDto>(count,entityListDtos);
-		}
+            var query = _entityRepository.GetAll();
+            // TODO:根据传入的参数添加过滤条件
 
 
-		/// <summary>
-		/// 通过指定id获取DocumentListDto信息
-		/// </summary>
-		 
-		public async Task<DocumentListDto> GetById(EntityDto<Guid> input)
-		{
-			var entity = await _entityRepository.GetAsync(input.Id);
+            var count = await query.CountAsync();
 
-		    return entity.MapTo<DocumentListDto>();
-		}
+            var entityList = await query
+                    .OrderBy(input.Sorting).AsNoTracking()
+                    .PageBy(input)
+                    .ToListAsync();
 
-		/// <summary>
-		/// 获取编辑 Document
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		
-		public async Task<GetDocumentForEditOutput> GetForEdit(NullableIdDto<Guid> input)
-		{
-			var output = new GetDocumentForEditOutput();
-DocumentEditDto editDto;
+            // var entityListDtos = ObjectMapper.Map<List<DocumentListDto>>(entityList);
+            var entityListDtos = entityList.MapTo<List<DocumentListDto>>();
 
-			if (input.Id.HasValue)
-			{
-				var entity = await _entityRepository.GetAsync(input.Id.Value);
-
-				editDto = entity.MapTo<DocumentEditDto>();
-
-				//documentEditDto = ObjectMapper.Map<List<documentEditDto>>(entity);
-			}
-			else
-			{
-				editDto = new DocumentEditDto();
-			}
-
-			output.Document = editDto;
-			return output;
-		}
+            return new PagedResultDto<DocumentListDto>(count, entityListDtos);
+        }
 
 
-		/// <summary>
-		/// 添加或者修改Document的公共方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		
-		public async Task CreateOrUpdate(CreateOrUpdateDocumentInput input)
-		{
+        /// <summary>
+        /// 通过指定id获取DocumentListDto信息
+        /// </summary>
 
-			if (input.Document.Id.HasValue)
-			{
-				await Update(input.Document);
-			}
-			else
-			{
-				await Create(input.Document);
-			}
-		}
+        public async Task<DocumentListDto> GetById(EntityDto<Guid> input)
+        {
+            var entity = await _entityRepository.GetAsync(input.Id);
+
+            return entity.MapTo<DocumentListDto>();
+        }
+
+        /// <summary>
+        /// 获取编辑 Document
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+
+        public async Task<GetDocumentForEditOutput> GetForEdit(NullableIdDto<Guid> input)
+        {
+            var output = new GetDocumentForEditOutput();
+            DocumentEditDto editDto;
+
+            if (input.Id.HasValue)
+            {
+                var entity = await _entityRepository.GetAsync(input.Id.Value);
+
+                editDto = entity.MapTo<DocumentEditDto>();
+
+                //documentEditDto = ObjectMapper.Map<List<documentEditDto>>(entity);
+            }
+            else
+            {
+                editDto = new DocumentEditDto();
+            }
+
+            output.Document = editDto;
+            return output;
+        }
 
 
-		/// <summary>
-		/// 新增Document
-		/// </summary>
-		
-		protected virtual async Task<DocumentEditDto> Create(DocumentEditDto input)
-		{
-			//TODO:新增前的逻辑判断，是否允许新增
+        /// <summary>
+        /// 添加或者修改Document的公共方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+
+        public async Task CreateOrUpdate(CreateOrUpdateDocumentInput input)
+        {
+
+            if (input.Document.Id.HasValue)
+            {
+                await Update(input.Document);
+            }
+            else
+            {
+                await Create(input.Document);
+            }
+        }
+
+
+        /// <summary>
+        /// 新增Document
+        /// </summary>
+
+        protected virtual async Task<DocumentEditDto> Create(DocumentEditDto input)
+        {
+            //TODO:新增前的逻辑判断，是否允许新增
 
             // var entity = ObjectMapper.Map <Document>(input);
-            var entity=input.MapTo<Document>();
-			
-
-			entity = await _entityRepository.InsertAsync(entity);
-			return entity.MapTo<DocumentEditDto>();
-		}
-
-		/// <summary>
-		/// 编辑Document
-		/// </summary>
-		
-		protected virtual async Task Update(DocumentEditDto input)
-		{
-			//TODO:更新前的逻辑判断，是否允许更新
-
-			var entity = await _entityRepository.GetAsync(input.Id.Value);
-			input.MapTo(entity);
-
-			// ObjectMapper.Map(input, entity);
-		    await _entityRepository.UpdateAsync(entity);
-		}
+            var entity = input.MapTo<Document>();
 
 
+            entity = await _entityRepository.InsertAsync(entity);
+            return entity.MapTo<DocumentEditDto>();
+        }
 
-		/// <summary>
-		/// 删除Document信息的方法
-		/// </summary>
-		/// <param name="input"></param>
-		/// <returns></returns>
-		
-		public async Task Delete(EntityDto<Guid> input)
-		{
-			//TODO:删除前的逻辑判断，是否允许删除
-			await _entityRepository.DeleteAsync(input.Id);
-		}
+        /// <summary>
+        /// 编辑Document
+        /// </summary>
+
+        protected virtual async Task Update(DocumentEditDto input)
+        {
+            //TODO:更新前的逻辑判断，是否允许更新
+
+            var entity = await _entityRepository.GetAsync(input.Id.Value);
+            input.MapTo(entity);
+
+            // ObjectMapper.Map(input, entity);
+            await _entityRepository.UpdateAsync(entity);
+        }
 
 
 
-		/// <summary>
-		/// 批量删除Document的方法
-		/// </summary>
-		
-		public async Task BatchDelete(List<Guid> input)
-		{
-			// TODO:批量删除前的逻辑判断，是否允许删除
-			await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
-		}
+        /// <summary>
+        /// 删除Document信息的方法
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+
+        public async Task Delete(EntityDto<Guid> input)
+        {
+            //TODO:删除前的逻辑判断，是否允许删除
+            await _entityRepository.DeleteAsync(input.Id);
+        }
 
 
-		/// <summary>
-		/// 导出Document为excel表,等待开发。
-		/// </summary>
-		/// <returns></returns>
-		//public async Task<FileDto> GetToExcel()
-		//{
-		//	var users = await UserManager.Users.ToListAsync();
-		//	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-		//	await FillRoleNames(userListDtos);
-		//	return _userListExcelExporter.ExportToFile(userListDtos);
-		//}
 
+        /// <summary>
+        /// 批量删除Document的方法
+        /// </summary>
+
+        public async Task BatchDelete(List<Guid> input)
+        {
+            // TODO:批量删除前的逻辑判断，是否允许删除
+            await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
+        }
+
+
+        /// <summary>
+        /// 钉钉获取资料详情
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<DocumentListDto> GetDocInfoAsync(int id)
+        {
+            var doc = _entityRepository.GetAll().Where(v => v.CategoryId == id).AsNoTracking();
+            var att = _docAttachmentRepository.GetAll().AsNoTracking();
+            var result = await (from d in doc
+                                join a in att on d.Id equals a.DocId into table
+                                from t in table.DefaultIfEmpty()
+                                select new DocumentListDto()
+                                {
+                                    Id = d.Id,
+                                    Name = d.Name,
+                                    CategoryDesc = d.CategoryDesc,
+                                    ReleaseDate = d.ReleaseDate,
+                                    Summary = d.Summary,
+                                    Content = d.Content,
+                                    FileName = t.Name,
+                                    FileUrl = t.Path,
+                                    QrCodeUrl = d.QrCodeUrl
+                                }).AsNoTracking().FirstOrDefaultAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// 钉钉扫码搜索
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<DocumentListDto> GetDocInfoByScanAsync(Guid id)
+        {
+            var doc = _entityRepository.GetAll().Where(v => v.Id == id).AsNoTracking();
+            var att = _docAttachmentRepository.GetAll().AsNoTracking();
+            var result = await (from d in doc
+                                join a in att on d.Id equals a.DocId into table
+                                from t in table.DefaultIfEmpty()
+                                select new DocumentListDto()
+                                {
+                                    Id = d.Id,
+                                    Name = d.Name,
+                                    CategoryDesc = d.CategoryDesc,
+                                    ReleaseDate = d.ReleaseDate,
+                                    Summary = d.Summary,
+                                    Content = d.Content,
+                                    FileName = t.Name,
+                                    FileUrl = t.Path,
+                                    QrCodeUrl = d.QrCodeUrl
+                                }).AsNoTracking().FirstOrDefaultAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// 获取文件列表项
+        /// </summary>
+        /// <param name="parentId"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<List<DocumentListDto>> GetDocListByParentIdAsync(int parentId)
+        {
+            var entity = await _entityRepository.GetAll().Where(v => v.CategoryId == parentId).OrderBy(v => v.Id).AsNoTracking().ToListAsync();
+            return entity.MapTo<List<DocumentListDto>>();
+        }
     }
 }
 
