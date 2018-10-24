@@ -62,16 +62,13 @@
             </div>
         </div>
     </form>
-    <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
-    <nz-table #nzTable [nzData]="attachments" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate"
-        [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true"
-        (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
+    <nz-table #nzTable [nzData]="attachments" [nzShowPagination]="false">
         <thead>
             <tr>
                 <th>文档名称</th>
                 <th>类型</th>
                 <th>大小</th>
-                <th>下载地址</th>
+                <th>下载</th>
                 <th>创建时间</th>
                 <th>操作</th>
             </tr>
@@ -79,12 +76,12 @@
         <tbody>
             <tr *ngFor="let item of nzTable.data">
                 <td>{{item.name}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.name}}</td>
-                <td>{{item.desc}}</td>
-                <td>{{item.seq}}</td>
+                <td>{{item.fileTypeName}}</td>
+                <td>{{item.fileSize}}</td>
+                <td><a href="{{item.path | hostUrl}}" target="_blank">{{item.name}}</a></td>
+                <td>{{item.creationTime | date:'yyyy-MM-dd'}}</td>
                 <td>
-                    <a (click)="deleteExamine(item)">删除</a>
+                    <a (click)="deleteAttachment(item.id)" style=" color:red;">删除</a>
                 </td>
             </tr>
         </tbody>

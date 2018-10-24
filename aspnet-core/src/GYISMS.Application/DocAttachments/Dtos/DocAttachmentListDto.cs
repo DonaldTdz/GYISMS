@@ -6,13 +6,13 @@ using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using GYISMS.DocAttachments;
 using GYISMS.GYEnums;
+using Abp.AutoMapper;
 
 namespace GYISMS.DocAttachments.Dtos
 {
-    public class DocAttachmentListDto : FullAuditedEntityDto 
-    {
-
-        
+    [AutoMapFrom(typeof(DocAttachment))]
+    public class DocAttachmentListDto : FullAuditedEntityDto<Guid>
+    {      
 		/// <summary>
 		/// Name
 		/// </summary>
@@ -26,12 +26,24 @@ namespace GYISMS.DocAttachments.Dtos
 		/// </summary>
 		public FileTypeEnum? FileType { get; set; }
 
+        public string FileTypeName
+        {
+            get
+            {
+                if (FileType.HasValue)
+                {
+                    return FileType.Value.ToString();
+                }
+                return string.Empty;
+            }
+        }
 
 
-		/// <summary>
-		/// FileSize
-		/// </summary>
-		public decimal? FileSize { get; set; }
+
+        /// <summary>
+        /// FileSize
+        /// </summary>
+        public decimal? FileSize { get; set; }
 
 
 

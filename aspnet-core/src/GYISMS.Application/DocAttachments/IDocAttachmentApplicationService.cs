@@ -71,12 +71,7 @@ namespace GYISMS.DocAttachments
         /// </summary>
         Task BatchDelete(List<Guid> input);
 
-
-		/// <summary>
-        /// 导出DocAttachment为excel表
-        /// </summary>
-        /// <returns></returns>
-		//Task<FileDto> GetToExcel();
+        Task<List<DocAttachmentListDto>> GetListByDocIdAsync(Guid? docId);
 
     }
 }

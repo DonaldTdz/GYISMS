@@ -26,4 +26,19 @@ export class AttachmentService {
         });
     }
 
+    getListByDocIdAsync(param: any): Observable<any> {
+        let url_ = "/api/services/app/DocAttachment/getListByDocIdAsync";
+        return this._gyhttp.get(url_, param).map(data => {
+            return data;
+        });
+    }
+
+    delete(id: any): Observable<any> {
+        let url_ = "/api/services/app/DocAttachment/Delete";
+        var param = { id: id };
+        return this._gyhttp.delete(url_, param).map(data => {
+            return data;
+        });
+    }
+
 }

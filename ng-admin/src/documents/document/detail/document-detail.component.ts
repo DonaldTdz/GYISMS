@@ -1,10 +1,11 @@
 import { Component, OnInit, Injector, Input } from '@angular/core';
 import { FormComponentBase } from '@shared/component-base/form-component-base';
-import { DocumentDto } from '@shared/entity/documents';
+import { DocumentDto, Attachment } from '@shared/entity/documents';
 import { Validators, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DocumentService } from '@shared/service-proxies/documents';
+import { DocumentService, AttachmentService } from '@shared/service-proxies/documents';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
+import { NzModalRef, NzModalService } from 'ng-zorro-antd';
 
 @Component({
     selector: 'doc-detail',
@@ -30,8 +31,13 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
     isDelete = false;
     id: '';
     codeStyle = 'none';
+    attachments = [];
+    confirmModal: NzModalRef;
 
-    constructor(injector: Injector, private actRouter: ActivatedRoute, private router: Router, private documentService: DocumentService) {
+    constructor(injector: Injector, private actRouter: ActivatedRoute, private router: Router
+        , private documentService: DocumentService
+        , private attachmentService: AttachmentService
+        , private modal: NzModalService) {
         super(injector);
         var cid = this.actRouter.snapshot.params['cid'];
         if (cid) {
@@ -51,6 +57,7 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             releaseDate: [this.getDateFormat(), [Validators.required]]
         });
         this.getById();
+        this.getAttachments();
     }
 
     protected submitExecute(finisheCallback: Function): void {
@@ -71,6 +78,15 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             this.documentService.getById(this.id).subscribe(res => {
                 this.document = res;
                 this.setFormValues(this.document);
+            });
+        }
+    }
+
+    getAttachments() {
+        if (this.id) {
+            var param = { docId: this.id };
+            this.attachmentService.getListByDocIdAsync(param).subscribe(res => {
+                this.attachments = res;
             });
         }
     }
@@ -113,6 +129,18 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
 
                 }
             });
+    }
+
+    deleteAttachment(itemid) {
+        this.confirmModal = this.modal.confirm({
+            nzContent: '是否删除资料文档?',
+            nzOnOk: () => {
+                this.attachmentService.delete(itemid).subscribe(() => {
+                    this.notify.info(this.l('删除成功！'), '');
+                    this.getAttachments();
+                });
+            }
+        });
     }
 
 }

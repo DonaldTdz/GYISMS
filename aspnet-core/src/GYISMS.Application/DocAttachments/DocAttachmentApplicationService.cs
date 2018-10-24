@@ -193,18 +193,11 @@ namespace GYISMS.DocAttachments
             await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
-
-        /// <summary>
-        /// 导出DocAttachment为excel表,等待开发。
-        /// </summary>
-        /// <returns></returns>
-        //public async Task<FileDto> GetToExcel()
-        //{
-        //	var users = await UserManager.Users.ToListAsync();
-        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-        //	await FillRoleNames(userListDtos);
-        //	return _userListExcelExporter.ExportToFile(userListDtos);
-        //}
+        public async Task<List<DocAttachmentListDto>> GetListByDocIdAsync(Guid? docId)
+        {
+            var query = _entityRepository.GetAll().Where(e => e.DocId == docId);
+            return (await query.ToListAsync()).MapTo<List<DocAttachmentListDto>>();
+        }
 
     }
 }

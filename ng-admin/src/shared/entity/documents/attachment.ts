@@ -6,6 +6,7 @@ export class Attachment implements IAttachment {
     path: string;
     docId: string;
     creationTime: string;
+    fileTypeName: string;
 
     constructor(data?: IAttachment) {
         if (data) {
@@ -25,6 +26,7 @@ export class Attachment implements IAttachment {
             this.path = data["path"];
             this.docId = data["docId"];
             this.creationTime = data["creationTime"];
+            this.fileTypeName = data["fileTypeName"];
         }
     }
 
@@ -54,6 +56,7 @@ export class Attachment implements IAttachment {
         data["path"] = this.path;
         data["docId"] = this.docId;
         data["creationTime"] = this.creationTime;
+        data["fileTypeName"] = this.fileTypeName;
         return data;
     }
 
@@ -71,4 +74,5 @@ export interface IAttachment {
     fileSize: number;
     path: string;
     docId: string;
+    fileTypeName: string;
 }
