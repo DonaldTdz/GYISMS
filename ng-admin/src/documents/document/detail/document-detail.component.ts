@@ -6,6 +6,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DocumentService, AttachmentService } from '@shared/service-proxies/documents';
 import { UploadFileComponent } from '../upload-file/upload-file.component';
 import { NzModalRef, NzModalService } from 'ng-zorro-antd';
+import { log } from 'util';
+import { DeptUserComponent } from '../dept-user/dept-user.component';
 
 @Component({
     selector: 'doc-detail',
@@ -33,6 +35,10 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
     codeStyle = 'none';
     attachments = [];
     confirmModal: NzModalRef;
+    isAllUser = '1';
+    userDesc = '';
+    deptTags = ['信息中心', '技术部'];
+    userTags = ['唐德舟', '杨帆', '王晓雪'];
 
     constructor(injector: Injector, private actRouter: ActivatedRoute, private router: Router
         , private documentService: DocumentService
@@ -54,7 +60,8 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             name: ['', [Validators.required, Validators.maxLength(200)]],
             summary: ['', [Validators.required, Validators.maxLength(1000)]],
             content: [null],
-            releaseDate: [this.getDateFormat(), [Validators.required]]
+            releaseDate: [this.getDateFormat(), [Validators.required]],
+            isAllUser: ['1']
         });
         this.getById();
         this.getAttachments();
@@ -78,6 +85,7 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             this.documentService.getById(this.id).subscribe(res => {
                 this.document = res;
                 this.setFormValues(this.document);
+                //alert(this.isAllUser)
             });
         }
     }
@@ -101,13 +109,26 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         this.qrCode.value = entity.id;
         this.isDelete = true;
         this.codeStyle = 'block';
+        this.isAllUser = entity.isAllUser === true ? '1' : '0';
+        this.setControlVal('isAllUser', this.isAllUser);
+        this.setUserDesc(entity);
+    }
+
+    setUserDesc(entity: DocumentDto) {
+        if (entity.deptDesc) {
+            this.userDesc = entity.deptDesc;
+        }
+        if (entity.employeeDes) {
+            this.userDesc = (this.userDesc ? (this.userDesc + ',' + entity.employeeDes) : entity.employeeDes);
+        }
     }
 
     protected getFormValues(): void {
         this.document.name = this.getControlVal('name');
         this.document.summary = this.getControlVal('summary');
         this.document.content = this.getControlVal('content');
-        this.document.isAllUser = true;
+        this.isAllUser = this.getControlVal('isAllUser');
+        this.document.isAllUser = this.isAllUser == '1' ? true : false;
         this.document.releaseDate = this.getControlVal("releaseDate");
         this.document.categoryId = this.category.id ? parseInt(this.category.id) : 0;
         this.document.categoryDesc = this.category.name;
@@ -141,6 +162,57 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
                 });
             }
         });
+    }
+
+    allUserRadioChange(ngmodel: string) {
+        //alert(ngmodel);
+        this.isAllUser = ngmodel;
+    }
+
+    handleDeptClose(tag: string) {
+        var i = 0;
+        for (const item of this.deptTags) {
+            //console.log('item:' + item + ' tag:' + tag)
+            if (item == tag) {
+                //console.log('llll');
+                this.deptTags.splice(i, 1);
+                break;
+            }
+            i++;
+        }
+
+        //console.table(this.deptTags);
+        /*for (const key in this.deptTags) {
+            if (this.deptTags.hasOwnProperty(key)) {
+                //const element = this.deptTags[key];
+                
+            }
+        }*/
+    }
+
+    handleUserClose(tag: string) {
+        var i = 0;
+        for (const item of this.userTags) {
+            if (item == tag) {
+                this.userTags.splice(i, 1);
+                break;
+            }
+            i++;
+        }
+        //console.table(this.userTags);
+    }
+
+    showDeptUserModel() {
+        this.modalHelper
+            .open(DeptUserComponent, {}, 'lg', {
+                nzMask: true,
+                nzClosable: false,
+            })
+            .subscribe(res => {
+                if (res) {
+
+                }
+            });
     }
 
 }

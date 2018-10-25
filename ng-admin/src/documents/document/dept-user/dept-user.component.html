@@ -1,0 +1,81 @@
+<div class="padding-bottom-45">
+    <h3>
+        <span>选择部门与人员</span>
+    </h3>
+    <div nz-row>
+        <div nz-col nzSpan="3">
+            已选择：
+        </div>
+        <div nz-col nzSpan="21">
+            <nz-tag *ngFor="let dept of selectedDepts; let i = index;" [nzColor]="'blue'" [nzMode]="'closeable'"
+                (nzAfterClose)="handleDeptClose(dept)">
+                {{ dept.name }}
+            </nz-tag>
+            <nz-tag *ngFor="let user of selectedUsers; let i = index;" [nzMode]="'closeable'" (nzAfterClose)="handleUserClose(user)">
+                {{ user.name }}
+            </nz-tag>
+        </div>
+    </div>
+    <div nz-row>
+        <div nz-col nzSpan="12">
+            <div>
+                <nz-tree [nzCheckable]="true" [(ngModel)]="nodes" [nzShowExpand]="true" (nzClick)="activeNode($event)"
+                    [nzDefaultCheckedKeys]="checkedDeptKeys" (nzDblClick)="openFolder($event)">
+                    <ng-template style="margin:0px;" #nzTreeTemplate let-node>
+                        <span class="custom-node" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
+                            <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading">
+                                <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
+                                <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
+                                <span class="folder-name">{{node.title}}</span>
+                                <!-- <span class="folder-desc">{{node?.origin?.author | lowercase}}</span> -->
+                            </span>
+                            <span *ngIf="node.isLeaf">
+                                <i class="anticon anticon-folder"></i>
+                                <span class="file-name">{{node.title}}</span>
+                                <!-- <span class="file-desc">{{node?.origin?.author | lowercase}}</span> -->
+                            </span>
+                        </span>
+                    </ng-template>
+                </nz-tree>
+            </div>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-input-group nzSearch [nzSuffix]="suffixButton">
+                <input type="text" [(ngModel)]="userName" nz-input placeholder="用户名">
+            </nz-input-group>
+            <ng-template #suffixButton>
+                <button nz-button nzType="primary" type="button" (click)="refreshData(tempNode,false,true)" nzSearch>搜索</button>
+            </ng-template>
+            <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
+            <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total"
+                [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
+                [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)" (nzPageSizeChange)="refreshData(tempNode)">
+                <thead>
+                    <tr>
+                        <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
+                            (nzCheckedChange)="checkAll($event)"></th>
+                        <th>姓名</th>
+                        <th>职位</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of nzTable.data">
+                        <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshStatus($event, item)"></td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.position}}</td>
+                    </tr>
+                </tbody>
+            </nz-table>
+        </div>
+    </div>
+    <div class="custom-modal-footer">
+        <div class="custom-modal-footter-group">
+            <button nz-button type="button" [disabled]="saving" (click)="close()">
+                取消
+            </button>
+            <button nz-button [nzType]="'primary'" type="button" (click)="ok()">
+                确定
+            </button>
+        </div>
+    </div>
+</div>
