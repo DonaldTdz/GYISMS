@@ -78,6 +78,34 @@ export class DocumentDto implements IDocumentDto {
         return data;
     }
 
+    getDepts(): any[] {
+        let depts = [];
+        let ids = this.deptIds.split(',');
+        let names = this.deptDesc.split(',');
+        let i = 0;
+        for (let id of ids) {
+            if (id) {
+                depts.push({ id: id, name: names[i] });
+            }
+            i++;
+        }
+        return depts;
+    }
+
+    getUsers(): any[] {
+        let users = [];
+        let ids = this.employeeIds.split(',');
+        let names = this.employeeDes.split(',');
+        let i = 0;
+        for (let id of ids) {
+            if (id) {
+                users.push({ id: id, name: names[i] });
+            }
+            i++;
+        }
+        return users;
+    }
+
     clone() {
         const json = this.toJSON();
         let result = new DocumentDto();

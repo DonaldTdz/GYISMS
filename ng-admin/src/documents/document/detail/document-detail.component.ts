@@ -36,9 +36,8 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
     attachments = [];
     confirmModal: NzModalRef;
     isAllUser = '1';
-    userDesc = '';
-    deptTags = ['信息中心', '技术部'];
-    userTags = ['唐德舟', '杨帆', '王晓雪'];
+    deptTags = [];
+    userTags = [];
 
     constructor(injector: Injector, private actRouter: ActivatedRoute, private router: Router
         , private documentService: DocumentService
@@ -111,16 +110,12 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         this.codeStyle = 'block';
         this.isAllUser = entity.isAllUser === true ? '1' : '0';
         this.setControlVal('isAllUser', this.isAllUser);
-        this.setUserDesc(entity);
+        this.setUserDepts(entity);
     }
 
-    setUserDesc(entity: DocumentDto) {
-        if (entity.deptDesc) {
-            this.userDesc = entity.deptDesc;
-        }
-        if (entity.employeeDes) {
-            this.userDesc = (this.userDesc ? (this.userDesc + ',' + entity.employeeDes) : entity.employeeDes);
-        }
+    setUserDepts(entity: DocumentDto) {
+        this.deptTags = entity.getDepts();
+        this.userTags = entity.getUsers();
     }
 
     protected getFormValues(): void {
@@ -132,6 +127,34 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         this.document.releaseDate = this.getControlVal("releaseDate");
         this.document.categoryId = this.category.id ? parseInt(this.category.id) : 0;
         this.document.categoryDesc = this.category.name;
+        this.getUserDepts();
+    }
+
+    getUserDepts() {
+        if (this.document.isAllUser) {
+            this.document.employeeIds = '';
+            this.document.employeeDes = '';
+            this.document.deptIds = '';
+            this.document.deptDesc = '';
+        }
+        else {
+            let userIds = '';
+            let userNames = '';
+            for (let u of this.userTags) {
+                userIds += u.id + ',';
+                userNames += u.name + ',';
+            }
+            this.document.employeeIds = (userIds == '' ? '' : userIds.substr(0, userIds.length - 1));
+            this.document.employeeDes = (userNames == '' ? '' : userNames.substr(0, userNames.length - 1));
+            let deptIds = '';
+            let deptNames = '';
+            for (let u of this.deptTags) {
+                deptIds += u.id + ',';
+                deptNames += u.name + ',';
+            }
+            this.document.deptIds = (deptIds == '' ? '' : deptIds.substr(0, deptIds.length - 1));
+            this.document.deptDesc = (deptNames == '' ? '' : deptNames.substr(0, deptNames.length - 1));
+        }
     }
 
     protected return() {
@@ -169,11 +192,11 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         this.isAllUser = ngmodel;
     }
 
-    handleDeptClose(tag: string) {
+    handleDeptClose(tag: any) {
         var i = 0;
         for (const item of this.deptTags) {
             //console.log('item:' + item + ' tag:' + tag)
-            if (item == tag) {
+            if (item.id == tag.id) {
                 //console.log('llll');
                 this.deptTags.splice(i, 1);
                 break;
@@ -190,10 +213,10 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         }*/
     }
 
-    handleUserClose(tag: string) {
+    handleUserClose(tag: any) {
         var i = 0;
         for (const item of this.userTags) {
-            if (item == tag) {
+            if (item.id == tag.id) {
                 this.userTags.splice(i, 1);
                 break;
             }
@@ -204,13 +227,13 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
 
     showDeptUserModel() {
         this.modalHelper
-            .open(DeptUserComponent, {}, 'lg', {
+            .open(DeptUserComponent, { selectedDepts: this.deptTags, selectedUsers: this.userTags }, 'lg', {
                 nzMask: true,
                 nzClosable: false,
             })
-            .subscribe(res => {
-                if (res) {
-
+            .subscribe(isconfirm => {
+                if (!isconfirm) {
+                    this.setUserDepts(this.document);
                 }
             });
     }

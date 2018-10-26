@@ -40,10 +40,10 @@
                         <div *ngIf="isAllUser == '0'">
                             <nz-tag *ngFor="let dept of deptTags; let i = index;" [nzColor]="'blue'" [nzMode]="'closeable'"
                                 (nzAfterClose)="handleDeptClose(dept)">
-                                {{ dept }}
+                                {{ dept.name }}
                             </nz-tag>
                             <nz-tag *ngFor="let user of userTags; let i = index;" [nzMode]="'closeable'" (nzAfterClose)="handleUserClose(user)">
-                                {{ user }}
+                                {{ user.name }}
                             </nz-tag>
                             <nz-tag class="editable-tag" [nzColor]="'#108ee9'" (click)="showDeptUserModel()">
                                 <i class="anticon anticon-plus"></i> 选择部门和人

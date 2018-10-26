@@ -458,6 +458,7 @@ namespace GYISMS.Organizations
                                           {
                                               Id = o.Id,
                                               DepartmentName = o.DepartmentName,
+                                              OrgDeptName = o.DepartmentName,
                                               ParentId = o.ParentId
                                           }).ToListAsync();
             foreach (var item in organizationList)
@@ -479,6 +480,7 @@ namespace GYISMS.Organizations
             {
                 key = t.Id.ToString(),
                 title = t.DepartmentName,
+                deptName = t.OrgDeptName,
                 children = GetTrees(t.Id, organizationList)
             }).ToList();
             return treeNodeList;
