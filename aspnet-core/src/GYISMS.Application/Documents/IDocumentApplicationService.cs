@@ -73,11 +73,15 @@ namespace GYISMS.Documents
         Task BatchDelete(List<Guid> input);
 
 
-		/// <summary>
+        /// <summary>
         /// 导出Document为excel表
         /// </summary>
         /// <returns></returns>
-		//Task<FileDto> GetToExcel();
+        //Task<FileDto> GetToExcel();
+
+        Task DownloadZipFileTest();
+
+        Task<APIResultDto> DownloadQRCodeZip(GetDocumentsInput input);
 
     }
 }

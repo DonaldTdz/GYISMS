@@ -22,6 +22,9 @@ using GYISMS.Documents;
 using GYISMS.Documents.Dtos;
 using GYISMS.Documents.DomainService;
 using GYISMS.Dtos;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
+using GYISMS.Helpers;
 
 namespace GYISMS.Documents
 {
@@ -32,7 +35,7 @@ namespace GYISMS.Documents
     public class DocumentAppService : GYISMSAppServiceBase, IDocumentAppService
     {
         private readonly IRepository<Document, Guid> _entityRepository;
-
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDocumentManager _entityManager;
 
         /// <summary>
@@ -41,10 +44,12 @@ namespace GYISMS.Documents
         public DocumentAppService(
         IRepository<Document, Guid> entityRepository
         , IDocumentManager entityManager
+        , IHostingEnvironment hostingEnvironment
         )
         {
             _entityRepository = entityRepository;
             _entityManager = entityManager;
+            _hostingEnvironment = hostingEnvironment;
         }
 
 
@@ -127,7 +132,7 @@ namespace GYISMS.Documents
             if (input.Document.Id.HasValue)
             {
                 await Update(input.Document);
-                return new APIResultDto() { Code = 0, Msg = "保存成功"};
+                return new APIResultDto() { Code = 0, Msg = "保存成功" };
             }
             else
             {
@@ -194,6 +199,45 @@ namespace GYISMS.Documents
             await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
+        public Task DownloadZipFileTest()
+        {
+            return Task.Run(() =>
+            {
+                ZipHelper.ZipFileDirectory(@"F:\zipfiles", @"F:\zipfiles.zip");
+            });
+        }
+
+        public async Task<APIResultDto> DownloadQRCodeZip(GetDocumentsInput input)
+        {
+            var query = _entityRepository.GetAll()
+                .WhereIf(input.CategoryId.HasValue, e => e.CategoryId == input.CategoryId)
+                .WhereIf(!string.IsNullOrEmpty(input.KeyWord), e => e.Name.Contains(input.KeyWord) || e.Summary.Contains(input.KeyWord));
+            var docs = await query.Select(q => new { q.Id, q.Name, q.CategoryDesc }).ToListAsync();
+
+            string webRootPath = _hostingEnvironment.WebRootPath;
+            string filePath = webRootPath + "/docqrcodes";
+            if (Directory.Exists(filePath))
+            {
+                Directory.Delete(filePath, true);
+                Directory.CreateDirectory(filePath);
+            }
+            else
+            {
+                Directory.CreateDirectory(filePath);
+            }
+            foreach (var item in docs)
+            {
+                QRCodeHelper.GenerateQRCode(item.Id.ToString(), string.Format("{0}/{1}-{2}.jpg", filePath, item.CategoryDesc.Replace(',','-'), item.Name), QRCoder.QRCodeGenerator.ECCLevel.Q, 20);
+            }
+            var zipFiles = "/downloads/资料二维码.zip";
+            var zipPath = webRootPath + "/downloads";
+            if (!Directory.Exists(zipPath))
+            {
+                Directory.CreateDirectory(zipPath);
+            }
+            ZipHelper.ZipFileDirectory(filePath, string.Format("{0}{1}", webRootPath, zipFiles));
+            return new APIResultDto() { Code = 0, Msg = "生成二维码成功", Data = zipFiles };
+        }
 
         /// <summary>
         /// 导出Document为excel表,等待开发。
