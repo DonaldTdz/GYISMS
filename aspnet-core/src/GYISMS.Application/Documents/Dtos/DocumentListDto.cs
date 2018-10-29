@@ -95,6 +95,13 @@ namespace GYISMS.Documents.Dtos
 
         public string FileName { get; set; }
         public string FileUrl { get; set; }
-        public List<DocAttachmentListDto> FileList { get; set; }
+        public List<GridDocListDto> FileList { get; set; }
+    }
+
+    public class GridDocListDto
+    {
+        public string Icon { get; set; }
+        public string Text { get; set; }
+        public string FileUrl { get; set; }
     }
 }

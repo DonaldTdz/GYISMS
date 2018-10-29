@@ -228,46 +228,11 @@ namespace GYISMS.DocCategories
                                     {
                                         Id = c.Id,
                                         Text = c.Name,
-                                        Icon = host + "/knowledge/icon-tasknor.png"
+                                        Icon = host + "knowledge/icon-tasknor.png"
                                     }).ToListAsync();
             return entityList;
         }
 
-        /// <summary>
-        /// 获取子类列表
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>                                                                        
-        [AbpAllowAnonymous]
-        public async Task<List<DocCategoryListDto>> GetDocChildListAsync(int id)
-        {
-            var query =await _entityRepository.GetAll().Where(v => v.ParentId == id).OrderBy(v => v.Id).AsNoTracking().ToListAsync();
-            var entityListDtos = query.MapTo<List<DocCategoryListDto>>();
-            return entityListDtos;
-        }
-
-        /// <summary>
-        /// 搜索标题和摘要
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        [AbpAllowAnonymous]
-        public async Task<List<DocCategoryListDto>> GetDocChildListByInputAsync(string input)
-        {
-            var doc =  _documentRepository.GetAll();
-            var category =  _entityRepository.GetAll();
-            var list = await(from c in category
-                       join d in doc on c.Id equals d.CategoryId
-                       select new DocCategoryListDto()
-                       {
-                           Id = c.Id,
-                           Name = c.Name,
-                           ParentId = c.ParentId,
-                           Desc = c.Desc,
-                           Summary = d.Summary
-                       }).WhereIf(!string.IsNullOrEmpty(input), v=>v.Name.Contains(input) || v.Summary.Contains(input)).AsNoTracking().ToListAsync();
-            return list;
-        }
 
         /// <summary>
         /// 钉钉获取Tab子列表

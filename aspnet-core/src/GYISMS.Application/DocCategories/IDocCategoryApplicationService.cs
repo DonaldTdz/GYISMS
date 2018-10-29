@@ -80,8 +80,6 @@ namespace GYISMS.DocCategories
 
         Task<List<CategoryTreeNode>> GetTreeAsync();
         Task<List<GridListDto>> GetCategoryListAsync(string host);
-        Task<List<DocCategoryListDto>> GetDocChildListAsync(int id);
-        Task<List<DocCategoryListDto>> GetDocChildListByInputAsync(string input);
         Task<List<TabListDto>> GetTabChildListByIdAsync(int id);
     }
 }

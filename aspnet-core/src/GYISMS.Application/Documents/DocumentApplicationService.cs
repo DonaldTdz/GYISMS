@@ -18,11 +18,11 @@ using Abp.Application.Services.Dto;
 using Abp.Linq.Extensions;
 
 
-using GYISMS.Documents;
 using GYISMS.Documents.Dtos;
 using GYISMS.Documents.DomainService;
-using GYISMS.DocAttachments;
 using GYISMS.Dtos;
+using GYISMS.DocAttachments;
+using System.IO;
 
 namespace GYISMS.Documents
 {
@@ -33,7 +33,7 @@ namespace GYISMS.Documents
     public class DocumentAppService : GYISMSAppServiceBase, IDocumentAppService
     {
         private readonly IRepository<Document, Guid> _entityRepository;
-        private readonly IRepository<DocAttachment, int> _docAttachmentRepository;
+        private readonly IRepository<DocAttachment, Guid> _docAttachmentRepository;
         private readonly IDocumentManager _entityManager;
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace GYISMS.Documents
         public DocumentAppService(
         IRepository<Document, Guid> entityRepository
         , IDocumentManager entityManager
-            , IRepository<DocAttachment, int> docAttachmentRepository
+            , IRepository<DocAttachment, Guid> docAttachmentRepository
         )
         {
             _entityRepository = entityRepository;
@@ -199,82 +199,25 @@ namespace GYISMS.Documents
 
 
         /// <summary>
-        /// 导出Document为excel表,等待开发。
-        /// </summary>
-        /// <returns></returns>
-        //public async Task<FileDto> GetToExcel()
-        //{
-        //	var users = await UserManager.Users.ToListAsync();
-        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-        //	await FillRoleNames(userListDtos);
-        //	return _userListExcelExporter.ExportToFile(userListDtos);
-        //}
-
-
-        /// <summary>
-        /// 批量删除Document的方法
-        /// </summary>
-
-        public async Task BatchDelete(List<Guid> input)
-        {
-            // TODO:批量删除前的逻辑判断，是否允许删除
-            await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
-        }
-
-
-        /// <summary>
-        /// 钉钉获取资料详情
+        /// 钉钉资料详情&扫码搜索
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<DocumentListDto> GetDocInfoAsync(int id)
+        public async Task<DocumentListDto> GetDocInfoByScanAsync(Guid id,string host)
         {
-            var doc = _entityRepository.GetAll().Where(v => v.CategoryId == id).AsNoTracking();
-            var att = _docAttachmentRepository.GetAll().AsNoTracking();
-            var result = await (from d in doc
-                                join a in att on d.Id equals a.DocId into table
-                                from t in table.DefaultIfEmpty()
-                                select new DocumentListDto()
-                                {
-                                    Id = d.Id,
-                                    Name = d.Name,
-                                    CategoryDesc = d.CategoryDesc,
-                                    ReleaseDate = d.ReleaseDate,
-                                    Summary = d.Summary,
-                                    Content = d.Content,
-                                    FileName = t.Name,
-                                    FileUrl = t.Path,
-                                    QrCodeUrl = d.QrCodeUrl
-                                }).AsNoTracking().FirstOrDefaultAsync();
-            return result;
-        }
-
-        /// <summary>
-        /// 钉钉扫码搜索
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        [AbpAllowAnonymous]
-        public async Task<DocumentListDto> GetDocInfoByScanAsync(Guid id)
-        {
-            var doc = _entityRepository.GetAll().Where(v => v.Id == id).AsNoTracking();
-            var att = _docAttachmentRepository.GetAll().AsNoTracking();
-            var result = await (from d in doc
-                                join a in att on d.Id equals a.DocId into table
-                                from t in table.DefaultIfEmpty()
-                                select new DocumentListDto()
-                                {
-                                    Id = d.Id,
-                                    Name = d.Name,
-                                    CategoryDesc = d.CategoryDesc,
-                                    ReleaseDate = d.ReleaseDate,
-                                    Summary = d.Summary,
-                                    Content = d.Content,
-                                    FileName = t.Name,
-                                    FileUrl = t.Path,
-                                    QrCodeUrl = d.QrCodeUrl
-                                }).AsNoTracking().FirstOrDefaultAsync();
+            var doc =await _entityRepository.GetAll().Where(v => v.Id == id).AsNoTracking().FirstOrDefaultAsync();
+            var result = doc.MapTo<DocumentListDto>();
+            var att =  _docAttachmentRepository.GetAll().Where(v => v.DocId == id).AsNoTracking();
+            var gridList = await (from a in att
+                                  select new GridDocListDto()
+                                  {
+                                      Text = a.Name + a.Path.Substring(a.Path.LastIndexOf('.')),
+                                      Icon = host + "knowledge/annex.png",
+                                      FileUrl = host + a.Path
+                                  }).AsNoTracking().ToListAsync();
+            result.FileList = new List<GridDocListDto>();
+            result.FileList.AddRange(gridList);
             return result;
         }
 
@@ -286,8 +229,37 @@ namespace GYISMS.Documents
         [AbpAllowAnonymous]
         public async Task<List<DocumentListDto>> GetDocListByParentIdAsync(int parentId)
         {
-            var entity = await _entityRepository.GetAll().Where(v => v.CategoryId == parentId).OrderBy(v => v.Id).AsNoTracking().ToListAsync();
-            return entity.MapTo<List<DocumentListDto>>();
+            var query = _entityRepository.GetAll().Where(v => v.CategoryId.ToString().Contains(parentId.ToString()));
+            var list = await (from d in query
+                              select new DocumentListDto()
+                              {
+                                  Id = d.Id,
+                                  Name = d.Name,
+                                  Summary = d.Summary.Length > 20 ? d.Summary.Substring(0, 20) + "..." : d.Summary,
+                                  ReleaseDate = d.ReleaseDate
+                              }).OrderBy(v=>v.Id).AsNoTracking().ToListAsync();
+            return list;
+        }
+
+
+        /// <summary>
+        /// 搜索标题和摘要
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<List<DocumentListDto>> GetDocListByInputAsync(string input)
+        {
+            var query = _entityRepository.GetAll();
+            var list = await (from d in query
+                              select new DocumentListDto()
+                              {
+                                  Id = d.Id,
+                                  Name = d.Name,
+                                  Summary = d.Summary.Length>20?d.Summary.Substring(0,20)+"...":d.Summary,
+                                  ReleaseDate =d.ReleaseDate
+                              }).WhereIf(!string.IsNullOrEmpty(input), v => v.Name.Contains(input) || v.Summary.Contains(input)).AsNoTracking().ToListAsync();
+            return list;
         }
     }
 }
