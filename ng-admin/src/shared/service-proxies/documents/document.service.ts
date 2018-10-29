@@ -47,4 +47,12 @@ export class DocumentService {
             return ApiResult.fromJS(data);
         });
     }
+
+    delete(id: any): Observable<any> {
+        let url_ = "/api/services/app/Document/Delete";
+        var param = { id: id };
+        return this._gyhttp.delete(url_, param).map(data => {
+            return data;
+        });
+    }
 }

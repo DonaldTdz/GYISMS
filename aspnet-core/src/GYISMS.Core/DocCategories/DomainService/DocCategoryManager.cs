@@ -28,34 +28,54 @@ namespace GYISMS.DocCategories.DomainService
     public class DocCategoryManager :GYISMSDomainServiceBase, IDocCategoryManager
     {
 		
-		private readonly IRepository<DocCategory,int> _repository;
+		private readonly IRepository<DocCategory> _repository;
 
 		/// <summary>
 		/// DocCategory的构造方法
 		///</summary>
 		public DocCategoryManager(
-			IRepository<DocCategory, int> repository
+			IRepository<DocCategory> repository
 		)
 		{
 			_repository =  repository;
 		}
 
-
-		/// <summary>
-		/// 初始化
-		///</summary>
-		public void InitDocCategory()
+        /// <summary>
+        /// 初始化
+        ///</summary>
+        public void InitDocCategory()
 		{
-			throw new NotImplementedException();
+			
 		}
 
-		// TODO:编写领域业务代码
+        private async Task GetParentCategoryAsync(int id, List<DocCategory> plist)
+        {
+            var entity = await _repository.GetAsync(id);
+            if (entity != null)
+            {
+                plist.Insert(0, entity);
+                if (entity.ParentId.HasValue && entity.ParentId != 0)
+                {
+                    await GetParentCategoryAsync(entity.ParentId.Value, plist);
+                }
+            }
+        }
+
+        public async Task<List<DocCategory>> GetHierarchyCategories(int id)
+        {
+            var plist = new List<DocCategory>();
+            await GetParentCategoryAsync(id, plist);
+            return plist;
+        }
+
+
+        // TODO:编写领域业务代码
 
 
 
-		 
-		  
-		 
 
-	}
+
+
+
+    }
 }

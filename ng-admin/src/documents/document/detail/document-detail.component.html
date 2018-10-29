@@ -19,14 +19,14 @@
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzFor="summary">摘要说明</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
-                        <textarea nz-input row="3" formControlName="summary"></textarea>
+                        <textarea nz-input rows="5" formControlName="summary"></textarea>
                         <nz-form-explain *ngIf="validateForm.get('summary').dirty&&validateForm.get('summary').hasError('maxlength')">字符长度小于等于1000</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzFor="content">主要内容</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
-                        <textarea nz-input row="5" formControlName="content"></textarea>
+                        <textarea nz-input rows="10" formControlName="content"></textarea>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
@@ -68,8 +68,8 @@
             </div>
         </div>
     </form>
-    <form nz-form (ngSubmit)="refreshData(false,true)" [nzLayout]="'inline'">
-        <div nz-row [nzGutter]="24">
+    <form nz-form [nzLayout]="'inline'">
+        <div nz-row [nzGutter]="24" *ngIf="isUpdate">
             <div nz-col [nzSpan]="6" class="mb-md" [class.text-right]="'true'" style="float:right">
                 <button nz-button type="button" (click)="uploadFile()" nzType="primary">
                     <i class="anticon anticon-plus"></i>
@@ -106,7 +106,7 @@
         <button nz-button [nzType]="'default'" (click)="return()">
             {{l("返回")}}
         </button>
-        <button nz-button *ngIf="isDelete" [nzType]="'danger'" (click)="delete()" [nzLoading]="saving">
+        <button nz-button *ngIf="isUpdate" [nzType]="'danger'" (click)="delete()" [nzLoading]="saving">
             {{l("删除")}}
         </button>
         <button nz-button [nzType]="'primary'" type="button" (click)="submit()" [disabled]="!validateForm.valid">

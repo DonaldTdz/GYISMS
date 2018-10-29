@@ -25,6 +25,7 @@ using GYISMS.Dtos;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using GYISMS.Helpers;
+using GYISMS.DocCategories.DomainService;
 
 namespace GYISMS.Documents
 {
@@ -37,6 +38,7 @@ namespace GYISMS.Documents
         private readonly IRepository<Document, Guid> _entityRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDocumentManager _entityManager;
+        private readonly IDocCategoryManager _docCategoryManager;
 
         /// <summary>
         /// 构造函数 
@@ -45,11 +47,13 @@ namespace GYISMS.Documents
         IRepository<Document, Guid> entityRepository
         , IDocumentManager entityManager
         , IHostingEnvironment hostingEnvironment
+        , IDocCategoryManager docCategoryManager
         )
         {
             _entityRepository = entityRepository;
             _entityManager = entityManager;
             _hostingEnvironment = hostingEnvironment;
+            _docCategoryManager = docCategoryManager;
         }
 
 
@@ -63,7 +67,7 @@ namespace GYISMS.Documents
         {
 
             var query = _entityRepository.GetAll()
-                .WhereIf(input.CategoryId.HasValue, e => e.CategoryId == input.CategoryId)
+                .WhereIf(!string.IsNullOrEmpty(input.CategoryCode), e => ("," + e.CategoryCode + ",").Contains(input.CategoryCode))
                 .WhereIf(!string.IsNullOrEmpty(input.KeyWord), e => e.Name.Contains(input.KeyWord) || e.Summary.Contains(input.KeyWord));
 
             var count = await query.CountAsync();
@@ -152,8 +156,9 @@ namespace GYISMS.Documents
 
             // var entity = ObjectMapper.Map <Document>(input);
             var entity = input.MapTo<Document>();
-
-
+            var categoryList = await _docCategoryManager.GetHierarchyCategories(input.CategoryId);
+            entity.CategoryCode = string.Join(',', categoryList.Select(c => c.Id).ToArray());
+            entity.CategoryDesc = string.Join(',', categoryList.Select(c => c.Name).ToArray());
             entity = await _entityRepository.InsertAsync(entity);
             return entity.MapTo<DocumentEditDto>();
         }
@@ -210,7 +215,7 @@ namespace GYISMS.Documents
         public async Task<APIResultDto> DownloadQRCodeZip(GetDocumentsInput input)
         {
             var query = _entityRepository.GetAll()
-                .WhereIf(input.CategoryId.HasValue, e => e.CategoryId == input.CategoryId)
+                .WhereIf(!string.IsNullOrEmpty(input.CategoryCode), e => ("," + e.CategoryCode + ",").Contains(input.CategoryCode))
                 .WhereIf(!string.IsNullOrEmpty(input.KeyWord), e => e.Name.Contains(input.KeyWord) || e.Summary.Contains(input.KeyWord));
             var docs = await query.Select(q => new { q.Id, q.Name, q.CategoryDesc }).ToListAsync();
 

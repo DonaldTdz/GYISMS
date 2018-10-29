@@ -30,8 +30,8 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
 
     document: DocumentDto = new DocumentDto();
     category = { id: '', name: '' };
-    isDelete = false;
-    id: '';
+    isUpdate = false;
+    id: any = '';
     codeStyle = 'none';
     attachments = [];
     confirmModal: NzModalRef;
@@ -71,9 +71,12 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             .finally(() => { this.saving = false; })
             .subscribe(res => {
                 this.notify.info(this.l('SavedSuccessfully'), '');
-                this.document.id = res.data;
-                this.qrCode.value = this.document.id;
-                this.isDelete = true;
+                if (res.data) {
+                    this.document.id = res.data;
+                    this.id = this.document.id;
+                    this.qrCode.value = this.document.id;
+                }
+                this.isUpdate = true;
                 this.codeStyle = 'block';
                 //console.table(res);
             });
@@ -106,7 +109,7 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         this.category.id = entity.categoryId.toString();
         this.category.name = entity.categoryDesc;
         this.qrCode.value = entity.id;
-        this.isDelete = true;
+        this.isUpdate = true;
         this.codeStyle = 'block';
         this.isAllUser = entity.isAllUser === true ? '1' : '0';
         this.setControlVal('isAllUser', this.isAllUser);
@@ -161,6 +164,20 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         this.router.navigate(['app/doc/document']);
     }
 
+    delete() {
+        this.confirmModal = this.modal.confirm({
+            nzContent: '确定是否删除?',
+            nzOnOk: () => {
+                this.documentService.delete(this.document.id)
+                    .finally(() => { this.saving = false; })
+                    .subscribe(res => {
+                        this.notify.info('删除成功');
+                        this.router.navigate(['app/doc/document']);
+                    });
+            }
+        });
+    }
+
     uploadFile() {
         let att = { docId: this.document.id };
         this.modalHelper
@@ -170,14 +187,14 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             })
             .subscribe(isSave => {
                 if (isSave) {
-
+                    this.getAttachments();
                 }
             });
     }
 
     deleteAttachment(itemid) {
         this.confirmModal = this.modal.confirm({
-            nzContent: '是否删除资料文档?',
+            nzContent: '确定是否删除资料文档?',
             nzOnOk: () => {
                 this.attachmentService.delete(itemid).subscribe(() => {
                     this.notify.info(this.l('删除成功！'), '');
@@ -237,5 +254,7 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
                 }
             });
     }
+
+
 
 }
