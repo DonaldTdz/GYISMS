@@ -19,6 +19,8 @@ namespace GYISMS.Organizations.Dtos
         [Required(ErrorMessage = "DepartmentName不能为空")]
         public string DepartmentName { get; set; }
 
+        public string OrgDeptName { get; set; }
+
 
         /// <summary>
         /// ParentId
@@ -52,6 +54,8 @@ namespace GYISMS.Organizations.Dtos
 
     public class OrganizationNzTreeNode : NzTreeNode
     {
+        public string deptName { get; set; }
+
         public override bool expanded
         {
             get

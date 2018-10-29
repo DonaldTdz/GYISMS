@@ -9,6 +9,18 @@ namespace GYISMS.Documents.Dtos
     {
         public int? CategoryId { get; set; }
 
+        public string CategoryCode
+        {
+            get
+            {
+                if (CategoryId.HasValue)
+                {
+                    return "," + CategoryId.ToString() + ",";
+                }
+                return null;
+            }
+        }
+
         public string KeyWord { get; set; }
 
         /// <summary>

@@ -23,4 +23,9 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="2.1.1" />
     <PackageReference Include="Castle.Windsor.MsDependencyInjection" Version="3.3.1" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="TopSdk">
+      <HintPath>..\..\SDK\TopSdk.dll</HintPath>
+    </Reference>
+  </ItemGroup>
 </Project>

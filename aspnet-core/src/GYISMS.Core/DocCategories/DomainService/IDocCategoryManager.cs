@@ -1,6 +1,7 @@
 
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Abp;
 using Abp.Domain.Services;
@@ -19,9 +20,8 @@ namespace GYISMS.DocCategories.DomainService
 
 
 
-		 
-      
-         
+        Task<List<DocCategory>> GetHierarchyCategories(int id);
+
 
     }
 }

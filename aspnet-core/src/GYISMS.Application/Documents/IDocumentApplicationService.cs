@@ -37,10 +37,10 @@ namespace GYISMS.Documents
         Task<PagedResultDto<DocumentListDto>> GetPaged(GetDocumentsInput input);
 
 
-		/// <summary>
-		/// 通过指定id获取DocumentListDto信息
-		/// </summary>
-		Task<DocumentListDto> GetById(EntityDto<Guid> input);
+        /// <summary>
+        /// 通过指定id获取DocumentListDto信息
+        /// </summary>
+        Task<DocumentListDto> GetById(EntityDto<Guid> input);
 
 
         /// <summary>
@@ -75,5 +75,16 @@ namespace GYISMS.Documents
         Task<DocumentListDto> GetDocInfoByScanAsync(Guid id, string host);
         Task<List<DocumentListDto>> GetDocListByParentIdAsync(int parentId);
         Task<List<DocumentListDto>> GetDocListByInputAsync(string input);
+
+        /// <summary>
+        /// 导出Document为excel表
+        /// </summary>
+        /// <returns></returns>
+        //Task<FileDto> GetToExcel();
+
+        Task DownloadZipFileTest();
+
+        Task<APIResultDto> DownloadQRCodeZip(GetDocumentsInput input);
+
     }
 }

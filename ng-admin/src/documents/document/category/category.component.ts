@@ -26,7 +26,7 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
     dropdown: NzDropdownContextComponent;
     // actived node
     activedNode: NzTreeNode;
-    rkeyNode = { key: '', title: '' };
+    rkeyNode = { key: '', title: '', origin: { parentId: null } };
     nodes = [];
     searchName;
     @Output() selectedCategory = new EventEmitter<any>();
@@ -77,7 +77,7 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
         var category = new Category();
         category.id = parseInt(this.rkeyNode.key);
         category.name = this.rkeyNode.title;
-
+        category.parentId = this.rkeyNode.origin.parentId;
         this.modalHelper
             .open(EditCategoryComponent, { category: category }, 'md', {
                 nzMask: true,

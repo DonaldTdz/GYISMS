@@ -3,6 +3,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { Router } from '@angular/router';
 import { DocumentService } from '@shared/service-proxies/documents';
 import { PagedResultDtoOfDocument, DocumentDto } from '@shared/entity/documents';
+import { ApiResult } from '@shared/service-proxies/entity/parameter';
 
 @Component({
     selector: 'doc-list',
@@ -14,6 +15,7 @@ export class DocListComponent extends AppComponentBase implements OnInit {
     @Input() categoryId: any;
     keyWord: string;
     loading = false;
+    downloading = false;
     docs: DocumentDto[] = [];
 
     selectedCategory = { id: '', name: '' };
@@ -54,6 +56,23 @@ export class DocListComponent extends AppComponentBase implements OnInit {
 
     edit(item) {
         this.router.navigate(['app/doc/doc-detail', item.id]);
+    }
+
+    download() {
+        this.downloading = true;
+        let params: any = {};
+        params.KeyWord = this.keyWord;
+        params.CategoryId = this.selectedCategory ? this.selectedCategory.id : null;
+        this.documentService.download(params).subscribe((result: ApiResult) => {
+            this.downloading = false;
+            if (result.code == 0) {
+                var url = this.documentService.baseUrl + result.data;
+                document.getElementById('aDocZipUrl').setAttribute('href', url);
+                document.getElementById('btnDocZipHref').click();
+            } else {
+                this.notify.error(result.msg);
+            }
+        })
     }
 
 }
