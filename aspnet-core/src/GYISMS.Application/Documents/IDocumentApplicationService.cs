@@ -73,7 +73,7 @@ namespace GYISMS.Documents
         Task BatchDelete(List<Guid> input);
 
         Task<DocumentListDto> GetDocInfoByScanAsync(Guid id, string host);
-        Task<List<DocumentListDto>> GetDocListByParentIdAsync(int parentId);
+        Task<List<DocumentListDto>> GetDocListByParentIdAsync(string categoryCode);
         Task<List<DocumentListDto>> GetDocListByInputAsync(string input);
 
         /// <summary>

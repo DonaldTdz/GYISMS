@@ -257,6 +257,10 @@ namespace GYISMS.Documents
         {
             var doc =await _entityRepository.GetAll().Where(v => v.Id == id).AsNoTracking().FirstOrDefaultAsync();
             var result = doc.MapTo<DocumentListDto>();
+            if (result.CategoryDesc.Contains(','))
+            {
+                result.CategoryDesc = result.CategoryDesc.Replace(",", " > ");
+            }
             var att =  _docAttachmentRepository.GetAll().Where(v => v.DocId == id).AsNoTracking();
             var gridList = await (from a in att
                                   select new GridDocListDto()
@@ -276,9 +280,11 @@ namespace GYISMS.Documents
         /// <param name="parentId"></param>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<List<DocumentListDto>> GetDocListByParentIdAsync(int parentId)
+        public async Task<List<DocumentListDto>> GetDocListByParentIdAsync(string categoryCode)
         {
-            var query = _entityRepository.GetAll().Where(v => v.CategoryId.ToString().Contains(parentId.ToString()));
+            var query = _entityRepository.GetAll()
+                //.Where(v => v.CategoryId.ToString().Contains(parentId.ToString()));
+                .WhereIf(!string.IsNullOrEmpty(categoryCode), e => ("," + e.CategoryCode + ",").Contains(categoryCode));
             var list = await (from d in query
                               select new DocumentListDto()
                               {
