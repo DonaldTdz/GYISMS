@@ -79,7 +79,7 @@ namespace GYISMS.DocCategories
         //Task<FileDto> GetToExcel();
 
         Task<List<CategoryTreeNode>> GetTreeAsync();
-        Task<List<GridListDto>> GetCategoryListAsync(string host);
+        Task<List<GridListDto>> GetCategoryListAsync(string host,string userId);
         Task<List<TabListDto>> GetTabChildListByIdAsync(int id);
     }
 }

@@ -23,6 +23,7 @@ using GYISMS.DocCategories.Dtos;
 using GYISMS.DocCategories.DomainService;
 using GYISMS.Documents.Dtos;
 using GYISMS.Documents;
+using GYISMS.Employees;
 
 namespace GYISMS.DocCategories
 {
@@ -36,6 +37,7 @@ namespace GYISMS.DocCategories
         private readonly IRepository<Document, Guid> _documentRepository;
 
         private readonly IDocCategoryManager _entityManager;
+        private readonly IRepository<Employee, string> _employeeRepository;
 
         /// <summary>
         /// 构造函数 
@@ -44,11 +46,14 @@ namespace GYISMS.DocCategories
         IRepository<DocCategory, int> entityRepository
         , IDocCategoryManager entityManager
             , IRepository<Document, Guid> documentRepository
+            , IRepository<Employee, string> employeeRepository
+
         )
         {
             _entityRepository = entityRepository;
             _entityManager = entityManager;
             _documentRepository = documentRepository;
+            _employeeRepository = employeeRepository;
         }
 
 
@@ -220,17 +225,28 @@ namespace GYISMS.DocCategories
         /// </summary>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<List<GridListDto>> GetCategoryListAsync(string host)
+        public async Task<List<GridListDto>> GetCategoryListAsync(string host, string userId)
         {
-            var query = _entityRepository.GetAll().Where(v => v.ParentId == 0).OrderBy(v=>v.Id).AsNoTracking();
-            var entityList = await (from c in query
-                                    select new GridListDto()
-                                    {
-                                        Id = c.Id,
-                                        Text = c.Name,
-                                        Icon = host + "knowledge/icon-tasknor.png"
-                                    }).ToListAsync();
-            return entityList;
+            var user = await _employeeRepository.GetAll().Where(v => v.Id == userId).FirstOrDefaultAsync();
+            var departmentId = user.Department.Replace('[', ' ').Replace(']', ' ').Trim();
+            var query = _entityRepository.GetAll().Where(v => v.ParentId == 0).OrderBy(v => v.Id).AsNoTracking();
+            var entityList = from c in query
+                             select new GridListDto()
+                             {
+                                 Id = c.Id,
+                                 Text = c.Name,
+                                 Icon = host + "knowledge/homePage.png"
+                             };
+            List<GridListDto> list = new List<GridListDto>();
+            foreach (var item in entityList)
+            {
+                int count = await _documentRepository.GetAll().Where(v => ("," + v.CategoryCode + ",").Contains("," + item.Id.ToString() + ",") && (v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId))).AsNoTracking().CountAsync();
+                if (count > 0)
+                {
+                    list.Add(item);
+                }
+            }
+            return list;
         }
 
 
@@ -250,12 +266,12 @@ namespace GYISMS.DocCategories
             item.Title = "全部";
             list.Add(item);
             var result = await (from t in query
-                              select new TabListDto()
-                              {
-                                  Id = t.Id,
-                                  ParentId = t.ParentId,
-                                  Title = t.Name
-                              }).AsNoTracking().ToListAsync();
+                                select new TabListDto()
+                                {
+                                    Id = t.Id,
+                                    ParentId = t.ParentId,
+                                    Title = t.Name
+                                }).AsNoTracking().ToListAsync();
             list.AddRange(result);
             return list;
         }

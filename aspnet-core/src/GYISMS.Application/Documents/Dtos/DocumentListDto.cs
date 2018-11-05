@@ -95,6 +95,11 @@ namespace GYISMS.Documents.Dtos
 
         public string FileName { get; set; }
         public string FileUrl { get; set; }
+
+        /// <summary>
+        /// 分类Id层级 用逗号分隔
+        /// </summary>
+        public string CategoryCode { get; set; }
         public List<GridDocListDto> FileList { get; set; }
     }
 

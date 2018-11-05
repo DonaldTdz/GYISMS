@@ -26,6 +26,8 @@ using System.IO;
 using Microsoft.AspNetCore.Hosting;
 using GYISMS.Helpers;
 using GYISMS.DocCategories.DomainService;
+using GYISMS.Employees;
+using System.Text.RegularExpressions;
 
 namespace GYISMS.Documents
 {
@@ -40,6 +42,7 @@ namespace GYISMS.Documents
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDocumentManager _entityManager;
         private readonly IDocCategoryManager _docCategoryManager;
+        private readonly IRepository<Employee, string> _employeeRepository;
 
         /// <summary>
         /// 构造函数 
@@ -50,6 +53,7 @@ namespace GYISMS.Documents
             , IRepository<DocAttachment, Guid> docAttachmentRepository
         , IHostingEnvironment hostingEnvironment
         , IDocCategoryManager docCategoryManager
+            , IRepository<Employee, string> employeeRepository
         )
         {
             _entityRepository = entityRepository;
@@ -57,6 +61,7 @@ namespace GYISMS.Documents
             _docAttachmentRepository = docAttachmentRepository;
             _hostingEnvironment = hostingEnvironment;
             _docCategoryManager = docCategoryManager;
+            _employeeRepository = employeeRepository;
         }
 
 
@@ -235,7 +240,7 @@ namespace GYISMS.Documents
             }
             foreach (var item in docs)
             {
-                QRCodeHelper.GenerateQRCode(item.Id.ToString(), string.Format("{0}/{1}-{2}.jpg", filePath, item.CategoryDesc.Replace(',','-'), item.Name), QRCoder.QRCodeGenerator.ECCLevel.Q, 20);
+                QRCodeHelper.GenerateQRCode(item.Id.ToString(), string.Format("{0}/{1}-{2}.jpg", filePath, item.CategoryDesc.Replace(',', '-'), item.Name), QRCoder.QRCodeGenerator.ECCLevel.Q, 20);
             }
             var zipFiles = "/downloads/资料二维码.zip";
             var zipPath = webRootPath + "/downloads";
@@ -253,15 +258,15 @@ namespace GYISMS.Documents
         /// <param name="id"></param>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<DocumentListDto> GetDocInfoByScanAsync(Guid id,string host)
+        public async Task<DocumentListDto> GetDocInfoByScanAsync(Guid id, string host)
         {
-            var doc =await _entityRepository.GetAll().Where(v => v.Id == id).AsNoTracking().FirstOrDefaultAsync();
+            var doc = await _entityRepository.GetAll().Where(v => v.Id == id).AsNoTracking().FirstOrDefaultAsync();
             var result = doc.MapTo<DocumentListDto>();
             if (result.CategoryDesc.Contains(','))
             {
                 result.CategoryDesc = result.CategoryDesc.Replace(",", " > ");
             }
-            var att =  _docAttachmentRepository.GetAll().Where(v => v.DocId == id).AsNoTracking();
+            var att = _docAttachmentRepository.GetAll().Where(v => v.DocId == id).AsNoTracking();
             var gridList = await (from a in att
                                   select new GridDocListDto()
                                   {
@@ -275,24 +280,51 @@ namespace GYISMS.Documents
         }
 
         /// <summary>
+        /// 判断用户是否拥有权限
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<bool> GetHasDocPermissionFromScanAsync(Guid id, string userId)
+        {
+            var user = await _employeeRepository.GetAll().Where(v => v.Id == userId).FirstOrDefaultAsync();
+            if (!string.IsNullOrEmpty(user.Department) && user.Department.Contains('['))
+            {
+                var departmentId = user.Department.Replace('[', ' ').Replace(']', ' ').Trim();
+                int count = await _entityRepository.GetAll().Where(v => v.Id == id && (v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId))).AsNoTracking().CountAsync();
+                if (count != 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// 获取文件列表项
         /// </summary>
         /// <param name="parentId"></param>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<List<DocumentListDto>> GetDocListByParentIdAsync(string categoryCode)
+        public async Task<List<DocumentListDto>> GetDocListByParentIdAsync(string categoryCode, string userId, int pageIndex, int pageSize)
         {
+            var user = await _employeeRepository.GetAll().Where(v => v.Id == userId).FirstOrDefaultAsync();
+            var departmentId = user.Department.Replace('[', ' ').Replace(']', ' ').Trim();
             var query = _entityRepository.GetAll()
-                //.Where(v => v.CategoryId.ToString().Contains(parentId.ToString()));
-                .WhereIf(!string.IsNullOrEmpty(categoryCode), e => ("," + e.CategoryCode + ",").Contains(categoryCode));
+                .WhereIf(!string.IsNullOrEmpty(categoryCode), e => ("," + e.CategoryCode + ",").Contains("," + categoryCode + ","));
             var list = await (from d in query
                               select new DocumentListDto()
                               {
                                   Id = d.Id,
                                   Name = d.Name,
                                   Summary = d.Summary.Length > 20 ? d.Summary.Substring(0, 20) + "..." : d.Summary,
-                                  ReleaseDate = d.ReleaseDate
-                              }).OrderBy(v=>v.Id).AsNoTracking().ToListAsync();
+                                  ReleaseDate = d.ReleaseDate,
+                                  IsAllUser = d.IsAllUser,
+                                  DeptIds = d.DeptIds,
+                                  EmployeeIds = d.EmployeeIds
+                              }).Where(v => v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId))
+                              .OrderBy(v => v.Id).AsNoTracking().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return list;
         }
 
@@ -303,17 +335,26 @@ namespace GYISMS.Documents
         /// <param name="input"></param>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<List<DocumentListDto>> GetDocListByInputAsync(string input)
+        public async Task<List<DocumentListDto>> GetDocListByInputAsync(string input, string catId, string userId, int pageIndex, int pageSize)
         {
+            var user = await _employeeRepository.GetAll().Where(v => v.Id == userId).FirstOrDefaultAsync();
+            var departmentId = user.Department.Replace('[', ' ').Replace(']', ' ').Trim();
             var query = _entityRepository.GetAll();
             var list = await (from d in query
                               select new DocumentListDto()
                               {
                                   Id = d.Id,
                                   Name = d.Name,
-                                  Summary = d.Summary.Length>20?d.Summary.Substring(0,20)+"...":d.Summary,
-                                  ReleaseDate =d.ReleaseDate
-                              }).WhereIf(!string.IsNullOrEmpty(input), v => v.Name.Contains(input) || v.Summary.Contains(input)).AsNoTracking().ToListAsync();
+                                  Summary = d.Summary.Length > 20 ? d.Summary.Substring(0, 20) + "..." : d.Summary,
+                                  ReleaseDate = d.ReleaseDate,
+                                  CategoryCode = d.CategoryCode,
+                                  IsAllUser = d.IsAllUser,
+                                  DeptIds = d.DeptIds,
+                                  EmployeeIds = d.EmployeeIds
+                              }).Where(v => v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId))
+                              .WhereIf(!string.IsNullOrEmpty(catId), v => ("," + v.CategoryCode + ",").Contains("," + catId + ","))
+                              .WhereIf(!string.IsNullOrEmpty(input), v => v.Name.Contains(input) || v.Summary.Contains(input))
+                              .OrderBy(v => v.Id).AsNoTracking().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return list;
         }
     }

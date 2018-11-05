@@ -73,8 +73,8 @@ namespace GYISMS.Documents
         Task BatchDelete(List<Guid> input);
 
         Task<DocumentListDto> GetDocInfoByScanAsync(Guid id, string host);
-        Task<List<DocumentListDto>> GetDocListByParentIdAsync(string categoryCode);
-        Task<List<DocumentListDto>> GetDocListByInputAsync(string input);
+        Task<List<DocumentListDto>> GetDocListByParentIdAsync(string categoryCode, string userId, int pageIndex, int pageSize);
+        Task<List<DocumentListDto>> GetDocListByInputAsync(string input, string catId, string userId, int pageIndex, int pageSize);
 
         /// <summary>
         /// 导出Document为excel表
@@ -85,6 +85,6 @@ namespace GYISMS.Documents
         Task DownloadZipFileTest();
 
         Task<APIResultDto> DownloadQRCodeZip(GetDocumentsInput input);
-
+        Task<bool> GetHasDocPermissionFromScanAsync(Guid id, string userId);
     }
 }
