@@ -11,7 +11,7 @@
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzRequired>资料名称</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
-                        <input nz-input formControlName="name" id="name">
+                        <input nz-input formControlName="name" id="name" [placeholder]="'请填写资料名称'">
                         <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">字符长度小于等于200</nz-form-explain>
                         <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">请输入资料名称</nz-form-explain>
                     </nz-form-control>
@@ -19,14 +19,14 @@
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzFor="summary">摘要说明</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
-                        <textarea nz-input rows="5" formControlName="summary"></textarea>
+                        <textarea nz-input rows="5" formControlName="summary" [placeholder]="'请填写摘要说明'"></textarea>
                         <nz-form-explain *ngIf="validateForm.get('summary').dirty&&validateForm.get('summary').hasError('maxlength')">字符长度小于等于1000</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzFor="content">主要内容</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
-                        <textarea nz-input rows="10" formControlName="content"></textarea>
+                        <textarea nz-input rows="10" formControlName="content" [placeholder]="'请填写主要内容'"></textarea>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
