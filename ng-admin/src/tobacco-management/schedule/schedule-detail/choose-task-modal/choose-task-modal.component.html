@@ -1,5 +1,4 @@
-<nz-modal [(nzVisible)]="isVisible" nzTitle="选择任务" [nzContent]="modalContent" nzWidth="720px" nzMaskClosable="false"
-    (nzOnCancel)="handleCancel($event)" style="width: 520px;" [nzFooter]="modalFooter">
+<nz-modal [(nzVisible)]="isVisible" nzTitle="选择任务" [nzContent]="modalContent" nzWidth="720px" nzMaskClosable="false" (nzOnCancel)="handleCancel($event)" style="width: 520px;" [nzFooter]="modalFooter">
     <ng-template #modalContent>
         <!-- <nz-card [nzBordered]="false" *ngIf="isVisible"> -->
         <!-- <form nz-form (ngSubmit)="refreshData()" [nzLayout]="'inline'">
@@ -21,8 +20,7 @@
             </form> -->
         <!-- <span style="margin-left: 8px;" *ngIf="checkedNumber">Selected {{checkedNumber}} items</span> -->
 
-        <nz-table #nzTable [nzShowSizeChanger]="true" [nzData]="taskList" [nzShowPagination]="false" [nzLoading]="eloading"
-            [nzShowSizeChanger]="true">
+        <nz-table #nzTable [nzData]="taskList" [nzShowPagination]="false" [nzFrontPagination]="false" [nzLoading]="eloading">
             <thead>
                 <tr>
                     <th nz-th> <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">

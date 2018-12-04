@@ -74,7 +74,7 @@ export class ChooseTaskModalComponent implements OnInit {
     refreshData() {
         this.eloading = true;
         let params: any = {};
-        params.SkipCount = this.q.pi;
+        // params.SkipCount = this.q.pi;
         params.ScheduleId = this.scheduleId;
         let i: number = 0;
         this.taskService.getVisitTaskListWithStatus(params).subscribe((result: VisitTask[]) => {
@@ -91,6 +91,7 @@ export class ChooseTaskModalComponent implements OnInit {
             if ((this.taskList.length != 0) && (this.taskList.length == i)) {
                 this.isSelectedAll = true;
             }
+            console.log(this.taskList);
         });
     }
 

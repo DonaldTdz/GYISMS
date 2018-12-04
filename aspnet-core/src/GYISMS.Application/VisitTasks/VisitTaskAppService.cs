@@ -96,6 +96,7 @@ namespace GYISMS.VisitTasks
                                    Id = v.Id,
                                    Name = v.Name,
                                    Type = v.Type,
+                                   IsExamine =v.IsExamine
                                }).AsNoTracking().ToListAsync();
             var taskDto = from t in taskList
                           select new
