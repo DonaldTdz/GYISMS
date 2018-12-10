@@ -14,7 +14,8 @@ namespace GYISMS.GYEnums
         钉钉配置 = 6,
         任务拜访 = 7,
         智能报表 = 8,
-        会议申请 = 9
+        会议申请 = 9,
+        资料库 = 10
     }
 
     public enum ConfigModel
