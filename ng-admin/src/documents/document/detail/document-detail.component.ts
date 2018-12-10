@@ -160,7 +160,7 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         }
     }
 
-    protected return() {
+    return() {
         this.router.navigate(['app/doc/document']);
     }
 

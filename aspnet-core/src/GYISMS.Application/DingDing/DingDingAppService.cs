@@ -106,6 +106,15 @@ namespace GYISMS.DingDing
                                    .ToList();
                     }
                     break;
+                case DingDingAppEnum.资料库:
+                    {
+                        configList = _systemDataRepository.GetAll()
+                                   .Where(s => s.ModelId == ConfigModel.钉钉配置)
+                                   .Where(s => s.Type == ConfigType.钉钉配置 || s.Type == ConfigType.资料库)
+                                   .ToList();
+                    }
+                    break;
+
             }
             foreach (var item in configList)
             {
