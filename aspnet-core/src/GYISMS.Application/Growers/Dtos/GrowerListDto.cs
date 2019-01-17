@@ -105,6 +105,10 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public DateTime? ContractTime { get; set; }
 
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool IsEnable { get; set; }
 
         /// <summary>
         /// IsDeleted
@@ -154,7 +158,7 @@ namespace GYISMS.Growers.Dtos
         {
             get
             {
-               return AreaCode.ToString();
+                return AreaCode.ToString();
             }
         }
         public bool Checked { get; set; }

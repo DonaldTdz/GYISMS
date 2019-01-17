@@ -192,6 +192,12 @@ namespace GYISMS.Migrations
                 {
                     table.PrimaryKey("PK_VisitRecords", x => x.Id);
                 });
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsEnable",
+                table: "Growers",
+                nullable: false,
+                defaultValue: false);
         }
         protected override void Down(MigrationBuilder migrationBuilder)
         {
@@ -211,6 +217,10 @@ namespace GYISMS.Migrations
                 name: "VisitExamine");
             migrationBuilder.DropTable(
                 name: "VisitRecord");
+
+            migrationBuilder.DropColumn(
+                name: "IsEnable",
+                table: "Growers");
         }
     }
 }

@@ -22,6 +22,27 @@ namespace GYISMS.Growers.Dtos
         public Guid ScheduleTaskId { get; set; }
         public string EmployeeId { get; set; }
         public AreaCodeEnum? AreaName { get; set; }
+        public int? IsEnableValue { get; set; }
+        public bool? IsEnable
+        {
+            get
+            {
+                bool? result=false;
+                if (IsEnableValue == 1)
+                {
+                    result = true;
+                }
+                else if(IsEnableValue==2)
+                {
+                    result = false;
+                }
+                else
+                {
+                    result = null;
+                }
+                return result;
+            }
+        }
         //// custom codes
 
         //// custom codes end

@@ -65,7 +65,8 @@ namespace GYISMS.Growers
             var query = _growerRepository.GetAll().WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
                 .WhereIf(!string.IsNullOrEmpty(input.Employee), u => u.EmployeeName.Contains(input.Employee))
                 .WhereIf(input.AreaName.HasValue, u => u.AreaCode == input.AreaName)
-                .WhereIf(areaCode.HasValue, u => u.AreaCode == areaCode);
+                .WhereIf(areaCode.HasValue, u => u.AreaCode == areaCode)
+                .WhereIf(input.IsEnable.HasValue,u=>u.IsEnable==input.IsEnable);
             // TODO:根据传入的参数添加过滤条件
 
             var growerCount = await query.CountAsync();

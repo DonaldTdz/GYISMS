@@ -11,12 +11,17 @@ import { Grower } from '@shared/entity/basic-data';
     styleUrls: ['grower.component.scss']
 })
 export class GrowerComponent extends AppComponentBase implements OnInit {
-    search: any = {};
+    search: any = { isEnable: 0 };
     loading = false;
     growerList: Grower[] = [];
     areaTypes = [{ text: '昭化区', value: 1 },
     { text: '剑阁县', value: 2 },
     { text: '旺苍县', value: 3 }];
+    enableTypes = [
+        { text: '全部', value: 0 },
+        { text: '启用', value: 1 },
+        { text: '不启用', value: 2 }
+    ]
     constructor(injector: Injector, private growerService: GrowerServiceProxy,
         private router: Router) {
         super(injector);
@@ -28,7 +33,7 @@ export class GrowerComponent extends AppComponentBase implements OnInit {
     refreshData(reset = false, search?: boolean) {
         if (reset) {
             this.query.pageIndex = 1;
-            this.search = {};
+            this.search = { isEnable: 0 };
         }
         if (search) {
             this.query.pageIndex = 1;
@@ -40,6 +45,8 @@ export class GrowerComponent extends AppComponentBase implements OnInit {
         params.Name = this.search.name;
         params.Employee = this.search.employee;
         params.AreaName = this.search.area;
+        params.IsEnableValue = this.search.isEnable === 0 ? null : this.search.isEnable;
+        console.log(params);
         this.growerService.getGrowerListAsync(params).subscribe((result: PagedResultDtoOfGrower) => {
             this.loading = false;
             this.growerList = result.items;

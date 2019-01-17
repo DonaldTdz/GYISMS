@@ -5,7 +5,7 @@
         <div nz-row [nzGutter]="24">
             <div nz-col [nzSpan]="8" class="mb-md">
                 <nz-form-item class="d-flex">
-                    <nz-form-label nzFor="name">姓名</nz-form-label>
+                    <nz-form-label nzFor="name">烟农姓名</nz-form-label>
                     <nz-form-control class="flex-1">
                         <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入烟农姓名" nzSize="default">
                     </nz-form-control>
@@ -30,6 +30,18 @@
                     </nz-form-control>
                 </nz-form-item>
             </div>
+            <div nz-col [nzSpan]="8" class="mb-md">
+                <nz-form-item class="d-flex">
+                    <nz-form-label nzFor="isEnable">启用状态</nz-form-label>
+                    <nz-form-control class="flex-1">
+                        <nz-select name="isEnable" [(ngModel)]="search.isEnable" [nzShowSearch]="true">
+                            <nz-option *ngFor="let i of enableTypes" [nzLabel]="i.text" [nzValue]="i.value">
+                            </nz-option>
+                        </nz-select>
+                    </nz-form-control>
+                </nz-form-item>
+            </div>
+
             <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'" style="float:right">
                 <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
                 <button nz-button type="reset" (click)="refreshData(true)" class="mx-sm">重置</button>
@@ -42,8 +54,8 @@
     </form>
     <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
     <nz-table #nzTable [nzData]="growerList" [nzFrontPagination]="false" [nzTotal]="query.total" [nzShowTotal]="totalTemplate"
-        [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true"
-        (nzPageIndexChange)="refreshData()" (nzPageSizeChange)="refreshData()">
+        [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData()"
+        (nzPageSizeChange)="refreshData()">
         <thead>
             <tr>
                 <th>用户名</th>
@@ -51,6 +63,7 @@
                 <th>联系方式</th>
                 <th>所属区县</th>
                 <th>所属烟技员</th>
+                <th>启用状态</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -61,6 +74,9 @@
                 <td>{{data.tel}}</td>
                 <td>{{data.countyCodeName}}</td>
                 <td>{{data.employeeName}}</td>
+                <td>
+                    <nz-badge [nzStatus]="data.isEnable?'success':'default'" [nzText]="data.isEnable?'启用':'不启用'"></nz-badge>
+                </td>
                 <td>
                     <a (click)="goDetail(data.id)">详细信息</a>
                 </td>

@@ -102,6 +102,10 @@ namespace GYISMS.Growers
         /// 合同签订时间
         /// </summary>
         public virtual DateTime? ContractTime { get; set; }
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public virtual bool IsEnable { get; set; }
 
         /// <summary>
         /// 是否删除
