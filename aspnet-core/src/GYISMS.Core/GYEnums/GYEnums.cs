@@ -41,7 +41,8 @@ namespace GYISMS.GYEnums
     {
         每月 = 1,
         每周 = 2,
-        每日 = 3
+        每日 = 3,
+        自定义=4,
     }
 
     public enum ScheduleMasterStatusEnum

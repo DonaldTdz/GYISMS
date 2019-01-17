@@ -26,7 +26,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     schedule: Schedule = new Schedule();
     scheduleTask: ScheduleTask = new ScheduleTask();
     scheduleTaskList: ScheduleTask[] = [];
-    types: any[] = [{ text: '每月', value: 1 }, { text: '每周', value: 2 }, { text: '每日', value: 3 }];
+    types: any[] = [{ text: '每月', value: 1 }, { text: '每周', value: 2 }, { text: '每日', value: 3 }, { text: '自定义', value: 4 }];
     weekTypes: SelectGroup[] = [];
     isConfirmLoading = false;
     successMsg = '';
@@ -56,6 +56,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     };
     showTime: any;
     // expiredText: string = '';
+    shedateFormat = 'yyyy-MM-dd';
+    dateRange = [];
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private taskService: VisitTaskServiceProxy,
         private router: Router, private fb: FormBuilder, private actRouter: ActivatedRoute, private modal: NzModalService) {
@@ -140,6 +142,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 } else if (result.type == 1) {
                     this.isMonthText = true;
                     this.showTime = result.beginTime;
+                } else if (result.type == 4) {
+                    this.dateRange = [result.beginTime, result.endTime];
                 }
                 // if (!this.isPush) {
                 this.getTaskList();
@@ -372,5 +376,12 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 });
             }
         });
+    }
+
+    changeTime(times) {
+        if (times != null) {
+            this.schedule.beginTime = this.dateFormat(this.dateRange[0]);
+            this.schedule.endTime = this.dateFormat(this.dateRange[1]);
+        }
     }
 }
