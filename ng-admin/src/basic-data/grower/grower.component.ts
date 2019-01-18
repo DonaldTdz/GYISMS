@@ -11,7 +11,7 @@ import { Grower } from '@shared/entity/basic-data';
     styleUrls: ['grower.component.scss']
 })
 export class GrowerComponent extends AppComponentBase implements OnInit {
-    search: any = { isEnable: 0 };
+    search: any = { isEnable: 1 };
     loading = false;
     growerList: Grower[] = [];
     areaTypes = [{ text: '昭化区', value: 1 },
@@ -33,7 +33,7 @@ export class GrowerComponent extends AppComponentBase implements OnInit {
     refreshData(reset = false, search?: boolean) {
         if (reset) {
             this.query.pageIndex = 1;
-            this.search = { isEnable: 0 };
+            this.search = { isEnable: 1 };
         }
         if (search) {
             this.query.pageIndex = 1;

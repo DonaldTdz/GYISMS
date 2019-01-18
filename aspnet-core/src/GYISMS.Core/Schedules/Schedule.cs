@@ -20,7 +20,7 @@ namespace GYISMS.Schedules
         public virtual string Desc { get; set; }
 
         /// <summary>
-        /// 计划类型（每月、每周、每日）
+        /// 计划类型（每月、每周、每日、自定义）
         /// </summary>
         [Required]
         public virtual ScheduleType Type { get; set; }
