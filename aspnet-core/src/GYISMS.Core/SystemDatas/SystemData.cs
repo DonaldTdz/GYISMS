@@ -38,6 +38,9 @@ namespace GYISMS.SystemDatas
         [StringLength(500)]
         public virtual string Desc { get; set; }
 
+        [StringLength(500)]
+        public virtual string Remark { get; set; }
+
         /// <summary>
         /// 序号（看需）
         /// </summary>

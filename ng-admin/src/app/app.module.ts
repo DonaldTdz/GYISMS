@@ -12,7 +12,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { G2GroupBarModule } from '../../packages/group-bar';
-import { AboutComponent } from '@app/about/about.component';
 import { TenantsComponent } from '@app/tenants/tenants.component';
 import { UsersComponent } from '@app/users/users.component';
 import { RolesComponent } from '@app/roles/roles.component';
@@ -39,7 +38,6 @@ import { ChooeseEmployeeModalComponent } from './users/chooese-employee-modal/ch
   declarations: [
     //AppComponent,
     HomeComponent,
-    AboutComponent,
     TenantsComponent,
     UsersComponent,
     RolesComponent,

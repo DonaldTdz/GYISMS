@@ -110,7 +110,7 @@ namespace GYISMS.DingDing
                     {
                         configList = _systemDataRepository.GetAll()
                                    .Where(s => s.ModelId == ConfigModel.钉钉配置)
-                                   .Where(s => s.Type == ConfigType.钉钉配置 || s.Type == ConfigType.资料库)
+                                   .Where(s => s.Type == ConfigType.钉钉配置 || s.Type == ConfigType.企业标准库)
                                    .ToList();
                     }
                     break;

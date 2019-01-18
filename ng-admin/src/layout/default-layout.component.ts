@@ -145,7 +145,7 @@ export class DefaultLayoutComponent extends AppComponentBase
             ], null, 'CityAdmin'
         ),
         new MenuItem(
-            '资料库',
+            '企业标准库',
             '',
             'anticon anticon-book',
             '',

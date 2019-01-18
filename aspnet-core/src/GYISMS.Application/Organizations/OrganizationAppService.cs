@@ -311,9 +311,6 @@ namespace GYISMS.Organizations
         /// <summary>
         /// 同步内部员工
         /// </summary>
-        /// <param name="departId"></param>
-        /// <param name="accessToken"></param>
-        /// <returns></returns>
         private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken, AreaCodeArray pidArr)
         {
             try

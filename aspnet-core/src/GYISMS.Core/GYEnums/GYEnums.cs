@@ -15,7 +15,7 @@ namespace GYISMS.GYEnums
         任务拜访 = 7,
         智能报表 = 8,
         会议申请 = 9,
-        资料库 = 10
+        企业标准库 = 10
     }
 
     public enum ConfigModel
@@ -109,5 +109,17 @@ namespace GYISMS.GYEnums
         public static string ZHQPID = "ZHQPID";
         public static string JGXPID = "JGXPID";
         public static string WCXPID = "WCXPID";
+        /// <summary>
+        /// 昭化区 组织代码
+        /// </summary>
+        public static string 昭化区 = "ZHQ_ORG_CODE";
+        /// <summary>
+        /// 剑阁县 组织代码
+        /// </summary>
+        public static string 剑阁县 = "JGX_ORG_CODE";
+        /// <summary>
+        /// 旺苍县 组织代码
+        /// </summary>
+        public static string 旺苍县 = "WCX_ORG_CODE";
     }
 }
