@@ -106,7 +106,7 @@ namespace GYISMS.DingDing
                                    .ToList();
                     }
                     break;
-                case DingDingAppEnum.资料库:
+                case DingDingAppEnum.资料标准库:
                     {
                         configList = _systemDataRepository.GetAll()
                                    .Where(s => s.ModelId == ConfigModel.钉钉配置)

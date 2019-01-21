@@ -342,8 +342,6 @@ namespace GYISMS.Schedules
         /// <summary>
         /// 发送钉钉工作通知
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task<APIResultDto> SendMessageToEmployeeAsync(GetSchedulesInput input)
         {
             try

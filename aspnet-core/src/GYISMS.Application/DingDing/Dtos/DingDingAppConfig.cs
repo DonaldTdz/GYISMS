@@ -31,6 +31,6 @@ namespace GYISMS.DingDing.Dtos
         任务拜访 = 7,
         智能报表 = 8,
         会议申请 = 9,
-        资料库 = 10
+        资料标准库 = 10
     }
 }
