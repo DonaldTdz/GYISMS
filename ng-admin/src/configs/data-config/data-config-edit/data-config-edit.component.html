@@ -18,7 +18,6 @@
                         <nz-form-explain *ngIf="forme.get('type').dirty&&forme.get('type').hasError('required')">请选择配置类型</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
-
                 <nz-form-item nz-row>
                     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="code">编码</nz-form-label>
                     <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
@@ -35,7 +34,13 @@
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
-
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="remark">备注</nz-form-label>
+                    <nz-form-control [nzSm]="19" nzHasFeedback>
+                        <input nz-input formControlName="remark" [(ngModel)]="systemData.remark" id="remark">
+                        <nz-form-explain *ngIf="forme.get('remark').dirty&&forme.get('remark').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row>
                     <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="seq">序号</nz-form-label>
                     <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
                         <input nz-input formControlName="seq" [(ngModel)]="systemData.seq" id="seq">

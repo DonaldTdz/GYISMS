@@ -71,7 +71,7 @@ namespace GYISMS
             {
                 trigger//.StartAt(new DateTimeOffset(startTime))
                 .StartNow()//一旦加入scheduler，立即生效
-                .WithCronSchedule("0 36 15 * * ?")//每天凌晨2点执行
+                .WithCronSchedule("0 0 2 * * ?")//每天凌晨2点执行
                 .Build();
                 //.StartNow()//一旦加入scheduler，立即生效
                 /*.WithSimpleSchedule(schedule =>//使用SimpleTrigger

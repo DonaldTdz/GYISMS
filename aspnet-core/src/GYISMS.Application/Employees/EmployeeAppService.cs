@@ -24,6 +24,7 @@ using GYISMS.SystemDatas;
 using GYISMS.GYEnums;
 using GYISMS.SystemDatas.Dtos;
 using GYISMS.DingDing.Dtos;
+using GYISMS.Organizations;
 
 namespace GYISMS.Employees
 {
@@ -37,6 +38,7 @@ namespace GYISMS.Employees
         private readonly IEmployeeManager _employeeManager;
         private readonly IDingDingAppService _dingDingAppService;
         private readonly IRepository<SystemData, int> _systemdataRepository;
+        private readonly IRepository<Organization, long> _organizationRepository;
         private DingDingAppConfig ddConfig;
 
         /// <summary>
@@ -46,12 +48,14 @@ namespace GYISMS.Employees
             , IEmployeeManager employeeManager
             , IDingDingAppService dingDingAppService
             , IRepository<SystemData, int> systemdataRepository
+            , IRepository<Organization, long> organizationRepository
             )
         {
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;
             _dingDingAppService = dingDingAppService;
             _systemdataRepository = systemdataRepository;
+            _organizationRepository = organizationRepository;
         }
 
 
@@ -220,8 +224,6 @@ namespace GYISMS.Employees
         /// <summary>
         /// 获取区县Children
         /// </summary>
-        /// <param name="area"></param>
-        /// <returns></returns>
         private List<EmployeeNzTreeNode> GetAreaEmoloyee(AreaCodeEnum? area)
         {
             var employeeList = (from o in _employeeRepository.GetAll()
@@ -229,11 +231,80 @@ namespace GYISMS.Employees
                                 select new EmployeeNzTreeNode()
                                 {
                                     key = o.Id,
-                                    title = o.Position.Length!=0? o.Name+$"({o.Position})":o.Name,
+                                    title = o.Position.Length != 0 ? o.Name + $"({o.Position})" : o.Name,
                                     children = null,
                                     IsLeaf = true
                                 }).ToList();
             return employeeList;
+        }
+
+        private List<EmployeeNzTreeNode> GetDeptChildren(long orgId)
+        {
+            var orgList = _organizationRepository.GetAll().Where(o => o.ParentId == orgId).ToList();
+            var childrenList = new List<EmployeeNzTreeNode>();
+            List<EmployeeNzTreeNode> treeNodeList = orgList.Select(t => new EmployeeNzTreeNode()
+            {
+                key = t.Id.ToString(),
+                title = t.DepartmentName,
+                IsLeaf = false,
+                IsDept = true,
+                children = GetDeptChildren(t.Id)
+            }).ToList();
+            childrenList.AddRange(treeNodeList);
+            var employeeList = (from o in _employeeRepository.GetAll()
+                                    .Where(v => v.Department.Contains("[" + orgId + "]"))
+                                select new EmployeeNzTreeNode()
+                                {
+                                    key = o.Id,
+                                    title = o.Position.Length != 0 ? o.Name + $"({o.Position})" : o.Name,
+                                    children = null,
+                                    IsDept = false,
+                                    IsLeaf = true
+                                }).ToList();
+            childrenList.AddRange(employeeList);
+            return childrenList;
+        }
+
+        /// <summary>
+        /// 获取区县下面的钉钉组织架构
+        /// </summary>
+        private List<EmployeeNzTreeNode> GetAreaOrganization(AreaCodeEnum area)
+        {
+            //获取配置code
+            var orgCode = "";
+            switch (area)
+            {
+                case AreaCodeEnum.昭化区:
+                    {
+                        orgCode = GYCode.昭化区;
+                    }
+                    break;
+                case AreaCodeEnum.剑阁县:
+                    {
+                        orgCode = GYCode.剑阁县;
+                    }
+                    break;
+                case AreaCodeEnum.旺苍县:
+                    {
+                        orgCode = GYCode.旺苍县;
+                    }
+                    break;
+            }
+            var orgId = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
+            var longOrgId = long.Parse(orgId);
+
+            List<EmployeeNzTreeNode> areaList = new List<EmployeeNzTreeNode>();
+
+            var org = _organizationRepository.Get(longOrgId);
+            areaList.Add(new EmployeeNzTreeNode()
+            {
+                key = org.Id.ToString(),
+                title = org.DepartmentName,
+                IsDept =  true,
+                IsLeaf = false,
+                children = GetDeptChildren(longOrgId)
+            });
+            return areaList;
         }
 
         /// <summary>
@@ -257,7 +328,7 @@ namespace GYISMS.Employees
             //    treeNodeList.Add(treeNode);
             //}
             var areaCode = await GetCurrentUserAreaCodeAsync();
-            
+
             var key = AreaCodeEnum.昭化区;
             if (!areaCode.HasValue || areaCode == AreaCodeEnum.昭化区)
             {
@@ -265,7 +336,8 @@ namespace GYISMS.Employees
                 {
                     key = key.GetHashCode().ToString(),
                     title = AreaCodeEnum.昭化区.ToString(),
-                    children = GetAreaEmoloyee(key)
+                    //children = GetAreaEmoloyee(key)
+                    children = GetAreaOrganization(key)
                 };
                 treeNodeList.Add(treeNode);
             }
@@ -276,7 +348,8 @@ namespace GYISMS.Employees
                 {
                     key = key.GetHashCode().ToString(),
                     title = AreaCodeEnum.剑阁县.ToString(),
-                    children = GetAreaEmoloyee(key)
+                    //children = GetAreaEmoloyee(key)
+                    children = GetAreaOrganization(key)
                 };
                 treeNodeList.Add(treeNode2);
             }
@@ -288,11 +361,12 @@ namespace GYISMS.Employees
                 {
                     key = key.GetHashCode().ToString(),
                     title = AreaCodeEnum.旺苍县.ToString(),
-                    children = GetAreaEmoloyee(key),
+                    //children = GetAreaEmoloyee(key)
+                    children = GetAreaOrganization(key)
                 };
                 treeNodeList.Add(treeNode3);
             }
-           
+
             return treeNodeList;
         }
 

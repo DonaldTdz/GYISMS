@@ -520,11 +520,9 @@ namespace GYISMS.ScheduleDetails
                     scheduledetailListDtos
                 );
         }
-
+        /// <summary>
         /// 任务全部指派
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task<APIResultDto> CreateAllScheduleTaskAsync(GetGrowersInput input)
         {
             // 全部指派找出已存在指派信息
@@ -592,7 +590,7 @@ namespace GYISMS.ScheduleDetails
         [AbpAllowAnonymous]
         public async Task SendTaskOverdueMsgAsync()
         {
-            var dateTime = DateTime.Today.AddDays(-1);
+            var dateTime = DateTime.Today.AddDays(1);
             var query = from sd in _scheduledetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
                         on sd.ScheduleId equals s.Id
@@ -635,8 +633,6 @@ namespace GYISMS.ScheduleDetails
         /// <summary>
         /// 查询任务完成情况
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task<PagedResultDto<ScheduleDetailListDto>> GetPagedScheduleDetailRecordAsync(GetScheduleDetailsInput input)
         {
             var query = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId);

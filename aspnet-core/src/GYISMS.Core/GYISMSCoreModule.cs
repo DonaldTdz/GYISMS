@@ -17,7 +17,8 @@ namespace GYISMS
     {
         public override void PreInitialize()
         {
-            Configuration.Auditing.IsEnabledForAnonymousUsers = false;
+            Configuration.Auditing.IsEnabled = false;
+            Configuration.Auditing.IsEnabledForAnonymousUsers = true;
 
             // Declare entity types
             Configuration.Modules.Zero().EntityTypes.Tenant = typeof(Tenant);

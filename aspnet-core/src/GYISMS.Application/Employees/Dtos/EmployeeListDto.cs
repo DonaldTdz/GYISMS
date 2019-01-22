@@ -120,7 +120,7 @@ namespace GYISMS.Employees.Dtos
 
         public new List<EmployeeNzTreeNode> children { get; set; }
         //// custom codes
-
+        public bool IsDept { get; set; }
         //// custom codes end
     }
 
