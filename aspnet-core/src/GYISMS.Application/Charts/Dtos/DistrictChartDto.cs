@@ -73,18 +73,18 @@ namespace GYISMS.Charts.Dtos
                 {
                     items.Add(new DistrictChartItemDto()
                     {
-                        AreaCode=item.AreaType,
+                        AreaCode = item.AreaType,
                         District = item.District,
-                        Name = "计划",
-                        Num = item.VisitNum,
+                        Name = "完成",
+                        Num = item.CompleteNum,
                         Status = 1,
                     });
                     items.Add(new DistrictChartItemDto()
                     {
                         AreaCode = item.AreaType,
                         District = item.District,
-                        Name = "完成",
-                        Num = item.CompleteNum,
+                        Name = "待完成",
+                        Num = item.VisitNum - item.CompleteNum - item.OverdueNum,
                         Status = 2,
                     });
                     items.Add(new DistrictChartItemDto()
@@ -155,7 +155,7 @@ namespace GYISMS.Charts.Dtos
                         Id = item.Id,
                         District = item.TaskName,
                         Name = "待完成",
-                        Num = item.VisitNum - item.CompleteNum,
+                        Num = item.VisitNum - item.CompleteNum - item.ExpiredNum,
                         Status = 3,
                     });
                     items.Add(new DistrictChartItemDto()
@@ -258,5 +258,83 @@ namespace GYISMS.Charts.Dtos
                 return EndTime.HasValue ? EndTime.Value.ToString("yyyy-MM-dd") : string.Empty;
             }
         }
+    }
+
+
+
+    public class DistrictStatisDto
+    {
+
+        public string GroupName
+        {
+            get
+            {
+                if (Status.HasValue)
+                {
+                    return Status == 0 ? "逾期" : (Status == 2 ? "完成" : "待完成");
+                }
+                else
+                {
+                    return "";
+                }
+
+            }
+        }
+        public int? Status { get; set; }
+        public AreaCodeEnum? AreaCode { get; set; }
+        /// <summary>
+        /// VisitNum
+        /// </summary>
+        public int? VisitNum { get; set; }
+
+        /// <summary>
+        /// CompleteNum
+        /// </summary>
+        public int? CompleteNum { get; set; }
+
+        /// <summary>
+        /// 逾期数
+        /// </summary>
+        public int? ExpiredNum { get; set; }
+
+        public string AreaName
+        {
+            get
+            {
+                if (AreaCode.HasValue)
+                {
+                    return AreaCode.ToString();
+                }
+                return string.Empty;
+            }
+        }
+
+        public int? Num
+        {
+            get
+            {
+                if (Status.HasValue)
+                {
+                    if (Status == 0)
+                    {
+                        return ExpiredNum;
+                    }
+                    else if (Status == 3)
+                    {
+                        return VisitNum - CompleteNum - ExpiredNum;
+                    }
+                    else
+                    {
+                        return CompleteNum;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+
+
     }
 }

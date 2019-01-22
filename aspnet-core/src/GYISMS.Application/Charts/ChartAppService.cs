@@ -66,7 +66,7 @@ namespace GYISMS.Charts
                 var dataList = new List<ScheduleSummaryDto>();
                 var query = from sd in _scheduleDetailRepository.GetAll()
                             join s in _scheduleRepository.GetAll() on sd.ScheduleId equals s.Id
-                            where s.Status == ScheduleMasterStatusEnum.已发布
+                            where s.Status == ScheduleMasterStatusEnum.已发布 && s.EndTime >= DateTime.Today
                             select sd;
                 //总数
                 var tnum = query.Sum(q => q.VisitNum);
@@ -74,28 +74,31 @@ namespace GYISMS.Charts
                 //完成数
                 var cnum = query.Sum(q => q.CompleteNum);
                 cnum = cnum ?? 0;
-                var cpercent = tnum == 0? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
-                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "完成", ClassName = "complete", Percent = cpercent*100, Seq = 1,Status=2 });
+                var cpercent = tnum == 0 ? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
+                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "完成", ClassName = "complete", Percent = cpercent * 100, Seq = 1, Status = 2 });
 
                 //逾期数
                 var etnum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
                 etnum = etnum ?? 0;
                 var etpercent = tnum == 0 ? 0 : Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
-                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3,Status=0 });
+                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent * 100, Seq = 3, Status = 0 });
 
                 //待完成数
                 var pnum = tnum - cnum - etnum;
                 var ppercent = tnum == 0 ? 0 : (1M - cpercent - etpercent);
-                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "待完成", ClassName = "process", Percent = ppercent*100, Seq = 2 ,Status=3});
+                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "待完成", ClassName = "process", Percent = ppercent * 100, Seq = 2, Status = 3 });
 
                 return dataList.OrderBy(d => d.Seq).ToList();
             });
         }
 
+
         /// <summary>
         /// 获取区县图表数据
         /// </summary>
-        public async Task<DistrictChartDto> GetDistrictChartDataAsync(string userId, DateTime? startDate, DateTime? endDate)
+        /// <param name="tabIndex">（1表示当前任务，结束时间大于今天；2表示所有任务）</param>
+        /// <returns></returns>
+        public async Task<DistrictChartDto> GetDistrictChartDataAsync(string userId, DateTime? startDate, DateTime? endDate, int tabIndex)
         {
             //var str = startDate.Value.ToString("yyyy-MM-dd HH:mm ss");
             //if (startDate.HasValue)
@@ -108,11 +111,11 @@ namespace GYISMS.Charts
             //    var edate = endDate.Value.Date;
             //    endDate = edate.AddHours(edate.Hour * -1);
             //}
-
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
-                        .WhereIf(startDate.HasValue, s => s.BeginTime >= startDate)
-                        .WhereIf(endDate.HasValue, s => s.BeginTime <= endDate)
+                        .WhereIf(startDate.HasValue && tabIndex == 2, s => s.BeginTime >= startDate)
+                        .WhereIf(endDate.HasValue && tabIndex == 2, s => s.BeginTime <= endDate)
+                        .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Now)
                         on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
                         where s.Status == ScheduleMasterStatusEnum.已发布
@@ -140,13 +143,15 @@ namespace GYISMS.Charts
         /// <summary>
         /// 统计任务完成情况的数据（按任务类型和任务名分组）
         /// </summary>
+        /// <param name="tabIndex">（1表示当前任务，结束时间大于今天；2表示所有任务）</param>
         /// <returns></returns>
-        public async Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime)
+        public async Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime, int tabIndex)
         {
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
-                        .WhereIf(startTime.HasValue, s => s.BeginTime >= startTime)
-                        .WhereIf(startTime.HasValue, s => s.BeginTime <= endTime)
+                        .WhereIf(startTime.HasValue && tabIndex == 2, s => s.BeginTime >= startTime)
+                        .WhereIf(startTime.HasValue && tabIndex == 2, s => s.BeginTime <= endTime.Value.AddDays(1))
+                        .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Today)
                         .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
                         join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
@@ -159,6 +164,7 @@ namespace GYISMS.Charts
                             t.Name,
                             t.Id
                         };
+            var aa = query.ToList();
             var list = query.GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
              new SheduleByTaskDto()
              {
@@ -248,19 +254,19 @@ namespace GYISMS.Charts
                 //完成数
                 var cnum = query.Sum(q => q.CompleteNum);
                 cnum = cnum ?? 0;
-                var cpercent = tnum == 0? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
-                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "已完成", ClassName = "complete", Percent = cpercent*100, Seq = 1 });
+                var cpercent = tnum == 0 ? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
+                dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "已完成", ClassName = "complete", Percent = cpercent * 100, Seq = 1 });
 
                 //逾期数
                 var etnum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
                 etnum = etnum ?? 0;
                 var etpercent = tnum == 0 ? 0 : Math.Round(etnum.Value / (decimal)tnum.Value, 2); //百分比
-                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "已逾期", ClassName = "overdue", Percent = etpercent*100, Seq = 3 });
+                dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "已逾期", ClassName = "overdue", Percent = etpercent * 100, Seq = 3 });
 
                 //待完成数
                 var pnum = tnum - cnum - etnum;
                 var ppercent = tnum == 0 ? 0 : (1M - cpercent - etpercent);
-                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "待完成", ClassName = "process", Percent = ppercent*100, Seq = 2 });
+                dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "待完成", ClassName = "process", Percent = ppercent * 100, Seq = 2 });
 
                 return dataList.OrderBy(d => d.Seq).ToList();
             });
@@ -328,6 +334,59 @@ namespace GYISMS.Charts
                         };
             var items = await query.OrderByDescending(s => s.BeginTime).Skip(PageIndex).Take(9).ToListAsync();
             return items;
+        }
+
+        /// <summary>
+        /// 获取明细区县统计
+        /// </summary>
+        /// <param name="Status">(0表示逾期、2表示完成、3表示待完成)</param>
+        /// <param name="TabIndex">(0当前用于月份统计、1表示当前任务，结束时间大于今天；2表示所有任务)</param>
+        /// <returns></returns>
+        public async Task<List<DistrictStatisDto>> GetSheduleDetailGroupArea(string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int TabIndex, int? TStatus)
+        {
+            if (!string.IsNullOrEmpty(DateString))
+            {
+                var str = DateString.Split("-");
+                StartTime = new DateTime(int.Parse(str[0]), int.Parse(str[1]), 1);
+                EndTime = StartTime.Value.AddMonths(1).AddDays(-1);
+            }
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                                                     .WhereIf(Status == 2, sd => sd.CompleteNum > 0)
+                                                     .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
+                                                     .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                        join s in _scheduleRepository.GetAll()
+                                                      .WhereIf(StartTime.HasValue && (TabIndex == 2 || TabIndex == 0), s => s.BeginTime >= StartTime)
+                                                      .WhereIf(EndTime.HasValue && (TabIndex == 2 || TabIndex == 0), s => s.BeginTime <= EndTime)
+                                                      .WhereIf(TabIndex == 1, s => s.EndTime >= DateTime.Today)
+                                                      .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
+                        on sd.ScheduleId equals s.Id
+                        join t in _visittaskRepository.GetAll()
+                                                      //.WhereIf(input.TaskType.HasValue, t => t.Type == input.TaskType)
+                                                      //.WhereIf(!string.IsNullOrEmpty(input.TaskName), t => t.Name == input.TaskName)
+                                                      .WhereIf(TaskId.HasValue, t => t.Id == TaskId)
+                         on sd.TaskId equals t.Id
+                        join g in _growerRepository.GetAll()
+                                                     .WhereIf(AreaCode.HasValue, g => g.AreaCode == AreaCode)
+                        on sd.GrowerId equals g.Id
+                        select new SheduleDetailDto
+                        {
+                            AreaCode = g.AreaCode,
+                            Status = sd.Status,
+                            EmployeeName = sd.EmployeeName,
+                            GrowerName = sd.GrowerName,
+                            VisitNum = sd.VisitNum,
+                            CompleteNum = sd.CompleteNum
+                        };
+            var aa = query.ToList();
+            var result = await query.GroupBy(s => new { s.AreaCode }).Select(s => new DistrictStatisDto
+            {
+                Status = Status,
+                AreaCode = s.Key.AreaCode,
+                VisitNum = s.Sum(sd => sd.VisitNum),
+                CompleteNum = s.Sum(sd => sd.CompleteNum),
+                ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+            }).ToListAsync();
+            return result;
         }
     }
 }

@@ -14,12 +14,14 @@ namespace GYISMS.Charts
 
         Task<List<ScheduleSummaryDto>> GetUserScheduleSummaryAsync(string userId);
 
-        Task<DistrictChartDto> GetDistrictChartDataAsync(string userId, DateTime? startDate, DateTime? endDate);
+        Task<DistrictChartDto> GetDistrictChartDataAsync(string userId, DateTime? startDate, DateTime? endDate, int tabIndex);
 
-        Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime);
+        Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime, int tabIndex);
 
         Task<ChartByTaskDto> GetChartByMothAsync(int searchMoth);
 
         Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus);
+
+        Task<List<DistrictStatisDto>> GetSheduleDetailGroupArea(string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int TabIndex, int? TStatus);
     }
 }
