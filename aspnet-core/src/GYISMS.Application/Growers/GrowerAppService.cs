@@ -37,6 +37,7 @@ namespace GYISMS.Growers
         private readonly IGrowerManager _growerManager;
         private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
         private readonly IRepository<Employee, string> _employeeRepository;
+        private readonly IEmployeeManager _employeeManager;
 
         /// <summary>
         /// 构造函数 
@@ -45,12 +46,14 @@ namespace GYISMS.Growers
             , IGrowerManager growerManager
             , IRepository<ScheduleDetail, Guid> scheduledetailRepository
             , IRepository<Employee, string> employeeRepository
+            , IEmployeeManager employeeManager
             )
         {
             _growerRepository = growerRepository;
             _growerManager = growerManager;
             _scheduledetailRepository = scheduledetailRepository;
             _employeeRepository = employeeRepository;
+            _employeeManager = employeeManager;
         }
 
 
@@ -98,9 +101,11 @@ namespace GYISMS.Growers
                 if(input.EmployeeId == "1" || input.EmployeeId == "2"|| input.EmployeeId == "3")
                 {
                     var areaCode = (AreaCodeEnum)int.Parse(input.EmployeeId);
-                    var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
-                    var employeeIds = _employeeRepository.GetAll().Where(v=> v.AreaCode == areaCode).Select(v => v.Id);
-                    var areaGrowerList = growerList.Where(v =>v.IsDeleted==false && employeeIds.Contains(v.EmployeeId));
+                    var deptArr = await _employeeManager.GetAreaDeptIdArrayAsync(areaCode);//获取该区县下配置的部门和子部门列表
+
+                    var growerList = _growerRepository.GetAll().Where(v => v.IsEnable == true);
+                    var employeeIds = _employeeRepository.GetAll().Where(v => v.AreaCode == areaCode || deptArr.Contains(v.Department)).Select(v => v.Id);
+                    var areaGrowerList = growerList.Where(v => employeeIds.Contains(v.EmployeeId));
                     var scheduleDetailList = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId && v.TaskId == input.TaskId);
                     var query = await (from g in areaGrowerList
                                        select new GrowerListDto()
@@ -136,7 +141,7 @@ namespace GYISMS.Growers
                 }
                 else
                 {
-                    var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false && v.EmployeeId == input.EmployeeId);
+                    var growerList = _growerRepository.GetAll().Where(v => v.IsEnable == true && v.EmployeeId == input.EmployeeId);
                     var scheduleDetailList = _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId && v.TaskId == input.TaskId);
                     var query = await (from g in growerList
                                        select new GrowerListDto()
@@ -176,9 +181,11 @@ namespace GYISMS.Growers
                 if (input.EmployeeId == "1" || input.EmployeeId == "2" || input.EmployeeId == "3")
                 {
                     var areaCode = (AreaCodeEnum)int.Parse(input.EmployeeId);
-                    var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
-                    var employeeIds = _employeeRepository.GetAll().Where(v => v.AreaCode == areaCode).Select(v => v.Id);
-                    var areaGrowerList = growerList.Where(v => v.IsDeleted == false && employeeIds.Contains(v.EmployeeId));
+                    var deptArr = await _employeeManager.GetAreaDeptIdArrayAsync(areaCode);//获取该区县下配置的部门和子部门列表
+
+                    var growerList = _growerRepository.GetAll().Where(v => v.IsEnable == true);
+                    var employeeIds = _employeeRepository.GetAll().Where(v => v.AreaCode == areaCode || deptArr.Contains(v.Department)).Select(v => v.Id);
+                    var areaGrowerList = growerList.Where(v => employeeIds.Contains(v.EmployeeId));
                     var query = await (from g in areaGrowerList
                                        select new GrowerListDto()
                                        {
@@ -194,7 +201,7 @@ namespace GYISMS.Growers
                 }
                 else
                 {
-                    var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false && v.EmployeeId == input.EmployeeId);
+                    var growerList = _growerRepository.GetAll().Where(v => v.IsEnable == true && v.EmployeeId == input.EmployeeId);
                     var query = await (from g in growerList
                                        select new GrowerListDto()
                                        {

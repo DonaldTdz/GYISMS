@@ -206,10 +206,9 @@ namespace GYISMS.ScheduleTasks
             return entity.MapTo<ScheduleTaskListDto>();
         }
 
+        /// <summary>
         /// 计划任务列表不分页
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public async Task<List<ScheduleTaskListDto>> GetScheduleTasksNoPageAsync(Guid id)
         {
             var scheduleTask = _scheduletaskRepository.GetAll().Where(v => v.ScheduleId == id && v.IsDeleted == false);
@@ -260,6 +259,7 @@ namespace GYISMS.ScheduleTasks
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _scheduleDetailRepository.DeleteAsync(s => input.Contains(s.Id));
         }
+
         #region 钉钉客户端
 
         /// <summary>

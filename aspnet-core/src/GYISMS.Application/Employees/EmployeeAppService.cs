@@ -96,7 +96,12 @@ namespace GYISMS.Employees
         public async Task<EmployeeListDto> GetEmployeeByIdAsync(string id)
         {
             var entity = await _employeeRepository.GetAsync(id);
-
+            if (!entity.AreaCode.HasValue)
+            {
+                var area = await _employeeManager.GetAreaCodeByUserIdAsync(id);
+                entity.Area = area.ToString();
+                entity.AreaCode = area;
+            }
             return entity.MapTo<EmployeeListDto>();
         }
 
@@ -178,15 +183,16 @@ namespace GYISMS.Employees
         /// <summary>
         /// 根据部门节点获取员工信息
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task<PagedResultDto<EmployeeListDto>> GetEmployeeListByIdAsync(GetEmployeesInput input)
         {
             if (input.DepartId == "1" || input.DepartId == null)
             {
-                var query = _employeeRepository.GetAll().WhereIf(input.AreaCode.HasValue, e => e.AreaCode == input.AreaCode)
+                var deptArr = await _employeeManager.GetAreaDeptIdArrayAsync(input.AreaCode);//获取该区县下的部门和子部门列表
+                var query = _employeeRepository.GetAll()
+                    .WhereIf(input.AreaCode.HasValue, e => e.AreaCode == input.AreaCode || deptArr.Contains(e.Department))
                     .WhereIf(!string.IsNullOrEmpty(input.Mobile), u => u.Mobile.Contains(input.Mobile))
-                .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
+                    .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name));
+
                 var employeeCount = await query.CountAsync();
                 var employees = await query
                         .OrderBy(v => v.Department)
@@ -226,8 +232,7 @@ namespace GYISMS.Employees
         /// </summary>
         private List<EmployeeNzTreeNode> GetAreaEmoloyee(AreaCodeEnum? area)
         {
-            var employeeList = (from o in _employeeRepository.GetAll()
-                                     .Where(v => v.AreaCode == area)
+            var employeeList = (from o in _employeeRepository.GetAll().Where(v => v.AreaCode == area)
                                 select new EmployeeNzTreeNode()
                                 {
                                     key = o.Id,
@@ -304,6 +309,9 @@ namespace GYISMS.Employees
                 IsLeaf = false,
                 children = GetDeptChildren(longOrgId)
             });
+            //添加特定访问人员（通过设置区县指定）
+            var specificUserList = GetAreaEmoloyee(area);
+            areaList.AddRange(specificUserList);
             return areaList;
         }
 
@@ -382,7 +390,11 @@ namespace GYISMS.Employees
             //var userId = "165500493321719640";
             // var userId = "1926112826844702";
             var query = await _employeeRepository.GetAsync(userId);
-            return query.MapTo<DingDingUserDto>();
+            var dduser = query.MapTo<DingDingUserDto>();
+            var area = await _employeeManager.GetAreaCodeByUserIdAsync(dduser.Id);//钉钉用户区县权限
+            dduser.Area = area.ToString();
+            dduser.AreaCode = area;
+            return dduser;
         }
 
         /// <summary>

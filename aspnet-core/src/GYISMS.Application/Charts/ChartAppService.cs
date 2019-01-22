@@ -19,6 +19,7 @@ using Abp.Domain.Uow;
 using Abp.Collections.Extensions;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
+using GYISMS.Employees;
 
 namespace GYISMS.Charts
 {
@@ -35,6 +36,7 @@ namespace GYISMS.Charts
         private readonly IRepository<VisitRecord, Guid> _visitRecordRepository;
         private readonly ISheduleDetailRepository _scheduleDetailRepository;
         private readonly IRepository<VisitTask, int> _visittaskRepository;
+        private readonly IEmployeeManager _employeeManager;
         /// <summary>
         /// 构造函数 
         ///</summary>
@@ -45,6 +47,7 @@ namespace GYISMS.Charts
             , IRepository<Grower> growerRepository
             , IRepository<VisitRecord, Guid> visitRecordRepository
             , IRepository<VisitTask, int> visittaskRepository
+            , IEmployeeManager employeeManager
             )
         {
             _scheduletaskRepository = scheduletaskRepository;
@@ -54,19 +57,25 @@ namespace GYISMS.Charts
             _growerRepository = growerRepository;
             _visitRecordRepository = visitRecordRepository;
             _visittaskRepository = visittaskRepository;
+            _employeeManager = employeeManager;
         }
 
         /// <summary>
         /// 计划汇总
         /// </summary>
-        public async Task<List<ScheduleSummaryDto>> GetScheduleSummaryAsync(string userId)
+        public async Task<List<ScheduleSummaryDto>> GetScheduleSummaryAsync(string userId, AreaCodeEnum areaCode)
         {
+            //获取当前用户区县
+            //var area = await _employeeManager.GetAreaCodeByUserIdAsync(userId);
             return await Task.Run(() =>
             {
                 var dataList = new List<ScheduleSummaryDto>();
                 var query = from sd in _scheduleDetailRepository.GetAll()
                             join s in _scheduleRepository.GetAll() on sd.ScheduleId equals s.Id
-                            where s.Status == ScheduleMasterStatusEnum.已发布 && s.EndTime >= DateTime.Today
+                            join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                            where s.Status == ScheduleMasterStatusEnum.已发布
+                            && (areaCode == AreaCodeEnum.广元市 || g.AreaCode == areaCode)//区县数据过滤
+                            && s.EndTime >= DateTime.Today
                             select sd;
                 //总数
                 var tnum = query.Sum(q => q.VisitNum);
@@ -98,7 +107,7 @@ namespace GYISMS.Charts
         /// </summary>
         /// <param name="tabIndex">（1表示当前任务，结束时间大于今天；2表示所有任务）</param>
         /// <returns></returns>
-        public async Task<DistrictChartDto> GetDistrictChartDataAsync(string userId, DateTime? startDate, DateTime? endDate, int tabIndex)
+        public async Task<DistrictChartDto> GetDistrictChartDataAsync(string userId, DateTime? startDate, DateTime? endDate, int tabIndex, AreaCodeEnum areaCode)
         {
             //var str = startDate.Value.ToString("yyyy-MM-dd HH:mm ss");
             //if (startDate.HasValue)
@@ -119,6 +128,7 @@ namespace GYISMS.Charts
                         on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
                         where s.Status == ScheduleMasterStatusEnum.已发布
+                        where (areaCode == AreaCodeEnum.广元市 || g.AreaCode == areaCode)//添加区县权限 add by donald 2019-1-22
                         select new
                         {
                             g.AreaCode,
@@ -145,7 +155,7 @@ namespace GYISMS.Charts
         /// </summary>
         /// <param name="tabIndex">（1表示当前任务，结束时间大于今天；2表示所有任务）</param>
         /// <returns></returns>
-        public async Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime, int tabIndex)
+        public async Task<ChartByTaskDto> GetChartByGroupAsync(DateTime? startTime, DateTime? endTime, int tabIndex, AreaCodeEnum areaCode)
         {
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
@@ -155,6 +165,8 @@ namespace GYISMS.Charts
                         .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
                         join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                        where (areaCode == AreaCodeEnum.广元市 || g.AreaCode == areaCode)//添加区县权限 add by donald 2019-1-22
                         select new
                         {
                             sd.VisitNum,
@@ -185,7 +197,7 @@ namespace GYISMS.Charts
         /// </summary>
         /// <param name="searchMoth"></param>
         /// <returns></returns>
-        public async Task<ChartByTaskDto> GetChartByMothAsync(int searchMoth)
+        public async Task<ChartByTaskDto> GetChartByMothAsync(int searchMoth, AreaCodeEnum areaCode)
         {
             var timeNow = DateTime.Today;
             DateTime startTime;
@@ -200,7 +212,7 @@ namespace GYISMS.Charts
                 startTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(-5);
                 endTime = timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
             }
-            var list = await _scheduleDetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime);
+            var list = await _scheduleDetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime, areaCode);
             list.OrderBy(s => s.GroupName).ToList();
             var items = new List<DistrictChartItemDto>();
             var result = new ChartByTaskDto();
@@ -316,7 +328,7 @@ namespace GYISMS.Charts
                                                       .WhereIf(TaskId.HasValue, t => t.Id == TaskId)
                          on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(AreaCode.HasValue, g => g.AreaCode == AreaCode)
+                                                   .WhereIf(AreaCode.HasValue, g => g.AreaCode == AreaCode)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailDto
                         {

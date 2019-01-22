@@ -97,7 +97,7 @@ namespace GYISMS.Employees
         public virtual string Remark { get; set; }
 
         /// <summary>
-        /// 区县Code
+        /// 特别指定 区县Code
         /// </summary>
         public virtual AreaCodeEnum? AreaCode { get; set; }
 

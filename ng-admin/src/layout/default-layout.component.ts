@@ -103,7 +103,7 @@ export class DefaultLayoutComponent extends AppComponentBase
             ]
         ),
         // 会议管理
-        new MenuItem(
+        /*new MenuItem(
             '会议申请',
             '',
             'anticon anticon-laptop',
@@ -114,18 +114,6 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '/app/meeting/meeting-room',
             ),
-            /*new MenuItem(
-                '会议室预定',
-                '',
-                '',
-                '',
-            ),
-            new MenuItem(
-                '历史会议记录',
-                '',
-                '',
-                '',
-            ),*/
             new MenuItem(
                 '会议室详情',
                 '',
@@ -143,7 +131,7 @@ export class DefaultLayoutComponent extends AppComponentBase
                 true
             ),
             ], null, 'CityAdmin'
-        ),
+        ),*/
         new MenuItem(
             '企业标准库',
             '',

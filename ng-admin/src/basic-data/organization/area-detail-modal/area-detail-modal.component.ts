@@ -23,7 +23,7 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
     validateForm: FormGroup;
     // countyCodes: SelectGroup[] = []
     countyCodes: any = [
-        { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }
+        { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }, { text: '广元市', value: 4 }
     ];
     notify: NotifyService;
 

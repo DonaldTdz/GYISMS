@@ -90,7 +90,8 @@ namespace GYISMS.GYEnums
         None = 0,
         昭化区 = 1,
         剑阁县 = 2,
-        旺苍县 = 3
+        旺苍县 = 3,
+        广元市 = 4
     }
 
     public enum FileTypeEnum
