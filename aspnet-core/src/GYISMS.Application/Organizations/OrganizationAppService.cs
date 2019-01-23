@@ -261,7 +261,7 @@ namespace GYISMS.Organizations
         /// </summary>
         public async Task<APIResultDto> SynchronousOrganizationAsync()
         {
-            var arr = GetAreaCodeArray();
+            //var arr = GetAreaCodeArray();  取消区县更新 改为区县配置
             string accessToken = _dingDingAppService.GetAccessTokenByApp(DingDingAppEnum.会议申请); //GetAccessToken();
             IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
             OapiDepartmentListRequest request = new OapiDepartmentListRequest();
@@ -287,7 +287,7 @@ namespace GYISMS.Organizations
                     o.CreationTime = DateTime.Now;
                     if (o.Id != 1)
                     {
-                        await SynchronousEmployeeAsync(o.Id, accessToken, arr);
+                        await SynchronousEmployeeAsync(o.Id, accessToken);
                     }
                 }
                 else
@@ -300,7 +300,7 @@ namespace GYISMS.Organizations
                     await CreateSyncOrganizationAsync(organization);
                     if (organization.Id != 1)
                     {
-                        await SynchronousEmployeeAsync(organization.Id, accessToken, arr);
+                        await SynchronousEmployeeAsync(organization.Id, accessToken);
                     }
                 }
             }
@@ -311,7 +311,7 @@ namespace GYISMS.Organizations
         /// <summary>
         /// 同步内部员工
         /// </summary>
-        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken, AreaCodeArray pidArr)
+        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken)
         {
             try
             {
@@ -351,21 +351,21 @@ namespace GYISMS.Organizations
                         e.HiredDate = item.HiredDate;
                         e.Avatar = item.Avatar;
                         e.Active = item.Active;
-                        if (pidArr.ZHQPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.昭化区.ToString();
-                            e.AreaCode = AreaCodeEnum.昭化区;
-                        }
-                        else if (pidArr.JGXPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.剑阁县.ToString();
-                            e.AreaCode = AreaCodeEnum.剑阁县;
-                        }
-                        else if (pidArr.WCXPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.旺苍县.ToString();
-                            e.AreaCode = AreaCodeEnum.旺苍县;
-                        }
+                        //if (pidArr.ZHQPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.昭化区.ToString();
+                        //    e.AreaCode = AreaCodeEnum.昭化区;
+                        //}
+                        //else if (pidArr.JGXPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.剑阁县.ToString();
+                        //    e.AreaCode = AreaCodeEnum.剑阁县;
+                        //}
+                        //else if (pidArr.WCXPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.旺苍县.ToString();
+                        //    e.AreaCode = AreaCodeEnum.旺苍县;
+                        //}
                     }
                     else
                     {
@@ -381,21 +381,21 @@ namespace GYISMS.Organizations
                         employee.HiredDate = item.HiredDate;
                         employee.Avatar = item.Avatar;
                         employee.Active = item.Active;
-                        if (pidArr.ZHQPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.昭化区.ToString();
-                            e.AreaCode = AreaCodeEnum.昭化区;
-                        }
-                        else if (pidArr.JGXPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.剑阁县.ToString();
-                            e.AreaCode = AreaCodeEnum.剑阁县;
-                        }
-                        else if (pidArr.WCXPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.旺苍县.ToString();
-                            e.AreaCode = AreaCodeEnum.旺苍县;
-                        }
+                        //if (pidArr.ZHQPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.昭化区.ToString();
+                        //    e.AreaCode = AreaCodeEnum.昭化区;
+                        //}
+                        //else if (pidArr.JGXPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.剑阁县.ToString();
+                        //    e.AreaCode = AreaCodeEnum.剑阁县;
+                        //}
+                        //else if (pidArr.WCXPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.旺苍县.ToString();
+                        //    e.AreaCode = AreaCodeEnum.旺苍县;
+                        //}
                         await CreateSyncEmployeeAsync(employee);
                     }
                 }

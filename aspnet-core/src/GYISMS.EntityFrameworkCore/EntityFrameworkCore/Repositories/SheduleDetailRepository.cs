@@ -66,13 +66,14 @@ namespace GYISMS.EntityFrameworkCore.Repositories
         /// <param name="startTime"></param>
         /// <param name="endTime"></param>
         /// <returns></returns>
-        public async Task<List<SheduleStatisticalDto>> GetSheduleStatisticalDtosByMothAsync(DateTime startTime,DateTime endTime)
+        public async Task<List<SheduleStatisticalDto>> GetSheduleStatisticalDtosByMothAsync(DateTime startTime, DateTime endTime, AreaCodeEnum areaCode)
         {
             EnsureConnectionOpen();
             SqlParameter[] sql = new SqlParameter[]
             {
-                new SqlParameter("@startTime",startTime),
-                new SqlParameter("@endTime",endTime)
+                new SqlParameter("@startTime", startTime),
+                new SqlParameter("@endTime", endTime),
+                new SqlParameter("@areaCode", areaCode)
             };
             var command = CreateCommand(@"select cast(t1.[Year] as varchar(4)) + '-' + (case when t1.[Month] > 9 then cast(t1.[Month] as varchar(2)) else '0' + cast(t1.[Month] as varchar(2)) end ) Months,
                      t1.VisitNum, t1.CompleteNum, isnull(t2.ExpireNum, 0) as ExpireNum
@@ -80,15 +81,17 @@ namespace GYISMS.EntityFrameworkCore.Repositories
                      select[Year],[Month], sum(CompleteNum) as CompleteNum, sum(VisitNum) as VisitNum
                      from(
                      select year(s.EndTime) as [Year], month(s.EndTime) as [Month], sd.CompleteNum, sd.VisitNum from[dbo].[ScheduleDetails] sd
-                     inner join[dbo].[Schedules] s on sd.ScheduleId = s.Id
-                    where s.EndTime >=@startTime and  s.EndTime < @endTime and s.Status=1
+                     inner join [dbo].[Schedules] s on sd.ScheduleId = s.Id
+                     inner join [dbo].[Growers] g on sd.GrowerId = g.Id
+                    where s.EndTime >=@startTime and  s.EndTime < @endTime and s.Status=1 and (@areaCode = 4 or g.AreaCode = @areaCode)
                     ) temp group by[Year], [Month]
                     ) t1 left join(
                     select[Year],[Month], sum(ExpireNum) as ExpireNum
                     from(
                     select year(s.EndTime) as [Year], month(s.EndTime) as [Month], sd.VisitNum - sd.CompleteNum as ExpireNum from[dbo].[ScheduleDetails] sd
                     inner join[dbo].[Schedules] s on sd.ScheduleId = s.Id
-                    where s.EndTime >= @startTime  and  s.EndTime < @endTime and s.Status=1
+                    inner join [dbo].[Growers] g on sd.GrowerId = g.Id
+                    where s.EndTime >= @startTime  and  s.EndTime < @endTime and s.Status=1 and (@areaCode = 4 or g.AreaCode = @areaCode)
                     and sd.[Status] = 0
                     ) temp group by[Year], [Month]) t2 on t1.[Year] = t2.[Year] and t1.[Month] = t2.[Month]
                     ", CommandType.Text, sql);

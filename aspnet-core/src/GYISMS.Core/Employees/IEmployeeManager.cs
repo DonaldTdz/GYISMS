@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Abp;
 using Abp.Domain.Services;
 using GYISMS.Employees;
-
+using GYISMS.GYEnums;
 
 namespace GYISMS.Employees
 {
@@ -13,15 +13,17 @@ namespace GYISMS.Employees
     {
 
         /// <summary>
-    /// 初始化方法
-    ///</summary>
+        /// 初始化方法
+        ///</summary>
         void InitEmployee();
 
 
+        /// <summary>
+        /// 获取用户区县
+        /// </summary>
+        Task<AreaCodeEnum> GetAreaCodeByUserIdAsync(string userId);
 
-		//// custom codes
- 
-        //// custom codes end
+        Task<string[]> GetAreaDeptIdArrayAsync(AreaCodeEnum? areaCode);
 
     }
 }

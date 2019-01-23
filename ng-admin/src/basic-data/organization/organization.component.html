@@ -49,7 +49,8 @@
                 </button>
             </div>
             <div style="padding-left:10px; padding-right:10px;">
-                <nz-tree style="margin:0px;" [(ngModel)]="nodes" [nzShowExpand]="true" (nzClick)="activeNode($event)" (nzDblClick)="openFolder($event)">
+                <nz-tree style="margin:0px;" [(ngModel)]="nodes" [nzShowExpand]="true" (nzClick)="activeNode($event)"
+                    (nzDblClick)="openFolder($event)">
                     <ng-template style="margin:0px;" #nzTreeTemplate let-node>
                         <span class="custom-node" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
                             <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading">
@@ -115,7 +116,7 @@
                         <td>{{item.position}}</td>
                         <td>{{item.mobile}}</td>
                         <td [acl]="'Admin'">
-                            <a (click)="showModal(item.id)">区县维护</a>
+                            <a (click)="showModal(item.id)">区县设置</a>
                         </td>
                     </tr>
                 </tbody>

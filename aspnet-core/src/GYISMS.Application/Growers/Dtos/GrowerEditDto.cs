@@ -9,7 +9,7 @@ using GYISMS.GYEnums;
 
 namespace GYISMS.Growers.Dtos
 {
-    public class GrowerEditDto: AuditedEntityDto<int?>
+    public class GrowerEditDto: FullAuditedEntityDto<int?>
     {
         /// <summary>
         /// Id
@@ -113,30 +113,5 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public bool IsEnable { get; set; }
 
-        /// <summary>
-        /// IsDeleted
-        /// </summary>
-        public bool? IsDeleted { get; set; }
-
-
-        /// <summary>
-        /// DeletionTime
-        /// </summary>
-        public DateTime? DeletionTime { get; set; }
-
-
-        /// <summary>
-        /// DeleterUserId
-        /// </summary>
-        public long? DeleterUserId { get; set; }
-
-
-
-
-
-
-        //// custom codes
-
-        //// custom codes end
     }
 }

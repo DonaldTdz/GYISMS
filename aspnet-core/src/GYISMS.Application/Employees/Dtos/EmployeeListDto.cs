@@ -133,5 +133,9 @@ namespace GYISMS.Employees.Dtos
         public string Position { get; set; }
 
         public string Avatar { get; set; }
+
+        public string Area { get; set; }
+
+        public AreaCodeEnum AreaCode { get; set; }
     }
 }

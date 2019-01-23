@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace GYISMS.ScheduleDetails
 {
-    public interface ISheduleDetailRepository :IRepository<ScheduleDetail, Guid>
+    public interface ISheduleDetailRepository : IRepository<ScheduleDetail, Guid>
     {
-        Task<List<SheduleStatisticalDto>> GetSheduleStatisticalDtosByMothAsync(DateTime startTime, DateTime endTime);
+        Task<List<SheduleStatisticalDto>> GetSheduleStatisticalDtosByMothAsync(DateTime startTime, DateTime endTime, AreaCodeEnum areaCode);
     }
 }

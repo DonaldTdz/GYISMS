@@ -12,7 +12,7 @@ namespace GYISMS.Growers
     /// 烟农
     /// </summary
     [Table("Growers")]
-    public class Grower : AuditedEntity<int>, ISoftDelete, IMayArea
+    public class Grower : FullAuditedEntity, ISoftDelete, IMayArea
     {
         /// <summary>
         /// 业务年度
@@ -107,40 +107,6 @@ namespace GYISMS.Growers
         /// </summary>
         public virtual bool IsEnable { get; set; }
 
-        /// <summary>
-        /// 是否删除
-        /// </summary>
-        public virtual bool IsDeleted { get; set; }
-
-        /// <summary>
-        /// CreationTime
-        /// </summary>
-        //public virtual DateTime? CreationTime { get; set; }
-
-        ///// <summary>
-        ///// CreatorUserId
-        ///// </summary>
-        //public virtual long? CreatorUserId { get; set; }
-
-        ///// <summary>
-        ///// LastModificationTime
-        ///// </summary>
-        //public virtual DateTime? LastModificationTime { get; set; }
-
-        ///// <summary>
-        ///// LastModifierUserId
-        ///// </summary>
-        //public virtual long? LastModifierUserId { get; set; }
-
-        /// <summary>
-        /// DeletionTime
-        /// </summary>
-        public virtual DateTime? DeletionTime { get; set; }
-
-        /// <summary>
-        /// DeleterUserId
-        /// </summary>
-        public virtual long? DeleterUserId { get; set; }
 
     }
 }

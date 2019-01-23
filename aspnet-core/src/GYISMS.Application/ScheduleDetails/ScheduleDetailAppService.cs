@@ -354,7 +354,14 @@ namespace GYISMS.ScheduleDetails
             //    Expired = g.Sum(s => s.VisitNum - s.CompleteNum) 
             //}).ToListAsync();
             //var result = new SheduleSumStatisDto();
-            var list = await _scheduledetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime);
+
+            var areaCode = await GetCurrentUserAreaCodeAsync();
+            var isAdmin = await CheckAdminAsync();
+            if (isAdmin)
+            {
+                areaCode = AreaCodeEnum.广元市;
+            }
+            var list = await _scheduledetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime, areaCode.HasValue? areaCode.Value : AreaCodeEnum.None);
 
             return list.OrderBy(s => s.GroupName).ToList();
         }
@@ -535,7 +542,7 @@ namespace GYISMS.ScheduleDetails
                 await CurrentUnitOfWork.SaveChangesAsync();
             }
 
-            var growerList = _growerRepository.GetAll().Where(v => v.IsDeleted == false);
+            var growerList = _growerRepository.GetAll().Where(v => v.IsEnable == true);
             foreach (var item in growerList)
             {
                 ScheduleDetail entity = new ScheduleDetail();
