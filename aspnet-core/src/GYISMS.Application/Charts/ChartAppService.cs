@@ -122,8 +122,8 @@ namespace GYISMS.Charts
             //}
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
-                        .WhereIf(startDate.HasValue && tabIndex == 2, s => s.BeginTime >= startDate)
-                        .WhereIf(endDate.HasValue && tabIndex == 2, s => s.BeginTime <= endDate)
+                        .WhereIf(startDate.HasValue && tabIndex == 2, s => s.EndTime >= startDate)
+                        .WhereIf(endDate.HasValue && tabIndex == 2, s => s.EndTime <= endDate)
                         .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Now)
                         on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
@@ -159,8 +159,8 @@ namespace GYISMS.Charts
         {
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
-                        .WhereIf(startTime.HasValue && tabIndex == 2, s => s.BeginTime >= startTime)
-                        .WhereIf(startTime.HasValue && tabIndex == 2, s => s.BeginTime <= endTime.Value.AddDays(1))
+                        .WhereIf(startTime.HasValue && tabIndex == 2, s => s.EndTime >= startTime)
+                        .WhereIf(startTime.HasValue && tabIndex == 2, s => s.EndTime <= endTime.Value.AddDays(1))
                         .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Today)
                         .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
@@ -258,7 +258,7 @@ namespace GYISMS.Charts
                 var query = from sd in _scheduleDetailRepository.GetAll()
                             join s in _scheduleRepository.GetAll() on sd.ScheduleId equals s.Id
                             where s.Status == ScheduleMasterStatusEnum.已发布
-                            && sd.EmployeeId == userId
+                            && sd.EmployeeId == userId && s.EndTime >= DateTime.Today
                             select sd;
                 //总数
                 var tnum = query.Sum(q => q.VisitNum);
@@ -288,7 +288,7 @@ namespace GYISMS.Charts
         /// 获取任务的明细信息
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus)
+        public async Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, int TabIndex, string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus)
         {
             if (!string.IsNullOrEmpty(DateString))
             {
@@ -318,8 +318,9 @@ namespace GYISMS.Charts
                                                       .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
                                                       .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
                         join s in _scheduleRepository.GetAll()
-                                                      .WhereIf(StartTime.HasValue, s => s.BeginTime >= StartTime)
-                                                      .WhereIf(EndTime.HasValue, s => s.BeginTime <= EndTime)
+                                                      .WhereIf(StartTime.HasValue && (TabIndex == 2 || TabIndex == 0), s => s.BeginTime >= StartTime)
+                                                      .WhereIf(EndTime.HasValue && (TabIndex == 2 || TabIndex == 0), s => s.BeginTime <= EndTime)
+                                                      .WhereIf(TabIndex == 1, s => s.EndTime >= DateTime.Today)
                                                       .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
                         join t in _visittaskRepository.GetAll()
@@ -344,7 +345,8 @@ namespace GYISMS.Charts
                             VisitNum = sd.VisitNum,
                             CompleteNum = sd.CompleteNum
                         };
-            var items = await query.OrderByDescending(s => s.BeginTime).Skip(PageIndex).Take(9).ToListAsync();
+            var aa = query.ToList();
+            var items = await query.OrderByDescending(s => s.BeginTime).Skip(PageIndex).Take(10).ToListAsync();
             return items;
         }
 
@@ -354,7 +356,7 @@ namespace GYISMS.Charts
         /// <param name="Status">(0表示逾期、2表示完成、3表示待完成)</param>
         /// <param name="TabIndex">(0当前用于月份统计、1表示当前任务，结束时间大于今天；2表示所有任务)</param>
         /// <returns></returns>
-        public async Task<List<DistrictStatisDto>> GetSheduleDetailGroupArea(string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int TabIndex, int? TStatus)
+        public async Task<List<DistrictStatisDto>> GetSheduleDetailGroupArea(string DateString, int TabIndex, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus)
         {
             if (!string.IsNullOrEmpty(DateString))
             {

@@ -80,18 +80,18 @@ namespace GYISMS.EntityFrameworkCore.Repositories
                      from(
                      select[Year],[Month], sum(CompleteNum) as CompleteNum, sum(VisitNum) as VisitNum
                      from(
-                     select year(s.BeginTime) as [Year], month(s.BeginTime) as [Month], sd.CompleteNum, sd.VisitNum from[dbo].[ScheduleDetails] sd
+                     select year(s.EndTime) as [Year], month(s.EndTime) as [Month], sd.CompleteNum, sd.VisitNum from[dbo].[ScheduleDetails] sd
                      inner join [dbo].[Schedules] s on sd.ScheduleId = s.Id
                      inner join [dbo].[Growers] g on sd.GrowerId = g.Id
-                    where s.BeginTime >=@startTime and  s.BeginTime < @endTime and s.Status=1 and (@areaCode = 4 or g.AreaCode = @areaCode)
+                    where s.EndTime >=@startTime and  s.EndTime < @endTime and s.Status=1 and (@areaCode = 4 or g.AreaCode = @areaCode)
                     ) temp group by[Year], [Month]
                     ) t1 left join(
                     select[Year],[Month], sum(ExpireNum) as ExpireNum
                     from(
-                    select year(s.BeginTime) as [Year], month(s.BeginTime) as [Month], sd.VisitNum - sd.CompleteNum as ExpireNum from[dbo].[ScheduleDetails] sd
+                    select year(s.EndTime) as [Year], month(s.EndTime) as [Month], sd.VisitNum - sd.CompleteNum as ExpireNum from[dbo].[ScheduleDetails] sd
                     inner join[dbo].[Schedules] s on sd.ScheduleId = s.Id
                     inner join [dbo].[Growers] g on sd.GrowerId = g.Id
-                    where s.BeginTime >= @startTime  and  s.BeginTime < @endTime and s.Status=1 and (@areaCode = 4 or g.AreaCode = @areaCode)
+                    where s.EndTime >= @startTime  and  s.EndTime < @endTime and s.Status=1 and (@areaCode = 4 or g.AreaCode = @areaCode)
                     and sd.[Status] = 0
                     ) temp group by[Year], [Month]) t2 on t1.[Year] = t2.[Year] and t1.[Month] = t2.[Month]
                     ", CommandType.Text, sql);
