@@ -9,7 +9,7 @@
     <!-- 角色名称 -->
     <nz-form-item>
       <nz-form-control nzHasFeedback>
-        <input nz-input formControlName="name" [placeholder]="l('Name')">
+        <input nz-input formControlName="name" [placeholder]="'角色名'">
         <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').errors">
           <ng-container *ngIf="validateForm.get('name').hasError('required')">{{l('CanNotNull')}}</ng-container>
         </nz-form-explain>

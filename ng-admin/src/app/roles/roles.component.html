@@ -13,12 +13,14 @@
   </ng-template>
 
 
-  <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber" [(nzPageSize)]="pageSize"
-    [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()" [nzFrontPagination]="false">
+  <nz-table #ajaxTable nzShowSizeChanger [nzData]="dataList" [nzTotal]="totalItems" [(nzPageIndex)]="pageNumber"
+    [(nzPageSize)]="pageSize" [nzLoading]="isTableLoading" (nzPageIndexChange)="refresh()" (nzPageSizeChange)="refresh()"
+    [nzFrontPagination]="false">
     <thead>
       <tr>
         <th>{{l("RoleName")}}</th>
         <th>{{l("DisplayName")}}</th>
+        <th>描述</th>
         <th>{{l("Actions")}}</th>
       </tr>
     </thead>
@@ -26,6 +28,7 @@
       <tr *ngFor="let item of ajaxTable.data">
         <td>{{item.name}}</td>
         <td>{{item.displayName}}</td>
+        <td>{{item.description}}</td>
         <td>
           <a (click)="edit(item)">编辑</a>
           <nz-divider nzType="vertical"></nz-divider>

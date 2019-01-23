@@ -16,6 +16,7 @@ using GYISMS.Authorization.Roles;
 using GYISMS.Authorization.Users;
 using GYISMS.Roles.Dto;
 using GYISMS.Users.Dto;
+using GYISMS.Employees;
 
 namespace GYISMS.Users
 {
@@ -26,19 +27,22 @@ namespace GYISMS.Users
         private readonly RoleManager _roleManager;
         private readonly IRepository<Role> _roleRepository;
         private readonly IPasswordHasher<User> _passwordHasher;
+        private readonly IEmployeeManager _employeeManager;
 
         public UserAppService(
             IRepository<User, long> repository,
             UserManager userManager,
             RoleManager roleManager,
             IRepository<Role> roleRepository,
-            IPasswordHasher<User> passwordHasher)
+            IPasswordHasher<User> passwordHasher,
+            IEmployeeManager employeeManager)
             : base(repository)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _roleRepository = roleRepository;
             _passwordHasher = passwordHasher;
+            _employeeManager = employeeManager;
         }
 
         public override async Task<UserDto> Create(CreateUserDto input)
@@ -50,6 +54,14 @@ namespace GYISMS.Users
             user.TenantId = AbpSession.TenantId;
             user.Password = _passwordHasher.HashPassword(user, input.Password);
             user.IsEmailConfirmed = true;
+
+            //系统用户绑定内部员工 获取用户区县信息 add by donald 2019-1-23
+            if (!string.IsNullOrEmpty(user.EmployeeId))
+            {
+                var area = await _employeeManager.GetAreaCodeByUserIdAsync(user.EmployeeId);
+                user.Area = area == GYEnums.AreaCodeEnum.None ? "" : area.ToString();
+                user.AreaCode = area;
+            }
 
             CheckErrors(await _userManager.CreateAsync(user));
 
@@ -68,6 +80,14 @@ namespace GYISMS.Users
             CheckUpdatePermission();
 
             var user = await _userManager.GetUserByIdAsync(input.Id);
+
+            //系统用户绑定内部员工 获取用户区县信息 add by donald 2019-1-23
+            if (!string.IsNullOrEmpty(input.EmployeeId) && input.EmployeeId != user.EmployeeId)
+            {
+                var area = await _employeeManager.GetAreaCodeByUserIdAsync(input.EmployeeId);
+                input.Area = area == GYEnums.AreaCodeEnum.None ? "" : area.ToString();
+                input.AreaCode = area;
+            }
 
             MapToEntity(input, user);
 

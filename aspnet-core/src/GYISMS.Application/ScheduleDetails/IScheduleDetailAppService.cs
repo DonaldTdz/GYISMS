@@ -61,7 +61,7 @@ namespace GYISMS.ScheduleDetails
 
         Task<List<ScheduleDetailEditDto>> CreateOrUpdateScheduleTaskAsync(List<ScheduleDetailEditDto> input);
 
-        HomeInfo GetHomeInfo();
+        Task<HomeInfo> GetHomeInfo();
 
         Task<List<SheduleStatisticalDto>> GetSchedulByAreaTime(ScheduleDetaStatisticalInput input);
 

@@ -10,19 +10,19 @@ const routes: Routes = [
         path: 'document',
         component: DocumentComponent,
         canActivate: [AppRouteGuard, ACLGuard],
-        data: { guard: 'CityAdmin' },
+        data: { guard: 'EnterpriseAdmin' },
     },
     {
         path: 'doc-detail',
         component: DocumentDetailComponent,
         canActivate: [AppRouteGuard, ACLGuard],
-        data: { guard: 'CityAdmin' },
+        data: { guard: 'EnterpriseAdmin' },
     },
     {
         path: 'doc-detail/:id',
         component: DocumentDetailComponent,
         canActivate: [AppRouteGuard, ACLGuard],
-        data: { guard: 'CityAdmin' },
+        data: { guard: 'EnterpriseAdmin' },
     }
 ];
 
