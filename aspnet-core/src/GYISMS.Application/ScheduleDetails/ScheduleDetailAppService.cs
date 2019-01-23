@@ -254,12 +254,15 @@ namespace GYISMS.ScheduleDetails
         /// 获取任务完成情况数据统计
         /// </summary>
         /// <returns></returns>
-        public HomeInfo GetHomeInfo()
+        public async Task<HomeInfo> GetHomeInfo()
         {
             var homeInfo = new HomeInfo();
             //var aa = await _scheduledetailRepository.GetAll().ToListAsync();
+            //区县权限
+            var area = await GetCurrentUserAreaCodeAsync();
             var query = from sd in _scheduledetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll().Where(s => s.Status == ScheduleMasterStatusEnum.已发布) on sd.ScheduleId equals s.Id
+                        join g in _growerRepository.GetAll().WhereIf(area.HasValue, q => q.AreaCode == area) on sd.GrowerId equals g.Id
                         select sd;
             var totalCount = query.Sum(s => s.VisitNum);
             homeInfo.Total = totalCount.HasValue ? totalCount.Value : 0;
@@ -300,7 +303,9 @@ namespace GYISMS.ScheduleDetails
                             sd.CompleteNum,
                             wr.AreaCode,
                         };
-            var list = await query.GroupBy(s => s.AreaCode).Select(g => new SheduleStatisticalDto
+            var area = await GetCurrentUserAreaCodeAsync();//区县权限
+            var list = await query.WhereIf(area.HasValue, q => q.AreaCode == area)
+                .GroupBy(s => s.AreaCode).Select(g => new SheduleStatisticalDto
             {
                 GroupName = g.Key.ToString(),
                 Total = g.Sum(m => m.VisitNum),
@@ -354,14 +359,14 @@ namespace GYISMS.ScheduleDetails
             //    Expired = g.Sum(s => s.VisitNum - s.CompleteNum) 
             //}).ToListAsync();
             //var result = new SheduleSumStatisDto();
-
+            //区县权限 add by donald 2019-1-23
             var areaCode = await GetCurrentUserAreaCodeAsync();
-            var isAdmin = await CheckAdminAsync();
-            if (isAdmin)
-            {
-                areaCode = AreaCodeEnum.广元市;
-            }
-            var list = await _scheduledetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime, areaCode.HasValue? areaCode.Value : AreaCodeEnum.None);
+            //var isAdmin = await CheckAdminAsync();
+            //if (isAdmin)
+            //{
+            //    areaCode = AreaCodeEnum.广元市;
+            //}
+            var list = await _scheduledetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime, areaCode.HasValue? areaCode.Value : AreaCodeEnum.广元市);
 
             return list.OrderBy(s => s.GroupName).ToList();
         }

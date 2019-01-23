@@ -1,13 +1,13 @@
 import { Component, Injector, AfterViewInit, OnInit } from '@angular/core';
 import { AppComponentBase } from '@shared/app-component-base';
 import { appModuleAnimation } from '@shared/animations/routerTransition';
-import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from '../../../node_modules/ng-zorro-antd';
 import { zip } from '../../../node_modules/rxjs';
 import { HomeInfoServiceProxy } from '@shared/service-proxies/home/home-service';
 import { HomeInfo, SheduleStatis } from '@shared/entity/home';
 import { addDays } from 'date-fns';
 import { AppSessionService } from '@shared/session/app-session.service';
+import { Router } from '@angular/router';
 
 @Component({
   templateUrl: './home.component.html',
@@ -36,34 +36,41 @@ export class HomeComponent extends AppComponentBase implements OnInit {
   roleName: string = '';
   constructor(
     injector: Injector,
-    private http: _HttpClient,
     public msg: NzMessageService,
     private homeService: HomeInfoServiceProxy,
     private _appSessionService: AppSessionService,
+    private router: Router
   ) {
     super(injector);
   }
   loading = true;
 
   ngOnInit(): void {
-    this.getNowDate();
-    this.getHomeInfo();
-    this.getSheduleStatisByArea();
-    this.getShduleStatisByMoth();
-
     let roles = this._appSessionService.roles;
-    if (roles) {
+    if (roles.length == 1 && roles[0] == 'EnterpriseAdmin') { //如果用户只是企管人员 将跳转到资料库
+      this.router.navigate(['app/doc/document']);
+    }
+    else {
+      this.getNowDate();
+      this.getHomeInfo();
+      this.getSheduleStatisByArea();
+      this.getShduleStatisByMoth();
+      if (roles) {
+        if (roles.includes('Admin')) {
+          this.roleName += '系统管理员 ';
+        }
 
-      if (roles.includes('Admin')) {
-        this.roleName += '系统管理员 ';
-      }
+        if (roles.includes('CityAdmin')) {
+          this.roleName += '市级管理员 ';
+        }
 
-      if (roles.includes('CityAdmin')) {
-        this.roleName += '市级管理员 ';
-      }
+        if (roles.includes('DistrictAdmin')) {
+          this.roleName += '区县管理员';
+        }
 
-      if (roles.includes('DistrictAdmin')) {
-        this.roleName += '区县管理员';
+        if (roles.includes('EnterpriseAdmin')) {
+          this.roleName += '企业标准管理员';
+        }
       }
     }
   }
