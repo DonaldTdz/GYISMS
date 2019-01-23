@@ -43,7 +43,7 @@ namespace GYISMS.ScheduleTasks
 
         Task<List<DingDingScheduleTaskDto>> GetDingDingScheduleTaskListAsync(string userId);
 
-        Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId, string uid);
+        Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId, string uid, int Status);
 
         Task<DingDingVisitGrowerDetailDto> GetDingDingVisitGrowerDetailAsync(Guid scheduleDetailId);
 

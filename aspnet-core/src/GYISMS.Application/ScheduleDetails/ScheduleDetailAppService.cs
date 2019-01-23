@@ -377,8 +377,8 @@ namespace GYISMS.ScheduleDetails
                         .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
                         on sd.TaskId equals t.Id
                         join s in _scheduleRepository.GetAll()
-                            .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
-                            .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                            .WhereIf(input.StartTime.HasValue, s => s.EndTime >= input.StartTime)
+                            .WhereIf(input.EndTime.HasValue, s => s.EndTime <= input.EndTime)
                             .WhereIf(!string.IsNullOrEmpty(input.SheduleName),s=>s.Desc.Contains(input.SheduleName))
                             .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                             on sd.ScheduleId equals s.Id
@@ -477,8 +477,8 @@ namespace GYISMS.ScheduleDetails
                                                         .WhereIf(!string.IsNullOrEmpty(input.EmployeeName), sd => sd.EmployeeName.Contains(input.EmployeeName))
                                                         .WhereIf(!string.IsNullOrEmpty(input.GrowerName), sd => sd.GrowerName.Contains(input.GrowerName))
                         join s in _scheduleRepository.GetAll()
-                                                     .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
-                                                     .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                                                     .WhereIf(input.StartTime.HasValue, s => s.EndTime >= input.StartTime)
+                                                     .WhereIf(input.EndTime.HasValue, s => s.EndTime <= input.EndTime)
                                                      .WhereIf(!string.IsNullOrEmpty(input.SheduleName),s=>s.Desc.Contains(input.SheduleName))
                                                      .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
@@ -764,8 +764,8 @@ namespace GYISMS.ScheduleDetails
                                                         .WhereIf(!string.IsNullOrEmpty(input.EmployeeName), sd => sd.EmployeeName.Contains(input.EmployeeName))
                                                         .WhereIf(!string.IsNullOrEmpty(input.GrowerName), sd => sd.GrowerName.Contains(input.GrowerName))
                         join s in _scheduleRepository.GetAll()
-                                                     .WhereIf(input.StartTime.HasValue, s => s.BeginTime >= input.StartTime)
-                                                     .WhereIf(input.EndTime.HasValue, s => s.BeginTime <= input.EndTime)
+                                                     .WhereIf(input.StartTime.HasValue, s => s.EndTime >= input.StartTime)
+                                                     .WhereIf(input.EndTime.HasValue, s => s.EndTime <= input.EndTime)
                                                      .WhereIf(!string.IsNullOrEmpty(input.SheduleName),s=>s.Desc.Contains(input.SheduleName))
                                                      .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
