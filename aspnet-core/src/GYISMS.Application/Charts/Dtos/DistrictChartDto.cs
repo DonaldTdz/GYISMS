@@ -77,7 +77,7 @@ namespace GYISMS.Charts.Dtos
                         District = item.District,
                         Name = "完成",
                         Num = item.CompleteNum,
-                        Status = 1,
+                        Status = 2,
                     });
                     items.Add(new DistrictChartItemDto()
                     {
@@ -85,7 +85,7 @@ namespace GYISMS.Charts.Dtos
                         District = item.District,
                         Name = "待完成",
                         Num = item.VisitNum - item.CompleteNum - item.OverdueNum,
-                        Status = 2,
+                        Status = 3,
                     });
                     items.Add(new DistrictChartItemDto()
                     {
