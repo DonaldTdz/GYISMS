@@ -107,6 +107,11 @@ namespace GYISMS.Growers
         /// </summary>
         public virtual bool IsEnable { get; set; }
 
+        /// <summary>
+        /// 采集次数
+        /// </summary>
+        public virtual int CollectNum { get; set; }
+
 
     }
 }

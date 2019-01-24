@@ -122,5 +122,12 @@ namespace GYISMS.Growers.Dtos
         }
         public bool Checked { get; set; }
 
+        /// <summary>
+        /// 采集次数
+        /// </summary>
+        public int CollectNum { get; set; }
+
+        public int? LimitNum { get; set; }
+
     }
 }

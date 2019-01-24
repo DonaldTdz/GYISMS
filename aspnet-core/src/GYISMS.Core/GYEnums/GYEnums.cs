@@ -110,6 +110,8 @@ namespace GYISMS.GYEnums
         public static string ZHQPID = "ZHQPID";
         public static string JGXPID = "JGXPID";
         public static string WCXPID = "WCXPID";
+        public static string LocationLimitCode = "LocationLimitCode";
+
         /// <summary>
         /// 昭化区 组织代码
         /// </summary>

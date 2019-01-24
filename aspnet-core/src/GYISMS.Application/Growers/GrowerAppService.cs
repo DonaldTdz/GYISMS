@@ -24,6 +24,8 @@ using Abp.Auditing;
 using GYISMS.Dtos;
 using GYISMS.GYEnums;
 using Abp.Domain.Uow;
+using GYISMS.GrowerLocationLogs;
+using GYISMS.SystemDatas;
 
 namespace GYISMS.Growers
 {
@@ -38,7 +40,8 @@ namespace GYISMS.Growers
         private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
         private readonly IRepository<Employee, string> _employeeRepository;
         private readonly IEmployeeManager _employeeManager;
-
+        private readonly IRepository<GrowerLocationLog, Guid> _growerLocationLogRepository;
+        private readonly IRepository<SystemData, int> _systemdataRepository;
         /// <summary>
         /// 构造函数 
         ///</summary>
@@ -47,6 +50,8 @@ namespace GYISMS.Growers
             , IRepository<ScheduleDetail, Guid> scheduledetailRepository
             , IRepository<Employee, string> employeeRepository
             , IEmployeeManager employeeManager
+            , IRepository<GrowerLocationLog, Guid> growerLocationLogRepository
+            , IRepository<SystemData, int> systemdataRepository
             )
         {
             _growerRepository = growerRepository;
@@ -54,6 +59,8 @@ namespace GYISMS.Growers
             _scheduledetailRepository = scheduledetailRepository;
             _employeeRepository = employeeRepository;
             _employeeManager = employeeManager;
+            _growerLocationLogRepository = growerLocationLogRepository;
+            _systemdataRepository = systemdataRepository;
         }
 
 
@@ -69,7 +76,7 @@ namespace GYISMS.Growers
                 .WhereIf(!string.IsNullOrEmpty(input.Employee), u => u.EmployeeName.Contains(input.Employee))
                 .WhereIf(input.AreaName.HasValue, u => u.AreaCode == input.AreaName)
                 .WhereIf(areaCode.HasValue, u => u.AreaCode == areaCode)
-                .WhereIf(input.IsEnable.HasValue,u=>u.IsEnable==input.IsEnable);
+                .WhereIf(input.IsEnable.HasValue, u => u.IsEnable == input.IsEnable);
             // TODO:根据传入的参数添加过滤条件
 
             var growerCount = await query.CountAsync();
@@ -98,7 +105,7 @@ namespace GYISMS.Growers
             int count = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.Id).CountAsync();
             if (count != 0)
             {
-                if(input.EmployeeId == "1" || input.EmployeeId == "2"|| input.EmployeeId == "3")
+                if (input.EmployeeId == "1" || input.EmployeeId == "2" || input.EmployeeId == "3")
                 {
                     var areaCode = (AreaCodeEnum)int.Parse(input.EmployeeId);
                     var deptArr = await _employeeManager.GetAreaDeptIdArrayAsync(areaCode);//获取该区县下配置的部门和子部门列表
@@ -174,7 +181,7 @@ namespace GYISMS.Growers
                         }
                     }
                     return query;
-                }              
+                }
             }
             else
             {
@@ -336,18 +343,40 @@ namespace GYISMS.Growers
         /// 更新烟农位置
         /// </summary>
         [AbpAllowAnonymous]
-        public async Task<APIResultDto> SavePositionAsync(int id, decimal longitude, decimal latitude)
+        public async Task<APIResultDto> SavePositionAsync(int id, decimal longitude, decimal latitude,string userId)
         {
             var grower = await _growerRepository.GetAsync(id);
             if (grower == null)
             {
                 return new APIResultDto() { Code = 901, Msg = "烟农不存在" };
             }
-
+            var date = DateTime.Now;
+            var startTime =DateTime.Parse(date.Year + "-1-1") ;
+            var endTime = DateTime.Parse((date.Year + 1) + "-1-1");
+            var num =await _growerLocationLogRepository.GetAll().Where(g => g.CreationTime >= startTime && g.CreationTime < endTime  &&g.GrowerId==grower.Id).CountAsync();
+            var systemData = await _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.LocationLimitCode).FirstOrDefaultAsync();
+            var limitNum = 3;
+            if (systemData != null && !string.IsNullOrEmpty(systemData.Desc))
+            {
+                limitNum = int.Parse(systemData.Desc);
+            }
+            //if (num >= limitNum)
+            //{
+            //    return new APIResultDto() { Code = 901, Msg = "地理位置只允许修改"+ limitNum + "次,请尝试申请" };
+            //}
+            var log = new GrowerLocationLog(){
+                EmployeeId = userId,
+                GrowerId=id,
+                Latitude=latitude,
+                Longitude=longitude,
+                CreationTime=DateTime.Now
+            };
+            await _growerLocationLogRepository.InsertAsync(log);
+            grower.CollectNum= ++num;//采集次数加一
             grower.Longitude = longitude;
             grower.Latitude = latitude;
             await _growerRepository.UpdateAsync(grower);
-            return new APIResultDto() { Code = 0, Msg = "采集位置成功", Data = new { lon = longitude , lat = latitude } };
+            return new APIResultDto() { Code = 0, Msg = "采集位置成功", Data = new { lon = longitude, lat = latitude,colNum=grower.CollectNum } };
         }
     }
 }

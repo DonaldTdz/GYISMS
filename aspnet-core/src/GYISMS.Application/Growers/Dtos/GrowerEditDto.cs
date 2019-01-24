@@ -113,5 +113,10 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public bool IsEnable { get; set; }
 
+        /// <summary>
+        /// 采集次数
+        /// </summary>
+        public int CollectNum { get; set; }
+
     }
 }
