@@ -20,7 +20,7 @@ export class GrowerComponent extends AppComponentBase implements OnInit {
     enableTypes = [
         { text: '全部', value: 0 },
         { text: '启用', value: 1 },
-        { text: '不启用', value: 2 }
+        { text: '禁用', value: 2 }
     ]
     constructor(injector: Injector, private growerService: GrowerServiceProxy,
         private router: Router) {

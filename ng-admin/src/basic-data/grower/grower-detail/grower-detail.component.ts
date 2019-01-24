@@ -41,10 +41,10 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     defalutImg = '/visit/defaultRecord.png';
     previewVisible = false;
     initflag = true;
-    enableTypes = [
-        { text: '启用', value: true },
-        { text: '不启用', value: false }
-    ]
+    // enableTypes = [
+    //     { text: '启用', value: true },
+    //     { text: '禁用', value: false }
+    // ]
     constructor(injector: Injector, private fb: FormBuilder
         , private growerService: GrowerServiceProxy
         , private actRouter: ActivatedRoute, private router: Router

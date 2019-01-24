@@ -128,11 +128,12 @@
                         <nz-form-item nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="isEnable">启用状态</nz-form-label>
                             <nz-form-control [nzSm]="20">
-                                <nz-radio-group formControlName="isEnable" [(ngModel)]="grower.isEnable" class="mb-md">
+                                <nz-switch formControlName="isEnable" nzSize="large" [(ngModel)]="grower.isEnable"></nz-switch>
+                                <!-- <nz-radio-group formControlName="isEnable" [(ngModel)]="grower.isEnable" class="mb-md">
                                     <label nz-radio [nzValue]="o.value" *ngFor="let o of enableTypes">
                                         <span>{{o.text}}</span>
                                     </label>
-                                </nz-radio-group>
+                                </nz-radio-group> -->
                             </nz-form-control>
                         </nz-form-item>
                     </div>

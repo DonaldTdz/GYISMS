@@ -44,7 +44,7 @@
 
             <div nz-col [nzSpan]="8" class="mb-md" [class.text-right]="'true'" style="float:right">
                 <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
-                <button nz-button type="reset" (click)="refreshData(true)" class="mx-sm">重置</button>
+                <button nz-button type="button" (click)="refreshData(true)" class="mx-sm">重置</button>
                 <button nz-button type="button" (click)="createRoom()" [acl]="'CityAdmin'" nzType="primary">
                     <i class="anticon anticon-plus"></i>
                     <span>新建</span>
@@ -75,7 +75,7 @@
                 <td>{{data.countyCodeName}}</td>
                 <td>{{data.employeeName}}</td>
                 <td>
-                    <nz-badge [nzStatus]="data.isEnable?'success':'default'" [nzText]="data.isEnable?'启用':'不启用'"></nz-badge>
+                    <nz-badge [nzStatus]="data.isEnable?'success':'default'" [nzText]="data.isEnable?'启用':'禁用'"></nz-badge>
                 </td>
                 <td>
                     <a (click)="goDetail(data.id)">详细信息</a>
