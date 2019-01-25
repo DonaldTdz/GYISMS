@@ -124,7 +124,7 @@ namespace GYISMS.Charts
                         join s in _scheduleRepository.GetAll()
                         .WhereIf(startDate.HasValue && tabIndex == 2, s => s.EndTime >= startDate)
                         .WhereIf(endDate.HasValue && tabIndex == 2, s => s.EndTime <= endDate)
-                        .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Now)
+                        .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Today)
                         on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
                         where s.Status == ScheduleMasterStatusEnum.已发布

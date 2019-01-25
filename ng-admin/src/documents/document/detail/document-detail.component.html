@@ -17,7 +17,7 @@
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
-                    <nz-form-label nz-col [nzSm]="4" nzFor="summary">摘要说明</nz-form-label>
+                    <nz-form-label nz-col [nzSm]="4" nzFor="summary" nzRequired>摘要说明</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
                         <textarea nz-input rows="5" formControlName="summary" [placeholder]="'请填写摘要说明'"></textarea>
                         <nz-form-explain *ngIf="validateForm.get('summary').dirty&&validateForm.get('summary').hasError('maxlength')">字符长度小于等于1000</nz-form-explain>
@@ -38,8 +38,7 @@
                         </nz-radio-group>
                         <!-- <input nz-input *ngIf="isAllUser == '0'" readonly="readonly" style="color:#1890ff;" value="{{userDesc? userDesc : '部门，人'}}">-->
                         <div *ngIf="isAllUser == '0'">
-                            <nz-tag *ngFor="let dept of deptTags; let i = index;" [nzColor]="'blue'" [nzMode]="'closeable'"
-                                (nzAfterClose)="handleDeptClose(dept)">
+                            <nz-tag *ngFor="let dept of deptTags; let i = index;" [nzColor]="'blue'" [nzMode]="'closeable'" (nzAfterClose)="handleDeptClose(dept)">
                                 {{ dept.name }}
                             </nz-tag>
                             <nz-tag *ngFor="let user of userTags; let i = index;" [nzMode]="'closeable'" (nzAfterClose)="handleUserClose(user)">
@@ -61,9 +60,9 @@
             </div>
             <div nz-col [nzSpan]="8" class="text-center">
                 <div [style.display]="codeStyle">
-                    <qr [value]="qrCode.value" [background]="qrCode.background" [backgroundAlpha]="qrCode.backgroundAlpha"
-                        [foreground]="qrCode.foreground" [foregroundAlpha]="qrCode.foregroundAlpha" [level]="qrCode.level"
-                        [mime]="qrCode.mime" [padding]="qrCode.padding" [size]="qrCode.size" style="border:1px solid #999"></qr>
+                    <qr [value]="qrCode.value" [background]="qrCode.background" [backgroundAlpha]="qrCode.backgroundAlpha" [foreground]="qrCode.foreground"
+                        [foregroundAlpha]="qrCode.foregroundAlpha" [level]="qrCode.level" [mime]="qrCode.mime" [padding]="qrCode.padding"
+                        [size]="qrCode.size" style="border:1px solid #999"></qr>
                 </div>
             </div>
         </div>
@@ -94,7 +93,9 @@
                 <td>{{item.name}}</td>
                 <td>{{item.fileTypeName}}</td>
                 <td>{{item.fileSize}}</td>
-                <td><a href="{{item.path | hostUrl}}" target="_blank">{{item.name}}</a></td>
+                <td>
+                    <a href="{{item.path | hostUrl}}" target="_blank">{{item.name}}</a>
+                </td>
                 <td>{{item.creationTime | date:'yyyy-MM-dd'}}</td>
                 <td>
                     <a (click)="deleteAttachment(item.id)" style=" color:red;">删除</a>

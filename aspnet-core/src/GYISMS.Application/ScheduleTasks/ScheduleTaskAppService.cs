@@ -357,9 +357,10 @@ namespace GYISMS.ScheduleTasks
                                   CompleteNum = sd.CompleteNum,
                                   GrowerName = sd.GrowerName,
                                   VisitNum = sd.VisitNum,
-                                  UnitName = g.UnitName
+                                  UnitName = g.UnitName,
+                                  CreationTime=sd.CreationTime
                               };
-            taskDto.Growers = await growerQuery.ToListAsync();
+            taskDto.Growers = await growerQuery.OrderByDescending(s=>s.CreationTime).ToListAsync();
 
             taskDto.VisitTotal = taskDto.Growers.Sum(g => g.VisitNum).Value;
             taskDto.CompleteNum = taskDto.Growers.Sum(g => g.CompleteNum).Value;

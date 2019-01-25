@@ -343,6 +343,8 @@ namespace GYISMS.ScheduleTasks.Dtos
         public int? VisitNum { get; set; }
 
         public int? CompleteNum { get; set; }
+
+        public DateTime? CreationTime { get; set; }
     }
 
     public class DingDingVisitGrowerDetailDto

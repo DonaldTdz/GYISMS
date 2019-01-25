@@ -292,7 +292,7 @@ namespace GYISMS.ScheduleDetails
             input.startTime = input.startTime.HasValue ? input.startTime : timeNow.AddDays(1 - timeNow.Day);
             input.endTime = input.endTime.HasValue ? input.endTime : timeNow.AddDays(1 - timeNow.Day).AddMonths(1).AddDays(-1);
             var query = from sd in _scheduledetailRepository.GetAll()
-                        join s in _scheduleRepository.GetAll().Where(s => s.BeginTime >= input.startTime && s.BeginTime <= input.endTime).Where(s => s.Status == ScheduleMasterStatusEnum.已发布) on sd.ScheduleId equals s.Id
+                        join s in _scheduleRepository.GetAll().Where(s => s.EndTime >= input.startTime && s.EndTime <= input.endTime).Where(s => s.Status == ScheduleMasterStatusEnum.已发布) on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id into sg
                         from wr in sg.DefaultIfEmpty()
                         select new
