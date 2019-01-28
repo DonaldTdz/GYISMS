@@ -11,13 +11,17 @@
         <link rel="icon" type="image/x-icon" href="favicon.ico">
         <style type="text/css">
             .preloader {
+                background-image: url('assets/bg.svg');
+                background-repeat: no-repeat;
+                background-position: center 110px;
+                background-size: 100%;
                 position: fixed;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
                 overflow: hidden;
-                background: #49a9ee;
+                background: #fff;
                 z-index: 9999;
                 transition: opacity .65s
             }
@@ -103,23 +107,37 @@
             .cs-loader-inner label:nth-child(1) {
                 animation: lol 3s .5s infinite ease-in-out
             }
+
+            .title {
+                font-size: 14px;
+                color: gray;
+                font-family: 'Myriad Pro', 'Helvetica Neue', Arial, 'Microsoft Yahei', Helvetica, sans-serif;
+                font-weight: 400;
+                position: relative;
+                vertical-align: middle;
+            }
         </style>
-    <link rel="stylesheet" href="styles.9d746a7fce526d48f680.css"></head>
+    <link rel="stylesheet" href="styles.702761073d7998a76a5d.css"></head>
 
     <body>
         <app-root></app-root>
         <div class="preloader">
             <div class="cs-loader">
+                <!--<div class="cs-loader-inner">
+                    <label> ●</label>
+                    <label> ●</label>
+                    <label> ●</label>
+                    <label> ●</label>
+                    <label> ●</label>
+                    <label> ●</label>
+                </div>-->
                 <div class="cs-loader-inner">
-                    <label> ●</label>
-                    <label> ●</label>
-                    <label> ●</label>
-                    <label> ●</label>
-                    <label> ●</label>
-                    <label> ●</label>
+                    <img class="logo" width="150px" src="assets/images/loading001.gif"><br />
+                    <span class="title">玩命加载中....</span>
                 </div>
             </div>
         </div>
-    <script type="text/javascript" src="runtime.8195a6ac0deae3a9c1bf.js"></script><script type="text/javascript" src="polyfills.8d64cb50b44ad13d1e31.js"></script><script type="text/javascript" src="scripts.c3b33df2edbda5232a9f.js"></script><script type="text/javascript" src="main.f1e840d0719b37b49789.js"></script></body>
+        </div>
+    <script type="text/javascript" src="runtime.2c476e1817159da141e7.js"></script><script type="text/javascript" src="polyfills.97c974a85faca1b25a0f.js"></script><script type="text/javascript" src="scripts.592c27a0bd38081290b0.js"></script><script type="text/javascript" src="main.34c619e5db604555c34a.js"></script></body>
 
 </html>
