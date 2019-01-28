@@ -33,9 +33,9 @@
                     </div>
                 </form>
                 <ng-template #totalContentLe>共{{query.total}}条</ng-template>
-                <nz-table #nzTable [nzData]="systemDataLeafs" [nzFrontPagination]="false" [nzTotal]="query.total"
-                    [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzShowTotal]="totalContentLe"
-                    [nzLoading]="loading" nzShowSizeChanger (nzPageIndexChange)="getAllLeafs()" (nzPageSizeChange)="getAllLeafs()">
+                <nz-table #nzTable [nzData]="systemDataLeafs" [nzFrontPagination]="false" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex"
+                    [(nzPageSize)]="query.pageSize" [nzShowTotal]="totalContentLe" [nzLoading]="loading" nzShowSizeChanger (nzPageIndexChange)="getAllLeafs()"
+                    (nzPageSizeChange)="getAllLeafs()">
                     <thead>
                         <tr>
                             <th>
@@ -100,8 +100,7 @@
                             <button nz-button (click)="getAllMetting()" nzShape="circle">
                                 <i class="anticon anticon-reload"></i>
                             </button>
-                            <button nz-button (click)="addConfigMetting()" nzShape="circle" [nzType]="'primary'"
-                                [nzSize]="'large'">
+                            <button nz-button (click)="addConfigMetting()" nzShape="circle" [nzType]="'primary'">
                                 <i class="anticon anticon-plus"></i>
                                 <!-- <span>新建</span> -->
                             </button>
@@ -109,10 +108,9 @@
                     </div>
                 </form>
                 <ng-template #totalContentMe>共{{queryMe.total}}条</ng-template>
-                <nz-table #nzTableMe [nzData]="systemDataMettings" [nzFrontPagination]="false" [nzTotal]="queryMe.total"
-                    [(nzPageIndex)]="queryMe.pageIndex" [(nzPageSize)]="queryMe.pageSize" [nzShowTotal]="totalContentMe"
-                    [nzLoading]="loadingMe" [nzShowTotal]="'true'" [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllMetting()"
-                    (nzPageSizeChange)="getAllMetting()">
+                <nz-table #nzTableMe [nzData]="systemDataMettings" [nzFrontPagination]="false" [nzTotal]="queryMe.total" [(nzPageIndex)]="queryMe.pageIndex"
+                    [(nzPageSize)]="queryMe.pageSize" [nzShowTotal]="totalContentMe" [nzLoading]="loadingMe" [nzShowTotal]="'true'"
+                    [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllMetting()" (nzPageSizeChange)="getAllMetting()">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
@@ -168,7 +166,7 @@
                             <button nz-button (click)="getAllDing()" nzShape="circle">
                                 <i class="anticon anticon-reload"></i>
                             </button>
-                            <button nz-button (click)="addConfigDing()" nzShape="circle" [nzType]="'primary'" [nzSize]="'large'">
+                            <button nz-button (click)="addConfigDing()" nzShape="circle" [nzType]="'primary'">
                                 <i class="anticon anticon-plus"></i>
                                 <!-- <span>新建</span> -->
                             </button>
@@ -176,10 +174,9 @@
                     </div>
                 </form>
                 <ng-template #totalContentMe>共{{queryDi.total}}条</ng-template>
-                <nz-table #nzTableDi [nzData]="systemDataDings" [nzFrontPagination]="false" [nzTotal]="queryDi.total"
-                    [(nzPageIndex)]="queryDi.pageIndex" [(nzPageSize)]="queryDi.pageSize" [nzShowTotal]="totalContentMe"
-                    [nzLoading]="loadingDi" [nzShowTotal]="'true'" [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllDing()"
-                    (nzPageSizeChange)="getAllDing()">
+                <nz-table #nzTableDi [nzData]="systemDataDings" [nzFrontPagination]="false" [nzTotal]="queryDi.total" [(nzPageIndex)]="queryDi.pageIndex"
+                    [(nzPageSize)]="queryDi.pageSize" [nzShowTotal]="totalContentMe" [nzLoading]="loadingDi" [nzShowTotal]="'true'"
+                    [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllDing()" (nzPageSizeChange)="getAllDing()">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
