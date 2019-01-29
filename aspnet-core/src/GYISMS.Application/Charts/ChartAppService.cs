@@ -330,7 +330,7 @@ namespace GYISMS.Charts
                                                       .WhereIf(TaskId.HasValue, t => t.Id == TaskId)
                          on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                   .WhereIf(AreaCode.HasValue, g => g.AreaCode == AreaCode)
+                                                   .WhereIf(AreaCode.HasValue && AreaCode != AreaCodeEnum.广元市, g => g.AreaCode == AreaCode)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailDto
                         {
@@ -380,7 +380,7 @@ namespace GYISMS.Charts
                                                       .WhereIf(TaskId.HasValue, t => t.Id == TaskId)
                          on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
-                                                     .WhereIf(AreaCode.HasValue, g => g.AreaCode == AreaCode)
+                                                     .WhereIf(AreaCode.HasValue && AreaCode != AreaCodeEnum.广元市, g => g.AreaCode == AreaCode)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailDto
                         {
