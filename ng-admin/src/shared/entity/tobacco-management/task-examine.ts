@@ -11,6 +11,8 @@ export class TaskExamine implements ITaskExamineom {
     deletionTime: Date;
     deleterUserId: number;
     isDeleted: boolean;
+    examineOption: number;
+    examineOptionDesc: string;
     constructor(data?: ITaskExamineom) {
         if (data) {
             for (var property in data) {
@@ -34,6 +36,8 @@ export class TaskExamine implements ITaskExamineom {
             this.deletionTime = data["deletionTime"];
             this.deleterUserId = data["deleterUserId"];
             this.isDeleted = data["isDeleted"];
+            this.examineOption = data["examineOption"];
+            this.examineOptionDesc = data["examineOptionDesc"];
         }
     }
 
@@ -68,6 +72,8 @@ export class TaskExamine implements ITaskExamineom {
         data["deletionTime"] = this.deletionTime;
         data["deleterUserId"] = this.deleterUserId;
         data["isDeleted"] = this.isDeleted;
+        data["examineOption"] = this.examineOption;
+        data["examineOptionDesc"] = this.examineOptionDesc;
         return data;
     }
 
@@ -91,4 +97,6 @@ export interface ITaskExamineom {
     deletionTime: Date;
     deleterUserId: number;
     isDeleted: boolean;
+    examineOption: number;
+    examineOptionDesc: string;
 }

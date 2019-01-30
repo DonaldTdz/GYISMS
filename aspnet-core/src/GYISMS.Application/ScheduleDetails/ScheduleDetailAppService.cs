@@ -56,8 +56,6 @@ namespace GYISMS.ScheduleDetails
         private readonly IDingDingAppService _dingDingAppService;
         private readonly IRepository<SystemData> _systemdataRepository;
 
-        private string accessToken;
-        private DingDingAppConfig ddConfig;
         private readonly IHostingEnvironment _hostingEnvironment;
 
         /// <summary>
@@ -75,8 +73,6 @@ namespace GYISMS.ScheduleDetails
             _scheduleRepository = scheduleRepository;
             _visittaskRepository = visittaskRepository;
             _dingDingAppService = dingDingAppService;
-            ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
-            accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
             _hostingEnvironment = hostingEnvironment;
             _systemdataRepository = systemdataRepository;
         }
@@ -621,6 +617,9 @@ namespace GYISMS.ScheduleDetails
                         };
             var overdueList = await query.ToListAsync();
             string messageMediaId = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.烟叶服务 && v.Type == ConfigType.烟叶公共 && v.Code == GYCode.MediaId).Select(v => v.Desc).FirstOrDefaultAsync();
+
+            DingDingAppConfig ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
+            string accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
             foreach (var item in overdueList)
             {
                 //发送工作消息

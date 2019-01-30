@@ -58,16 +58,22 @@ namespace GYISMS.Employees
         }
 
         /// <summary>
-        /// 部门是否存在改 区域下面
+        /// 部门是否存在该区县下面
         /// </summary>
         private bool ExistsArea(string userDepts, string areaCode)
         {
             var childrenDeptIdList = new List<long>();
             var chdStrDeptIdList = new List<string>();
-            var zhqDeptId = _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == areaCode).Select(s => s.Desc).First();
-            GetAreaDeptList(long.Parse(zhqDeptId), childrenDeptIdList);
+            var zhqDeptIds = _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == areaCode).Select(s => s.Desc).First();
+            var deptIdArray = zhqDeptIds.Split(',');
+            foreach (var deptid in deptIdArray)
+            {
+                chdStrDeptIdList.Add(deptid);
+                GetAreaDeptList(long.Parse(deptid), childrenDeptIdList);
+            }
+
             chdStrDeptIdList = childrenDeptIdList.Select(c => "[" + c.ToString() + "]").ToList();
-            var exist = (userDepts == "[" + zhqDeptId + "]" || chdStrDeptIdList.Any(c => userDepts.Contains(c)));
+            var exist = chdStrDeptIdList.Any(c => userDepts.Contains(c));
             return exist;
         }
 
@@ -123,11 +129,16 @@ namespace GYISMS.Employees
             {
                 return new string[0];
             }
-
-            var deptId = await _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == areakey).Select(s => s.Desc).FirstAsync();
+            //多个部门逗号分隔
+            var deptIds = await _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == areakey).Select(s => s.Desc).FirstAsync();
             var deptList = new List<long>();
-            deptList.Add(long.Parse(deptId));
-            GetAreaDeptList(long.Parse(deptId), deptList);
+            var deptIdArray = deptIds.Split(',');
+            foreach (var deptid in deptIdArray)
+            {
+                deptList.Add(long.Parse(deptid));
+                GetAreaDeptList(long.Parse(deptid), deptList);
+            }
+         
             return deptList.Select(c => "[" + c.ToString() + "]").ToArray();
         }
 

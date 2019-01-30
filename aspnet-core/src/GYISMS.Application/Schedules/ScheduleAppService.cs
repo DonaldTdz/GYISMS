@@ -75,75 +75,62 @@ namespace GYISMS.Schedules
         /// <summary>
         /// 获取Schedule的分页列表信息
         ///</summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
         {
             var isAdmin = await CheckAdminAsync();
-            var detail = _scheduledetailRepository.GetAll();
+           
             var query = _scheduleRepository.GetAll()
-                     .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
-                     .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType)
-                     .WhereIf(!isAdmin, s => s.Status == ScheduleMasterStatusEnum.已发布 || (s.Status == ScheduleMasterStatusEnum.草稿 && s.CreatorUserId == AbpSession.UserId));
+                        .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
+                        .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType)
+                        .WhereIf(!isAdmin, s => s.Status == ScheduleMasterStatusEnum.已发布 || (s.Status == ScheduleMasterStatusEnum.草稿 && s.CreatorUserId == AbpSession.UserId));
+
             var user = _userRepository.GetAll();
             var entity = from q in query
-                                join u in user on q.CreatorUserId equals u.Id into table
-                                from t in table.DefaultIfEmpty()
-                                select new ScheduleListDto()
-                                {
-                                    Id = q.Id,
-                                    Name = q.Name,
-                                    Type = q.Type,
-                                    Status = q.Status,
-                                    PublishTime = q.PublishTime,
-                                    CreateUserName = t.Name,
-                                    Area = t.Area != null ? t.Area : " - ",
-                                    BeginTime = q.BeginTime,
-                                    EndTime = q.EndTime
-                                };
+                         join u in user on q.CreatorUserId equals u.Id 
+                         //into table
+                         //from t in table.DefaultIfEmpty()
+                         select new ScheduleListDto()
+                         {
+                             Id = q.Id,
+                             Name = q.Name,
+                             Type = q.Type,
+                             Status = q.Status,
+                             PublishTime = q.PublishTime,
+                             CreateUserName = u.Name,
+                             //Area = t.Area != null ? t.Area : " - ",
+                             BeginTime = q.BeginTime,
+                             EndTime = q.EndTime
+                         };
 
-           var percentageQuery = (from d in detail
-                              group new
-                              {
-                                  d.ScheduleId,
-                                  d.VisitNum,
-                                  d.CompleteNum
-                              } by new
-                              {
-                                  d.ScheduleId
-                              } into g
-                              select new
-                              {
-                                  Id = g.Key.ScheduleId,
-                                  CompleteCount = g.Sum(v => v.CompleteNum),
-                                  VisitCount = g.Sum(v=>v.VisitNum),
-                              });
-            /*var result = (from e in entity
-                    join t in temp on e.Id equals t.Id into g
-                    from table in g.DefaultIfEmpty()
-                    select new ScheduleListDto() {
-                        Id = e.Id,
-                        Name = e.Name,
-                        Type = e.Type,
-                        Status = e.Status,
-                        PublishTime = e.PublishTime,
-                        CreateUserName = e.CreateUserName,
-                        Area = e.Area,
-                        BeginTime = e.BeginTime,
-                        EndTime = e.EndTime//,
-                        //VisitCount = table == null? 0 : table.VisitCount,
-                        //CompleteCount = table == null? 0 : table.CompleteCount
-                        //Percentage = table != null ?(int)(table.VisitCount!=0? (Math.Round(table.CompleteCount.Value / (decimal)table.VisitCount.Value, 2))*100 : 0) : 0
-        });*/
 
             var scheduleCount = query.Count();
-            
+
             var schedules = entity
-                    .OrderBy(v=>v.Status).ThenByDescending(v=>v.PublishTime).AsNoTracking()
+                    .OrderBy(v => v.Status).ThenByDescending(v => v.PublishTime).AsNoTracking()
                     .PageBy(input)
                     .ToList();
             var ids = schedules.Select(s => s.Id).ToArray();
-            var percentageList = percentageQuery.Where(p => ids.Contains(p.Id)).ToList();
+
+            var detail = _scheduledetailRepository.GetAll();
+            var percentageQuery = (from d in detail
+                                   where ids.Contains(d.ScheduleId)
+                                   group new
+                                   {
+                                       d.ScheduleId,
+                                       d.VisitNum,
+                                       d.CompleteNum
+                                   } by new
+                                   {
+                                       d.ScheduleId
+                                   } into g
+                                   select new
+                                   {
+                                       Id = g.Key.ScheduleId,
+                                       CompleteCount = g.Sum(v => v.CompleteNum),
+                                       VisitCount = g.Sum(v => v.VisitNum),
+                                   });
+            var percentageList = percentageQuery.ToList();
+
             foreach (var item in schedules)
             {
                 var percentage = percentageList.Where(p => p.Id == item.Id).FirstOrDefault();
@@ -383,7 +370,7 @@ namespace GYISMS.Schedules
             {
                 Logger.ErrorFormat("SendMessageToEmployeeAsync errormsg{0} Exception{1}", ex.Message, ex);
                 return new APIResultDto() { Code = 901, Msg = "钉钉消息发送失败" };
-            }         
+            }
         }
     }
 }

@@ -45,7 +45,7 @@ namespace GYISMS
             identityResult.CheckErrors(LocalizationManager);
         }
         /// <summary>
-        /// 后台用户查询过滤
+        /// 后台用户查询区县权限
         /// </summary>
         protected async Task<AreaCodeEnum?> GetCurrentUserAreaCodeAsync()
         {

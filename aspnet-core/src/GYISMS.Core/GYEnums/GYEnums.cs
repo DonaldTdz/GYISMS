@@ -102,6 +102,13 @@ namespace GYISMS.GYEnums
         Other = 4
     }
 
+    public enum ExamineOptionEnum
+    {
+        优差等级 = 1, //优/合格/差
+        到位情况 = 2, //到位/不到位
+        了解情况 = 3  //了解/不了解
+    }
+
     public static class GYCode
     {
         public static string SignRange = "SignRange";

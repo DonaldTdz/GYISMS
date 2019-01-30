@@ -4,11 +4,12 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
+using GYISMS.GYEnums;
 using GYISMS.TaskExamines;
 
 namespace GYISMS.TaskExamines.Dtos
 {
-    public class TaskExamineEditDto : AuditedEntityDto
+    public class TaskExamineEditDto : FullAuditedEntityDto
     {
         /// <summary>
         /// TaskId
@@ -34,16 +35,25 @@ namespace GYISMS.TaskExamines.Dtos
         /// </summary>
         public int? Seq { get; set; }
 
-        public bool? IsDeleted { get; set; }
-        /// <summary>
-        /// DeletionTime
-        /// </summary>
-        public DateTime? DeletionTime { get; set; }
+        public virtual ExamineOptionEnum ExamineOption { get; set; }
 
-
-        /// <summary>
-        /// DeleterUserId
-        /// </summary>
-        public long? DeleterUserId { get; set; }
+        public string ExamineOptionDesc
+        {
+            get
+            {
+                switch (ExamineOption)
+                {
+                    case ExamineOptionEnum.优差等级:
+                        return "优/合格/差";
+                    case ExamineOptionEnum.到位情况:
+                        return "到位/不到位";
+                    case ExamineOptionEnum.了解情况:
+                        return "了解/不了解";
+                    default:
+                        break;
+                }
+                return string.Empty;
+            }
+        }
     }
 }

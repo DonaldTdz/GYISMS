@@ -114,11 +114,45 @@ namespace GYISMS.VisitRecords
                 );
         }
 
+        private string GetScoreName(ExamineOptionEnum ExamineOption, int? Score)
+        {
+            switch (ExamineOption)
+            {
+                case ExamineOptionEnum.优差等级:
+                    {
+                        switch (Score)
+                        {
+                            case 5: return "优";
+                            case 3: return "合格";
+                            case 1: return "差";
+                            default:
+                                return string.Empty;
+                        }
+                    }
+                case ExamineOptionEnum.到位情况:
+                    {
+                        if (Score == 5)
+                        {
+                            return "到位";
+                        }
+                        return "不到位";
+                    }
+                case ExamineOptionEnum.了解情况:
+                    {
+                        if (Score == 5)
+                        {
+                            return "了解";
+                        }
+                        return "不了解";
+                    }
+                default:
+                    return string.Empty;
+            }
+        }
+
         /// <summary>
         /// 获取烟农被拜访记录
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task<PagedResultDto<VisitRecordListDto>> GetVisitRecordsByGrowerId(GetVisitRecordsInput input)
         {
             var record = _visitrecordRepository.GetAll().Where(v => v.GrowerId == input.GrowerId);
@@ -152,12 +186,22 @@ namespace GYISMS.VisitRecords
             {
                 if (item.HasExamine == true)
                 {
-                    var list = _taskExamineRepository.GetAll().Where(v => v.TaskId == item.TaskId).Select(v => v.Name).ToList();
-                    string examineName = string.Join(",", list.ToArray());
+                    var examineQuery = from v in _visitExamineRepository.GetAll()
+                                       join t in _taskExamineRepository.GetAll() on v.TaskExamineId equals t.Id
+                                       where v.VisitRecordId == item.Id
+                                       select new
+                                       {
+                                           t.Name,
+                                           v.Score,
+                                           t.ExamineOption
+                                       };
+                    var list = examineQuery.ToList().Select(e => e.Name + "（" + GetScoreName(e.ExamineOption, e.Score) + "）").ToList();
+
+                    string examineName = string.Join("，", list.ToArray());
                     item.ExaminesName = examineName;
                 }
             }
-            var visitrecordCount =  query.Count();
+            var visitrecordCount = query.Count();
             //var visitrecords = await query
             //        .OrderByDescending(v => v.SignTime).AsNoTracking()
             //        .PageBy(input)
@@ -420,7 +464,7 @@ namespace GYISMS.VisitRecords
         [AbpAllowAnonymous]
         public Task GenerateWatermarkImgTests()
         {
-            return Task.FromResult(GenerateWatermarkImg("/visit/bbed0bd3-6435-44e9-b86e-89556982fdfd.jpg", "四川成都戛纳湾金棕榈", "烟技员","烟农"));
+            return Task.FromResult(GenerateWatermarkImg("/visit/bbed0bd3-6435-44e9-b86e-89556982fdfd.jpg", "四川成都戛纳湾金棕榈", "烟技员", "烟农"));
         }
         [AbpAllowAnonymous]
         [Audited]
@@ -435,7 +479,7 @@ namespace GYISMS.VisitRecords
             }
             if (distance < range)
             {
-                return new APIResultDto() { Code = 0, Msg = "ok"};
+                return new APIResultDto() { Code = 0, Msg = "ok" };
             }
             else
             {
@@ -458,7 +502,7 @@ namespace GYISMS.VisitRecords
                             EmployeeId = sd.EmployeeId,
                             EmployeeName = sd.EmployeeName,
                             GrowerName = sd.GrowerName,
-                            TaskDesc = t.Name + "（"+ t.Type.ToString() + "）",
+                            TaskDesc = t.Name + "（" + t.Type.ToString() + "）",
                             SignTime = vr.SignTime,
                             Desc = vr.Desc,
                             ImgPath = vr.ImgPath,
