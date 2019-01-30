@@ -46,8 +46,8 @@ namespace GYISMS.Schedules
         private readonly IDingDingAppService _dingDingAppService;
         private readonly IRepository<SystemData, int> _systemdataRepository;
         private readonly IRepository<User, long> _userRepository;
-        private string accessToken;
-        private DingDingAppConfig ddConfig;
+        //private string accessToken;
+        //private DingDingAppConfig ddConfig;
 
         /// <summary>
         /// 构造函数 
@@ -66,9 +66,6 @@ namespace GYISMS.Schedules
             _dingDingAppService = dingDingAppService;
             _systemdataRepository = systemdataRepository;
             _userRepository = userRepository;
-
-            ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
-            accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
         }
 
 
@@ -314,13 +311,14 @@ namespace GYISMS.Schedules
         /// <summary>
         /// 上传图片并返回MeadiaId
         /// </summary>
-        /// <returns></returns>
         public object UpdateAndGetMediaId(string path)
         {
             IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/media/upload");
             OapiMediaUploadRequest request = new OapiMediaUploadRequest();
             request.Type = "image";
             request.Media = new Top.Api.Util.FileItem($@"{path}");
+            DingDingAppConfig ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
+            string accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
             OapiMediaUploadResponse response = client.Execute(request, accessToken);
             return response;
         }
@@ -342,6 +340,8 @@ namespace GYISMS.Schedules
                 int count = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId).Select(v => v.EmployeeId).Distinct().AsNoTracking().CountAsync();
                 var ids = await _scheduledetailRepository.GetAll().Where(v => v.ScheduleId == input.ScheduleId).Select(v => v.EmployeeId).Distinct().AsNoTracking().ToListAsync();
                 float frequency = (float)count / pageSize;//计算次数
+                DingDingAppConfig ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.任务拜访);
+                string accessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
                 for (int i = 0; i < Math.Ceiling(frequency); i++)
                 {
                     var temp = ids.Skip((pageIndex - 1) * pageSize).Take(pageSize);

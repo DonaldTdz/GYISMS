@@ -96,13 +96,14 @@ namespace GYISMS.Employees
         public async Task<EmployeeListDto> GetEmployeeByIdAsync(string id)
         {
             var entity = await _employeeRepository.GetAsync(id);
-            if (!entity.AreaCode.HasValue)
+            var entityDto = entity.MapTo<EmployeeListDto>();
+            if (!entity.AreaCode.HasValue || entity.AreaCode == AreaCodeEnum.None)
             {
                 var area = await _employeeManager.GetAreaCodeByUserIdAsync(id);
-                entity.Area = area.ToString();
-                entity.AreaCode = area;
+                entityDto.Area = area.ToString();
+                entityDto.AreaCode = area;
             }
-            return entity.MapTo<EmployeeListDto>();
+            return entityDto;
         }
 
         [Audited]

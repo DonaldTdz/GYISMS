@@ -68,7 +68,7 @@ namespace GYISMS.Employees
             var deptIdArray = zhqDeptIds.Split(',');
             foreach (var deptid in deptIdArray)
             {
-                chdStrDeptIdList.Add(deptid);
+                childrenDeptIdList.Add(long.Parse(deptid));
                 GetAreaDeptList(long.Parse(deptid), childrenDeptIdList);
             }
 
@@ -80,7 +80,7 @@ namespace GYISMS.Employees
         public async Task<AreaCodeEnum> GetAreaCodeByUserIdAsync(string userId)
         {
             var employee = await _employeeRepository.GetAsync(userId);
-            if (employee.AreaCode.HasValue)//用户特定设置优先
+            if (employee.AreaCode.HasValue && employee.AreaCode != AreaCodeEnum.None)//用户特定设置优先
             {
                 return employee.AreaCode.Value;
             }
