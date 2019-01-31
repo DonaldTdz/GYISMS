@@ -65,6 +65,10 @@ namespace GYISMS.Employees
             var childrenDeptIdList = new List<long>();
             var chdStrDeptIdList = new List<string>();
             var zhqDeptIds = _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == areaCode).Select(s => s.Desc).First();
+            if (string.IsNullOrEmpty(zhqDeptIds))
+            {
+                return false;
+            }
             var deptIdArray = zhqDeptIds.Split(',');
             foreach (var deptid in deptIdArray)
             {
@@ -131,6 +135,10 @@ namespace GYISMS.Employees
             }
             //多个部门逗号分隔
             var deptIds = await _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == areakey).Select(s => s.Desc).FirstAsync();
+            if (string.IsNullOrEmpty(deptIds))
+            {
+                return new string[0];
+            }
             var deptList = new List<long>();
             var deptIdArray = deptIds.Split(',');
             foreach (var deptid in deptIdArray)

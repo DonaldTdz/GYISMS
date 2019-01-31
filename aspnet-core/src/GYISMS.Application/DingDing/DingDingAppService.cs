@@ -36,6 +36,7 @@ namespace GYISMS.DingDing
             request.Appsecret = appsecret;
             request.SetHttpMethod("GET");
             OapiGettokenResponse response = client.Execute(request);
+            Logger.InfoFormat("AccessToken response errmsg:{0} body:{1}", response.Errmsg, response.Body);
             return response.AccessToken;
         }
 
@@ -49,6 +50,7 @@ namespace GYISMS.DingDing
             request.Code = code;
             request.SetHttpMethod("GET");
             OapiUserGetuserinfoResponse response = client.Execute(request, accessToken);
+            Logger.InfoFormat("Userid response errmsg:{0} body:{1}", response.Errmsg, response.Body);
             return response.Userid;
         }
 

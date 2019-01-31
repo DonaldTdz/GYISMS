@@ -296,20 +296,26 @@ namespace GYISMS.Employees
                     }
                     break;
             }
-            var orgId = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
-            var longOrgId = long.Parse(orgId);
-
+            var orgIds = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
             List<EmployeeNzTreeNode> areaList = new List<EmployeeNzTreeNode>();
-
-            var org = _organizationRepository.Get(longOrgId);
-            areaList.Add(new EmployeeNzTreeNode()
+            if (!string.IsNullOrEmpty(orgIds))
             {
-                key = org.Id.ToString(),
-                title = org.DepartmentName,
-                IsDept =  true,
-                IsLeaf = false,
-                children = GetDeptChildren(longOrgId)
-            });
+                var orgIdArr = orgIds.Split(',');
+                foreach (var orgid in orgIdArr)
+                {
+                    var longOrgId = long.Parse(orgid);
+                    var org = _organizationRepository.Get(longOrgId);
+                    areaList.Add(new EmployeeNzTreeNode()
+                    {
+                        key = org.Id.ToString(),
+                        title = org.DepartmentName,
+                        IsDept = true,
+                        IsLeaf = false,
+                        children = GetDeptChildren(longOrgId)
+                    });
+                }
+            }
+            
             //添加特定访问人员（通过设置区县指定）
             var specificUserList = GetAreaEmoloyee(area);
             areaList.AddRange(specificUserList);
