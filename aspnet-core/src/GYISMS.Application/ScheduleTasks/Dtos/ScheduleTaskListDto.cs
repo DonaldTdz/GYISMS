@@ -10,6 +10,7 @@ using GYISMS.GYEnums;
 using GYISMS.Growers.Dtos;
 using Abp.AutoMapper;
 using GYISMS.VisitRecords;
+using System.Linq;
 
 namespace GYISMS.ScheduleTasks.Dtos
 {
@@ -328,8 +329,28 @@ namespace GYISMS.ScheduleTasks.Dtos
             }
         }
 
-        public List<DingDingTaskGrowerDto> Growers{ get; set; }
-
+        [NonSerialized]
+        public List<DingDingTaskGrowerDto> Growers;
+        /// <summary>
+        /// 已完成
+        /// </summary>
+        public List<DingDingTaskGrowerDto> CompleteGrowers
+        {
+            get
+            {
+                return Growers.Where(g => g.CompleteNum == g.VisitNum).OrderByDescending(s => s.CreationTime).ToList();
+            }
+        }
+        /// <summary>
+        /// 未完成
+        /// </summary>
+        public List<DingDingTaskGrowerDto> UnCompleteGrowers
+        {
+            get
+            {
+                return Growers.Where(g => g.Status != ScheduleStatusEnum.已逾期 && g.CompleteNum < g.VisitNum).OrderByDescending(s => s.CreationTime).ToList();
+            }
+        }
     }
 
     public class DingDingTaskGrowerDto
@@ -345,6 +366,8 @@ namespace GYISMS.ScheduleTasks.Dtos
         public int? CompleteNum { get; set; }
 
         public DateTime? CreationTime { get; set; }
+
+        public ScheduleStatusEnum Status { get; set; }
     }
 
     public class DingDingVisitGrowerDetailDto

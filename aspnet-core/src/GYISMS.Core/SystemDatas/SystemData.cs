@@ -34,7 +34,6 @@ namespace GYISMS.SystemDatas
         /// <summary>
         /// 配置描述
         /// </summary>
-        [Required]
         [StringLength(500)]
         public virtual string Desc { get; set; }
 

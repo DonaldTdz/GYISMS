@@ -42,7 +42,7 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
         this.forme = this.fb.group({
             type: [null, Validators.compose([Validators.required])],
             code: [null, Validators.compose([Validators.required])],
-            desc: [null, Validators.compose([Validators.required, Validators.maxLength(500)])],
+            desc: [null, Validators.compose([Validators.maxLength(500)])],
             remark: [null, Validators.compose([Validators.maxLength(500)])],
             seq: [null, Validators.compose([Validators.pattern('^[0-9]*$')])],
         });

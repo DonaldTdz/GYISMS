@@ -26,11 +26,10 @@
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
-                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="desc">配置项</nz-form-label>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="desc">配置项</nz-form-label>
                     <nz-form-control nz-col [nzSm]="19" nzHasFeedback>
                         <input nz-input formControlName="desc" [(ngModel)]="systemData.desc" id="desc">
                         <nz-form-explain *ngIf="forme.get('desc').dirty&&forme.get('desc').hasError('maxlength')">字符长度小于等于500</nz-form-explain>
-                        <nz-form-explain *ngIf="forme.get('desc').dirty&&forme.get('desc').hasError('required')">请输入描述</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>

@@ -347,8 +347,8 @@ namespace GYISMS.ScheduleTasks
 
             //烟农信息
             var growerQuery = from sd in _scheduleDetailRepository.GetAll()
-                                                     .WhereIf(Status == 2, sd => sd.CompleteNum == sd.VisitNum)
-                                                     .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                                                     //.WhereIf(Status == 2, sd => sd.CompleteNum == sd.VisitNum)
+                                                     //.WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
                               join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
                               where sd.ScheduleTaskId == scheduleTaskId
                               && sd.EmployeeId == uid
@@ -359,13 +359,14 @@ namespace GYISMS.ScheduleTasks
                                   GrowerName = sd.GrowerName,
                                   VisitNum = sd.VisitNum,
                                   UnitName = g.UnitName,
+                                  Status = sd.Status,
                                   CreationTime=sd.CreationTime
                               };
             taskDto.Growers = await growerQuery.OrderByDescending(s=>s.CreationTime).ToListAsync();
-
+        
             taskDto.VisitTotal = taskDto.Growers.Sum(g => g.VisitNum).Value;
             taskDto.CompleteNum = taskDto.Growers.Sum(g => g.CompleteNum).Value;
-            
+
             return taskDto;
         }
 
