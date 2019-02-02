@@ -37,6 +37,10 @@ using NPOI.XSSF.UserModel;
 using Microsoft.AspNetCore.Hosting;
 using Abp.Domain.Uow;
 using GYISMS.SystemDatas;
+using GYISMS.Organizations.Dtos;
+using Senparc.CO2NET.HttpUtility;
+using Senparc.CO2NET.Helpers;
+using System.Text;
 
 namespace GYISMS.ScheduleDetails
 {
@@ -623,7 +627,7 @@ namespace GYISMS.ScheduleDetails
             foreach (var item in overdueList)
             {
                 //发送工作消息
-                IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
+                /*IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2");
                 OapiMessageCorpconversationAsyncsendV2Request request = new OapiMessageCorpconversationAsyncsendV2Request();
                 request.UseridList = item.EmployeeId;
                 request.ToAllUser = false;
@@ -637,7 +641,25 @@ namespace GYISMS.ScheduleDetails
                 msg.Link.PicUrl = messageMediaId;
                 msg.Link.MessageUrl = "eapp://";
                 request.Msg_ = msg;
-                OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);
+                OapiMessageCorpconversationAsyncsendV2Response response = client.Execute(request, accessToken);*/
+                var msgdto = new DingMsgDto();
+                msgdto.userid_list = item.EmployeeId;
+                msgdto.to_all_user = false;
+                msgdto.agent_id = ddConfig.AgentID;
+                msgdto.msg.msgtype = "link";
+                msgdto.msg.link.title = "任务过期提醒";
+                msgdto.msg.link.text = string.Format("{0}：您有任务[{1}]即将过期，过期日期：{2}，点击查看详细", item.EmployeeName, item.Name, item.EndTime.Value.ToString("yyyy-MM-dd"));
+                msgdto.msg.link.picUrl = messageMediaId;
+                msgdto.msg.link.messageUrl = "eapp://";
+                var url = string.Format("https://oapi.dingtalk.com/topapi/message/corpconversation/asyncsend_v2?access_token={0}", accessToken);
+                var jsonString = SerializerHelper.GetJsonString(msgdto, null);
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    var bytes = Encoding.UTF8.GetBytes(jsonString);
+                    ms.Write(bytes, 0, bytes.Length);
+                    ms.Seek(0, SeekOrigin.Begin);
+                    var obj = Post.PostGetJson<object>(url, null, ms);
+                };
             }
         }
 

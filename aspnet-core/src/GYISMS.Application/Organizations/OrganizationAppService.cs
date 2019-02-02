@@ -28,6 +28,7 @@ using GYISMS.DingDing;
 using GYISMS.DingDing.Dtos;
 using GYISMS.GYEnums;
 using GYISMS.SystemDatas;
+using Senparc.CO2NET.HttpUtility;
 
 namespace GYISMS.Organizations
 {
@@ -263,18 +264,18 @@ namespace GYISMS.Organizations
         {
             //var arr = GetAreaCodeArray();  取消区县更新 改为区县配置
             string accessToken = _dingDingAppService.GetAccessTokenByApp(DingDingAppEnum.会议申请); //GetAccessToken();
-            IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
-            OapiDepartmentListRequest request = new OapiDepartmentListRequest();
-            request.SetHttpMethod("GET");
-            OapiDepartmentListResponse response = client.Execute(request, accessToken);
-            var entityByDD = (from o in response.Department
-                              select new OrganizationListDto()
+            //IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
+            //OapiDepartmentListRequest request = new OapiDepartmentListRequest();
+            //request.SetHttpMethod("GET");
+            //OapiDepartmentListResponse response = client.Execute(request, accessToken);
+            var depts = Get.GetJson<DingDepartmentDto>(string.Format("https://oapi.dingtalk.com/department/list?access_token={0}", accessToken));
+            var entityByDD = depts.department.Select(o => new OrganizationListDto()
                               {
-                                  Id = o.Id,
-                                  DepartmentName = o.Name,
-                                  ParentId = o.Parentid,
+                                  Id = o.id,
+                                  DepartmentName = o.name,
+                                  ParentId = o.parentid,
                                   CreationTime = DateTime.Now
-                              });
+                              }).ToList();
 
             var originEntity = await _organizationRepository.GetAll().ToListAsync();
             foreach (var item in entityByDD)
@@ -315,26 +316,27 @@ namespace GYISMS.Organizations
         {
             try
             {
-                IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/list");
+                /*IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/list");
                 OapiUserListRequest request = new OapiUserListRequest();
                 request.DepartmentId = departId;
                 request.SetHttpMethod("GET");
-                OapiUserListResponse response = client.Execute(request, accessToken);
-                var entityByDD = (from e in response.Userlist
-                                  select new EmployeeListDto()
+                OapiUserListResponse response = client.Execute(request, accessToken);*/
+                var url = string.Format("https://oapi.dingtalk.com/user/list?access_token={0}&department_id={1}", accessToken, departId);
+                var user = Get.GetJson<DingUserListDto>(url);
+                var entityByDD = user.userlist.Select(e => new EmployeeListDto()
                                   {
-                                      Id = e.Userid,
-                                      Name = e.Name,
-                                      Mobile = e.Mobile,
-                                      Position = e.Position,
-                                      Department = e.Department,
-                                      IsAdmin = e.IsAdmin,
-                                      IsBoss = e.IsBoss,
-                                      Email = e.Email,
-                                      HiredDate = e.HiredDate,
-                                      Avatar = e.Avatar,
-                                      Active = e.Active
-                                  });
+                                      Id = e.userid,
+                                      Name = e.name,
+                                      Mobile = e.mobile,
+                                      Position = e.position,
+                                      Department = e.department,
+                                      IsAdmin = e.isAdmin,
+                                      IsBoss = e.isBoss,
+                                      Email = e.email,
+                                      HiredDate = e.hiredDate,
+                                      Avatar = e.avatar,
+                                      Active = e.active
+                                  }).ToList();
                 var originEntity = await _employeeRepository.GetAll().ToListAsync();
                 foreach (var item in entityByDD)
                 {
