@@ -200,11 +200,8 @@ namespace GYISMS.Schedules
         /// </summary>
         protected virtual async Task<ScheduleEditDto> CreateScheduleAsync(ScheduleEditDto input)
         {
-            //TODO:新增前的逻辑判断，是否允许新增
-
-            var entity = ObjectMapper.Map<Schedule>(input);
-            entity.IsDeleted = false;
-            var id = await _scheduleRepository.InsertAndGetIdAsync(entity);
+            var entity = input.MapTo<Schedule>(); //ObjectMapper.Map<Schedule>(input);
+            await _scheduleRepository.InsertAsync(entity);
             return entity.MapTo<ScheduleEditDto>();
         }
 
@@ -213,8 +210,6 @@ namespace GYISMS.Schedules
         /// </summary>
         protected virtual async Task<ScheduleEditDto> UpdateScheduleAsync(ScheduleEditDto input)
         {
-            //TODO:更新前的逻辑判断，是否允许更新
-
             var entity = await _scheduleRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
 

@@ -25,5 +25,10 @@ namespace GYISMS.Employees
 
         Task<string[]> GetAreaDeptIdArrayAsync(AreaCodeEnum? areaCode);
 
+        /// <summary>
+        /// 获取部门及下面子部门
+        /// </summary>
+        Task<string[]> GetDeptIdArrayAsync(long deptId);
+
     }
 }

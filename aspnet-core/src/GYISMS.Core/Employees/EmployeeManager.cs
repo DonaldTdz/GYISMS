@@ -151,5 +151,20 @@ namespace GYISMS.Employees
         }
 
         #endregion
+
+        #region 获取部门及下面子部门Id
+
+        public async Task<string[]> GetDeptIdArrayAsync(long deptId)
+        {
+            return await Task.Run(() =>
+            {
+                var deptList = new List<long>();
+                deptList.Add(deptId);
+                GetAreaDeptList(deptId, deptList);
+                return deptList.Select(c => "[" + c.ToString() + "]").ToArray();
+            });     
+        }
+
+        #endregion
     }
 }

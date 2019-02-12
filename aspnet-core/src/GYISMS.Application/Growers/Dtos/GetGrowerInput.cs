@@ -21,7 +21,7 @@ namespace GYISMS.Growers.Dtos
         public int VisitNum { get; set; }
         public Guid ScheduleTaskId { get; set; }
         public string EmployeeId { get; set; }
-        public AreaCodeEnum? AreaName { get; set; }
+        public string AreaName { get; set; }
         public int? IsEnableValue { get; set; }
         public bool? IsEnable
         {

@@ -3,13 +3,15 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using Abp.Application.Services.Dto;
+using Abp.AutoMapper;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.GYEnums;
 using GYISMS.Schedules;
 
 namespace GYISMS.Schedules.Dtos
 {
-    public class ScheduleEditDto : AuditedEntityDto<Guid?>
+    [AutoMapTo(typeof(Schedule))]
+    public class ScheduleEditDto : FullAuditedEntityDto<Guid?>
     {
 
         /// <summary>
@@ -51,31 +53,5 @@ namespace GYISMS.Schedules.Dtos
         /// </summary>
         public DateTime? PublishTime { get; set; }
 
-
-        /// <summary>
-        /// IsDeleted
-        /// </summary>
-        public bool? IsDeleted { get; set; }
-
-
-        /// <summary>
-        /// DeletionTime
-        /// </summary>
-        public DateTime? DeletionTime { get; set; }
-
-
-        /// <summary>
-        /// DeleterUserId
-        /// </summary>
-        public long? DeleterUserId { get; set; }
-
-
-
-
-
-
-        //// custom codes
-
-        //// custom codes end
     }
 }

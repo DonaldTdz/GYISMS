@@ -322,12 +322,7 @@ namespace GYISMS.Employees
             return areaList;
         }
 
-        /// <summary>
-        /// 获取区县树
-        /// </summary>
-        /// <returns></returns>
-        public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
-        //public List<EmployeeNzTreeNode> GetTrees()
+        private async Task<List<EmployeeNzTreeNode>> GetDeptEmployeeTreesAsync()
         {
             List<EmployeeNzTreeNode> treeNodeList = new List<EmployeeNzTreeNode>();
             //var AreaInfo = await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟农村组 && v.ModelId == ConfigModel.烟叶服务).OrderBy(v => v.Seq).AsNoTracking()
@@ -385,6 +380,20 @@ namespace GYISMS.Employees
             return treeNodeList;
         }
 
+        /// <summary>
+        /// 获取区县树
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<EmployeeNzTreeNode>> GetTreesAsync()
+        {
+            var tree = await GetDeptEmployeeTreesAsync();
+            if (tree.Count > 0)
+            {
+                tree[0].selected = true;
+            }
+            return tree;
+        }
+
         [AbpAllowAnonymous]
         [Audited]
 
@@ -424,6 +433,27 @@ namespace GYISMS.Employees
                 return entity.MapTo<EmployeeListDto>();
             }
         }
+
+        #region 烟农页面层级树 add by donald 2019-2-12
+
+        public async Task<List<EmployeeNzTreeNode>> GetGrowerTreesAsync()
+        {
+            List<EmployeeNzTreeNode> treeNodeList = await GetDeptEmployeeTreesAsync();
+
+            //添加全部区县
+            List<EmployeeNzTreeNode> allNodeList = new List<EmployeeNzTreeNode>();
+            allNodeList.Add(new EmployeeNzTreeNode()
+            {
+                title = "全部",
+                key = "",
+                children = treeNodeList,
+                selected = true
+            });
+
+            return allNodeList;
+        }
+
+        #endregion
     }
 }
 

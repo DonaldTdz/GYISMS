@@ -112,6 +112,8 @@ namespace GYISMS.Employees.Dtos
         public virtual string key { get; set; }
         public virtual bool IsLeaf { get; set; }
 
+        public virtual bool selected { get; set; }
+
         public virtual List<NzTreeNode> children { get; set; }
     }
 
