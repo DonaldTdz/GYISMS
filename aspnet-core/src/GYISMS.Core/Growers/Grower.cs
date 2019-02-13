@@ -112,6 +112,25 @@ namespace GYISMS.Growers
         /// </summary>
         public virtual int CollectNum { get; set; }
 
+        /// <summary>
+        /// 预计交售量（单位：担）add 2019-2-13
+        /// </summary>
+        public virtual decimal? PlanVolume { get; set; }
+
+        /// <summary>
+        /// 落实面积 2019-2-13
+        /// </summary>
+        public virtual decimal? ActualArea { get; set; }
+
+        /// <summary>
+        /// 落实面积状态（枚举：未落实 0， 已落实 1）2019-2-13
+        /// </summary>
+        public virtual AreaStatusEnum? AreaStatus { get; set; }
+
+        /// <summary>
+        /// 落实面积时间 2019-2-13
+        /// </summary>
+        public virtual DateTime? AreaTime { get; set; }
 
     }
 }

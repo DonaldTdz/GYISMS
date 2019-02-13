@@ -109,6 +109,12 @@ namespace GYISMS.GYEnums
         了解情况 = 3  //了解/不了解
     }
 
+    public enum AreaStatusEnum
+    {
+        未落实 = 0,
+        已落实 = 1
+    }
+
     public static class GYCode
     {
         public static string SignRange = "SignRange";

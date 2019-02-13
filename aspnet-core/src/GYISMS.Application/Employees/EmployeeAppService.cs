@@ -444,7 +444,7 @@ namespace GYISMS.Employees
             List<EmployeeNzTreeNode> allNodeList = new List<EmployeeNzTreeNode>();
             allNodeList.Add(new EmployeeNzTreeNode()
             {
-                title = "全部",
+                title = "广元市",
                 key = "",
                 children = treeNodeList,
                 selected = true
