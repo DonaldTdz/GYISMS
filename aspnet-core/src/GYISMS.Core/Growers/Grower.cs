@@ -12,7 +12,7 @@ namespace GYISMS.Growers
     /// 烟农
     /// </summary
     [Table("Growers")]
-    public class Grower : AuditedEntity<int>, ISoftDelete, IMayArea
+    public class Grower : FullAuditedEntity, ISoftDelete, IMayArea
     {
         /// <summary>
         /// 业务年度
@@ -102,41 +102,35 @@ namespace GYISMS.Growers
         /// 合同签订时间
         /// </summary>
         public virtual DateTime? ContractTime { get; set; }
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public virtual bool IsEnable { get; set; }
 
         /// <summary>
-        /// 是否删除
+        /// 采集次数
         /// </summary>
-        public virtual bool IsDeleted { get; set; }
+        public virtual int CollectNum { get; set; }
 
         /// <summary>
-        /// CreationTime
+        ///预计单产（单位：担/亩）2019-2-13
         /// </summary>
-        //public virtual DateTime? CreationTime { get; set; }
-
-        ///// <summary>
-        ///// CreatorUserId
-        ///// </summary>
-        //public virtual long? CreatorUserId { get; set; }
-
-        ///// <summary>
-        ///// LastModificationTime
-        ///// </summary>
-        //public virtual DateTime? LastModificationTime { get; set; }
-
-        ///// <summary>
-        ///// LastModifierUserId
-        ///// </summary>
-        //public virtual long? LastModifierUserId { get; set; }
+        public virtual decimal? UnitVolume { get; set; }
 
         /// <summary>
-        /// DeletionTime
+        /// 落实面积 2019-2-13
         /// </summary>
-        public virtual DateTime? DeletionTime { get; set; }
+        public virtual decimal? ActualArea { get; set; }
 
         /// <summary>
-        /// DeleterUserId
+        /// 落实面积状态（枚举：未落实 0， 已落实 1）2019-2-13
         /// </summary>
-        public virtual long? DeleterUserId { get; set; }
+        public virtual AreaStatusEnum? AreaStatus { get; set; }
+
+        /// <summary>
+        /// 落实面积时间 2019-2-13
+        /// </summary>
+        public virtual DateTime? AreaTime { get; set; }
 
     }
 }

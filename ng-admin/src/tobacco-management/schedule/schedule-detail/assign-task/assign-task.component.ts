@@ -6,6 +6,7 @@ import { NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent } from 'ng-zo
 import { PagedResultDtoOfEmployee, EmployeeServiceProxy, OrganizationServiceProxy, GrowerServiceProxy } from '@shared/service-proxies/basic-data';
 import { VisitTask, ScheduleDetail } from '@shared/entity/tobacco-management';
 import { Employee, Grower } from '@shared/entity/basic-data';
+import { ReturnStatement } from '@angular/compiler';
 
 @Component({
     moduleId: module.id,
@@ -23,7 +24,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     loading = false;
     dropdown: NzDropdownContextComponent;
 
-    activedNode: NzTreeNode;
+    //activedNode: NzTreeNode;
     employeeList: Employee[] = [];
     growerList: Grower[] = [];
     dragNodeElement;
@@ -42,6 +43,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     checked = true;
     isPush: string = 'false';
     allPercentage: string = "0";
+    //defaultSelectedKeys = ['1'];
 
     constructor(injector: Injector, private taskService: VisitTaskServiceProxy
         , private organizationService: OrganizationServiceProxy
@@ -59,7 +61,7 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
 
     ngOnInit(): void {
         this.getTrees();
-        this.refreshData('1');
+        //this.refreshData('1');
     }
 
     isCancelCheck(x: any) {
@@ -87,6 +89,10 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     getTrees() {
         this.organizationService.GetEmployeeTreesAsync().subscribe((data) => {
             this.nodes = data;
+            if (this.nodes.length > 0) {
+                this.tempNode = this.nodes[0].key;
+                this.refreshData(this.nodes[0].key);
+            }
         });
     }
     /**
@@ -120,12 +126,16 @@ export class AssignTaskComponent extends AppComponentBase implements OnInit {
     }
     // 选中节点
     activeNode(data: NzFormatEmitEvent): void {
-        if (this.activedNode) {
+        /*/if (this.activedNode) {
             this.activedNode = null;
         }
         data.node.isSelected = true;
-        this.activedNode = data.node;
+        this.activedNode = data.node;*/
+        if (this.tempNode == data.node.key) {
+            return;
+        }
         this.tempNode = data.node.key;
+        //data.node.isSelected = true;
         this.refreshData(data.node.key);
     }
 

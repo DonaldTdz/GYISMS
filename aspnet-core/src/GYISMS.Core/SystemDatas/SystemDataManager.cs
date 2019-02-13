@@ -14,35 +14,33 @@ namespace GYISMS.SystemDatas
     /// <summary>
     /// SystemData领域层的业务管理
     ///</summary>
-    public class SystemDataManager :GYISMSDomainServiceBase, ISystemDataManager
+    public class SystemDataManager : GYISMSDomainServiceBase, ISystemDataManager
     {
-    private readonly IRepository<SystemData,int> _systemdataRepository;
+        private readonly IRepository<SystemData, int> _systemdataRepository;
 
         /// <summary>
-            /// SystemData的构造方法
-            ///</summary>
-        public SystemDataManager(IRepository<SystemData, int>
-systemdataRepository)
-            {
-            _systemdataRepository =  systemdataRepository;
-            }
+        /// SystemData的构造方法
+        ///</summary>
+        public SystemDataManager(IRepository<SystemData, int> systemdataRepository)
+        {
+            _systemdataRepository = systemdataRepository;
+        }
 
 
-            /// <summary>
-                ///     初始化
-                ///</summary>
-            public void InitSystemData()
-            {
-            throw new NotImplementedException();
-            }
+        /// <summary>
+        ///     初始化
+        ///</summary>
+        public void InitSystemData()
+        {
+        }
 
-            //TODO:编写领域业务代码
+        //TODO:编写领域业务代码
 
 
 
-            //// custom codes
-             
-            //// custom codes end
+        //// custom codes
 
-            }
-            }
+        //// custom codes end
+
+    }
+}

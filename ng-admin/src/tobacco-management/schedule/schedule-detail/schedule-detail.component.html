@@ -52,13 +52,13 @@
                             <nz-form-explain *ngIf="validateForm.get('visitNum').dirty&&validateForm.get('visitNum').hasError('pattern')">请输入整数</nz-form-explain>
                         </nz-form-control>
                     </nz-form-item> -->
-                        <nz-form-item nz-row *ngIf="schedule.type == 3">
+                        <nz-form-item *ngIf="schedule.type == 3" nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划执行时间</nz-form-label>
                             <nz-form-control [nzSm]="20">
                                 <nz-date-picker formControlName="beginTime" [nzFormat]="yyyy/MM/dd" [(ngModel)]="schedule.beginTime" nzPlaceHolder="请选择日期"></nz-date-picker>
                             </nz-form-control>
                         </nz-form-item>
-                        <nz-form-item nz-row *ngIf="schedule.type == 2">
+                        <nz-form-item *ngIf="schedule.type == 2" nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">周计划周期</nz-form-label>
                             <nz-form-control nz-col [nzSm]="20">
                                 <nz-select formControlName="weekTempTime" [(ngModel)]="weekTempTime" class="mb-md">
@@ -70,7 +70,7 @@
                         </nz-form-control> -->
                             </nz-form-control>
                         </nz-form-item>
-                        <nz-form-item nz-row *ngIf="schedule.type == 1">
+                        <nz-form-item *ngIf="schedule.type == 1" nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="beginTime">计划时间</nz-form-label>
                             <nz-form-control [nzSm]="20">
                                 <nz-month-picker formControlName="beginTime" (ngModelChange)="onChange($event)" [(ngModel)]="showTime" nzPlaceHolder="请选择日期"></nz-month-picker>
@@ -84,8 +84,15 @@
                                 <nz-month-picker formControlName="endTime" [nzFormat]="monthFormat" [(ngModel)]="schedule.endTime" nzPlaceHolder="请选择日期"></nz-month-picker>
                             </nz-form-control>
                         </nz-form-item> -->
-
                         </nz-form-item>
+
+                        <nz-form-item *ngIf="schedule.type == 4" nz-row>
+                            <nz-form-label nz-col [nzSm]="4" nzFor="dateRange">时间范围</nz-form-label>
+                            <nz-form-control [nzSm]="20">
+                                <nz-range-picker formControlName="dateRange" name="dateRange" [(ngModel)]="dateRange" [nzFormat]="shedateFormat" (ngModelChange)="changeTime($event)"></nz-range-picker>
+                            </nz-form-control>
+                        </nz-form-item>
+
 
                         <nz-form-item nz-row>
                             <nz-form-label nz-col [nzSm]="4" nzFor="desc">计划说明</nz-form-label>
@@ -145,10 +152,12 @@
                 <button nz-button *ngIf="isDelete && isPush" [nzType]="'danger'" (click)="delete()" [nzLoading]="isConfirmLoading">
                     {{l("删除")}}
                 </button>
-                <button nz-button *ngIf="isPush == true&&!isNewInfo" [nzType]="'primary'" type="button" (click)="push()" [nzLoading]="isConfirmLoading" [disabled]="!validateForm.valid">
+                <button nz-button *ngIf="isPush == true&&!isNewInfo" [nzType]="'primary'" type="button" (click)="push()" [nzLoading]="isConfirmLoading"
+                    [disabled]="!validateForm.valid">
                     {{l("发布")}}
                 </button>
-                <button nz-button *ngIf="isPush" [nzType]=" 'primary' " type="button " (click)="save() " [nzLoading]="isConfirmLoading " [disabled]="!validateForm.valid ">
+                <button nz-button *ngIf="isPush" [nzType]=" 'primary' " type="button " (click)="save() " [nzLoading]="isConfirmLoading "
+                    [disabled]="!validateForm.valid ">
                     {{l("保存 ")}}
                 </button>
             </footer-toolbar>
@@ -158,7 +167,8 @@
     <nz-tab nzTitle="任务指派完成明细">
         <nz-card [nzBordered]="false" nzTitle={{recordTitle}}>
             <ng-template #totalTemplate let-total>共 {{queryRecord.total}} 条</ng-template>
-            <nz-table #nzTableRecord [nzData]="recordList" [nzFrontPagination]="false" [nzTotal]="queryRecord.total" [nzShowTotal]="totalTemplate" [(nzPageIndex)]="queryRecord.pageIndex" [(nzPageSize)]="queryRecord.pageSize" [nzLoading]="loadingRecord" [nzShowSizeChanger]="true"
+            <nz-table #nzTableRecord [nzData]="recordList" [nzFrontPagination]="false" [nzTotal]="queryRecord.total" [nzShowTotal]="totalTemplate"
+                [(nzPageIndex)]="queryRecord.pageIndex" [(nzPageSize)]="queryRecord.pageSize" [nzLoading]="loadingRecord" [nzShowSizeChanger]="true"
                 (nzPageIndexChange)="getScheduleRecordDetail()" (nzPageSizeChange)="getScheduleRecordDetail()">
                 <thead>
                     <tr>
@@ -176,8 +186,8 @@
                         <td>{{data.taskName}}</td>
                         <td>{{data.growerName}}</td>
                         <td>{{data.employeeName}}</td>
-                        <td>{{data.completeNum}}</td>
                         <td>{{data.visitNum}}</td>
+                        <td>{{data.completeNum}}</td>
                         <td>{{data.percentage}}</td>
                         <td>{{data.statusName}}</td>
                     </tr>

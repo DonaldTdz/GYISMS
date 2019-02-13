@@ -59,6 +59,7 @@
             <tr>
                 <th>考核项名称</th>
                 <th>考核项描述</th>
+                <th>考核指示</th>
                 <th>考核项序号</th>
                 <th>操作</th>
             </tr>
@@ -67,6 +68,7 @@
             <tr *ngFor="let data of nzTable.data">
                 <td>{{data.name}}</td>
                 <td>{{data.desc}}</td>
+                <td>{{data.examineOptionDesc}}</td>
                 <td>{{data.seq}}</td>
                 <td>
                     <a (click)="deleteExamine(data)">删除</a>

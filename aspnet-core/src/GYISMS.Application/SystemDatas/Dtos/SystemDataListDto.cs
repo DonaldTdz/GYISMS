@@ -36,9 +36,9 @@ namespace GYISMS.SystemDatas.Dtos
         /// <summary>
         /// Desc
         /// </summary>
-        [Required(ErrorMessage = "Desc不能为空")]
         public string Desc { get; set; }
 
+        public string Remark { get; set; }
 
         /// <summary>
         /// Seq

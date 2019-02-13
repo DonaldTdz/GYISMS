@@ -36,7 +36,7 @@ export class DefaultLayoutComponent extends AppComponentBase
     // 全局的菜单
     Menums = [
         // 首页
-        new MenuItem('主页', '', 'anticon anticon-home', '/app/home'),
+        new MenuItem('主页', '', 'anticon anticon-home', '/app/home', null, null, 'DistrictAdmin'),
         // 组织架构
         // new MenuItem(
         //     '组织架构管理',
@@ -66,8 +66,8 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '烟农管理',
                 '',
                 '',
-                '/app/basic/grower',
-            )]
+                '/app/basic/grower', null, null, 'DistrictAdmin'
+            )], null, 'DistrictAdmin'
         ),
 
         // 烟叶管理
@@ -100,10 +100,10 @@ export class DefaultLayoutComponent extends AppComponentBase
                 //     '',
                 //     '',
                 // ),
-            ]
+            ], null, 'DistrictAdmin'
         ),
         // 会议管理
-        new MenuItem(
+        /*new MenuItem(
             '会议申请',
             '',
             'anticon anticon-laptop',
@@ -114,18 +114,6 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '/app/meeting/meeting-room',
             ),
-            /*new MenuItem(
-                '会议室预定',
-                '',
-                '',
-                '',
-            ),
-            new MenuItem(
-                '历史会议记录',
-                '',
-                '',
-                '',
-            ),*/
             new MenuItem(
                 '会议室详情',
                 '',
@@ -143,9 +131,9 @@ export class DefaultLayoutComponent extends AppComponentBase
                 true
             ),
             ], null, 'CityAdmin'
-        ),
+        ),*/
         new MenuItem(
-            '资料库',
+            '企业标准库',
             '',
             'anticon anticon-book',
             '',
@@ -154,8 +142,8 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '',
                 '/app/doc/document',
-            ),
-            ], null, 'CityAdmin'
+            )
+            ], null, 'EnterpriseAdmin'
         ),
         // 配置管理
         new MenuItem(

@@ -12,7 +12,7 @@ using GYISMS.GYEnums;
 namespace GYISMS.Growers.Dtos
 {
     [AutoMapFrom(typeof(Grower))]
-    public class GrowerListDto : EntityDto<int>
+    public class GrowerListDto : FullAuditedEntityDto
     {
 
         /// <summary>
@@ -105,47 +105,10 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public DateTime? ContractTime { get; set; }
 
-
         /// <summary>
-        /// IsDeleted
+        /// 是否启用
         /// </summary>
-        public bool? IsDeleted { get; set; }
-
-
-        /// <summary>
-        /// CreationTime
-        /// </summary>
-        public DateTime? CreationTime { get; set; }
-
-
-        /// <summary>
-        /// CreatorUserId
-        /// </summary>
-        public long? CreatorUserId { get; set; }
-
-
-        /// <summary>
-        /// LastModificationTime
-        /// </summary>
-        public DateTime? LastModificationTime { get; set; }
-
-
-        /// <summary>
-        /// LastModifierUserId
-        /// </summary>
-        public long? LastModifierUserId { get; set; }
-
-
-        /// <summary>
-        /// DeletionTime
-        /// </summary>
-        public DateTime? DeletionTime { get; set; }
-
-
-        /// <summary>
-        /// DeleterUserId
-        /// </summary>
-        public long? DeleterUserId { get; set; }
+        public bool IsEnable { get; set; }
 
         public Guid? ScheduleDetailId { get; set; }
         public int? VisitNum { get; set; }
@@ -154,10 +117,38 @@ namespace GYISMS.Growers.Dtos
         {
             get
             {
-               return AreaCode.ToString();
+                return AreaCode.ToString();
             }
         }
         public bool Checked { get; set; }
+
+        /// <summary>
+        /// 采集次数
+        /// </summary>
+        public int CollectNum { get; set; }
+
+        public int? LimitNum { get; set; }
+
+
+        /// <summary>
+        ///预计单产（单位：担/亩）2019-2-13
+        /// </summary>
+        public decimal? UnitVolume { get; set; }
+
+        /// <summary>
+        /// 落实面积 2019-2-13
+        /// </summary>
+        public decimal? ActualArea { get; set; }
+
+        /// <summary>
+        /// 落实面积状态（枚举：未落实 0， 已落实 1）2019-2-13
+        /// </summary>
+        public AreaStatusEnum? AreaStatus { get; set; }
+
+        /// <summary>
+        /// 落实面积时间 2019-2-13
+        /// </summary>
+        public DateTime? AreaTime { get; set; }
 
     }
 }

@@ -28,6 +28,7 @@ using GYISMS.DingDing;
 using GYISMS.DingDing.Dtos;
 using GYISMS.GYEnums;
 using GYISMS.SystemDatas;
+using Senparc.CO2NET.HttpUtility;
 
 namespace GYISMS.Organizations
 {
@@ -261,20 +262,20 @@ namespace GYISMS.Organizations
         /// </summary>
         public async Task<APIResultDto> SynchronousOrganizationAsync()
         {
-            var arr = GetAreaCodeArray();
+            //var arr = GetAreaCodeArray();  取消区县更新 改为区县配置
             string accessToken = _dingDingAppService.GetAccessTokenByApp(DingDingAppEnum.会议申请); //GetAccessToken();
-            IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
-            OapiDepartmentListRequest request = new OapiDepartmentListRequest();
-            request.SetHttpMethod("GET");
-            OapiDepartmentListResponse response = client.Execute(request, accessToken);
-            var entityByDD = (from o in response.Department
-                              select new OrganizationListDto()
+            //IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/department/list");
+            //OapiDepartmentListRequest request = new OapiDepartmentListRequest();
+            //request.SetHttpMethod("GET");
+            //OapiDepartmentListResponse response = client.Execute(request, accessToken);
+            var depts = Get.GetJson<DingDepartmentDto>(string.Format("https://oapi.dingtalk.com/department/list?access_token={0}", accessToken));
+            var entityByDD = depts.department.Select(o => new OrganizationListDto()
                               {
-                                  Id = o.Id,
-                                  DepartmentName = o.Name,
-                                  ParentId = o.Parentid,
+                                  Id = o.id,
+                                  DepartmentName = o.name,
+                                  ParentId = o.parentid,
                                   CreationTime = DateTime.Now
-                              });
+                              }).ToList();
 
             var originEntity = await _organizationRepository.GetAll().ToListAsync();
             foreach (var item in entityByDD)
@@ -287,7 +288,7 @@ namespace GYISMS.Organizations
                     o.CreationTime = DateTime.Now;
                     if (o.Id != 1)
                     {
-                        await SynchronousEmployeeAsync(o.Id, accessToken, arr);
+                        await SynchronousEmployeeAsync(o.Id, accessToken);
                     }
                 }
                 else
@@ -300,7 +301,7 @@ namespace GYISMS.Organizations
                     await CreateSyncOrganizationAsync(organization);
                     if (organization.Id != 1)
                     {
-                        await SynchronousEmployeeAsync(organization.Id, accessToken, arr);
+                        await SynchronousEmployeeAsync(organization.Id, accessToken);
                     }
                 }
             }
@@ -311,33 +312,31 @@ namespace GYISMS.Organizations
         /// <summary>
         /// 同步内部员工
         /// </summary>
-        /// <param name="departId"></param>
-        /// <param name="accessToken"></param>
-        /// <returns></returns>
-        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken, AreaCodeArray pidArr)
+        private async Task<APIResultDto> SynchronousEmployeeAsync(long departId, string accessToken)
         {
             try
             {
-                IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/list");
+                /*IDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/list");
                 OapiUserListRequest request = new OapiUserListRequest();
                 request.DepartmentId = departId;
                 request.SetHttpMethod("GET");
-                OapiUserListResponse response = client.Execute(request, accessToken);
-                var entityByDD = (from e in response.Userlist
-                                  select new EmployeeListDto()
+                OapiUserListResponse response = client.Execute(request, accessToken);*/
+                var url = string.Format("https://oapi.dingtalk.com/user/list?access_token={0}&department_id={1}", accessToken, departId);
+                var user = Get.GetJson<DingUserListDto>(url);
+                var entityByDD = user.userlist.Select(e => new EmployeeListDto()
                                   {
-                                      Id = e.Userid,
-                                      Name = e.Name,
-                                      Mobile = e.Mobile,
-                                      Position = e.Position,
-                                      Department = e.Department,
-                                      IsAdmin = e.IsAdmin,
-                                      IsBoss = e.IsBoss,
-                                      Email = e.Email,
-                                      HiredDate = e.HiredDate,
-                                      Avatar = e.Avatar,
-                                      Active = e.Active
-                                  });
+                                      Id = e.userid,
+                                      Name = e.name,
+                                      Mobile = e.mobile,
+                                      Position = e.position,
+                                      Department = e.department,
+                                      IsAdmin = e.isAdmin,
+                                      IsBoss = e.isBoss,
+                                      Email = e.email,
+                                      HiredDate = e.hiredDate,
+                                      Avatar = e.avatar,
+                                      Active = e.active
+                                  }).ToList();
                 var originEntity = await _employeeRepository.GetAll().ToListAsync();
                 foreach (var item in entityByDD)
                 {
@@ -354,21 +353,21 @@ namespace GYISMS.Organizations
                         e.HiredDate = item.HiredDate;
                         e.Avatar = item.Avatar;
                         e.Active = item.Active;
-                        if (pidArr.ZHQPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.昭化区.ToString();
-                            e.AreaCode = AreaCodeEnum.昭化区;
-                        }
-                        else if (pidArr.JGXPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.剑阁县.ToString();
-                            e.AreaCode = AreaCodeEnum.剑阁县;
-                        }
-                        else if (pidArr.WCXPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.旺苍县.ToString();
-                            e.AreaCode = AreaCodeEnum.旺苍县;
-                        }
+                        //if (pidArr.ZHQPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.昭化区.ToString();
+                        //    e.AreaCode = AreaCodeEnum.昭化区;
+                        //}
+                        //else if (pidArr.JGXPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.剑阁县.ToString();
+                        //    e.AreaCode = AreaCodeEnum.剑阁县;
+                        //}
+                        //else if (pidArr.WCXPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.旺苍县.ToString();
+                        //    e.AreaCode = AreaCodeEnum.旺苍县;
+                        //}
                     }
                     else
                     {
@@ -384,21 +383,21 @@ namespace GYISMS.Organizations
                         employee.HiredDate = item.HiredDate;
                         employee.Avatar = item.Avatar;
                         employee.Active = item.Active;
-                        if (pidArr.ZHQPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.昭化区.ToString();
-                            e.AreaCode = AreaCodeEnum.昭化区;
-                        }
-                        else if (pidArr.JGXPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.剑阁县.ToString();
-                            e.AreaCode = AreaCodeEnum.剑阁县;
-                        }
-                        else if (pidArr.WCXPIDArray.Contains(departId))
-                        {
-                            e.Area = AreaCodeEnum.旺苍县.ToString();
-                            e.AreaCode = AreaCodeEnum.旺苍县;
-                        }
+                        //if (pidArr.ZHQPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.昭化区.ToString();
+                        //    e.AreaCode = AreaCodeEnum.昭化区;
+                        //}
+                        //else if (pidArr.JGXPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.剑阁县.ToString();
+                        //    e.AreaCode = AreaCodeEnum.剑阁县;
+                        //}
+                        //else if (pidArr.WCXPIDArray.Contains(departId))
+                        //{
+                        //    e.Area = AreaCodeEnum.旺苍县.ToString();
+                        //    e.AreaCode = AreaCodeEnum.旺苍县;
+                        //}
                         await CreateSyncEmployeeAsync(employee);
                     }
                 }

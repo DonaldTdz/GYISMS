@@ -27,7 +27,7 @@ export class AppPreBootstrap {
   private static getApplicationConfig(callback: () => void) {
     return abp
       .ajax({
-        url: '/assets/appconfig.json',
+        url: 'assets/appconfig.json',
         method: 'GET',
         headers: {
           'Abp.TenantId': abp.multiTenancy.getTenantIdCookie(),

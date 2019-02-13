@@ -26,7 +26,7 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     schedule: Schedule = new Schedule();
     scheduleTask: ScheduleTask = new ScheduleTask();
     scheduleTaskList: ScheduleTask[] = [];
-    types: any[] = [{ text: '每月', value: 1 }, { text: '每周', value: 2 }, { text: '每日', value: 3 }];
+    types: any[] = [{ text: '每月', value: 1 }, { text: '每周', value: 2 }, { text: '每日', value: 3 }, { text: '自定义', value: 4 }];//
     weekTypes: SelectGroup[] = [];
     isConfirmLoading = false;
     successMsg = '';
@@ -56,6 +56,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
     };
     showTime: any;
     // expiredText: string = '';
+    shedateFormat = 'yyyy/MM/dd';
+    dateRange = [];
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private taskService: VisitTaskServiceProxy,
         private router: Router, private fb: FormBuilder, private actRouter: ActivatedRoute, private modal: NzModalService) {
@@ -72,7 +74,8 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             type: null,
             beginTime: null,
             endTime: null,
-            weekTempTime: null
+            weekTempTime: null,
+            dateRange: null,
             // taskName: [null, Validators.compose([Validators.required, Validators.maxLength(200)])],
             // visitNum: [null, Validators.compose([Validators.pattern("^\\d+$")])]
         });
@@ -141,6 +144,13 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                     this.isMonthText = true;
                     this.showTime = result.beginTime;
                 }
+                else if (result.type == 4) {
+                    this.dateRange = [result.beginTime, result.endTime];
+                }
+
+                if (result.type != 1) {
+                    this.showTime = result.beginTime;
+                }
                 // if (!this.isPush) {
                 this.getTaskList();
                 this.isSaved = true;
@@ -159,7 +169,12 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
         }
     }
     onChange(result: Date): void {
-        let time: Date = new Date(result);
+        let time: Date;
+        if (result == undefined) {
+            time = new Date();
+        } else {
+            time = new Date(result);
+        }
         var m = time.getMonth() + 1;
         this.schedule.beginTime = time.getFullYear().toString() + '-' + (m > 9 ? m : '0' + m).toString() + '-' + '01';
         this.schedule.endTime = this.dateFormatForMM(addDays(new Date(time.getFullYear(), time.getMonth() + 1, 1), -1));
@@ -197,12 +212,11 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                     }
                 }
             }
-            else {// type =1
+            else if (this.schedule.type == 1) {// type =1
                 if (this.schedule.beginTime != 'NaN-0NaN-01' && this.schedule.beginTime != '1970-01-01') {
                     // this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
                     // this.schedule.beginTime = this.dateFormat(this.schedule.beginTime);
                     this.schedule.beginTime = this.schedule.beginTime;
-                    console.log(this.schedule.beginTime);
                 }
                 else {
                     this.schedule.beginTime = null;
@@ -215,6 +229,14 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 else {
                     this.schedule.endTime = null;
                 }
+            } else if (this.schedule.type == 4) {
+                if (this.dateRange.length > 0) {
+                    this.schedule.beginTime = this.dateFormat(this.dateRange[0]);
+                    this.schedule.endTime = this.dateFormat(this.dateRange[1]);
+                } else {
+                    this.schedule.beginTime = null;
+                    this.schedule.endTime = null;
+                }
             }
             this.successMsg = isPulish == false ? '保存成功！' : '发布成功！';
             if (!this.schedule.beginTime) {
@@ -223,7 +245,12 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
             if (!this.schedule.endTime) {
                 this.schedule.endTime = null;
             }
-            this.saveScheduleInfo(isPulish);
+            if (!this.schedule.beginTime || !this.schedule.endTime) {
+                this.isConfirmLoading = false;
+                this.notify.error(this.l('计划周期的时间不能为空！！！'));
+            } else {
+                this.saveScheduleInfo(isPulish);
+            }
         }
     }
 
@@ -372,5 +399,11 @@ export class ScheduleDetailComponent extends AppComponentBase implements OnInit 
                 });
             }
         });
+    }
+    changeTime(times) {
+        if (times != null) {
+            // this.schedule.beginTime = this.dateFormat(this.dateRange[0]);
+            // this.schedule.endTime = this.dateFormat(this.dateRange[1]);
+        }
     }
 }

@@ -27,6 +27,8 @@ using GYISMS.TaskExamines;
 using GYISMS.VisitRecords;
 using GYISMS.Growers.Dtos;
 using Abp.Auditing;
+using GYISMS.SystemDatas;
+using GYISMS.GrowerLocationLogs;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -43,6 +45,8 @@ namespace GYISMS.ScheduleTasks
         private readonly IRepository<VisitTask> _visitTaskRepository;
         private readonly IRepository<Grower> _growerRepository;
         private readonly IRepository<VisitRecord, Guid> _visitRecordRepository;
+        private readonly IRepository<SystemData, int> _systemdataRepository;
+        private readonly IRepository<GrowerLocationLog, Guid> _growerLocationLogRepository;
         private readonly IScheduleTaskManager _scheduletaskManager;
 
         /// <summary>
@@ -55,6 +59,8 @@ namespace GYISMS.ScheduleTasks
             , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
             , IRepository<Grower> growerRepository
             , IRepository<VisitRecord, Guid> visitRecordRepository
+            ,IRepository<SystemData, int> systemdataRepository
+            , IRepository<GrowerLocationLog, Guid> growerLocationLogRepository
             )
         {
             _scheduletaskRepository = scheduletaskRepository;
@@ -64,6 +70,8 @@ namespace GYISMS.ScheduleTasks
             _visitTaskRepository = visitTaskRepository;
             _growerRepository = growerRepository;
             _visitRecordRepository = visitRecordRepository;
+            _systemdataRepository = systemdataRepository;
+            _growerLocationLogRepository = growerLocationLogRepository;
         }
 
 
@@ -206,10 +214,9 @@ namespace GYISMS.ScheduleTasks
             return entity.MapTo<ScheduleTaskListDto>();
         }
 
+        /// <summary>
         /// 计划任务列表不分页
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         public async Task<List<ScheduleTaskListDto>> GetScheduleTasksNoPageAsync(Guid id)
         {
             var scheduleTask = _scheduletaskRepository.GetAll().Where(v => v.ScheduleId == id && v.IsDeleted == false);
@@ -260,6 +267,7 @@ namespace GYISMS.ScheduleTasks
             //TODO:批量删除前的逻辑判断，是否允许删除
             await _scheduleDetailRepository.DeleteAsync(s => input.Contains(s.Id));
         }
+
         #region 钉钉客户端
 
         /// <summary>
@@ -315,10 +323,11 @@ namespace GYISMS.ScheduleTasks
 
         /// <summary>
         ///获取任务详情
+        ///<param name="Status">(2表示全部完成、3表示待完成)</param>
         /// </summary>
         [AbpAllowAnonymous]
         [Audited]
-        public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId, string uid)
+        public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId, string uid,int Status)
         {
             //基本信息
             var query = from st in _scheduletaskRepository.GetAll()
@@ -338,6 +347,8 @@ namespace GYISMS.ScheduleTasks
 
             //烟农信息
             var growerQuery = from sd in _scheduleDetailRepository.GetAll()
+                                                     //.WhereIf(Status == 2, sd => sd.CompleteNum == sd.VisitNum)
+                                                     //.WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
                               join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
                               where sd.ScheduleTaskId == scheduleTaskId
                               && sd.EmployeeId == uid
@@ -347,13 +358,15 @@ namespace GYISMS.ScheduleTasks
                                   CompleteNum = sd.CompleteNum,
                                   GrowerName = sd.GrowerName,
                                   VisitNum = sd.VisitNum,
-                                  UnitName = g.UnitName
+                                  UnitName = g.UnitName,
+                                  Status = sd.Status,
+                                  CreationTime=sd.CreationTime
                               };
-            taskDto.Growers = await growerQuery.ToListAsync();
-
+            taskDto.Growers = await growerQuery.OrderByDescending(s=>s.CreationTime).ToListAsync();
+        
             taskDto.VisitTotal = taskDto.Growers.Sum(g => g.VisitNum).Value;
             taskDto.CompleteNum = taskDto.Growers.Sum(g => g.CompleteNum).Value;
-            
+
             return taskDto;
         }
 
@@ -380,7 +393,20 @@ namespace GYISMS.ScheduleTasks
                         };
 
             var taskDetailDto = await query.FirstOrDefaultAsync();
+            //获取烟农位置修改次数限制
+            var systemData = await _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type== ConfigType.烟叶公共 && s.Code == GYCode.LocationLimitCode).FirstOrDefaultAsync();
+            var limitNum = 3;
+            if (systemData != null && !string.IsNullOrEmpty(systemData.Desc) )
+            {
+                limitNum = int.Parse(systemData.Desc);
+            }
+            var date = DateTime.Now;
+            var startTime = DateTime.Parse(date.Year + "-1-1");
+            var endTime = DateTime.Parse((date.Year + 1) + "-1-1");
+            var num = await _growerLocationLogRepository.GetAll().Where(g => g.CreationTime >= startTime && g.CreationTime < endTime && g.GrowerId == taskDetailDto.GrowerId.Value).CountAsync();
             taskDetailDto.GrowerInfo = (await _growerRepository.GetAsync(taskDetailDto.GrowerId.Value)).MapTo<GrowerListDto>();
+            taskDetailDto.GrowerInfo.LimitNum = limitNum;
+            taskDetailDto.GrowerInfo.CollectNum = num;
             taskDetailDto.VisitRecords = (await _visitRecordRepository.GetAll()
                                               .Where(v => v.ScheduleDetailId == scheduleDetailId)
                                               .OrderBy(v => v.CreationTime)

@@ -41,7 +41,10 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     defalutImg = '/visit/defaultRecord.png';
     previewVisible = false;
     initflag = true;
-
+    // enableTypes = [
+    //     { text: '启用', value: true },
+    //     { text: '禁用', value: false }
+    // ]
     constructor(injector: Injector, private fb: FormBuilder
         , private growerService: GrowerServiceProxy
         , private actRouter: ActivatedRoute, private router: Router
@@ -68,7 +71,8 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             plantingArea: [null, Validators.compose([Validators.pattern(/^(?:[1-9]\d*|0)(?:\.\d{1,2})?$/)])],
             areaCode: null,
             contractTime: null,
-            type: null
+            type: null,
+            isEnable: null,
         });
         this.initflag = true;
         this.getUnitType();
@@ -96,6 +100,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             var d = currentdate.getDate();
             var endTime = y + '-' + (m > 9 ? m : '0' + m) + '-' + (d > 9 ? d : '0' + d);
             this.grower.contractTime = moment(endTime).toString();
+            this.grower.isEnable = true;
         }
     }
 

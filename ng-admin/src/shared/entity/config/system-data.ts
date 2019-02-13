@@ -4,6 +4,7 @@ export class SystemData implements ISystemData {
     type: number;
     code: string;
     desc: string;
+    remark: string;
     seq: number;
     creationTime: Date;
     modelName: string;
@@ -24,6 +25,7 @@ export class SystemData implements ISystemData {
             this.type = data["type"];
             this.code = data["code"];
             this.desc = data["desc"];
+            this.remark = data["remark"];
             this.seq = data["seq"];
             this.creationTime = data["creationTime"];
             this.modelName = data["modelName"];
@@ -56,6 +58,7 @@ export class SystemData implements ISystemData {
         data["type"] = this.type;
         data["code"] = this.code;
         data["desc"] = this.desc;
+        data["remark"] = this.remark;
         data["seq"] = this.seq;
         data["creationTime"] = this.creationTime;
         data["modelName"] = this.modelName;
@@ -77,6 +80,7 @@ export interface ISystemData {
     type: number;
     code: string;
     desc: string;
+    remark: string;
     seq: number;
     creationTime: Date;
 }

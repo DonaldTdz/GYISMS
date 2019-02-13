@@ -15,7 +15,7 @@ namespace GYISMS.GYEnums
         任务拜访 = 7,
         智能报表 = 8,
         会议申请 = 9,
-        资料库 = 10
+        企业标准库 = 10
     }
 
     public enum ConfigModel
@@ -41,7 +41,8 @@ namespace GYISMS.GYEnums
     {
         每月 = 1,
         每周 = 2,
-        每日 = 3
+        每日 = 3,
+        自定义=4,
     }
 
     public enum ScheduleMasterStatusEnum
@@ -89,7 +90,8 @@ namespace GYISMS.GYEnums
         None = 0,
         昭化区 = 1,
         剑阁县 = 2,
-        旺苍县 = 3
+        旺苍县 = 3,
+        广元市 = 4
     }
 
     public enum FileTypeEnum
@@ -100,6 +102,19 @@ namespace GYISMS.GYEnums
         Other = 4
     }
 
+    public enum ExamineOptionEnum
+    {
+        优差等级 = 1, //优/合格/差
+        到位情况 = 2, //到位/不到位
+        了解情况 = 3  //了解/不了解
+    }
+
+    public enum AreaStatusEnum
+    {
+        未落实 = 0,
+        已落实 = 1
+    }
+
     public static class GYCode
     {
         public static string SignRange = "SignRange";
@@ -108,5 +123,19 @@ namespace GYISMS.GYEnums
         public static string ZHQPID = "ZHQPID";
         public static string JGXPID = "JGXPID";
         public static string WCXPID = "WCXPID";
+        public static string LocationLimitCode = "LocationLimitCode";
+
+        /// <summary>
+        /// 昭化区 组织代码
+        /// </summary>
+        public static string 昭化区 = "ZHQ_ORG_CODE";
+        /// <summary>
+        /// 剑阁县 组织代码
+        /// </summary>
+        public static string 剑阁县 = "JGX_ORG_CODE";
+        /// <summary>
+        /// 旺苍县 组织代码
+        /// </summary>
+        public static string 旺苍县 = "WCX_ORG_CODE";
     }
 }

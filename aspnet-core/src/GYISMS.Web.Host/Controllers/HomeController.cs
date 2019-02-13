@@ -26,7 +26,8 @@ namespace GYISMS.Web.Host.Controllers
         public IActionResult Index()
         {
             //QuartzScheduleJobs();
-            return Redirect("/swagger");
+            //return Redirect("/swagger");
+            return Redirect("/gyadmin/index.html");
         }
 
         /// <summary>

@@ -18,6 +18,7 @@ import { UtilsService } from 'abp-ng2-module/dist/src/utils/utils.service';
 import { MessageService } from 'abp-ng2-module/dist/src/message/message.service';
 import { TokenService } from 'abp-ng2-module/dist/src/auth/token.service';
 import { LogService } from 'abp-ng2-module/dist/src/log/log.service';
+import { AppSessionService } from '@shared/session/app-session.service';
 
 @Injectable()
 export class LoginService {
@@ -33,9 +34,10 @@ export class LoginService {
     private _tokenAuthService: TokenAuthServiceProxy,
     private _router: Router,
     private _utilsService: UtilsService,
-    private _messageService: MessageService,
+    //private _messageService: MessageService,
     private _tokenService: TokenService,
     private _logService: LogService,
+    //private _appSessionService: AppSessionService,
   ) {
     this.clear();
   }
@@ -93,12 +95,22 @@ export class LoginService {
     );
 
     let initialUrl = UrlHelper.initialUrl;
+    //alert(initialUrl)
     // if (initialUrl.indexOf('/login') > 0) {
-    if (initialUrl.indexOf('/login') > 0 || initialUrl == AppConsts.appBaseUrl + '/#/') {
+    if (initialUrl.indexOf('/login') > 0 || initialUrl.indexOf('/#/') > 0) {
       initialUrl = AppConsts.appBaseUrl;
     }
+    //alert(initialUrl)
+    //let roles = this._appSessionService.roles;
+    //console.log(roles);
 
+    //if (roles.length == 1 && roles[0] == 'EnterpriseAdmin') { //如果用户只是企管人员 将没有首页
+    //  location.href = AppConsts.appBaseUrl + '/#/app/doc/document';
+    //}
+    //else {
     location.href = initialUrl;
+    //}
+
   }
 
   private clear(): void {

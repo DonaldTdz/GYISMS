@@ -16,6 +16,7 @@ export class Grower implements IGrower {
     longitude: number;
     latitude: number;
     contractTime: string;
+    isEnable: boolean;
     isDeleted: boolean;
     creationTime: Date;
     creatorUserId: number;
@@ -55,6 +56,7 @@ export class Grower implements IGrower {
             this.longitude = data["longitude"];
             this.latitude = data["latitude"];
             this.contractTime = data["contractTime"];
+            this.isEnable = data["isEnable"];
             this.isDeleted = data["isDeleted"];
             this.creationTime = data["creationTime"];
             this.creatorUserId = data["creatorUserId"];
@@ -105,6 +107,7 @@ export class Grower implements IGrower {
         data["longitude"] = this.longitude;
         data["latitude"] = this.latitude;
         data["contractTime"] = this.contractTime;
+        data["isEnable"] = this.isEnable;
         data["isDeleted"] = this.isDeleted;
         data["creationTime"] = this.creationTime;
         data["creatorUserId"] = this.creatorUserId;
@@ -142,6 +145,7 @@ export interface IGrower {
     longitude: number;
     latitude: number;
     contractTime: string;
+    isEnable: boolean;
     isDeleted: boolean;
     creationTime: Date;
     creatorUserId: number;

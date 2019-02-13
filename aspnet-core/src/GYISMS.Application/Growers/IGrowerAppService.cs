@@ -58,6 +58,6 @@ namespace GYISMS.Growers
         Task<GrowerListDto> GetGrowerByIdAsync(int id);
         Task<List<GrowerListDto>> GetGrowersNoPageAsync(GetGrowersInput input);
 
-        Task<APIResultDto> SavePositionAsync(int id, decimal longitude, decimal latitude);
+        Task<APIResultDto> SavePositionAsync(int id, decimal longitude, decimal latitude, string userId);
     }
 }

@@ -9,6 +9,7 @@ using GYISMS.VisitRecords;
 using Abp.AutoMapper;
 using GYISMS.TaskExamines;
 using GYISMS.VisitExamines;
+using GYISMS.GYEnums;
 
 namespace GYISMS.VisitRecords.Dtos
 {
@@ -145,18 +146,46 @@ namespace GYISMS.VisitRecords.Dtos
 
         public int? Score { get; set; }
 
+        public ExamineOptionEnum ExamineOption { get; set; }
+
         public string ScoreName
         {
             get
             {
-                switch (Score)
+                switch (ExamineOption)
                 {
-                    case 5: return "优";
-                    case 3: return "良";
-                    case 1: return "差";
+                    case ExamineOptionEnum.优差等级:
+                        {
+                            switch (Score)
+                            {
+                                case 5: return "优";
+                                case 3: return "合格";
+                                case 1: return "差";
+                                default:
+                                    return string.Empty;
+                            }
+                        }
+                    case ExamineOptionEnum.到位情况:
+                        {
+                            if (Score == 5)
+                            {
+                                return "到位";
+                            }
+                            return "不到位";
+                        }
+                    case ExamineOptionEnum.了解情况:
+                        {
+                            if (Score == 5)
+                            {
+                                return "了解";
+                            }
+                            return "不了解";
+                        }
                     default:
                         return string.Empty;
                 }
+
+              
             }
         }
     }

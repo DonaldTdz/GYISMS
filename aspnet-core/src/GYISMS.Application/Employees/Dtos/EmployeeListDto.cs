@@ -112,6 +112,8 @@ namespace GYISMS.Employees.Dtos
         public virtual string key { get; set; }
         public virtual bool IsLeaf { get; set; }
 
+        public virtual bool selected { get; set; }
+
         public virtual List<NzTreeNode> children { get; set; }
     }
 
@@ -120,7 +122,7 @@ namespace GYISMS.Employees.Dtos
 
         public new List<EmployeeNzTreeNode> children { get; set; }
         //// custom codes
-
+        public bool IsDept { get; set; }
         //// custom codes end
     }
 
@@ -133,5 +135,9 @@ namespace GYISMS.Employees.Dtos
         public string Position { get; set; }
 
         public string Avatar { get; set; }
+
+        public string Area { get; set; }
+
+        public AreaCodeEnum AreaCode { get; set; }
     }
 }

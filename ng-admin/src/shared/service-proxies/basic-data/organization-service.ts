@@ -64,6 +64,18 @@ export class OrganizationServiceProxy {
             return arry;
         });
     }
+
+    GetGrowerTreesAsync(): Observable<NzTreeNode[]> {
+        let url = "/api/services/app/Employee/GetGrowerTreesAsync";
+        return this._gyhttp.get(url).map(data => {
+            let arry = [];
+            data.map(d => {
+                let tree = new NzTreeNode(d);
+                arry.push(tree);
+            });
+            return arry;
+        });
+    }
 }
 
 export class PagedResultDtoOfOrganization implements IPagedResultDtoOfOrganization {

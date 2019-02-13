@@ -63,7 +63,7 @@ namespace GYISMS.VisitRecords
         /// <summary>
         /// 生成签到拍照生成水印图片路径
         /// </summary>
-        [StringLength(200)]
+        [StringLength(500)]
         public virtual string ImgPath { get; set; }
 
         /// <summary>

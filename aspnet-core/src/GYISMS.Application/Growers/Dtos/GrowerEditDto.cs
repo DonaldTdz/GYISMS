@@ -9,7 +9,7 @@ using GYISMS.GYEnums;
 
 namespace GYISMS.Growers.Dtos
 {
-    public class GrowerEditDto: AuditedEntityDto<int?>
+    public class GrowerEditDto: FullAuditedEntityDto<int?>
     {
         /// <summary>
         /// Id
@@ -108,31 +108,36 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public DateTime? ContractTime { get; set; }
 
+        /// <summary>
+        /// 是否启用
+        /// </summary>
+        public bool IsEnable { get; set; }
 
         /// <summary>
-        /// IsDeleted
+        /// 采集次数
         /// </summary>
-        public bool? IsDeleted { get; set; }
-
-
-        /// <summary>
-        /// DeletionTime
-        /// </summary>
-        public DateTime? DeletionTime { get; set; }
+        public int CollectNum { get; set; }
 
 
         /// <summary>
-        /// DeleterUserId
+        ///预计单产（单位：担/亩）2019-2-13
         /// </summary>
-        public long? DeleterUserId { get; set; }
+        public decimal? UnitVolume { get; set; }
 
+        /// <summary>
+        /// 落实面积 2019-2-13
+        /// </summary>
+        public decimal? ActualArea { get; set; }
 
+        /// <summary>
+        /// 落实面积状态（枚举：未落实 0， 已落实 1）2019-2-13
+        /// </summary>
+        public AreaStatusEnum? AreaStatus { get; set; }
 
+        /// <summary>
+        /// 落实面积时间 2019-2-13
+        /// </summary>
+        public DateTime? AreaTime { get; set; }
 
-
-
-        //// custom codes
-
-        //// custom codes end
     }
 }

@@ -14,9 +14,12 @@ export class ScheduleComponent extends AppComponentBase implements OnInit {
     search: any = {};
     loading = false;
     scheduleList: Schedule[] = [];
-    scheduleTypes = [{ text: '每月', value: 1 },
-    { text: '每周', value: 2 },
-    { text: '每日', value: 3 }];
+    scheduleTypes = [
+        { text: '每月', value: 1 },
+        { text: '每周', value: 2 },
+        { text: '每日', value: 3 },
+        { text: '自定义', value: 4 }
+    ];
 
     constructor(injector: Injector, private scheduleService: ScheduleServiceProxy,
         private router: Router) {

@@ -64,5 +64,7 @@ namespace GYISMS.Employees
         //List<EmployeeNzTreeNode> GetTrees();
 
         Task<List<EmployeeNzTreeNode>> GetTreesAsync();
+
+        Task<List<EmployeeNzTreeNode>> GetGrowerTreesAsync();
     }
 }

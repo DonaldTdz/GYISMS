@@ -32,7 +32,7 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
         { value: 7, text: '任务拜访', selected: false },
         { value: 8, text: '智能报表', selected: false },
         { value: 9, text: '会议申请', selected: false },
-        { value: 10, text: '资料库', selected: false },
+        { value: 10, text: '企业标准库', selected: false },
     ]
     confige = [];
     constructor(injector: Injector, private dataConfigService: DataConfigServiceProxy, private fb: FormBuilder) {
@@ -42,7 +42,8 @@ export class DataConfigEditComponent extends AppComponentBase implements OnInit 
         this.forme = this.fb.group({
             type: [null, Validators.compose([Validators.required])],
             code: [null, Validators.compose([Validators.required])],
-            desc: [null, Validators.compose([Validators.required, Validators.maxLength(500)])],
+            desc: [null, Validators.compose([Validators.maxLength(500)])],
+            remark: [null, Validators.compose([Validators.maxLength(500)])],
             seq: [null, Validators.compose([Validators.pattern('^[0-9]*$')])],
         });
     }

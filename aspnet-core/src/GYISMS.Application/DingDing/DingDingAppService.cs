@@ -11,6 +11,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using GYISMS.GYEnums;
+using Senparc.CO2NET.HttpUtility;
 
 namespace GYISMS.DingDing
 {
@@ -30,13 +31,17 @@ namespace GYISMS.DingDing
         /// </summary>       
         public string GetAccessToken(string appkey, string appsecret)
         {
-            DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
+            /*DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/gettoken");
             OapiGettokenRequest request = new OapiGettokenRequest();
             request.Appkey = appkey;
             request.Appsecret = appsecret;
             request.SetHttpMethod("GET");
             OapiGettokenResponse response = client.Execute(request);
-            return response.AccessToken;
+            Logger.InfoFormat("AccessToken response errmsg:{0} body:{1}", response.Errmsg, response.Body);
+            return response.AccessToken;*/
+            AccessTokenDto accessTokenDto = Get.GetJson<AccessTokenDto>(string.Format("https://oapi.dingtalk.com/gettoken?appkey={0}&appsecret={1}", appkey, appsecret));
+            Logger.InfoFormat("AccessToken response errmsg:{0} body:{1}", accessTokenDto.errmsg, accessTokenDto.access_token);
+            return accessTokenDto.access_token;
         }
 
         /// <summary>
@@ -44,12 +49,16 @@ namespace GYISMS.DingDing
         /// </summary>
         public string GetUserId(string accessToken, string code)
         {
-            DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/getuserinfo");
+            /*DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/user/getuserinfo");
             OapiUserGetuserinfoRequest request = new OapiUserGetuserinfoRequest();
             request.Code = code;
             request.SetHttpMethod("GET");
             OapiUserGetuserinfoResponse response = client.Execute(request, accessToken);
-            return response.Userid;
+            Logger.InfoFormat("Userid response errmsg:{0} body:{1}", response.Errmsg, response.Body);
+            return response.Userid;*/
+            DingUserInfoDto user = Get.GetJson<DingUserInfoDto>(string.Format("https://oapi.dingtalk.com/user/getuserinfo?access_token={0}&code={1}", accessToken, code));
+            Logger.InfoFormat("Userid response errmsg:{0} body:{1}", user.errmsg, user.userid);
+            return user.userid;
         }
 
         /// <summary>
@@ -106,11 +115,11 @@ namespace GYISMS.DingDing
                                    .ToList();
                     }
                     break;
-                case DingDingAppEnum.资料库:
+                case DingDingAppEnum.资料标准库:
                     {
                         configList = _systemDataRepository.GetAll()
                                    .Where(s => s.ModelId == ConfigModel.钉钉配置)
-                                   .Where(s => s.Type == ConfigType.钉钉配置 || s.Type == ConfigType.资料库)
+                                   .Where(s => s.Type == ConfigType.钉钉配置 || s.Type == ConfigType.企业标准库)
                                    .ToList();
                     }
                     break;

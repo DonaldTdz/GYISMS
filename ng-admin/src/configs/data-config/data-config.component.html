@@ -25,7 +25,7 @@
                                 <i class="anticon anticon-reload"></i>
                             </button>
                             <!-- <button nz-button type="reset" (click)="refreshData()" [nzSize]="'large'" class="mx-sm">重置</button> -->
-                            <button nz-button type="button" (click)="addLeaf()" nzShape="circle" [nzType]="'primary'" [nzSize]="'large'">
+                            <button nz-button type="button" (click)="addLeaf()" nzShape="circle" [nzType]="'primary'">
                                 <i class="anticon anticon-plus"></i>
                                 <!-- <span>新建</span> -->
                             </button>
@@ -48,6 +48,9 @@
                                 <span>配置项</span>
                             </th>
                             <th>
+                                <span>备注</span>
+                            </th>
+                            <th>
                                 <span>序号</span>
                             </th>
                             <th>
@@ -60,6 +63,7 @@
                             <td>{{leaf.typeName}}</td>
                             <td>{{leaf.code}}</td>
                             <td>{{leaf.desc}}</td>
+                            <td>{{leaf.remark}}</td>
                             <td>{{leaf.seq}}</td>
                             <td>
                                 <a (click)="editLeaf(leaf)">编辑</a>
@@ -96,7 +100,7 @@
                             <button nz-button (click)="getAllMetting()" nzShape="circle">
                                 <i class="anticon anticon-reload"></i>
                             </button>
-                            <button nz-button (click)="addConfigMetting()" nzShape="circle" [nzType]="'primary'" [nzSize]="'large'">
+                            <button nz-button (click)="addConfigMetting()" nzShape="circle" [nzType]="'primary'">
                                 <i class="anticon anticon-plus"></i>
                                 <!-- <span>新建</span> -->
                             </button>
@@ -162,7 +166,7 @@
                             <button nz-button (click)="getAllDing()" nzShape="circle">
                                 <i class="anticon anticon-reload"></i>
                             </button>
-                            <button nz-button (click)="addConfigDing()" nzShape="circle" [nzType]="'primary'" [nzSize]="'large'">
+                            <button nz-button (click)="addConfigDing()" nzShape="circle" [nzType]="'primary'">
                                 <i class="anticon anticon-plus"></i>
                                 <!-- <span>新建</span> -->
                             </button>
