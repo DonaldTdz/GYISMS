@@ -386,45 +386,57 @@ namespace GYISMS.VisitRecords
             }
         }
 
-        private string GenerateWatermarkImg(string imgPath, string location, string userName, string growerName)
+        private string GenerateWatermarkImg(string imgPaths, string location, string userName, string growerName)
         {
-            //拜访时间
-            DateTime stime = DateTime.Now;
-            var host = _hostingEnvironment.WebRootPath;
-            var imgFullPath = host + imgPath;
-            using (FileStream stream = File.OpenRead(imgFullPath))
-            using (Image<Rgba32> vimage = Image.Load(stream))
+            var imgs = imgPaths.Split(',');
+            var imgpaths = string.Empty;
+            int i = 1;
+            foreach (var imgPath in imgs)
             {
-                //画文字
-                var fontCollection = new FontCollection();
-                var fontPath = "C:/Windows/Fonts/simkai.ttf";
-                //var fontPath = "C:/Windows/Fonts/STXINWEI.TTF";
-                //var fontPath = "C:/Windows/Fonts/simfang.ttf";
-                var fontTitle = new Font(fontCollection.Install(fontPath), 20, FontStyle.Bold);
-                var font = new Font(fontCollection.Install(fontPath), 12, FontStyle.Bold);
-                //var fontTitle = SystemFonts.CreateFont("Microsoft YaHei UI", 20, FontStyle.Bold);
-                //var font = SystemFonts.CreateFont("Microsoft YaHei UI", 12, FontStyle.Bold);
-                vimage.Mutate(x => x.DrawText(stime.ToString("HH:mm"), fontTitle, Rgba32.White, new PointF(10, 5)));
-                vimage.Mutate(x => x.DrawText(string.Format("{0} {1}", stime.ToString("yyyy.MM.dd"), GetWeekDay(stime.DayOfWeek)), font, Rgba32.White, new PointF(10, 30)));
-                vimage.Mutate(x => x.DrawText(string.Format("拜访烟农: {0}", growerName), font, Rgba32.White, new PointF(10, 48)));
-                TextGraphicsOptions options = new TextGraphicsOptions(true)
+                //拜访时间
+                DateTime stime = DateTime.Now;
+                var host = _hostingEnvironment.WebRootPath;
+                var imgFullPath = host + imgPath;
+                using (FileStream stream = File.OpenRead(imgFullPath))
+                using (Image<Rgba32> vimage = Image.Load(stream))
                 {
-                    Antialias = true,
-                    HorizontalAlignment = HorizontalAlignment.Right,
-                    VerticalAlignment = VerticalAlignment.Center
-                };
-                var height = vimage.Height;
-                vimage.Mutate(x => x.DrawText(options, "用户: " + userName, font, Rgba32.White, new PointF(350, height - 46)));
-                vimage.Mutate(x => x.DrawText(options, "位置: " + location, font, Rgba32.White, new PointF(350, height - 28)));
-                var newImagePath = imgPath.Replace("visit", "visit/watermark");
-                var newFolder = host + "/visit/watermark";
-                if (!Directory.Exists(newFolder))
-                {
-                    Directory.CreateDirectory(newFolder);
+                    //画文字
+                    var fontCollection = new FontCollection();
+                    var fontPath = "C:/Windows/Fonts/simkai.ttf";
+                    //var fontPath = "C:/Windows/Fonts/STXINWEI.TTF";
+                    //var fontPath = "C:/Windows/Fonts/simfang.ttf";
+                    var fontTitle = new Font(fontCollection.Install(fontPath), 20, FontStyle.Bold);
+                    var font = new Font(fontCollection.Install(fontPath), 12, FontStyle.Bold);
+                    //var fontTitle = SystemFonts.CreateFont("Microsoft YaHei UI", 20, FontStyle.Bold);
+                    //var font = SystemFonts.CreateFont("Microsoft YaHei UI", 12, FontStyle.Bold);
+                    vimage.Mutate(x => x.DrawText(stime.ToString("HH:mm"), fontTitle, Rgba32.White, new PointF(10, 5)));
+                    vimage.Mutate(x => x.DrawText(string.Format("{0} {1}", stime.ToString("yyyy.MM.dd"), GetWeekDay(stime.DayOfWeek)), font, Rgba32.White, new PointF(10, 30)));
+                    vimage.Mutate(x => x.DrawText(string.Format("拜访烟农: {0}", growerName), font, Rgba32.White, new PointF(10, 48)));
+                    TextGraphicsOptions options = new TextGraphicsOptions(true)
+                    {
+                        Antialias = true,
+                        HorizontalAlignment = HorizontalAlignment.Right,
+                        VerticalAlignment = VerticalAlignment.Center
+                    };
+                    var height = vimage.Height;
+                    vimage.Mutate(x => x.DrawText(options, "用户: " + userName, font, Rgba32.White, new PointF(350, height - 46)));
+                    vimage.Mutate(x => x.DrawText(options, "位置: " + location, font, Rgba32.White, new PointF(350, height - 28)));
+                    var newImagePath = imgPath.Replace("visit", "visit/watermark");
+                    var newFolder = host + "/visit/watermark";
+                    if (!Directory.Exists(newFolder))
+                    {
+                        Directory.CreateDirectory(newFolder);
+                    }
+                    vimage.Save(host + newImagePath);
+                    imgpaths += newImagePath;
+                    if (i != imgs.Length)
+                    {
+                        imgpaths += ",";
+                    }
+                    i++;
                 }
-                vimage.Save(host + newImagePath);
-                return newImagePath;
             }
+            return imgpaths;
         }
 
         [AbpAllowAnonymous]
