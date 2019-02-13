@@ -84,7 +84,10 @@ namespace  GYISMS.GrowerAreaRecords.Dtos
 		/// </summary>
 		public string Remark { get; set; }
 
-
+        /// <summary>
+        /// 计划明细Id 外键
+        /// </summary>
+        public Guid ScheduleDetailId { get; set; }
 
 
     }

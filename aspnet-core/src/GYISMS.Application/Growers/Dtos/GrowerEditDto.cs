@@ -120,9 +120,9 @@ namespace GYISMS.Growers.Dtos
 
 
         /// <summary>
-        /// 预计交售量（单位：担）add 2019-2-13
+        ///预计单产（单位：担/亩）2019-2-13
         /// </summary>
-        public decimal? PlanVolume { get; set; }
+        public decimal? UnitVolume { get; set; }
 
         /// <summary>
         /// 落实面积 2019-2-13

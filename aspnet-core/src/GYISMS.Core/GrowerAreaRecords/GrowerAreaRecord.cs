@@ -16,6 +16,11 @@ namespace GYISMS.GrowerAreaRecords
         public virtual int GrowerId { get; set; }
 
         /// <summary>
+        /// 计划明细Id 外键
+        /// </summary>
+        public virtual Guid ScheduleDetailId { get; set; }
+
+        /// <summary>
         /// 拍照图片
         /// </summary>
         [StringLength(500)]
@@ -64,5 +69,7 @@ namespace GYISMS.GrowerAreaRecords
         /// </summary>
         [StringLength(200)]
         public virtual string Remark { get; set; }
+
+
     }
 }
