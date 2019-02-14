@@ -22,7 +22,6 @@ namespace GYISMS.VisitRecords.Dtos
         [Required(ErrorMessage = "ScheduleDetailId不能为空")]
         public Guid ScheduleDetailId { get; set; }
 
-
         /// <summary>
         /// EmployeeId
         /// </summary>
@@ -80,6 +79,30 @@ namespace GYISMS.VisitRecords.Dtos
         public string TaskName { get; set; }
         public string ExaminesName { get; set; }
         public bool? HasExamine { get; set; }
+
+        public string ImgTop
+        {
+            get
+            {
+                if (ImgPaths.Length > 0)
+                {
+                    return ImgPaths[0];
+                }
+                return string.Empty;
+            }
+        }
+
+        public string[] ImgPaths
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(ImgPath))
+                {
+                    return ImgPath.Split(',');
+                }
+                return new string[0];
+            }
+        }
     }
 
 
@@ -135,6 +158,30 @@ namespace GYISMS.VisitRecords.Dtos
         }
 
         public List<DingDingTaskExamineDto> Examines { get; set; }
+
+        public string ImgTop
+        {
+            get
+            {
+                if (ImgPaths.Length > 0)
+                {
+                    return ImgPaths[0];
+                }
+                return string.Empty;
+            }
+        }
+
+        public string[] ImgPaths
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(ImgPath))
+                {
+                    return ImgPath.Split(',');
+                }
+                return new string[0];
+            }
+        }
     }
 
     [AutoMapFrom(typeof(TaskExamine))]
