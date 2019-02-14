@@ -5,9 +5,11 @@ using Abp.Application.Services.Dto;
 using Abp.Domain.Entities.Auditing;
 using System.ComponentModel.DataAnnotations;
 using GYISMS.GrowerAreaRecords;
+using Abp.AutoMapper;
 
 namespace GYISMS.GrowerAreaRecords.Dtos
 {
+    [AutoMapFrom(typeof(GrowerAreaRecord))]
     public class GrowerAreaRecordListDto : EntityDto<Guid> 
     {
 
@@ -85,8 +87,6 @@ namespace GYISMS.GrowerAreaRecords.Dtos
         /// </summary>
         public Guid ScheduleDetailId { get; set; }
 
-
-
-
+        public string ScheduleName { get; set; }
     }
 }

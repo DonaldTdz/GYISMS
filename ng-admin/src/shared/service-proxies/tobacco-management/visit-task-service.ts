@@ -10,6 +10,7 @@ import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
 import { VisitTask, TaskExamine, ScheduleTask, VisitTaskName, VisitRecord } from '@shared/entity/tobacco-management';
+import { GrowerAreaRecord } from '@shared/entity/basic-data';
 
 @Injectable()
 export class VisitTaskServiceProxy {
@@ -39,6 +40,17 @@ export class VisitTaskServiceProxy {
         return this._gyhttp.get(url_, params).map(data => {
             if (data) {
                 return PagedResultDtoOfVisitRecord.fromJS(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
+    getGrowerAreaRecordListByGrowerId(params: any): Observable<PagedResultDtoOfGrowerAreaRecord> {
+        let url_ = "/api/services/app/GrowerAreaRecord/GetPaged";
+        return this._gyhttp.get(url_, params).map(data => {
+            if (data) {
+                return PagedResultDtoOfGrowerAreaRecord.fromJS(data);
             } else {
                 return null;
             }
@@ -332,4 +344,58 @@ export class PagedResultDtoOfVisitRecord implements IPagedResultDtoOfVisitRecord
 export interface IPagedResultDtoOfVisitRecord {
     totalCount: number;
     items: VisitRecord[];
+}
+
+export class PagedResultDtoOfGrowerAreaRecord implements IPagedResultDtoOfGrowerAreaRecord {
+    totalCount: number;
+    items: GrowerAreaRecord[];
+
+    constructor(data?: IPagedResultDtoOfGrowerAreaRecord) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(GrowerAreaRecord.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfGrowerAreaRecord {
+        let result = new PagedResultDtoOfGrowerAreaRecord();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfGrowerAreaRecord();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfGrowerAreaRecord {
+    totalCount: number;
+    items: GrowerAreaRecord[];
 }

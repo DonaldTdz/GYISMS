@@ -7,7 +7,7 @@ namespace GYISMS.GrowerAreaRecords.Dtos
 {
     public class GetGrowerAreaRecordsInput : PagedSortedAndFilteredInputDto, IShouldNormalize
     {
-
+        public int GrowerId { get; set; }
         /// <summary>
         /// 正常化排序使用
         /// </summary>
