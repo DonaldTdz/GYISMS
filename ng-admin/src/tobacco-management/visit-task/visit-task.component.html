@@ -44,6 +44,7 @@
                 <th>任务名称</th>
                 <th>是否考核</th>
                 <th>任务描述</th>
+                <th>创建时间</th>
                 <th>操作</th>
             </tr>
         </thead>
@@ -53,6 +54,7 @@
                 <td>{{data.name}}</td>
                 <td>{{data.isExamine == true?"是":"否"}}</td>
                 <td>{{data.desc | lengthLimit:100}}</td>
+                <td>{{data.creationTime | date:'yyyy-MM-dd HH:mm'}}</td>
                 <td>
                     <a (click)="goDetail(data.id)">查看详情</a>
                 </td>

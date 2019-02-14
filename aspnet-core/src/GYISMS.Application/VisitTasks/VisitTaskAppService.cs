@@ -67,7 +67,7 @@ namespace GYISMS.VisitTasks
             var visittaskCount = await query.CountAsync();
 
             var visittasks = await query
-                    .OrderBy(v => v.Type).AsNoTracking()
+                    .OrderByDescending(v => v.CreationTime).AsNoTracking()
                     .PageBy(input)
                     .ToListAsync();
 
