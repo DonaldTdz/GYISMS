@@ -150,5 +150,12 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public DateTime? AreaTime { get; set; }
 
+        public string AreaStatusName
+        {
+            get
+            {
+                return AreaStatus.ToString();
+            }
+        }
     }
 }

@@ -15,6 +15,7 @@ export class VisitRecord implements IVisitRecord {
     examinesName: string;
     imgPaths: string[];
     imgTop: string;
+    imgPathArry: string[];
 
     constructor(data?: IVisitRecord) {
         if (data) {
@@ -43,6 +44,7 @@ export class VisitRecord implements IVisitRecord {
             this.examinesName = data["examinesName"];
             this.imgPaths = data["imgPaths"];
             this.imgTop = data["imgTop"];
+            this.imgPathArry = data["imgPathArry"];
         }
     }
 
@@ -105,4 +107,5 @@ export interface IVisitRecord {
     examinesName: string;
     imgPaths: string[];
     imgTop: string;
+    imgPathArry: string[];
 }

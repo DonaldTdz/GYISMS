@@ -28,6 +28,11 @@ export class Grower implements IGrower {
     checked: boolean;
     scheduleDetailId: string;
     countyCodeName: string;
+    unitVolume: number;
+    actualArea: number;
+    areaStatusName: string;
+    areaStatus: number;
+    areaTime: Date;
     constructor(data?: IGrower) {
         if (data) {
             for (var property in data) {
@@ -68,6 +73,11 @@ export class Grower implements IGrower {
             this.visitNum = data["visitNum"];
             this.checked = data["checked"];
             this.countyCodeName = data["countyCodeName"];
+            this.unitVolume = data["unitVolume"];
+            this.actualArea = data["actualArea"];
+            this.areaStatusName = data["areaStatusName"];
+            this.areaStatus = data["areaStatus"];
+            this.areaTime = data["areaTime"];
         }
     }
 
@@ -116,6 +126,7 @@ export class Grower implements IGrower {
         data["deletionTime"] = this.deletionTime;
         data["deleterUserId"] = this.deleterUserId;
         data["checked"] = this.checked;
+        data["unitVolume"] = this.unitVolume;
 
         return data;
     }

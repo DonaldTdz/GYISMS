@@ -4,10 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { NzModalService, NzModalRef } from 'ng-zorro-antd';
 import { ActivatedRoute, Router } from '@angular/router';
 import { GrowerServiceProxy } from '@shared/service-proxies/basic-data';
-import { Grower, Employee, SelectGroup } from '@shared/entity/basic-data';
+import { Grower, Employee, SelectGroup, GrowerAreaRecord } from '@shared/entity/basic-data';
 import { GrowerEmployeeModalComponent } from './grower-employee-modal/grower-employee-modal.component';
 import * as moment from 'moment';
-import { VisitTaskServiceProxy, PagedResultDtoOfVisitRecord } from '@shared/service-proxies/tobacco-management';
+import { VisitTaskServiceProxy, PagedResultDtoOfVisitRecord, PagedResultDtoOfGrowerAreaRecord } from '@shared/service-proxies/tobacco-management';
 import { VisitRecord } from '@shared/entity/tobacco-management';
 
 @Component({
@@ -24,6 +24,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     validateForm: FormGroup;
     grower: Grower = new Grower();
     visitRecordList: VisitRecord[] = [];
+    growerAreaRecordList: GrowerAreaRecord[] = [];
     // countyCodes: RadioGroup[] = [
     //     // { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }
     // ];
@@ -37,6 +38,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     confirmModal: NzModalRef;
     isDelete = false;
     loading = false;
+    loadingGAR = false;
     previewImage = ''
     defalutImg = '/visit/defaultRecord.png';
     previewVisible = false;
@@ -45,6 +47,13 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     //     { text: '启用', value: true },
     //     { text: '禁用', value: false }
     // ]
+    queryGAR: any = {
+        pageIndexGAR: 1,
+        pageSizeGAR: 10,
+        skipCountGAR: function () { return (this.pageIndexGAR - 1) * this.pageSizeGAR; },
+        totalGAR: 0,
+    };
+
     constructor(injector: Injector, private fb: FormBuilder
         , private growerService: GrowerServiceProxy
         , private actRouter: ActivatedRoute, private router: Router
@@ -73,6 +82,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             contractTime: null,
             type: null,
             isEnable: null,
+            unitVolume: [null, Validators.compose([Validators.pattern(/^(?:[1-9]\d*|0)(?:\.\d{1,2})?$/)])]
         });
         this.initflag = true;
         this.getUnitType();
@@ -89,6 +99,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
                 this.isDelete = true;
             });
             this.getVisitRecord();
+            this.getGrowerAreaRecord();
         } else {
             //新增
             this.grower.areaCode = 1;
@@ -115,6 +126,12 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
             if (!this.grower.contractTime) {
                 this.grower.contractTime = null;
             }
+            if (!this.grower.unitVolume) {
+                this.grower.unitVolume = 0;
+            }
+            if (!this.grower.areaStatus) {
+                this.grower.areaStatus = 0;
+            }
             this.saveRoomInfo();
         }
     }
@@ -140,7 +157,28 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
         this.taskService.getVisitVisitRecordListByGrowerId(params).subscribe((result: PagedResultDtoOfVisitRecord) => {
             this.loading = false;
             this.visitRecordList = result.items;
+            this.visitRecordList.forEach(v => {
+                if (v.imgPath.indexOf(',') != -1) {
+                    v.imgPathArry = v.imgPath.split(',');
+                } else {
+                    v.imgPathArry = new Array(v.imgPath);
+                    // .push(v.imgPath);
+                }
+            });
             this.query.total = result.totalCount;
+        });
+    }
+
+    getGrowerAreaRecord() {
+        this.loadingGAR = true;
+        let params: any = {};
+        params.SkipCount = this.queryGAR.skipCountGAR();
+        params.MaxResultCount = this.queryGAR.pageSizeGAR;
+        params.GrowerId = this.id;
+        this.taskService.getGrowerAreaRecordListByGrowerId(params).subscribe((result: PagedResultDtoOfGrowerAreaRecord) => {
+            this.loadingGAR = false;
+            this.growerAreaRecordList = result.items;
+            this.queryGAR.totalGAR = result.totalCount;
         });
     }
 
