@@ -462,6 +462,30 @@ namespace GYISMS.ScheduleTasks.Dtos
 
         public string ImgPath { get; set; }
 
+        public string ImgTop
+        {
+            get
+            {
+                if (ImgPaths.Length > 0)
+                {
+                    return ImgPaths[0];
+                }
+                return string.Empty;
+            }
+        }
+
+        public string[] ImgPaths
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(ImgPath))
+                {
+                    return ImgPath.Split(',');
+                }
+                return new string[0];
+            }
+        }
+
         public DateTime? CreationTime { get; set; }
 
         public string Desc { get; set; }

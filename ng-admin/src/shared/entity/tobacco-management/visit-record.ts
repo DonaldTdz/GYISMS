@@ -13,7 +13,10 @@ export class VisitRecord implements IVisitRecord {
     employeeName: string;
     taskName: string;
     examinesName: string;
+    imgPaths: string[];
+    imgTop: string;
     imgPathArry: string[];
+
     constructor(data?: IVisitRecord) {
         if (data) {
             for (var property in data) {
@@ -39,6 +42,8 @@ export class VisitRecord implements IVisitRecord {
             this.employeeName = data["employeeName"];
             this.taskName = data["taskName"];
             this.examinesName = data["examinesName"];
+            this.imgPaths = data["imgPaths"];
+            this.imgTop = data["imgTop"];
             this.imgPathArry = data["imgPathArry"];
         }
     }
@@ -73,6 +78,8 @@ export class VisitRecord implements IVisitRecord {
         data["desc"] = this.desc;
         data["imgPath"] = this.imgPath;
         data["creationTime"] = this.creationTime;
+        data["imgPaths"] = this.imgPaths;
+        data["imgTop"] = this.imgTop;
         return data;
     }
 
@@ -98,5 +105,7 @@ export interface IVisitRecord {
     employeeName: string;
     taskName: string;
     examinesName: string;
+    imgPaths: string[];
+    imgTop: string;
     imgPathArry: string[];
 }

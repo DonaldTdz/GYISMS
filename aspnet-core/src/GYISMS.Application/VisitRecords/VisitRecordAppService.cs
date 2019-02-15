@@ -532,6 +532,7 @@ namespace GYISMS.VisitRecords
                             {
                                 Name = te.Name,
                                 Desc = te.Desc,
+                                ExamineOption = te.ExamineOption,
                                 Score = ve.Score
                             };
 
