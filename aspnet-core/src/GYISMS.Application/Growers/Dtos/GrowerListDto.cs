@@ -150,6 +150,11 @@ namespace GYISMS.Growers.Dtos
         /// </summary>
         public DateTime? AreaTime { get; set; }
 
+        /// <summary>
+        /// 采用落实面积的计划明细Id 2019-2-15
+        /// </summary>
+        public Guid? AreaScheduleDetailId { get; set; }
+
         public string AreaStatusName
         {
             get

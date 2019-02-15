@@ -88,5 +88,8 @@ namespace GYISMS.GrowerAreaRecords.Dtos
         public Guid ScheduleDetailId { get; set; }
 
         public string ScheduleName { get; set; }
+
     }
+
+
 }
