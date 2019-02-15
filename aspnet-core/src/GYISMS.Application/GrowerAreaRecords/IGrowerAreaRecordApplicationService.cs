@@ -71,12 +71,7 @@ namespace GYISMS.GrowerAreaRecords
         /// </summary>
         Task BatchDelete(List<Guid> input);
 
-
-		/// <summary>
-        /// 导出GrowerAreaRecord为excel表
-        /// </summary>
-        /// <returns></returns>
-		//Task<FileDto> GetToExcel();
-
+        Task<CityAreaChartDto> GetCityDDChartDataAsync();
+        Task<DistrictAreaChartDto> GetDistrictDDChartDataAsync();
     }
 }

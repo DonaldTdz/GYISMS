@@ -25,6 +25,7 @@ using GYISMS.ScheduleDetails;
 using GYISMS.ScheduleDetails.Dtos;
 using GYISMS.Schedules;
 using GYISMS.Schedules.Dtos;
+using GYISMS.Growers;
 
 namespace GYISMS.GrowerAreaRecords
 {
@@ -37,6 +38,7 @@ namespace GYISMS.GrowerAreaRecords
         private readonly IRepository<GrowerAreaRecord, Guid> _entityRepository;
         private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
         private readonly IRepository<Schedule, Guid> _scheduleRepository;
+        private readonly IRepository<Grower, int> _growerRepository;
 
         /// <summary>
         /// 构造函数 
@@ -45,11 +47,13 @@ namespace GYISMS.GrowerAreaRecords
         IRepository<GrowerAreaRecord, Guid> entityRepository
         , IRepository<ScheduleDetail, Guid> scheduledetailRepository
         , IRepository<Schedule, Guid> scheduleRepository
+        , IRepository<Grower, int> growerRepository
         )
         {
             _entityRepository = entityRepository;
             _scheduledetailRepository = scheduledetailRepository;
             _scheduleRepository = scheduleRepository;
+            _growerRepository = growerRepository;
         }
 
 
@@ -62,7 +66,7 @@ namespace GYISMS.GrowerAreaRecords
         public async Task<PagedResultDto<GrowerAreaRecordListDto>> GetPaged(GetGrowerAreaRecordsInput input)
         {
 
-            var growerAreaRecord = _entityRepository.GetAll().Where(v=>v.GrowerId == input.GrowerId);
+            var growerAreaRecord = _entityRepository.GetAll().Where(v => v.GrowerId == input.GrowerId);
             // TODO:根据传入的参数添加过滤条件
 
             var scheduleDetail = _scheduledetailRepository.GetAll().Select(v => new ScheduleDetailListDto
@@ -72,20 +76,20 @@ namespace GYISMS.GrowerAreaRecords
             });
 
             var schedule = _scheduleRepository.GetAll();
-            var result = (from g in growerAreaRecord
-                          join sd in scheduleDetail on g.ScheduleDetailId equals sd.Id
-                          join s in schedule on sd.ScheduleId equals s.Id
-                          select new GrowerAreaRecordListDto()
-                          {
-                              Id = g.Id,
-                              Area = g.Area,
-                              ImgPath = g.ImgPath,
-                              Location = g.Location,
-                              EmployeeName = g.EmployeeName,
-                              CollectionTime = g.CollectionTime,
-                              Remark = g.Remark,
-                              ScheduleName = s.Name
-                          });
+            var result = from g in growerAreaRecord
+                         join sd in scheduleDetail on g.ScheduleDetailId equals sd.Id
+                         join s in schedule on sd.ScheduleId equals s.Id
+                         select new GrowerAreaRecordListDto()
+                         {
+                             Id = g.Id,
+                             Area = g.Area,
+                             ImgPath = g.ImgPath,
+                             Location = g.Location,
+                             EmployeeName = g.EmployeeName,
+                             CollectionTime = g.CollectionTime,
+                             Remark = g.Remark,
+                             ScheduleName = s.Name
+                         };
             var count = await result.CountAsync();
 
             var entityList = await result
@@ -217,18 +221,106 @@ namespace GYISMS.GrowerAreaRecords
             await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
         }
 
-
         /// <summary>
-        /// 导出GrowerAreaRecord为excel表,等待开发。
+        /// 广元市落实面积图表
         /// </summary>
         /// <returns></returns>
-        //public async Task<FileDto> GetToExcel()
-        //{
-        //	var users = await UserManager.Users.ToListAsync();
-        //	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-        //	await FillRoleNames(userListDtos);
-        //	return _userListExcelExporter.ExportToFile(userListDtos);
-        //}
+        [AbpAllowAnonymous]
+        public async Task<CityAreaChartDto> GetCityDDChartDataAsync()
+        {
+            CityAreaChartDto result = new CityAreaChartDto();
+
+            result.list = new List<AreaChartDto>();
+
+            AreaChartDto actual = new AreaChartDto();
+            actual.GroupName = "落实面积";
+            actual.AreaName = "广元市";
+            actual.Area = await _growerRepository.GetAll().SumAsync(v => v.ActualArea ?? 0);
+            AreaChartDto expected = new AreaChartDto();
+            expected.GroupName = "约定面积";
+            expected.AreaName = "广元市";
+            expected.Area = await _growerRepository.GetAll().SumAsync(v => v.PlantingArea ?? 0);
+
+            result.list.Add(expected);
+            result.list.Add(actual);
+            result.Expected = expected.Area;
+            result.Actual = actual.Area;
+            return result;
+        }
+
+        /// <summary>
+        /// 区县落实面积图表
+        /// </summary>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<DistrictAreaChartDto> GetDistrictDDChartDataAsync()
+        {
+            //var actual = await (_growerRepository.GetAll().GroupBy(v => v.AreaCode)
+            //    .Select(v => new AreaChartDto()
+            //    {
+            //        GroupName = "落实面积",
+            //        Area = v.Sum(a => a.ActualArea ?? 0),
+            //        AreaName = v.Key.ToString()
+            //    })).AsNoTracking().ToListAsync();
+
+            //var expected = await (_growerRepository.GetAll().GroupBy(v => v.AreaCode)
+            //   .Select(v => new AreaChartDto()
+            //   {
+            //       GroupName = "约定面积",
+            //       Area = v.Sum(a => a.PlantingArea??0),
+            //       AreaName = v.Key.ToString()
+            //   })).AsNoTracking().ToListAsync();
+
+            //List<AreaChartDto> list = new List<AreaChartDto>();
+            //list.AddRange(expected);
+            //list.AddRange(actual);
+            //return list;
+            DistrictAreaChartDto result = new DistrictAreaChartDto();
+            result.list = new List<AreaChartDto>();
+
+            //昭化
+            AreaChartDto zhExpected = new AreaChartDto();
+            zhExpected.GroupName = "约定面积";
+            zhExpected.AreaName = "昭化区";
+            zhExpected.Area = await _growerRepository.GetAll().Where(v=>v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.PlantingArea ?? 0);
+            AreaChartDto zhActual = new AreaChartDto();
+            zhActual.GroupName = "落实面积";
+            zhActual.AreaName = "昭化区";
+            zhActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.ActualArea ?? 0);
+            //剑阁
+            AreaChartDto jgExpected = new AreaChartDto();
+            jgExpected.GroupName = "约定面积";
+            jgExpected.AreaName = "剑阁县";
+            jgExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.PlantingArea ?? 0);
+            AreaChartDto jgActual = new AreaChartDto();
+            jgActual.GroupName = "落实面积";
+            jgActual.AreaName = "剑阁县";
+            jgActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.ActualArea ?? 0);
+            //旺苍
+            AreaChartDto wcExpected = new AreaChartDto();
+            wcExpected.GroupName = "约定面积";
+            wcExpected.AreaName = "旺苍县";
+            wcExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.PlantingArea ?? 0);
+            AreaChartDto wcActual = new AreaChartDto();
+            wcActual.GroupName = "落实面积";
+            wcActual.AreaName = "旺苍县";
+            wcActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.ActualArea ?? 0);
+
+            result.list.Add(zhExpected);
+            result.list.Add(zhActual);
+            result.list.Add(jgExpected);
+            result.list.Add(jgActual);
+            result.list.Add(wcExpected);
+            result.list.Add(wcActual);
+
+            result.ZhExpected = zhExpected.Area;
+            result.ZhActual = zhActual.Area;
+            result.JgExpected = jgExpected.Area;
+            result.JgActual = jgActual.Area;
+            result.WcExpected = wcExpected.Area;
+            result.WcActual = wcActual.Area;
+            return result;
+        }
 
     }
 }
