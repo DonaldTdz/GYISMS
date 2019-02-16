@@ -33,7 +33,7 @@
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
-                    <nz-form-label [nzSm]="5" [nzXs]="24" nzRequired nzFor="remark">备注</nz-form-label>
+                    <nz-form-label [nzSm]="5" [nzXs]="24" nzFor="remark">备注</nz-form-label>
                     <nz-form-control [nzSm]="19" nzHasFeedback>
                         <input nz-input formControlName="remark" [(ngModel)]="systemData.remark" id="remark">
                         <nz-form-explain *ngIf="forme.get('remark').dirty&&forme.get('remark').hasError('maxlength')">字符长度小于等于500</nz-form-explain>

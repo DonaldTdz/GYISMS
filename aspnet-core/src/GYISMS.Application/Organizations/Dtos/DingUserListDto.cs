@@ -1,6 +1,7 @@
 ﻿using GYISMS.Dtos;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GYISMS.Organizations.Dtos
@@ -41,13 +42,26 @@ namespace GYISMS.Organizations.Dtos
 
         public string hiredDate { get; set; }
 
-        public string extattr { get; set; }
+        //public object extattr { get; set; }
 
         public string email { get; set; }
 
         public string dingId { get; set; }
 
-        public string department { get; set; }
+        public long[] department { get; set; }
+
+        public string departmentStr
+        {
+            get
+            {
+                if (department.Length > 0)
+                {
+                    var str = Array.ConvertAll(department, d => "[" + d.ToString() + "]");
+                    return string.Join("", str);
+                }
+                return string.Empty;
+            }
+        }
 
         public string avatar { get; set; }
 
