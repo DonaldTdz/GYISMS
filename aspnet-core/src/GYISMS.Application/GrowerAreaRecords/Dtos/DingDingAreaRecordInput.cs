@@ -18,6 +18,6 @@ namespace GYISMS.GrowerAreaRecords.Dtos
 
         public decimal? Area { get; set; }
 
-
+        public string Remark { get; set; }
     }
 }

@@ -322,6 +322,23 @@ namespace GYISMS.GrowerAreaRecords
             return result;
         }
 
+        public async Task SaveGrowerAreaRecordAsync(DingDingAreaRecordInput input)
+        {
+            GrowerAreaRecord record = new GrowerAreaRecord();
+            var scheduledetail = await _scheduledetailRepository.GetAsync(input.ScheduleDetailId);
+            record.EmployeeId = scheduledetail.EmployeeId;
+            record.EmployeeName = scheduledetail.EmployeeName;
+            record.CollectionTime = DateTime.Now;
+            record.GrowerId = scheduledetail.GrowerId;
+            record.ImgPath = string.Join(',', input.ImgPaths);
+            record.Latitude = input.Latitude;
+            record.Longitude = input.Longitude;
+            record.Location = input.Location;
+            record.Remark = input.Remark;
+            record.Area = input.Area;
+            await _entityRepository.InsertAsync(record);
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
     }
 }
 
