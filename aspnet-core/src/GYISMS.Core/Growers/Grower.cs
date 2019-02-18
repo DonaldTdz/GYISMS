@@ -132,5 +132,10 @@ namespace GYISMS.Growers
         /// </summary>
         public virtual DateTime? AreaTime { get; set; }
 
+        /// <summary>
+        /// 采用落实面积的计划明细Id 2019-2-15
+        /// </summary>
+        public virtual Guid? AreaScheduleDetailId { get; set; }
+
     }
 }

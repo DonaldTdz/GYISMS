@@ -329,7 +329,7 @@ namespace GYISMS.Organizations
                                       Name = e.name,
                                       Mobile = e.mobile,
                                       Position = e.position,
-                                      Department = e.department,
+                                      Department = e.departmentStr,
                                       IsAdmin = e.isAdmin,
                                       IsBoss = e.isBoss,
                                       Email = e.email,

@@ -33,9 +33,9 @@
                     </div>
                 </form>
                 <ng-template #totalContentLe>共{{query.total}}条</ng-template>
-                <nz-table #nzTable [nzData]="systemDataLeafs" [nzFrontPagination]="false" [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex"
-                    [(nzPageSize)]="query.pageSize" [nzShowTotal]="totalContentLe" [nzLoading]="loading" nzShowSizeChanger (nzPageIndexChange)="getAllLeafs()"
-                    (nzPageSizeChange)="getAllLeafs()">
+                <nz-table #nzTable [nzData]="systemDataLeafs" [nzFrontPagination]="false" [nzTotal]="query.total"
+                    [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzShowTotal]="totalContentLe"
+                    [nzLoading]="loading" nzShowSizeChanger (nzPageIndexChange)="getAllLeafs()" (nzPageSizeChange)="getAllLeafs()">
                     <thead>
                         <tr>
                             <th>
@@ -108,9 +108,10 @@
                     </div>
                 </form>
                 <ng-template #totalContentMe>共{{queryMe.total}}条</ng-template>
-                <nz-table #nzTableMe [nzData]="systemDataMettings" [nzFrontPagination]="false" [nzTotal]="queryMe.total" [(nzPageIndex)]="queryMe.pageIndex"
-                    [(nzPageSize)]="queryMe.pageSize" [nzShowTotal]="totalContentMe" [nzLoading]="loadingMe" [nzShowTotal]="'true'"
-                    [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllMetting()" (nzPageSizeChange)="getAllMetting()">
+                <nz-table #nzTableMe [nzData]="systemDataMettings" [nzFrontPagination]="false" [nzTotal]="queryMe.total"
+                    [(nzPageIndex)]="queryMe.pageIndex" [(nzPageSize)]="queryMe.pageSize" [nzShowTotal]="totalContentMe"
+                    [nzLoading]="loadingMe" [nzShowTotal]="'true'" [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllMetting()"
+                    (nzPageSizeChange)="getAllMetting()">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
@@ -121,6 +122,9 @@
                             </th>
                             <th nz-th>
                                 <span>配置项</span>
+                            </th>
+                            <th>
+                                <span>备注</span>
                             </th>
                             <th nz-th>
                                 <span>序号</span>
@@ -135,6 +139,7 @@
                             <td nz-td>{{metting.typeName}}</td>
                             <td nz-td>{{metting.code}}</td>
                             <td nz-td>{{metting.desc}}</td>
+                            <td nz-td>{{metting.remark}}</td>
                             <td nz-td>{{metting.seq}}</td>
                             <td nz-td>
                                 <a (click)="editMetting(metting)">编辑</a>
@@ -174,9 +179,10 @@
                     </div>
                 </form>
                 <ng-template #totalContentMe>共{{queryDi.total}}条</ng-template>
-                <nz-table #nzTableDi [nzData]="systemDataDings" [nzFrontPagination]="false" [nzTotal]="queryDi.total" [(nzPageIndex)]="queryDi.pageIndex"
-                    [(nzPageSize)]="queryDi.pageSize" [nzShowTotal]="totalContentMe" [nzLoading]="loadingDi" [nzShowTotal]="'true'"
-                    [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllDing()" (nzPageSizeChange)="getAllDing()">
+                <nz-table #nzTableDi [nzData]="systemDataDings" [nzFrontPagination]="false" [nzTotal]="queryDi.total"
+                    [(nzPageIndex)]="queryDi.pageIndex" [(nzPageSize)]="queryDi.pageSize" [nzShowTotal]="totalContentMe"
+                    [nzLoading]="loadingDi" [nzShowTotal]="'true'" [nzShowSizeChanger]="true" (nzPageIndexChange)="getAllDing()"
+                    (nzPageSizeChange)="getAllDing()">
                     <thead nz-thead>
                         <tr>
                             <th nz-th>
@@ -187,6 +193,9 @@
                             </th>
                             <th nz-th>
                                 <span>配置项</span>
+                            </th>
+                            <th>
+                                <span>备注</span>
                             </th>
                             <th nz-th>
                                 <span>序号</span>
@@ -201,6 +210,7 @@
                             <td nz-td>{{ding.typeName}}</td>
                             <td nz-td>{{ding.code}}</td>
                             <td nz-td>{{ding.desc}}</td>
+                            <td nz-td>{{ding.remark}}</td>
                             <td nz-td>{{ding.seq}}</td>
                             <td nz-td>
                                 <a (click)="editDing(ding)">编辑</a>

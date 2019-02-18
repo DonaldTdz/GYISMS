@@ -73,7 +73,18 @@ namespace GYISMS.GrowerAreaRecords
         Task BatchDelete(List<Guid> input);
 
         Task<CityAreaChartDto> GetCityDDChartDataAsync();
+
         Task<DistrictAreaChartDto> GetDistrictDDChartDataAsync();
         Task<CommDetail> GetAreaOrganization(EntityDto<int> input);
+        /// <summary>
+        /// 新增记录
+        /// </summary>
+        Task SaveGrowerAreaRecordAsync(DingDingAreaRecordInput input);
+        /// <summary>
+        /// 落实面积提交
+        /// </summary>
+        Task SubmitGrowerAreaAsync(EntityDto<Guid> input);
+
+        Task PostDeleteAsync(EntityDto<Guid> input);
     }
 }

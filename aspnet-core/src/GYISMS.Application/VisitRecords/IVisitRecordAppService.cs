@@ -76,5 +76,7 @@ namespace GYISMS.VisitRecords
         Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower);
 
         Task<DingDingVisitRecordInputDto> GetDingDingVisitRecordAsync(Guid id);
+
+        Task<DingDingAreaRecordInputDto> GetDingDingAreaRecordAsync(Guid id);
     }
 }

@@ -501,5 +501,7 @@ namespace GYISMS.ScheduleTasks.Dtos
                 return string.Empty;
             }
         }
+
+        public decimal? Area { get; set; }
     }
 }

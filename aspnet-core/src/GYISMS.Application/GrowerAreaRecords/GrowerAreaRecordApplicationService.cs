@@ -31,6 +31,9 @@ using GYISMS.GYEnums;
 using GYISMS.Organizations;
 using GYISMS.Employees;
 using GYISMS.Employees.Dtos;
+using GYISMS.Helpers;
+using Microsoft.AspNetCore.Hosting;
+using GYISMS.GYEnums;
 
 namespace GYISMS.GrowerAreaRecords
 {
@@ -47,6 +50,7 @@ namespace GYISMS.GrowerAreaRecords
         private readonly IRepository<SystemData, int> _systemdataRepository;
         private readonly IRepository<Organization, long> _organizationRepository;
         private readonly IRepository<Employee, string> _employeeRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         /// <summary>
         /// 构造函数 
@@ -59,6 +63,7 @@ namespace GYISMS.GrowerAreaRecords
         , IRepository<SystemData, int> systemdataRepository
         , IRepository<Organization, long> organizationRepository
         , IRepository<Employee, string> employeeRepository
+        , IHostingEnvironment env
         )
         {
             _entityRepository = entityRepository;
@@ -68,6 +73,7 @@ namespace GYISMS.GrowerAreaRecords
             _systemdataRepository = systemdataRepository;
             _organizationRepository = organizationRepository;
             _employeeRepository = employeeRepository;
+            _hostingEnvironment = env;
         }
 
 
@@ -79,20 +85,10 @@ namespace GYISMS.GrowerAreaRecords
 
         public async Task<PagedResultDto<GrowerAreaRecordListDto>> GetPaged(GetGrowerAreaRecordsInput input)
         {
-
-            var growerAreaRecord = _entityRepository.GetAll().Where(v => v.GrowerId == input.GrowerId);
-            // TODO:根据传入的参数添加过滤条件
-
-            var scheduleDetail = _scheduledetailRepository.GetAll().Select(v => new ScheduleDetailListDto
-            {
-                Id = v.Id,
-                ScheduleId = v.ScheduleId
-            });
-
-            var schedule = _scheduleRepository.GetAll();
-            var result = from g in growerAreaRecord
-                         join sd in scheduleDetail on g.ScheduleDetailId equals sd.Id
-                         join s in schedule on sd.ScheduleId equals s.Id
+            var result = from g in _entityRepository.GetAll()
+                         join sd in _scheduledetailRepository.GetAll() on g.ScheduleDetailId equals sd.Id
+                         join s in _scheduleRepository.GetAll() on sd.ScheduleId equals s.Id
+                         where g.GrowerId == input.GrowerId
                          select new GrowerAreaRecordListDto()
                          {
                              Id = g.Id,
@@ -102,6 +98,7 @@ namespace GYISMS.GrowerAreaRecords
                              EmployeeName = g.EmployeeName,
                              CollectionTime = g.CollectionTime,
                              Remark = g.Remark,
+                             ScheduleDetailId = g.ScheduleDetailId,
                              ScheduleName = s.Name
                          };
             var count = await result.CountAsync();
@@ -214,9 +211,6 @@ namespace GYISMS.GrowerAreaRecords
         /// <summary>
         /// 删除GrowerAreaRecord信息的方法
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-
         public async Task Delete(EntityDto<Guid> input)
         {
             //TODO:删除前的逻辑判断，是否允许删除
@@ -296,7 +290,7 @@ namespace GYISMS.GrowerAreaRecords
             AreaChartDto zhExpected = new AreaChartDto();
             zhExpected.GroupName = "约定面积";
             zhExpected.AreaName = "昭化区";
-            zhExpected.Area = await _growerRepository.GetAll().Where(v=>v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.PlantingArea ?? 0);
+            zhExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.PlantingArea ?? 0);
             AreaChartDto zhActual = new AreaChartDto();
             zhActual.GroupName = "落实面积";
             zhActual.AreaName = "昭化区";
@@ -370,7 +364,7 @@ namespace GYISMS.GrowerAreaRecords
         /// 获取区县下面的钉钉组织架构
         /// </summary>
         [AbpAllowAnonymous]
-        public async  Task<CommDetail> GetAreaOrganization(EntityDto<int> input)
+        public async Task<CommDetail> GetAreaOrganization(EntityDto<int> input)
         {
             //获取配置code
             var orgCode = "";
@@ -436,7 +430,49 @@ namespace GYISMS.GrowerAreaRecords
             }
             return commDetail;
         }
+
+        [AbpAllowAnonymous]
+        public async Task SaveGrowerAreaRecordAsync(DingDingAreaRecordInput input)
+        {
+            GrowerAreaRecord record = new GrowerAreaRecord();
+            var scheduledetail = await _scheduledetailRepository.GetAsync(input.ScheduleDetailId);
+            record.EmployeeId = scheduledetail.EmployeeId;
+            record.EmployeeName = scheduledetail.EmployeeName;
+            record.CollectionTime = DateTime.Now;
+            record.GrowerId = scheduledetail.GrowerId;
+            record.ImgPath = ImageHelper.GenerateWatermarkImg(input.ImgPaths, input.Location, record.EmployeeName, scheduledetail.GrowerName, _hostingEnvironment.WebRootPath); //string.Join(',', input.ImgPaths);
+            record.Latitude = input.Latitude;
+            record.Longitude = input.Longitude;
+            record.Location = input.Location;
+            record.Remark = input.Remark;
+            record.Area = input.Area;
+            record.ScheduleDetailId = input.ScheduleDetailId;
+            await _entityRepository.InsertAsync(record);
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        [AbpAllowAnonymous]
+        public async Task PostDeleteAsync(EntityDto<Guid> input)
+        {
+            await _entityRepository.DeleteAsync(input.Id);
+        }
+
+        [AbpAllowAnonymous]
+        public async Task SubmitGrowerAreaAsync(EntityDto<Guid> input)
+        {
+            //更新计划状态
+            var scheduleDetail = await _scheduledetailRepository.GetAsync(input.Id);
+            scheduleDetail.Status = ScheduleStatusEnum.已完成;
+            scheduleDetail.CompleteNum = scheduleDetail.VisitNum;
+            //更新烟农落实面积
+            var grower = await _growerRepository.GetAsync(scheduleDetail.GrowerId);
+            var sumArea = _entityRepository.GetAll().Where(e => e.GrowerId == grower.Id && e.ScheduleDetailId == input.Id).Sum(e => e.Area);
+            grower.AreaStatus = AreaStatusEnum.已落实;
+            grower.AreaTime = DateTime.Now;
+            grower.ActualArea = sumArea;
+            grower.AreaScheduleDetailId = input.Id;
+
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
     }
 }
-
-
