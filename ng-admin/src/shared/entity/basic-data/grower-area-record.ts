@@ -12,6 +12,9 @@ export class GrowerAreaRecord implements IGrowerAreaRecord {
     area: number;
     remark: string;
     scheduleName: string;
+    imgPaths: string[];
+    imgTop: string;
+
     constructor(data?: IGrowerAreaRecord) {
         if (data) {
             for (var property in data) {
@@ -36,6 +39,8 @@ export class GrowerAreaRecord implements IGrowerAreaRecord {
             this.area = data["area"];
             this.remark = data["remark"];
             this.scheduleName = data["scheduleName"];
+            this.imgPaths = data["imgPaths"];
+            this.imgTop = data["imgTop"];
         }
     }
 
@@ -70,6 +75,8 @@ export class GrowerAreaRecord implements IGrowerAreaRecord {
         data["collectionTime"] = this.collectionTime;
         data["area"] = this.area;
         data["remark"] = this.remark;
+        data["imgPaths"] = this.imgPaths;
+        data["imgTop"] = this.imgTop;
         return data;
     }
 
@@ -94,4 +101,6 @@ export interface IGrowerAreaRecord {
     area: number;
     remark: string;
     scheduleName: string;
+    imgPaths: string[];
+    imgTop: string;
 }

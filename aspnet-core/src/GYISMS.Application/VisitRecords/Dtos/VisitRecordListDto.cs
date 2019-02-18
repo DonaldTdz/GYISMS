@@ -184,6 +184,16 @@ namespace GYISMS.VisitRecords.Dtos
         }
     }
 
+    public class DingDingAreaRecordInputDto : DingDingVisitRecordInputDto
+    {
+        /// <summary>
+        /// 落实面积
+        /// </summary>
+        public decimal? Area { get; set; }
+
+        public ScheduleStatusEnum? ScheduleStatus { get; set; }
+    }
+
     [AutoMapFrom(typeof(TaskExamine))]
     public class DingDingTaskExamineDto : EntityDto
     {

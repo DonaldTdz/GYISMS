@@ -261,10 +261,10 @@
                         </desc-list-item>
                         <desc-list-item term="预计交售量">{{grower.plantingArea * grower.unitVolume | number:'1.2-2'}} 担
                         </desc-list-item>
-                        <desc-list-item term="落实面积状态">{{grower.areaStatusName}}</desc-list-item>
-                        <desc-list-item *ngIf="grower.actualArea" term="落实面积">{{grower.actualArea | number:'1.2-2'}}
+                        <desc-list-item term="面积落实状态">{{grower.areaStatusName}}</desc-list-item>
+                        <desc-list-item *ngIf="grower.actualArea" term="面积落实">{{grower.actualArea | number:'1.2-2'}} 亩
                         </desc-list-item>
-                        <desc-list-item *ngIf="grower.areaTime" term="落实面积时间">{{grower.areaTime |_date}}
+                        <desc-list-item *ngIf="grower.areaTime" term="面积落实时间">{{grower.areaTime |_date}}
                         </desc-list-item>
                     </desc-list>
                 </div>
@@ -289,8 +289,8 @@
                 <tbody>
                     <tr *ngFor="let data of nzTableGAR.data">
                         <td>
-                            <nz-avatar [nzSrc]="(data.imgPath | hostUrl)" style="width:80px;height: 80px;" (click)="handlePreview(data.imgPath)"
-                                [nzSize]="'large'" [nzShape]="'square'">
+                            <nz-avatar *ngFor="let imgurl of data.imgPaths" [nzSrc]="(imgurl | hostUrl)" style="width:80px;height: 80px; margin-right: 5px;"
+                                (click)="handlePreview(imgurl)" [nzSize]="'large'" [nzShape]="'square'">
                             </nz-avatar>
                         </td>
                         <td>{{data.scheduleName}}</td>

@@ -90,6 +90,30 @@ namespace GYISMS.GrowerAreaRecords.Dtos
 
         public string ScheduleName { get; set; }
 
+        public string ImgTop
+        {
+            get
+            {
+                if (ImgPaths.Length > 0)
+                {
+                    return ImgPaths[0];
+                }
+                return string.Empty;
+            }
+        }
+
+        public string[] ImgPaths
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(ImgPath))
+                {
+                    return ImgPath.Split(',');
+                }
+                return new string[0];
+            }
+        }
+
     }
 
 

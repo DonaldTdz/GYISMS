@@ -29,6 +29,7 @@ using GYISMS.Growers.Dtos;
 using Abp.Auditing;
 using GYISMS.SystemDatas;
 using GYISMS.GrowerLocationLogs;
+using GYISMS.GrowerAreaRecords;
 
 namespace GYISMS.ScheduleTasks
 {
@@ -47,6 +48,7 @@ namespace GYISMS.ScheduleTasks
         private readonly IRepository<VisitRecord, Guid> _visitRecordRepository;
         private readonly IRepository<SystemData, int> _systemdataRepository;
         private readonly IRepository<GrowerLocationLog, Guid> _growerLocationLogRepository;
+        private readonly IRepository<GrowerAreaRecord, Guid> _growerAreaRecordRepository;
         private readonly IScheduleTaskManager _scheduletaskManager;
 
         /// <summary>
@@ -59,8 +61,9 @@ namespace GYISMS.ScheduleTasks
             , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
             , IRepository<Grower> growerRepository
             , IRepository<VisitRecord, Guid> visitRecordRepository
-            ,IRepository<SystemData, int> systemdataRepository
+            , IRepository<SystemData, int> systemdataRepository
             , IRepository<GrowerLocationLog, Guid> growerLocationLogRepository
+            , IRepository<GrowerAreaRecord, Guid> growerAreaRecordRepository
             )
         {
             _scheduletaskRepository = scheduletaskRepository;
@@ -72,6 +75,7 @@ namespace GYISMS.ScheduleTasks
             _visitRecordRepository = visitRecordRepository;
             _systemdataRepository = systemdataRepository;
             _growerLocationLogRepository = growerLocationLogRepository;
+            _growerAreaRecordRepository = growerAreaRecordRepository;
         }
 
 
@@ -284,6 +288,7 @@ namespace GYISMS.ScheduleTasks
                         where sd.EmployeeId == userId
                         && (sd.Status == ScheduleStatusEnum.未开始 || sd.Status == ScheduleStatusEnum.进行中)
                         && s.Status == ScheduleMasterStatusEnum.已发布
+                        && s.EndTime >= DateTime.Today
                         select new
                         {
                             st.Id,
@@ -407,10 +412,29 @@ namespace GYISMS.ScheduleTasks
             taskDetailDto.GrowerInfo = (await _growerRepository.GetAsync(taskDetailDto.GrowerId.Value)).MapTo<GrowerListDto>();
             taskDetailDto.GrowerInfo.LimitNum = limitNum;
             taskDetailDto.GrowerInfo.CollectNum = num;
-            taskDetailDto.VisitRecords = (await _visitRecordRepository.GetAll()
+            if (taskDetailDto.TaskType == TaskTypeEnum.面积落实)//新增面积落实 2019-2-18
+            {
+                taskDetailDto.VisitRecords = await _growerAreaRecordRepository.GetAll()
+                                                    .Where(g => g.ScheduleDetailId == scheduleDetailId)
+                                                    .Select(g => new DingDingVisitRecordDto()
+                                                    {
+                                                        Id = g.Id,
+                                                        CreationTime = g.CollectionTime,
+                                                        Desc = g.Remark,
+                                                        ImgPath = g.ImgPath,
+                                                        Location = g.Location,
+                                                        SignTime = g.CollectionTime,
+                                                        Area = g.Area
+                                                    }).ToListAsync();
+            }
+            else
+            {
+                taskDetailDto.VisitRecords = (await _visitRecordRepository.GetAll()
                                               .Where(v => v.ScheduleDetailId == scheduleDetailId)
                                               .OrderBy(v => v.CreationTime)
                                               .ToListAsync()).MapTo<List<DingDingVisitRecordDto>>();
+            }
+            
             return taskDetailDto;
         }
 

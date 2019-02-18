@@ -26,6 +26,9 @@ using GYISMS.ScheduleDetails.Dtos;
 using GYISMS.Schedules;
 using GYISMS.Schedules.Dtos;
 using GYISMS.Growers;
+using GYISMS.Helpers;
+using Microsoft.AspNetCore.Hosting;
+using GYISMS.GYEnums;
 
 namespace GYISMS.GrowerAreaRecords
 {
@@ -39,6 +42,7 @@ namespace GYISMS.GrowerAreaRecords
         private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
         private readonly IRepository<Schedule, Guid> _scheduleRepository;
         private readonly IRepository<Grower, int> _growerRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
 
         /// <summary>
         /// 构造函数 
@@ -48,12 +52,14 @@ namespace GYISMS.GrowerAreaRecords
         , IRepository<ScheduleDetail, Guid> scheduledetailRepository
         , IRepository<Schedule, Guid> scheduleRepository
         , IRepository<Grower, int> growerRepository
+        , IHostingEnvironment env
         )
         {
             _entityRepository = entityRepository;
             _scheduledetailRepository = scheduledetailRepository;
             _scheduleRepository = scheduleRepository;
             _growerRepository = growerRepository;
+            _hostingEnvironment = env;
         }
 
 
@@ -200,9 +206,6 @@ namespace GYISMS.GrowerAreaRecords
         /// <summary>
         /// 删除GrowerAreaRecord信息的方法
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-
         public async Task Delete(EntityDto<Guid> input)
         {
             //TODO:删除前的逻辑判断，是否允许删除
@@ -322,6 +325,7 @@ namespace GYISMS.GrowerAreaRecords
             return result;
         }
 
+        [AbpAllowAnonymous]
         public async Task SaveGrowerAreaRecordAsync(DingDingAreaRecordInput input)
         {
             GrowerAreaRecord record = new GrowerAreaRecord();
@@ -330,13 +334,38 @@ namespace GYISMS.GrowerAreaRecords
             record.EmployeeName = scheduledetail.EmployeeName;
             record.CollectionTime = DateTime.Now;
             record.GrowerId = scheduledetail.GrowerId;
-            record.ImgPath = string.Join(',', input.ImgPaths);
+            record.ImgPath = ImageHelper.GenerateWatermarkImg(input.ImgPaths, input.Location, record.EmployeeName, scheduledetail.GrowerName, _hostingEnvironment.WebRootPath); //string.Join(',', input.ImgPaths);
             record.Latitude = input.Latitude;
             record.Longitude = input.Longitude;
             record.Location = input.Location;
             record.Remark = input.Remark;
             record.Area = input.Area;
+            record.ScheduleDetailId = input.ScheduleDetailId;
             await _entityRepository.InsertAsync(record);
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        [AbpAllowAnonymous]
+        public async Task PostDeleteAsync(EntityDto<Guid> input)
+        {
+            await _entityRepository.DeleteAsync(input.Id);
+        }
+
+        [AbpAllowAnonymous]
+        public async Task SubmitGrowerAreaAsync(EntityDto<Guid> input)
+        {
+            //更新计划状态
+            var scheduleDetail = await _scheduledetailRepository.GetAsync(input.Id);
+            scheduleDetail.Status = ScheduleStatusEnum.已完成;
+            scheduleDetail.CompleteNum = scheduleDetail.VisitNum;
+            //更新烟农落实面积
+            var grower = await _growerRepository.GetAsync(scheduleDetail.GrowerId);
+            var sumArea = _entityRepository.GetAll().Where(e => e.GrowerId == grower.Id && e.ScheduleDetailId == input.Id).Sum(e => e.Area);
+            grower.AreaStatus = AreaStatusEnum.已落实;
+            grower.AreaTime = DateTime.Now;
+            grower.ActualArea = sumArea;
+            grower.AreaScheduleDetailId = input.Id;
+
             await CurrentUnitOfWork.SaveChangesAsync();
         }
     }

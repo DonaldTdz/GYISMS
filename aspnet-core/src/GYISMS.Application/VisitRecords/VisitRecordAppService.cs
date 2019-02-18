@@ -39,6 +39,8 @@ using SixLabors.ImageSharp.Processing.Text;
 using GYISMS.Helpers;
 using GYISMS.SystemDatas;
 using GYISMS.ScheduleTasks;
+using GYISMS.GrowerAreaRecords;
+using GYISMS.Schedules;
 //using PT = SixLabors.ImageSharp.Processing.Processors.Text;
 
 namespace GYISMS.VisitRecords
@@ -57,6 +59,7 @@ namespace GYISMS.VisitRecords
         private readonly IRepository<Employee, string> _employeeRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IRepository<SystemData> _systemDataRepository;
+        private readonly IRepository<GrowerAreaRecord, Guid> _growerAreaRecordRepository;
 
         private readonly IVisitRecordManager _visitrecordManager;
 
@@ -72,6 +75,7 @@ namespace GYISMS.VisitRecords
             , IVisitRecordManager visitrecordManager
             , IRepository<Employee, string> employeeRepository
             , IRepository<SystemData> systemDataRepository
+            , IRepository<GrowerAreaRecord, Guid> growerAreaRecordRepository
             , IHostingEnvironment env
             )
         {
@@ -83,6 +87,7 @@ namespace GYISMS.VisitRecords
             _visitrecordManager = visitrecordManager;
             _employeeRepository = employeeRepository;
             _systemDataRepository = systemDataRepository;
+            _growerAreaRecordRepository = growerAreaRecordRepository;
             _hostingEnvironment = env;
         }
 
@@ -363,82 +368,6 @@ namespace GYISMS.VisitRecords
             return result;
         }
 
-        private string GetWeekDay(DayOfWeek dayWeek)
-        {
-            switch (dayWeek)
-            {
-                case DayOfWeek.Friday:
-                    return "星期五";
-                case DayOfWeek.Monday:
-                    return "星期一";
-                case DayOfWeek.Saturday:
-                    return "星期六";
-                case DayOfWeek.Sunday:
-                    return "星期日";
-                case DayOfWeek.Thursday:
-                    return "星期四";
-                case DayOfWeek.Tuesday:
-                    return "星期二";
-                case DayOfWeek.Wednesday:
-                    return "星期三";
-                default:
-                    return string.Empty;
-            }
-        }
-
-        private string GenerateWatermarkImg(string imgPaths, string location, string userName, string growerName)
-        {
-            var imgs = imgPaths.Split(',');
-            var imgpaths = string.Empty;
-            int i = 1;
-            foreach (var imgPath in imgs)
-            {
-                //拜访时间
-                DateTime stime = DateTime.Now;
-                var host = _hostingEnvironment.WebRootPath;
-                var imgFullPath = host + imgPath;
-                using (FileStream stream = File.OpenRead(imgFullPath))
-                using (Image<Rgba32> vimage = Image.Load(stream))
-                {
-                    //画文字
-                    var fontCollection = new FontCollection();
-                    var fontPath = "C:/Windows/Fonts/simkai.ttf";
-                    //var fontPath = "C:/Windows/Fonts/STXINWEI.TTF";
-                    //var fontPath = "C:/Windows/Fonts/simfang.ttf";
-                    var fontTitle = new Font(fontCollection.Install(fontPath), 20, FontStyle.Bold);
-                    var font = new Font(fontCollection.Install(fontPath), 12, FontStyle.Bold);
-                    //var fontTitle = SystemFonts.CreateFont("Microsoft YaHei UI", 20, FontStyle.Bold);
-                    //var font = SystemFonts.CreateFont("Microsoft YaHei UI", 12, FontStyle.Bold);
-                    vimage.Mutate(x => x.DrawText(stime.ToString("HH:mm"), fontTitle, Rgba32.White, new PointF(10, 5)));
-                    vimage.Mutate(x => x.DrawText(string.Format("{0} {1}", stime.ToString("yyyy.MM.dd"), GetWeekDay(stime.DayOfWeek)), font, Rgba32.White, new PointF(10, 30)));
-                    vimage.Mutate(x => x.DrawText(string.Format("拜访烟农: {0}", growerName), font, Rgba32.White, new PointF(10, 48)));
-                    TextGraphicsOptions options = new TextGraphicsOptions(true)
-                    {
-                        Antialias = true,
-                        HorizontalAlignment = HorizontalAlignment.Right,
-                        VerticalAlignment = VerticalAlignment.Center
-                    };
-                    var height = vimage.Height;
-                    vimage.Mutate(x => x.DrawText(options, "用户: " + userName, font, Rgba32.White, new PointF(350, height - 46)));
-                    vimage.Mutate(x => x.DrawText(options, "位置: " + location, font, Rgba32.White, new PointF(350, height - 28)));
-                    var newImagePath = imgPath.Replace("visit", "visit/watermark");
-                    var newFolder = host + "/visit/watermark";
-                    if (!Directory.Exists(newFolder))
-                    {
-                        Directory.CreateDirectory(newFolder);
-                    }
-                    vimage.Save(host + newImagePath);
-                    imgpaths += newImagePath;
-                    if (i != imgs.Length)
-                    {
-                        imgpaths += ",";
-                    }
-                    i++;
-                }
-            }
-            return imgpaths;
-        }
-
         [AbpAllowAnonymous]
         //[DisableValidation]
         [Audited]
@@ -449,7 +378,7 @@ namespace GYISMS.VisitRecords
             //计划明细
             var detail = await _scheduleDetailRepository.GetAsync(input.ScheduleDetailId);
             //生成水印图片
-            vistitRecord.ImgPath = GenerateWatermarkImg(vistitRecord.ImgPath, vistitRecord.Location, detail.EmployeeName, detail.GrowerName);
+            vistitRecord.ImgPath = ImageHelper.GenerateWatermarkImg(vistitRecord.ImgPath, vistitRecord.Location, detail.EmployeeName, detail.GrowerName, _hostingEnvironment.WebRootPath);
             //拜访记录
             var vrId = await _visitrecordRepository.InsertAndGetIdAsync(vistitRecord);
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -476,7 +405,7 @@ namespace GYISMS.VisitRecords
         [AbpAllowAnonymous]
         public Task GenerateWatermarkImgTests()
         {
-            return Task.FromResult(GenerateWatermarkImg("/visit/bbed0bd3-6435-44e9-b86e-89556982fdfd.jpg", "四川成都戛纳湾金棕榈", "烟技员", "烟农"));
+            return Task.FromResult(ImageHelper.GenerateWatermarkImg("/visit/bbed0bd3-6435-44e9-b86e-89556982fdfd.jpg", "四川成都戛纳湾金棕榈", "烟技员", "烟农", _hostingEnvironment.WebRootPath));
         }
         [AbpAllowAnonymous]
         [Audited]
@@ -537,6 +466,36 @@ namespace GYISMS.VisitRecords
                             };
 
             dmdata.Examines = await examQuery.ToListAsync();
+            return dmdata;
+        }
+
+        [Audited]
+        [AbpAllowAnonymous]
+        public async Task<DingDingAreaRecordInputDto> GetDingDingAreaRecordAsync(Guid id)
+        {
+            var query = from vr in _growerAreaRecordRepository.GetAll()
+                        join sd in _scheduleDetailRepository.GetAll() on vr.ScheduleDetailId equals sd.Id
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        join e in _employeeRepository.GetAll() on vr.EmployeeId equals e.Id
+                        where vr.Id == id
+                        select new DingDingAreaRecordInputDto()
+                        {
+                            ScheduleDetailId = sd.Id,
+                            EmployeeId = sd.EmployeeId,
+                            EmployeeName = sd.EmployeeName,
+                            GrowerName = sd.GrowerName,
+                            TaskDesc = t.Name + "（" + t.Type.ToString() + "）",
+                            SignTime = vr.CollectionTime,
+                            Desc = vr.Remark,
+                            ImgPath = vr.ImgPath,
+                            Location = vr.Location,
+                            Latitude = vr.Latitude,
+                            Longitude = vr.Longitude,
+                            EmployeeImg = e.Avatar,
+                            Area = vr.Area,
+                            ScheduleStatus = sd.Status
+                        };
+            var dmdata = await query.FirstOrDefaultAsync();
             return dmdata;
         }
 
