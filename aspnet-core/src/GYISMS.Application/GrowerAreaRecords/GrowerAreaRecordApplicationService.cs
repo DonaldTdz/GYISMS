@@ -71,20 +71,10 @@ namespace GYISMS.GrowerAreaRecords
 
         public async Task<PagedResultDto<GrowerAreaRecordListDto>> GetPaged(GetGrowerAreaRecordsInput input)
         {
-
-            var growerAreaRecord = _entityRepository.GetAll().Where(v => v.GrowerId == input.GrowerId);
-            // TODO:根据传入的参数添加过滤条件
-
-            var scheduleDetail = _scheduledetailRepository.GetAll().Select(v => new ScheduleDetailListDto
-            {
-                Id = v.Id,
-                ScheduleId = v.ScheduleId
-            });
-
-            var schedule = _scheduleRepository.GetAll();
-            var result = from g in growerAreaRecord
-                         join sd in scheduleDetail on g.ScheduleDetailId equals sd.Id
-                         join s in schedule on sd.ScheduleId equals s.Id
+            var result = from g in _entityRepository.GetAll()
+                         join sd in _scheduledetailRepository.GetAll() on g.ScheduleDetailId equals sd.Id
+                         join s in _scheduleRepository.GetAll() on sd.ScheduleId equals s.Id
+                         where g.GrowerId == input.GrowerId
                          select new GrowerAreaRecordListDto()
                          {
                              Id = g.Id,
@@ -94,6 +84,7 @@ namespace GYISMS.GrowerAreaRecords
                              EmployeeName = g.EmployeeName,
                              CollectionTime = g.CollectionTime,
                              Remark = g.Remark,
+                             ScheduleDetailId = g.ScheduleDetailId,
                              ScheduleName = s.Name
                          };
             var count = await result.CountAsync();

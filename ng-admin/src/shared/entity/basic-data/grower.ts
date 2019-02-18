@@ -33,6 +33,7 @@ export class Grower implements IGrower {
     areaStatusName: string;
     areaStatus: number;
     areaTime: Date;
+    areaScheduleDetailId: string;
     constructor(data?: IGrower) {
         if (data) {
             for (var property in data) {
@@ -78,6 +79,7 @@ export class Grower implements IGrower {
             this.areaStatusName = data["areaStatusName"];
             this.areaStatus = data["areaStatus"];
             this.areaTime = data["areaTime"];
+            this.areaScheduleDetailId = data["areaScheduleDetailId"];
         }
     }
 
@@ -127,7 +129,7 @@ export class Grower implements IGrower {
         data["deleterUserId"] = this.deleterUserId;
         data["checked"] = this.checked;
         data["unitVolume"] = this.unitVolume;
-
+        data["areaScheduleDetailId"] = this.areaScheduleDetailId;
         return data;
     }
 
@@ -167,6 +169,7 @@ export interface IGrower {
     visitNum: number;
     checked: boolean
     scheduleDetailId: string;
+    areaScheduleDetailId: string;
 }
 
 export class SelectGroup implements ISelectGroup {

@@ -277,8 +277,8 @@
                 (nzPageSizeChange)="getGrowerAreaRecord()">
                 <thead>
                     <tr>
-                        <th>采集图片</th>
                         <th>计划名称</th>
+                        <th>采集图片</th>
                         <th>位置信息</th>
                         <th>采集人</th>
                         <th>采集面积</th>
@@ -288,12 +288,14 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let data of nzTableGAR.data">
+                        <td>{{data.scheduleName}} <nz-tag *ngIf="data.scheduleDetailId == grower.areaScheduleDetailId"
+                                [nzColor]="'#2db7f5'">当前采用</nz-tag>
+                        </td>
                         <td>
                             <nz-avatar *ngFor="let imgurl of data.imgPaths" [nzSrc]="(imgurl | hostUrl)" style="width:80px;height: 80px; margin-right: 5px;"
                                 (click)="handlePreview(imgurl)" [nzSize]="'large'" [nzShape]="'square'">
                             </nz-avatar>
                         </td>
-                        <td>{{data.scheduleName}}</td>
                         <td>{{data.location}}</td>
                         <td>{{data.employeeName}}</td>
                         <td>{{data.area | number:'1.2-2'}}</td>
