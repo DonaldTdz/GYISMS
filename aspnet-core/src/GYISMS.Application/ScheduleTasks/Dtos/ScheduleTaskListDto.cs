@@ -374,7 +374,11 @@ namespace GYISMS.ScheduleTasks.Dtos
     {
         public Guid Id { get; set; }//ScheduleDetailId
 
-        public string TaskNam { get; set; }
+        [NonSerialized]
+        public string TaskNam;
+
+        [NonSerialized]
+        public string ScheduleName;
 
         public TaskTypeEnum TaskType { get; set; }
 
@@ -382,7 +386,7 @@ namespace GYISMS.ScheduleTasks.Dtos
         {
             get
             {
-                return string.Format("{0}（{1}）", TaskNam, TaskType.ToString());
+                return string.Format("{0}-{1}（{2}）", ScheduleName, TaskNam, TaskType.ToString());
             }
         }
 

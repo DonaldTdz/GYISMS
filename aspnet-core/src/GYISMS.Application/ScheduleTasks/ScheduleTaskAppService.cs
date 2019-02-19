@@ -387,6 +387,7 @@ namespace GYISMS.ScheduleTasks
                         select new DingDingVisitGrowerDetailDto()
                         {
                             Id = sd.Id,
+                            ScheduleName = s.Name,
                             TaskNam = t.Name,
                             TaskType = t.Type,
                             GrowerId = sd.GrowerId,
@@ -449,6 +450,7 @@ namespace GYISMS.ScheduleTasks
                                         .WhereIf(endDate.HasValue, s => s.EndTime <= endDate)
                         on sd.ScheduleId equals s.Id
                         where sd.EmployeeId == userId
+                        && s.Status == ScheduleMasterStatusEnum.已发布
                         select new DingDingScheduleDetailDto()
                         {
                             Id = sd.Id,
