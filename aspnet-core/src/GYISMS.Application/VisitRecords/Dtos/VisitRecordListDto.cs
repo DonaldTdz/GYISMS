@@ -153,7 +153,7 @@ namespace GYISMS.VisitRecords.Dtos
         {
             get
             {
-                return string.Format("{0}拜访{1} {2}", TaskDesc, GrowerName, Desc);
+                return string.Format("{0}拜访{1}", TaskDesc, GrowerName);
             }
         }
 
