@@ -75,7 +75,7 @@ namespace GYISMS.GrowerAreaRecords
         Task<CityAreaChartDto> GetCityDDChartDataAsync();
 
         Task<DistrictAreaChartDto> GetDistrictDDChartDataAsync();
-        Task<CommDetail> GetAreaOrganization(EntityDto<int> input);
+        Task<CommDetail> GetAreaOrganization(GetDingDingAreaRecordsInput input);
         /// <summary>
         /// 新增记录
         /// </summary>

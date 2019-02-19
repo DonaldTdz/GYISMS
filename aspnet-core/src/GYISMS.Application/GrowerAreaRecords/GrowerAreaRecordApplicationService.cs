@@ -34,6 +34,7 @@ using GYISMS.Employees.Dtos;
 using GYISMS.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using GYISMS.GYEnums;
+using System.Collections;
 
 namespace GYISMS.GrowerAreaRecords
 {
@@ -364,32 +365,41 @@ namespace GYISMS.GrowerAreaRecords
         /// 获取区县下面的钉钉组织架构
         /// </summary>
         [AbpAllowAnonymous]
-        public async Task<CommDetail> GetAreaOrganization(EntityDto<int> input)
+        public async Task<CommDetail> GetAreaOrganization(GetDingDingAreaRecordsInput input)
         {
-            //获取配置code
             var orgCode = "";
-            switch (input.Id)
+            var orgIds = "";
+            //查区县
+            if (string.IsNullOrEmpty(input.Type))
             {
-                case 0:
-                    {
-                        orgCode = GYCode.昭化区;
-                    }
-                    break;
-                case 1:
-                    {
-                        orgCode = GYCode.剑阁县;
-                    }
-                    break;
-                case 2:
-                    {
-                        orgCode = GYCode.旺苍县;
-                    }
-                    break;
+                switch (input.Id)
+                {
+                    case 0:
+                        {
+                            orgCode = GYCode.昭化区;
+                        }
+                        break;
+                    case 1:
+                        {
+                            orgCode = GYCode.剑阁县;
+                        }
+                        break;
+                    case 2:
+                        {
+                            orgCode = GYCode.旺苍县;
+                        }
+                        break;
+                }
+                orgIds = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
             }
-            var orgIds = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
+            else
+            {
+                //查子部门
+                orgIds = string.Join(',', await _organizationRepository.GetAll().Where(v => v.ParentId == input.Id).Select(v => v.Id).ToListAsync());
+
+            }
             CommDetail commDetail = new CommDetail();
-            //List<CommChartDto> areaList = new List<CommChartDto>();
-            if (!string.IsNullOrEmpty(orgIds))
+            if (!string.IsNullOrEmpty(orgIds)) //部门统计
             {
                 var orgIdArr = orgIds.Split(',');
                 foreach (var orgid in orgIdArr)
@@ -423,6 +433,36 @@ namespace GYISMS.GrowerAreaRecords
                     {
                         DepartmentId = org.Id,
                         AreaName = org.DepartmentName,
+                        Expected = planArea,
+                        Actual = actualArea
+                    });
+                }
+            }
+            else //烟技员统计
+            {
+                var employee = await _employeeRepository.GetAll().Where(v => v.Department.Contains(input.Id.ToString())).ToListAsync();
+
+                foreach (var item in employee)
+                {
+                    decimal planArea = 0;
+                    decimal actualArea = 0;
+                    planArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.Id).Select(v => v.PlantingArea ?? 0).SumAsync();
+                    actualArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.Id).Select(v => v.ActualArea ?? 0).SumAsync();
+                    commDetail.List.Add(new CommChartDto()
+                    {
+                        GroupName = "约定面积",
+                        AreaName = item.Name,
+                        Area = planArea,
+                    });
+                    commDetail.List.Add(new CommChartDto()
+                    {
+                        GroupName = "落实面积",
+                        AreaName = item.Name,
+                        Area = actualArea
+                    });
+                    commDetail.Detail.Add(new AreaDetailDto()
+                    {
+                        AreaName = item.Name,
                         Expected = planArea,
                         Actual = actualArea
                     });
