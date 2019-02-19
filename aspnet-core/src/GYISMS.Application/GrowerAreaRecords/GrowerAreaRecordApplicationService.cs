@@ -321,6 +321,8 @@ namespace GYISMS.GrowerAreaRecords
         {
             GrowerAreaRecord record = new GrowerAreaRecord();
             var scheduledetail = await _scheduledetailRepository.GetAsync(input.ScheduleDetailId);
+            scheduledetail.Status = ScheduleStatusEnum.进行中;
+
             record.EmployeeId = scheduledetail.EmployeeId;
             record.EmployeeName = scheduledetail.EmployeeName;
             record.CollectionTime = DateTime.Now;
@@ -337,9 +339,9 @@ namespace GYISMS.GrowerAreaRecords
         }
 
         [AbpAllowAnonymous]
-        public async Task PostDeleteAsync(EntityDto<Guid> input)
+        public async Task PostDeleteAsync(Guid id)
         {
-            await _entityRepository.DeleteAsync(input.Id);
+            await _entityRepository.DeleteAsync(id);
         }
 
         [AbpAllowAnonymous]

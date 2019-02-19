@@ -83,6 +83,6 @@ namespace GYISMS.GrowerAreaRecords
         /// </summary>
         Task SubmitGrowerAreaAsync(EntityDto<Guid> input);
 
-        Task PostDeleteAsync(EntityDto<Guid> input);
+        Task PostDeleteAsync(Guid id);
     }
 }
