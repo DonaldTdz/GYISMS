@@ -156,7 +156,7 @@ namespace GYISMS.GrowerAreaRecords.Dtos
     /// </summary>
     public class AreaDetailDto
     {
-        public long DepartmentId { get; set; }
+        public string DepartmentId { get; set; }
         public string AreaName { get; set; }
         public decimal Actual { get; set; }
         public decimal Expected { get; set; }
@@ -183,7 +183,8 @@ namespace GYISMS.GrowerAreaRecords.Dtos
         }
         public List<CommChartDto> List { get; set; }
         public List<AreaDetailDto> Detail { get; set; }
-
+        //0 部门 1烟技员
+        public int Type { get; set; }
     }
     //public class AreaDingDingCharts
     //{

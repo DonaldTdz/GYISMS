@@ -401,6 +401,7 @@ namespace GYISMS.GrowerAreaRecords
             CommDetail commDetail = new CommDetail();
             if (!string.IsNullOrEmpty(orgIds)) //部门统计
             {
+                commDetail.Type = 0;
                 var orgIdArr = orgIds.Split(',');
                 foreach (var orgid in orgIdArr)
                 {
@@ -431,7 +432,7 @@ namespace GYISMS.GrowerAreaRecords
                     });
                     commDetail.Detail.Add(new AreaDetailDto()
                     {
-                        DepartmentId = org.Id,
+                        DepartmentId = org.Id.ToString(),
                         AreaName = org.DepartmentName,
                         Expected = planArea,
                         Actual = actualArea
@@ -441,7 +442,7 @@ namespace GYISMS.GrowerAreaRecords
             else //烟技员统计
             {
                 var employee = await _employeeRepository.GetAll().Where(v => v.Department.Contains(input.Id.ToString())).ToListAsync();
-
+                commDetail.Type = 1;
                 foreach (var item in employee)
                 {
                     decimal planArea = 0;
@@ -462,6 +463,7 @@ namespace GYISMS.GrowerAreaRecords
                     });
                     commDetail.Detail.Add(new AreaDetailDto()
                     {
+                        DepartmentId = item.Id,
                         AreaName = item.Name,
                         Expected = planArea,
                         Actual = actualArea
@@ -515,6 +517,37 @@ namespace GYISMS.GrowerAreaRecords
             grower.AreaScheduleDetailId = input.Id;
 
             await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// 根据烟技员获取烟农列表
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<List<AreaDetailDto>> GetGrowListByIdAsync(GetDingDingAreaRecordsInput input)
+        {
+            var result = await (_growerRepository.GetAll().Where(v => v.EmployeeId == input.Id.ToString())
+                .Select(v => new AreaDetailDto()
+                {
+                    DepartmentId = v.Id.ToString(),
+                    AreaName = v.Name,
+                    Actual = v.ActualArea ?? 0,
+                    Expected = v.PlantingArea ?? 0
+                })).ToListAsync();
+            return result;
+        }
+
+        /// <summary>
+        /// 获取烟技员信息
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<EmployeeListDto> GetEmployessByIdAsync(GetDingDingAreaRecordsInput input)
+        {
+            var result = await _employeeRepository.GetAll().Where(v=>v.Id == input.Id.ToString()).FirstOrDefaultAsync();
+            return result.MapTo<EmployeeListDto>();
         }
     }
 }

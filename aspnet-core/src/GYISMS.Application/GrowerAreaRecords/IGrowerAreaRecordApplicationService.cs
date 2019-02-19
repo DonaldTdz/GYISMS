@@ -21,6 +21,7 @@ using Abp.Application.Services.Dto;
 using GYISMS.GrowerAreaRecords.Dtos;
 using GYISMS.GrowerAreaRecords;
 using GYISMS.GYEnums;
+using GYISMS.Employees.Dtos;
 
 namespace GYISMS.GrowerAreaRecords
 {
@@ -86,5 +87,7 @@ namespace GYISMS.GrowerAreaRecords
         Task SubmitGrowerAreaAsync(EntityDto<Guid> input);
 
         Task PostDeleteAsync(Guid id);
+        Task<List<AreaDetailDto>> GetGrowListByIdAsync(GetDingDingAreaRecordsInput input);
+        Task<EmployeeListDto> GetEmployessByIdAsync(GetDingDingAreaRecordsInput input);
     }
 }
