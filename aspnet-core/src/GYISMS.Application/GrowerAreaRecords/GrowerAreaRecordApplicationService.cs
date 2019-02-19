@@ -51,6 +51,7 @@ namespace GYISMS.GrowerAreaRecords
         private readonly IRepository<SystemData, int> _systemdataRepository;
         private readonly IRepository<Organization, long> _organizationRepository;
         private readonly IRepository<Employee, string> _employeeRepository;
+        private readonly IEmployeeManager _employeeManager;
         private readonly IHostingEnvironment _hostingEnvironment;
 
         /// <summary>
@@ -64,6 +65,7 @@ namespace GYISMS.GrowerAreaRecords
         , IRepository<SystemData, int> systemdataRepository
         , IRepository<Organization, long> organizationRepository
         , IRepository<Employee, string> employeeRepository
+        , IEmployeeManager employeeManager
         , IHostingEnvironment env
         )
         {
@@ -75,6 +77,7 @@ namespace GYISMS.GrowerAreaRecords
             _organizationRepository = organizationRepository;
             _employeeRepository = employeeRepository;
             _hostingEnvironment = env;
+            _employeeManager = employeeManager;
         }
 
 
@@ -262,28 +265,10 @@ namespace GYISMS.GrowerAreaRecords
         /// </summary>
         /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<DistrictAreaChartDto> GetDistrictDDChartDataAsync()
+        public async Task<DistrictAreaChartDto> GetDistrictDDChartDataAsync(string id)
         {
-            //var actual = await (_growerRepository.GetAll().GroupBy(v => v.AreaCode)
-            //    .Select(v => new AreaChartDto()
-            //    {
-            //        GroupName = "落实面积",
-            //        Area = v.Sum(a => a.ActualArea ?? 0),
-            //        AreaName = v.Key.ToString()
-            //    })).AsNoTracking().ToListAsync();
+            var areacode = await _employeeManager.GetAreaCodeByUserIdAsync(id);
 
-            //var expected = await (_growerRepository.GetAll().GroupBy(v => v.AreaCode)
-            //   .Select(v => new AreaChartDto()
-            //   {
-            //       GroupName = "约定面积",
-            //       Area = v.Sum(a => a.PlantingArea??0),
-            //       AreaName = v.Key.ToString()
-            //   })).AsNoTracking().ToListAsync();
-
-            //List<AreaChartDto> list = new List<AreaChartDto>();
-            //list.AddRange(expected);
-            //list.AddRange(actual);
-            //return list;
             DistrictAreaChartDto result = new DistrictAreaChartDto();
             result.list = new List<AreaChartDto>();
 
@@ -339,7 +324,7 @@ namespace GYISMS.GrowerAreaRecords
         /// <returns></returns>
         private List<EmployeeNzTreeNode> GetDeptChildren(long orgId, List<EmployeeNzTreeNode> childrenList)
         {
-            string otherIds ="";
+            //string otherIds ="";
             var orgList = _organizationRepository.GetAll().Where(o => o.ParentId == orgId).ToList();
             //var childrenList = new List<EmployeeNzTreeNode>();
             List<EmployeeNzTreeNode> treeNodeList = orgList.Select(t => new EmployeeNzTreeNode()
@@ -369,6 +354,19 @@ namespace GYISMS.GrowerAreaRecords
             return childrenList;
         }
 
+        private async Task<string[]> GetEmployeeIdsByDeptId(long deptId)
+        {
+            var childrenDeptIds = await _employeeManager.GetDeptIdArrayAsync(deptId);
+            var query = _employeeRepository.GetAll().Where(e => childrenDeptIds.Any(c => e.Department.Contains(c))).Select(e => e.Id);
+            return await query.ToArrayAsync();
+        }
+
+        private async Task<string[]> GetOtherEmployeeIdsByDeptId(long deptId)
+        {
+            var strDept = "[" + deptId + "]";
+            var query = _employeeRepository.GetAll().Where(e => e.Department.Contains(strDept) ).Select(e => e.Id);
+            return await query.ToArrayAsync();
+        }
 
         /// <summary>
         /// 获取区县下面的钉钉组织架构
@@ -416,15 +414,20 @@ namespace GYISMS.GrowerAreaRecords
                 {
                     var longOrgId = long.Parse(orgid);
                     var org = _organizationRepository.Get(longOrgId);
-                    var childrenList = new List<EmployeeNzTreeNode>();
-                    var employeeIds = GetDeptChildren(longOrgId, childrenList);
+                    //var childrenList = new List<EmployeeNzTreeNode>();
+                    //var employeeIds = GetDeptChildren(longOrgId, childrenList);
+                    //decimal planArea = 0;
+                    //decimal actualArea = 0;
+                    //foreach (var item in employeeIds)
+                    //{
+                    //    planArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.key).Select(v => v.PlantingArea ?? 0).SumAsync();
+                    //    actualArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.key).Select(v => v.ActualArea ?? 0).SumAsync();
+                    //}
+                    var employeeIds = await GetEmployeeIdsByDeptId(longOrgId);
                     decimal planArea = 0;
                     decimal actualArea = 0;
-                    foreach (var item in employeeIds)
-                    {
-                        planArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.key).Select(v => v.PlantingArea ?? 0).SumAsync();
-                        actualArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.key).Select(v => v.ActualArea ?? 0).SumAsync();
-                    }
+                    planArea = await _growerRepository.GetAll().Where(v => employeeIds.Contains(v.EmployeeId)).Select(v => v.PlantingArea ?? 0).SumAsync();
+                    actualArea = await _growerRepository.GetAll().Where(v => employeeIds.Contains(v.EmployeeId)).Select(v => v.ActualArea ?? 0).SumAsync();
 
                     commDetail.List.Add(new CommChartDto()
                     {
@@ -446,6 +449,33 @@ namespace GYISMS.GrowerAreaRecords
                         Actual = actualArea
                     });
                 }
+
+                //other
+                var pDeptId = long.Parse(input.Id);
+                var employeeOtherIds = await GetOtherEmployeeIdsByDeptId(pDeptId);
+                decimal planOtherArea = 0;
+                decimal actualOtherArea = 0;
+                planOtherArea = await _growerRepository.GetAll().Where(v => employeeOtherIds.Contains(v.EmployeeId)).Select(v => v.PlantingArea ?? 0).SumAsync();
+                actualOtherArea = await _growerRepository.GetAll().Where(v => employeeOtherIds.Contains(v.EmployeeId)).Select(v => v.ActualArea ?? 0).SumAsync();
+                commDetail.List.Add(new CommChartDto()
+                {
+                    GroupName = "约定面积",
+                    AreaName = "其他",
+                    Area = planOtherArea,
+                });
+                commDetail.List.Add(new CommChartDto()
+                {
+                    GroupName = "落实面积",
+                    AreaName = "其他",
+                    Area = actualOtherArea
+                });
+                commDetail.Detail.Add(new AreaDetailDto()
+                {
+                    DepartmentId = input.Id,
+                    AreaName = "其他",
+                    Expected = planOtherArea,
+                    Actual = actualOtherArea
+                });
             }
             else //烟技员统计
             {
