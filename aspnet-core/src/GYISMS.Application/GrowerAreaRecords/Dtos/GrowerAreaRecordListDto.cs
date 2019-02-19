@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using GYISMS.GrowerAreaRecords;
 using Abp.AutoMapper;
 using System.Collections.Generic;
+using GYISMS.Employees.Dtos;
 
 namespace GYISMS.GrowerAreaRecords.Dtos
 {
@@ -185,6 +186,19 @@ namespace GYISMS.GrowerAreaRecords.Dtos
         public List<AreaDetailDto> Detail { get; set; }
         //0 部门 1烟技员
         public int Type { get; set; }
+    }
+
+    /// <summary>
+    /// 返回部门列表和其他dto
+    /// </summary>
+    public class DepartMentAndOther
+    {
+        public DepartMentAndOther()
+        {
+            Children = new List<EmployeeNzTreeNode>();
+        }
+        public string OtherIds { get; set; }
+        public List<EmployeeNzTreeNode> Children { get; set; }
     }
     //public class AreaDingDingCharts
     //{

@@ -23,7 +23,7 @@ namespace GYISMS.GrowerAreaRecords.Dtos
 
     public class GetDingDingAreaRecordsInput
     {
-        public long Id { get; set; }
+        public string Id { get; set; }
         public string Type { get; set; }
     }
 }

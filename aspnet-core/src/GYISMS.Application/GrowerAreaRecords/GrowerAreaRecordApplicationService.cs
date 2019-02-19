@@ -339,6 +339,7 @@ namespace GYISMS.GrowerAreaRecords
         /// <returns></returns>
         private List<EmployeeNzTreeNode> GetDeptChildren(long orgId, List<EmployeeNzTreeNode> childrenList)
         {
+            string otherIds ="";
             var orgList = _organizationRepository.GetAll().Where(o => o.ParentId == orgId).ToList();
             //var childrenList = new List<EmployeeNzTreeNode>();
             List<EmployeeNzTreeNode> treeNodeList = orgList.Select(t => new EmployeeNzTreeNode()
@@ -353,10 +354,18 @@ namespace GYISMS.GrowerAreaRecords
                                 select new EmployeeNzTreeNode()
                                 {
                                     key = o.Id,
-                                    title = o.Position.Length != 0 ? o.Name + $"({o.Position})" : o.Name,
+                                    title = o.Name,
                                     children = null,
                                 }).ToList();
-            childrenList.AddRange(employeeList);
+            //if (treeNodeList.Count == 0 && employeeList.Count > 0)
+            //{
+            //    //childrenList.Add(new EmployeeNzTreeNode() { key ="999",title="其他",children=null});
+            //    otherIds = string.Join(',', employeeList.Select(v => v.key));
+            //}
+            //else
+            //{
+                childrenList.AddRange(employeeList);
+            //}
             return childrenList;
         }
 
@@ -374,17 +383,17 @@ namespace GYISMS.GrowerAreaRecords
             {
                 switch (input.Id)
                 {
-                    case 0:
+                    case "0":
                         {
                             orgCode = GYCode.昭化区;
                         }
                         break;
-                    case 1:
+                    case "1":
                         {
                             orgCode = GYCode.剑阁县;
                         }
                         break;
-                    case 2:
+                    case "2":
                         {
                             orgCode = GYCode.旺苍县;
                         }
@@ -395,7 +404,7 @@ namespace GYISMS.GrowerAreaRecords
             else
             {
                 //查子部门
-                orgIds = string.Join(',', await _organizationRepository.GetAll().Where(v => v.ParentId == input.Id).Select(v => v.Id).ToListAsync());
+                orgIds = string.Join(',', await _organizationRepository.GetAll().Where(v => v.ParentId == long.Parse(input.Id)).Select(v => v.Id).ToListAsync());
 
             }
             CommDetail commDetail = new CommDetail();
@@ -413,7 +422,6 @@ namespace GYISMS.GrowerAreaRecords
                     decimal actualArea = 0;
                     foreach (var item in employeeIds)
                     {
-
                         planArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.key).Select(v => v.PlantingArea ?? 0).SumAsync();
                         actualArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.key).Select(v => v.ActualArea ?? 0).SumAsync();
                     }
@@ -546,7 +554,8 @@ namespace GYISMS.GrowerAreaRecords
         [AbpAllowAnonymous]
         public async Task<EmployeeListDto> GetEmployessByIdAsync(GetDingDingAreaRecordsInput input)
         {
-            var result = await _employeeRepository.GetAll().Where(v=>v.Id == input.Id.ToString()).FirstOrDefaultAsync();
+            var result = await _employeeRepository.GetAsync(input.Id);
+            //var result = await _employeeRepository.GetAll().Where(v=>v.Id == input.Id).FirstOrDefaultAsync();
             return result.MapTo<EmployeeListDto>();
         }
     }
