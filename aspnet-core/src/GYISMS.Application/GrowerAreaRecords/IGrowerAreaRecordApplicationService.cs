@@ -20,6 +20,7 @@ using Abp.Application.Services.Dto;
 
 using GYISMS.GrowerAreaRecords.Dtos;
 using GYISMS.GrowerAreaRecords;
+using GYISMS.GYEnums;
 
 namespace GYISMS.GrowerAreaRecords
 {
@@ -74,6 +75,7 @@ namespace GYISMS.GrowerAreaRecords
         Task<CityAreaChartDto> GetCityDDChartDataAsync();
 
         Task<DistrictAreaChartDto> GetDistrictDDChartDataAsync();
+        Task<CommDetail> GetAreaOrganization(EntityDto<int> input);
         /// <summary>
         /// 新增记录
         /// </summary>

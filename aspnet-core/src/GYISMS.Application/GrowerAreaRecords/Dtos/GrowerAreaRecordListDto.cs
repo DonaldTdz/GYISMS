@@ -156,8 +156,34 @@ namespace GYISMS.GrowerAreaRecords.Dtos
     /// </summary>
     public class AreaDetailDto
     {
+        public long DepartmentId { get; set; }
+        public string AreaName { get; set; }
         public decimal Actual { get; set; }
         public decimal Expected { get; set; }
+    }
+
+    /// <summary>
+    /// Õ®”√Õº±Ìdto
+    /// </summary>
+    public class CommChartDto
+    {
+        public string AreaName { get; set; }
+        public decimal Area { get; set; }
+        public string GroupName { get; set; }
+        //public decimal Actual { get; set; }
+        //public decimal Expected { get; set; }
+        //public AreaDetailDto Detail{get;set;}
+    }
+    public class CommDetail
+    {
+        public CommDetail()
+        {
+            List = new List<CommChartDto>();
+            Detail = new List<AreaDetailDto>();
+        }
+        public List<CommChartDto> List { get; set; }
+        public List<AreaDetailDto> Detail { get; set; }
+
     }
     //public class AreaDingDingCharts
     //{

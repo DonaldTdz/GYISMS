@@ -26,6 +26,11 @@ using GYISMS.ScheduleDetails.Dtos;
 using GYISMS.Schedules;
 using GYISMS.Schedules.Dtos;
 using GYISMS.Growers;
+using GYISMS.SystemDatas;
+using GYISMS.GYEnums;
+using GYISMS.Organizations;
+using GYISMS.Employees;
+using GYISMS.Employees.Dtos;
 using GYISMS.Helpers;
 using Microsoft.AspNetCore.Hosting;
 using GYISMS.GYEnums;
@@ -42,6 +47,9 @@ namespace GYISMS.GrowerAreaRecords
         private readonly IRepository<ScheduleDetail, Guid> _scheduledetailRepository;
         private readonly IRepository<Schedule, Guid> _scheduleRepository;
         private readonly IRepository<Grower, int> _growerRepository;
+        private readonly IRepository<SystemData, int> _systemdataRepository;
+        private readonly IRepository<Organization, long> _organizationRepository;
+        private readonly IRepository<Employee, string> _employeeRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
 
         /// <summary>
@@ -52,6 +60,9 @@ namespace GYISMS.GrowerAreaRecords
         , IRepository<ScheduleDetail, Guid> scheduledetailRepository
         , IRepository<Schedule, Guid> scheduleRepository
         , IRepository<Grower, int> growerRepository
+        , IRepository<SystemData, int> systemdataRepository
+        , IRepository<Organization, long> organizationRepository
+        , IRepository<Employee, string> employeeRepository
         , IHostingEnvironment env
         )
         {
@@ -59,6 +70,9 @@ namespace GYISMS.GrowerAreaRecords
             _scheduledetailRepository = scheduledetailRepository;
             _scheduleRepository = scheduleRepository;
             _growerRepository = growerRepository;
+            _systemdataRepository = systemdataRepository;
+            _organizationRepository = organizationRepository;
+            _employeeRepository = employeeRepository;
             _hostingEnvironment = env;
         }
 
@@ -276,7 +290,7 @@ namespace GYISMS.GrowerAreaRecords
             AreaChartDto zhExpected = new AreaChartDto();
             zhExpected.GroupName = "约定面积";
             zhExpected.AreaName = "昭化区";
-            zhExpected.Area = await _growerRepository.GetAll().Where(v=>v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.PlantingArea ?? 0);
+            zhExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.PlantingArea ?? 0);
             AreaChartDto zhActual = new AreaChartDto();
             zhActual.GroupName = "落实面积";
             zhActual.AreaName = "昭化区";
@@ -314,6 +328,107 @@ namespace GYISMS.GrowerAreaRecords
             result.WcExpected = wcExpected.Area;
             result.WcActual = wcActual.Area;
             return result;
+        }
+
+        /// <summary>
+        /// 递归
+        /// </summary>
+        /// <param name="orgId"></param>
+        /// <param name="childrenList"></param>
+        /// <returns></returns>
+        private List<EmployeeNzTreeNode> GetDeptChildren(long orgId, List<EmployeeNzTreeNode> childrenList)
+        {
+            var orgList = _organizationRepository.GetAll().Where(o => o.ParentId == orgId).ToList();
+            //var childrenList = new List<EmployeeNzTreeNode>();
+            List<EmployeeNzTreeNode> treeNodeList = orgList.Select(t => new EmployeeNzTreeNode()
+            {
+                key = t.Id.ToString(),
+                title = t.DepartmentName,
+                children = GetDeptChildren(t.Id, childrenList)
+            }).ToList();
+            //childrenList.AddRange(treeNodeList);
+            var employeeList = (from o in _employeeRepository.GetAll()
+                                    .Where(v => v.Department.Contains("[" + orgId + "]"))
+                                select new EmployeeNzTreeNode()
+                                {
+                                    key = o.Id,
+                                    title = o.Position.Length != 0 ? o.Name + $"({o.Position})" : o.Name,
+                                    children = null,
+                                }).ToList();
+            childrenList.AddRange(employeeList);
+            return childrenList;
+        }
+
+
+        /// <summary>
+        /// 获取区县下面的钉钉组织架构
+        /// </summary>
+        [AbpAllowAnonymous]
+        public async Task<CommDetail> GetAreaOrganization(EntityDto<int> input)
+        {
+            //获取配置code
+            var orgCode = "";
+            switch (input.Id)
+            {
+                case 0:
+                    {
+                        orgCode = GYCode.昭化区;
+                    }
+                    break;
+                case 1:
+                    {
+                        orgCode = GYCode.剑阁县;
+                    }
+                    break;
+                case 2:
+                    {
+                        orgCode = GYCode.旺苍县;
+                    }
+                    break;
+            }
+            var orgIds = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
+            CommDetail commDetail = new CommDetail();
+            //List<CommChartDto> areaList = new List<CommChartDto>();
+            if (!string.IsNullOrEmpty(orgIds))
+            {
+                var orgIdArr = orgIds.Split(',');
+                foreach (var orgid in orgIdArr)
+                {
+                    var longOrgId = long.Parse(orgid);
+                    var org = _organizationRepository.Get(longOrgId);
+                    var childrenList = new List<EmployeeNzTreeNode>();
+                    var employeeIds = GetDeptChildren(longOrgId, childrenList);
+                    decimal planArea = 0;
+                    decimal actualArea = 0;
+                    foreach (var item in employeeIds)
+                    {
+
+                        planArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.key).Select(v => v.PlantingArea ?? 0).SumAsync();
+                        actualArea += await _growerRepository.GetAll().Where(v => v.EmployeeId == item.key).Select(v => v.ActualArea ?? 0).SumAsync();
+                    }
+
+                    commDetail.List.Add(new CommChartDto()
+                    {
+                        GroupName = "约定面积",
+                        AreaName = org.DepartmentName,
+                        Area = planArea,
+                    });
+                    commDetail.List.Add(new CommChartDto()
+                    {
+                        GroupName = "落实面积",
+                        AreaName = org.DepartmentName,
+                        Area = actualArea
+                    });
+                    commDetail.Detail.Add(new AreaDetailDto()
+                    {
+                        DepartmentId = org.Id,
+                        AreaName = org.DepartmentName,
+                        Expected = planArea,
+                        Actual = actualArea
+                    });
+                }
+            }
+            return commDetail;
         }
 
         [AbpAllowAnonymous]
@@ -363,5 +478,3 @@ namespace GYISMS.GrowerAreaRecords
         }
     }
 }
-
-
