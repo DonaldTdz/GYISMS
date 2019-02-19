@@ -257,7 +257,7 @@ namespace GYISMS.ScheduleTasks
             entity.DeletionTime = DateTime.Now;
             entity.DeleterUserId = AbpSession.UserId;
             await _scheduletaskRepository.UpdateAsync(entity);
-            List<Guid> detailIds =await _scheduleDetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.Id).AsNoTracking().Select(v => v.Id).ToListAsync();
+            List<Guid> detailIds = await _scheduleDetailRepository.GetAll().Where(v => v.ScheduleTaskId == input.Id).AsNoTracking().Select(v => v.Id).ToListAsync();
             await BatchDeleteScheduleDetailsAsync(detailIds);
         }
 
@@ -332,7 +332,7 @@ namespace GYISMS.ScheduleTasks
         /// </summary>
         [AbpAllowAnonymous]
         [Audited]
-        public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId, string uid,int Status)
+        public async Task<DingDingTaskDto> GetDingDingTaskInfoAsync(Guid scheduleTaskId, string uid, int Status)
         {
             //基本信息
             var query = from st in _scheduletaskRepository.GetAll()
@@ -352,8 +352,8 @@ namespace GYISMS.ScheduleTasks
 
             //烟农信息
             var growerQuery = from sd in _scheduleDetailRepository.GetAll()
-                                                     //.WhereIf(Status == 2, sd => sd.CompleteNum == sd.VisitNum)
-                                                     //.WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                                  //.WhereIf(Status == 2, sd => sd.CompleteNum == sd.VisitNum)
+                                  //.WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
                               join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
                               where sd.ScheduleTaskId == scheduleTaskId
                               && sd.EmployeeId == uid
@@ -365,10 +365,10 @@ namespace GYISMS.ScheduleTasks
                                   VisitNum = sd.VisitNum,
                                   UnitName = g.UnitName,
                                   Status = sd.Status,
-                                  CreationTime=sd.CreationTime
+                                  CreationTime = sd.CreationTime
                               };
-            taskDto.Growers = await growerQuery.OrderByDescending(s=>s.CreationTime).ToListAsync();
-        
+            taskDto.Growers = await growerQuery.OrderByDescending(s => s.CreationTime).ToListAsync();
+
             taskDto.VisitTotal = taskDto.Growers.Sum(g => g.VisitNum).Value;
             taskDto.CompleteNum = taskDto.Growers.Sum(g => g.CompleteNum).Value;
 
@@ -400,9 +400,9 @@ namespace GYISMS.ScheduleTasks
 
             var taskDetailDto = await query.FirstOrDefaultAsync();
             //获取烟农位置修改次数限制
-            var systemData = await _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type== ConfigType.烟叶公共 && s.Code == GYCode.LocationLimitCode).FirstOrDefaultAsync();
+            var systemData = await _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.LocationLimitCode).FirstOrDefaultAsync();
             var limitNum = 3;
-            if (systemData != null && !string.IsNullOrEmpty(systemData.Desc) )
+            if (systemData != null && !string.IsNullOrEmpty(systemData.Desc))
             {
                 limitNum = int.Parse(systemData.Desc);
             }
@@ -416,7 +416,7 @@ namespace GYISMS.ScheduleTasks
             if (taskDetailDto.TaskType == TaskTypeEnum.面积落实)//新增面积落实 2019-2-18
             {
                 taskDetailDto.VisitRecords = await _growerAreaRecordRepository.GetAll()
-                                                    .Where(g => g.ScheduleDetailId == scheduleDetailId)
+                                                    .Where(g => g.ScheduleDetailId == scheduleDetailId && g.GrowerId == taskDetailDto.GrowerId)
                                                     .Select(g => new DingDingVisitRecordDto()
                                                     {
                                                         Id = g.Id,
@@ -435,7 +435,31 @@ namespace GYISMS.ScheduleTasks
                                               .OrderBy(v => v.CreationTime)
                                               .ToListAsync()).MapTo<List<DingDingVisitRecordDto>>();
             }
-            
+
+            return taskDetailDto;
+        }
+
+
+        [AbpAllowAnonymous]
+        [Audited]
+        public async Task<DingDingVisitGrowerDetailDto> GetDingDingGrowerDetailAsync(int id)
+        {
+            //详情
+            var taskDetailDto = new DingDingVisitGrowerDetailDto();
+            taskDetailDto.GrowerId = id;
+            taskDetailDto.GrowerInfo = (await _growerRepository.GetAsync(id)).MapTo<GrowerListDto>();
+            taskDetailDto.VisitRecords = await _growerAreaRecordRepository.GetAll()
+                                                .Where(g => g.ScheduleDetailId == taskDetailDto.GrowerInfo.AreaScheduleDetailId && g.GrowerId == id)
+                                                .Select(g => new DingDingVisitRecordDto()
+                                                {
+                                                    Id = g.Id,
+                                                    CreationTime = g.CollectionTime,
+                                                    Desc = g.Remark,
+                                                    ImgPath = g.ImgPath,
+                                                    Location = g.Location,
+                                                    SignTime = g.CollectionTime,
+                                                    Area = g.Area
+                                                }).ToListAsync();
             return taskDetailDto;
         }
 
