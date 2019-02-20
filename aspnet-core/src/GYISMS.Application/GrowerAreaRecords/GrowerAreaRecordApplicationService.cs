@@ -271,7 +271,7 @@ namespace GYISMS.GrowerAreaRecords
 
             DistrictAreaChartDto result = new DistrictAreaChartDto();
             result.list = new List<AreaChartDto>();
-            if(areacode == AreaCodeEnum.广元市 || areacode == AreaCodeEnum.昭化区)
+            if (areacode == AreaCodeEnum.广元市 || areacode == AreaCodeEnum.昭化区)
             {
                 //昭化
                 AreaChartDto zhExpected = new AreaChartDto();
@@ -355,7 +355,7 @@ namespace GYISMS.GrowerAreaRecords
             //}
             //else
             //{
-                childrenList.AddRange(employeeList);
+            childrenList.AddRange(employeeList);
             //}
             return childrenList;
         }
@@ -370,7 +370,7 @@ namespace GYISMS.GrowerAreaRecords
         private async Task<string[]> GetOtherEmployeeIdsByDeptId(long deptId)
         {
             var strDept = "[" + deptId + "]";
-            var query = _employeeRepository.GetAll().Where(e => e.Department.Contains(strDept) ).Select(e => e.Id);
+            var query = _employeeRepository.GetAll().Where(e => e.Department.Contains(strDept)).Select(e => e.Id);
             return await query.ToArrayAsync();
         }
 
@@ -418,7 +418,6 @@ namespace GYISMS.GrowerAreaRecords
             {
                 //查子部门
                 orgIds = string.Join(',', await _organizationRepository.GetAll().Where(v => v.ParentId == long.Parse(input.Id)).Select(v => v.Id).ToListAsync());
-
             }
             CommDetail commDetail = new CommDetail();
             if (!string.IsNullOrEmpty(orgIds) && input.Type != "otherArea") //部门统计
@@ -471,7 +470,7 @@ namespace GYISMS.GrowerAreaRecords
                 if (string.IsNullOrEmpty(input.Type))//区县 其他判断
                 {
                     var tempCode = (AreaCodeEnum)int.Parse(input.Id);
-                    var areaOtherIds = await _employeeRepository.GetAll().Where(v => v.AreaCode == tempCode).Select(v=>v.Id).ToArrayAsync();
+                    var areaOtherIds = await _employeeRepository.GetAll().Where(v => v.AreaCode == tempCode).Select(v => v.Id).ToArrayAsync();
                     if (areaOtherIds.Count() > 0)
                     {
                         decimal planOtherArea = 0;
@@ -526,17 +525,19 @@ namespace GYISMS.GrowerAreaRecords
                     });
                 }
             }
-            
+
             else //烟技员统计
             {
                 var employee = new List<Employee>();
-                if (input.Type == "otherArea")
+                if (input.Type == "otherArea" && (input.Id == "1" || input.Id == "2" || input.Id == "3"))
                 {
+                    //区县-其他
                     var tempCode = (AreaCodeEnum)int.Parse(input.Id);
                     employee = await _employeeRepository.GetAll().Where(v => v.AreaCode == tempCode).ToListAsync();
                 }
                 else
                 {
+                    //其他
                     employee = await _employeeRepository.GetAll().Where(v => v.Department.Contains(input.Id.ToString())).ToListAsync();
                 }
                 commDetail.Type = 1;
