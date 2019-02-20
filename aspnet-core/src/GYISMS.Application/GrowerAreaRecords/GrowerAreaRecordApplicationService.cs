@@ -277,11 +277,14 @@ namespace GYISMS.GrowerAreaRecords
                 AreaChartDto zhExpected = new AreaChartDto();
                 zhExpected.GroupName = "约定面积";
                 zhExpected.AreaName = "昭化区";
-                zhExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.PlantingArea ?? 0);
+                var zhExpectedArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).Select(g => g.PlantingArea).Sum();
+                zhExpected.Area = zhExpectedArea ?? 0;
                 AreaChartDto zhActual = new AreaChartDto();
                 zhActual.GroupName = "落实面积";
                 zhActual.AreaName = "昭化区";
-                zhActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.ActualArea ?? 0);
+                //zhActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.ActualArea ?? 0);
+                var zhActualArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).Select(g => g.ActualArea).Sum();
+                zhActual.Area = zhActualArea ?? 0;
                 result.list.Add(zhExpected);
                 result.list.Add(zhActual);
                 result.ZhExpected = zhExpected.Area;
@@ -293,11 +296,15 @@ namespace GYISMS.GrowerAreaRecords
                 AreaChartDto jgExpected = new AreaChartDto();
                 jgExpected.GroupName = "约定面积";
                 jgExpected.AreaName = "剑阁县";
-                jgExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.PlantingArea ?? 0);
+                //jgExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.PlantingArea ?? 0);
+                var jgExpectedArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).Select(g => g.PlantingArea).Sum();
+                jgExpected.Area = jgExpectedArea ?? 0;
                 AreaChartDto jgActual = new AreaChartDto();
                 jgActual.GroupName = "落实面积";
                 jgActual.AreaName = "剑阁县";
-                jgActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.ActualArea ?? 0);
+                //jgActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.ActualArea ?? 0);
+                var jgActualArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).Select(g => g.ActualArea).Sum();
+                jgActual.Area = jgActualArea ?? 0;
                 result.list.Add(jgExpected);
                 result.list.Add(jgActual);
                 result.JgExpected = jgExpected.Area;
@@ -309,11 +316,15 @@ namespace GYISMS.GrowerAreaRecords
                 AreaChartDto wcExpected = new AreaChartDto();
                 wcExpected.GroupName = "约定面积";
                 wcExpected.AreaName = "旺苍县";
-                wcExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.PlantingArea ?? 0);
+                //wcExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.PlantingArea ?? 0);
+                var wcExpectedArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).Select(g => g.PlantingArea).Sum();
+                wcExpected.Area = wcExpectedArea ?? 0;
                 AreaChartDto wcActual = new AreaChartDto();
                 wcActual.GroupName = "落实面积";
                 wcActual.AreaName = "旺苍县";
-                wcActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.ActualArea ?? 0);
+                //wcActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.ActualArea ?? 0);
+                var wcActualArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).Select(g => g.ActualArea).Sum();
+                wcActual.Area = wcActualArea ?? 0;
                 result.list.Add(wcExpected);
                 result.list.Add(wcActual);
                 result.WcExpected = wcExpected.Area;
@@ -644,9 +655,12 @@ namespace GYISMS.GrowerAreaRecords
         [AbpAllowAnonymous]
         public async Task<EmployeeListDto> GetEmployessByIdAsync(GetDingDingAreaRecordsInput input)
         {
-            var result = await _employeeRepository.GetAsync(input.Id);
+            var entity = await _employeeRepository.GetAsync(input.Id);
             //var result = await _employeeRepository.GetAll().Where(v=>v.Id == input.Id).FirstOrDefaultAsync();
-            return result.MapTo<EmployeeListDto>();
+            var result = entity.MapTo<EmployeeListDto>();
+            var area = await _employeeManager.GetAreaCodeByUserIdAsync(input.Id);//钉钉用户区县权限
+            result.Area = area.ToString();
+            return result;
         }
     }
 }
