@@ -35,7 +35,8 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
 
     ngOnInit(): void {
         this.validateForm = this.fb.group({
-            unitCode: null
+            unitCode: null,
+            isDeptArea: false
         });
     }
 
@@ -88,6 +89,7 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
         params.Id = this.employee.id;
         params.Area = data.area;
         params.AreaCode = data.areaCode;
+        params.IsDeptArea = this.employee.isDeptArea;
         this.employeeService.updateEmployeeArea(params).finally(() => { this.eloading = false; })
             .subscribe((result: Employee) => {
                 this.employee = result;

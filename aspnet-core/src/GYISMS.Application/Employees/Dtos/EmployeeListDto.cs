@@ -7,9 +7,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.Employees;
 using GYISMS.GYEnums;
+using Abp.AutoMapper;
 
 namespace GYISMS.Employees.Dtos
 {
+    [AutoMapFrom(typeof(Employee))]
     public class EmployeeListDto : EntityDto<string>
     {
 
@@ -106,6 +108,12 @@ namespace GYISMS.Employees.Dtos
         /// ÇøÏØÃû³Æ
         /// </summary>
         public string Area { get; set; }
+
+        public bool IsDeptArea { get; set; }
+
+        public AreaCodeEnum? DeptAreaCode { get; set; }
+
+        public string DeptArea { get; set; }
     }
     public class NzTreeNode
     {
