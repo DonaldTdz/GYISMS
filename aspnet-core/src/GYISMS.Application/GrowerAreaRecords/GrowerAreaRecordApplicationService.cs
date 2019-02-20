@@ -271,48 +271,54 @@ namespace GYISMS.GrowerAreaRecords
 
             DistrictAreaChartDto result = new DistrictAreaChartDto();
             result.list = new List<AreaChartDto>();
-
-            //昭化
-            AreaChartDto zhExpected = new AreaChartDto();
-            zhExpected.GroupName = "约定面积";
-            zhExpected.AreaName = "昭化区";
-            zhExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.PlantingArea ?? 0);
-            AreaChartDto zhActual = new AreaChartDto();
-            zhActual.GroupName = "落实面积";
-            zhActual.AreaName = "昭化区";
-            zhActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.ActualArea ?? 0);
-            //剑阁
-            AreaChartDto jgExpected = new AreaChartDto();
-            jgExpected.GroupName = "约定面积";
-            jgExpected.AreaName = "剑阁县";
-            jgExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.PlantingArea ?? 0);
-            AreaChartDto jgActual = new AreaChartDto();
-            jgActual.GroupName = "落实面积";
-            jgActual.AreaName = "剑阁县";
-            jgActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.ActualArea ?? 0);
-            //旺苍
-            AreaChartDto wcExpected = new AreaChartDto();
-            wcExpected.GroupName = "约定面积";
-            wcExpected.AreaName = "旺苍县";
-            wcExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.PlantingArea ?? 0);
-            AreaChartDto wcActual = new AreaChartDto();
-            wcActual.GroupName = "落实面积";
-            wcActual.AreaName = "旺苍县";
-            wcActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.ActualArea ?? 0);
-
-            result.list.Add(zhExpected);
-            result.list.Add(zhActual);
-            result.list.Add(jgExpected);
-            result.list.Add(jgActual);
-            result.list.Add(wcExpected);
-            result.list.Add(wcActual);
-
-            result.ZhExpected = zhExpected.Area;
-            result.ZhActual = zhActual.Area;
-            result.JgExpected = jgExpected.Area;
-            result.JgActual = jgActual.Area;
-            result.WcExpected = wcExpected.Area;
-            result.WcActual = wcActual.Area;
+            if (areacode == AreaCodeEnum.广元市 || areacode == AreaCodeEnum.昭化区)
+            {
+                //昭化
+                AreaChartDto zhExpected = new AreaChartDto();
+                zhExpected.GroupName = "约定面积";
+                zhExpected.AreaName = "昭化区";
+                zhExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.PlantingArea ?? 0);
+                AreaChartDto zhActual = new AreaChartDto();
+                zhActual.GroupName = "落实面积";
+                zhActual.AreaName = "昭化区";
+                zhActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.ActualArea ?? 0);
+                result.list.Add(zhExpected);
+                result.list.Add(zhActual);
+                result.ZhExpected = zhExpected.Area;
+                result.ZhActual = zhActual.Area;
+            }
+            if (areacode == AreaCodeEnum.广元市 || areacode == AreaCodeEnum.剑阁县)
+            {
+                //剑阁
+                AreaChartDto jgExpected = new AreaChartDto();
+                jgExpected.GroupName = "约定面积";
+                jgExpected.AreaName = "剑阁县";
+                jgExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.PlantingArea ?? 0);
+                AreaChartDto jgActual = new AreaChartDto();
+                jgActual.GroupName = "落实面积";
+                jgActual.AreaName = "剑阁县";
+                jgActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.ActualArea ?? 0);
+                result.list.Add(jgExpected);
+                result.list.Add(jgActual);
+                result.JgExpected = jgExpected.Area;
+                result.JgActual = jgActual.Area;
+            }
+            if (areacode == AreaCodeEnum.广元市 || areacode == AreaCodeEnum.旺苍县)
+            {
+                //旺苍
+                AreaChartDto wcExpected = new AreaChartDto();
+                wcExpected.GroupName = "约定面积";
+                wcExpected.AreaName = "旺苍县";
+                wcExpected.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.PlantingArea ?? 0);
+                AreaChartDto wcActual = new AreaChartDto();
+                wcActual.GroupName = "落实面积";
+                wcActual.AreaName = "旺苍县";
+                wcActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.ActualArea ?? 0);
+                result.list.Add(wcExpected);
+                result.list.Add(wcActual);
+                result.WcExpected = wcExpected.Area;
+                result.WcActual = wcActual.Area;
+            }
             return result;
         }
 
@@ -349,7 +355,7 @@ namespace GYISMS.GrowerAreaRecords
             //}
             //else
             //{
-                childrenList.AddRange(employeeList);
+            childrenList.AddRange(employeeList);
             //}
             return childrenList;
         }
@@ -364,7 +370,7 @@ namespace GYISMS.GrowerAreaRecords
         private async Task<string[]> GetOtherEmployeeIdsByDeptId(long deptId)
         {
             var strDept = "[" + deptId + "]";
-            var query = _employeeRepository.GetAll().Where(e => e.Department.Contains(strDept) ).Select(e => e.Id);
+            var query = _employeeRepository.GetAll().Where(e => e.Department.Contains(strDept)).Select(e => e.Id);
             return await query.ToArrayAsync();
         }
 
@@ -381,32 +387,40 @@ namespace GYISMS.GrowerAreaRecords
             {
                 switch (input.Id)
                 {
-                    case "0":
-                        {
-                            orgCode = GYCode.昭化区;
-                        }
-                        break;
                     case "1":
                         {
-                            orgCode = GYCode.剑阁县;
+                            //区县枚举值
+                            //input.Id = "1";
+                            orgCode = GYCode.昭化区;
                         }
                         break;
                     case "2":
                         {
+                            //input.Id = "2";
+                            orgCode = GYCode.剑阁县;
+                        }
+                        break;
+                    case "3":
+                        {
+                            //input.Id = "3";
                             orgCode = GYCode.旺苍县;
                         }
                         break;
                 }
                 orgIds = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
             }
+            else if (input.Type == "otherArea")
+            {
+                //其他类型 id为上级部门
+                orgIds = input.Id;
+            }
             else
             {
                 //查子部门
                 orgIds = string.Join(',', await _organizationRepository.GetAll().Where(v => v.ParentId == long.Parse(input.Id)).Select(v => v.Id).ToListAsync());
-
             }
             CommDetail commDetail = new CommDetail();
-            if (!string.IsNullOrEmpty(orgIds)) //部门统计
+            if (!string.IsNullOrEmpty(orgIds) && input.Type != "otherArea") //部门统计
             {
                 commDetail.Type = 0;
                 var orgIdArr = orgIds.Split(',');
@@ -453,33 +467,79 @@ namespace GYISMS.GrowerAreaRecords
                 //other
                 var pDeptId = long.Parse(input.Id);
                 var employeeOtherIds = await GetOtherEmployeeIdsByDeptId(pDeptId);
-                decimal planOtherArea = 0;
-                decimal actualOtherArea = 0;
-                planOtherArea = await _growerRepository.GetAll().Where(v => employeeOtherIds.Contains(v.EmployeeId)).Select(v => v.PlantingArea ?? 0).SumAsync();
-                actualOtherArea = await _growerRepository.GetAll().Where(v => employeeOtherIds.Contains(v.EmployeeId)).Select(v => v.ActualArea ?? 0).SumAsync();
-                commDetail.List.Add(new CommChartDto()
+                if (string.IsNullOrEmpty(input.Type))//区县 其他判断
                 {
-                    GroupName = "约定面积",
-                    AreaName = "其他",
-                    Area = planOtherArea,
-                });
-                commDetail.List.Add(new CommChartDto()
+                    var tempCode = (AreaCodeEnum)int.Parse(input.Id);
+                    var areaOtherIds = await _employeeRepository.GetAll().Where(v => v.AreaCode == tempCode).Select(v => v.Id).ToArrayAsync();
+                    if (areaOtherIds.Count() > 0)
+                    {
+                        decimal planOtherArea = 0;
+                        decimal actualOtherArea = 0;
+                        planOtherArea = await _growerRepository.GetAll().Where(v => areaOtherIds.Contains(v.EmployeeId)).Select(v => v.PlantingArea ?? 0).SumAsync();
+                        actualOtherArea = await _growerRepository.GetAll().Where(v => areaOtherIds.Contains(v.EmployeeId)).Select(v => v.ActualArea ?? 0).SumAsync();
+                        commDetail.List.Add(new CommChartDto()
+                        {
+                            GroupName = "约定面积",
+                            AreaName = "其他",
+                            Area = planOtherArea,
+                        });
+                        commDetail.List.Add(new CommChartDto()
+                        {
+                            GroupName = "落实面积",
+                            AreaName = "其他",
+                            Area = actualOtherArea
+                        });
+                        commDetail.Detail.Add(new AreaDetailDto()
+                        {
+                            DepartmentId = input.Id,
+                            AreaName = "其他",
+                            Expected = planOtherArea,
+                            Actual = actualOtherArea
+                        });
+                    }
+                }
+                if (employeeOtherIds.Count() > 0)
                 {
-                    GroupName = "落实面积",
-                    AreaName = "其他",
-                    Area = actualOtherArea
-                });
-                commDetail.Detail.Add(new AreaDetailDto()
-                {
-                    DepartmentId = input.Id,
-                    AreaName = "其他",
-                    Expected = planOtherArea,
-                    Actual = actualOtherArea
-                });
+                    decimal planOtherArea = 0;
+                    decimal actualOtherArea = 0;
+                    planOtherArea = await _growerRepository.GetAll().Where(v => employeeOtherIds.Contains(v.EmployeeId)).Select(v => v.PlantingArea ?? 0).SumAsync();
+                    actualOtherArea = await _growerRepository.GetAll().Where(v => employeeOtherIds.Contains(v.EmployeeId)).Select(v => v.ActualArea ?? 0).SumAsync();
+                    commDetail.List.Add(new CommChartDto()
+                    {
+                        GroupName = "约定面积",
+                        AreaName = "其他",
+                        Area = planOtherArea,
+                    });
+                    commDetail.List.Add(new CommChartDto()
+                    {
+                        GroupName = "落实面积",
+                        AreaName = "其他",
+                        Area = actualOtherArea
+                    });
+                    commDetail.Detail.Add(new AreaDetailDto()
+                    {
+                        DepartmentId = input.Id,
+                        AreaName = "其他",
+                        Expected = planOtherArea,
+                        Actual = actualOtherArea
+                    });
+                }
             }
+
             else //烟技员统计
             {
-                var employee = await _employeeRepository.GetAll().Where(v => v.Department.Contains(input.Id.ToString())).ToListAsync();
+                var employee = new List<Employee>();
+                if (input.Type == "otherArea" && (input.Id == "1" || input.Id == "2" || input.Id == "3"))
+                {
+                    //区县-其他
+                    var tempCode = (AreaCodeEnum)int.Parse(input.Id);
+                    employee = await _employeeRepository.GetAll().Where(v => v.AreaCode == tempCode).ToListAsync();
+                }
+                else
+                {
+                    //其他
+                    employee = await _employeeRepository.GetAll().Where(v => v.Department.Contains(input.Id.ToString())).ToListAsync();
+                }
                 commDetail.Type = 1;
                 foreach (var item in employee)
                 {
