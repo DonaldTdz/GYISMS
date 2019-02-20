@@ -103,6 +103,24 @@ namespace GYISMS.Employees
             return AreaCodeEnum.None;
         }
 
+        public async Task<AreaCodeEnum> GetDeptAreaCodeByUserIdAsync(string userId)
+        {
+            var employee = await _employeeRepository.GetAsync(userId);
+            if (ExistsArea(employee.Department, GYCode.昭化区))
+            {
+                return AreaCodeEnum.昭化区;
+            }
+            if (ExistsArea(employee.Department, GYCode.剑阁县))
+            {
+                return AreaCodeEnum.剑阁县;
+            }
+            if (ExistsArea(employee.Department, GYCode.旺苍县))
+            {
+                return AreaCodeEnum.旺苍县;
+            }
+            return AreaCodeEnum.None;
+        }
+
         #endregion
 
         #region 获取区县部门Id数组
