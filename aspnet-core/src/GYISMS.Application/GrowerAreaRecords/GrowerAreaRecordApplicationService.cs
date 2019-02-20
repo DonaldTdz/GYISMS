@@ -387,26 +387,32 @@ namespace GYISMS.GrowerAreaRecords
             {
                 switch (input.Id)
                 {
-                    case "0":
-                        {
-                            input.Id = "1";
-                            orgCode = GYCode.昭化区;
-                        }
-                        break;
                     case "1":
                         {
-                            input.Id = "2";
-                            orgCode = GYCode.剑阁县;
+                            //区县枚举值
+                            //input.Id = "1";
+                            orgCode = GYCode.昭化区;
                         }
                         break;
                     case "2":
                         {
-                            input.Id = "3";
+                            //input.Id = "2";
+                            orgCode = GYCode.剑阁县;
+                        }
+                        break;
+                    case "3":
+                        {
+                            //input.Id = "3";
                             orgCode = GYCode.旺苍县;
                         }
                         break;
                 }
                 orgIds = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
+            }
+            else if (input.Type == "otherArea")
+            {
+                //其他类型 id为上级部门
+                orgIds = input.Id;
             }
             else
             {
@@ -415,7 +421,7 @@ namespace GYISMS.GrowerAreaRecords
 
             }
             CommDetail commDetail = new CommDetail();
-            if (!string.IsNullOrEmpty(orgIds)) //部门统计
+            if (!string.IsNullOrEmpty(orgIds) && input.Type != "otherArea") //部门统计
             {
                 commDetail.Type = 0;
                 var orgIdArr = orgIds.Split(',');
@@ -520,9 +526,19 @@ namespace GYISMS.GrowerAreaRecords
                     });
                 }
             }
+            
             else //烟技员统计
             {
-                var employee = await _employeeRepository.GetAll().Where(v => v.Department.Contains(input.Id.ToString())).ToListAsync();
+                var employee = new List<Employee>();
+                if (input.Type == "otherArea")
+                {
+                    var tempCode = (AreaCodeEnum)int.Parse(input.Id);
+                    employee = await _employeeRepository.GetAll().Where(v => v.AreaCode == tempCode).ToListAsync();
+                }
+                else
+                {
+                    employee = await _employeeRepository.GetAll().Where(v => v.Department.Contains(input.Id.ToString())).ToListAsync();
+                }
                 commDetail.Type = 1;
                 foreach (var item in employee)
                 {
