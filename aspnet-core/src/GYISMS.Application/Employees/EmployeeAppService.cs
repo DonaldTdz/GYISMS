@@ -97,11 +97,20 @@ namespace GYISMS.Employees
         {
             var entity = await _employeeRepository.GetAsync(id);
             var entityDto = entity.MapTo<EmployeeListDto>();
+            var area = await _employeeManager.GetAreaCodeByUserIdAsync(id);
+            entityDto.DeptArea = area.ToString();
+            entityDto.DeptAreaCode = area;
+            //如果没有指定区县 就 采用部门区县
             if (!entity.AreaCode.HasValue || entity.AreaCode == AreaCodeEnum.None)
             {
-                var area = await _employeeManager.GetAreaCodeByUserIdAsync(id);
-                entityDto.Area = area.ToString();
-                entityDto.AreaCode = area;
+                //var area = await _employeeManager.GetAreaCodeByUserIdAsync(id);
+                //entityDto.Area = entityDto.DeptArea;
+                //entityDto.AreaCode = area;
+                entityDto.IsDeptArea = true;
+            }
+            else
+            {
+                entityDto.IsDeptArea = false;
             }
             return entityDto;
         }
@@ -421,17 +430,28 @@ namespace GYISMS.Employees
         public async Task<EmployeeListDto> EditEmployeeAreaInfoAsync(EmployeeEditDto input)
         {
             var entity = await _employeeRepository.GetAsync(input.Id);
-            if (entity.AreaCode != input.AreaCode && entity.Area != input.Area)
+            if (input.IsDeptArea)//如果是使用部门区县 清除当前设置区县
             {
-                entity.Area = input.Area;
-                entity.AreaCode = input.AreaCode;
+                entity.Area = null;
+                entity.AreaCode = null;
                 var result = await _employeeRepository.UpdateAsync(entity);
                 return result.MapTo<EmployeeListDto>();
             }
             else
             {
-                return entity.MapTo<EmployeeListDto>();
+                if (entity.AreaCode != input.AreaCode && entity.Area != input.Area)
+                {
+                    entity.Area = input.Area;
+                    entity.AreaCode = input.AreaCode;
+                    var result = await _employeeRepository.UpdateAsync(entity);
+                    return result.MapTo<EmployeeListDto>();
+                }
+                else
+                {
+                    return entity.MapTo<EmployeeListDto>();
+                }
             }
+           
         }
 
         #region 烟农页面层级树 add by donald 2019-2-12

@@ -2,12 +2,14 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.AutoMapper;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.Employees;
 using GYISMS.GYEnums;
 
 namespace GYISMS.Employees.Dtos
 {
+    [AutoMapTo(typeof(Employee))]
     public class EmployeeEditDto
     {
         /// <summary>
@@ -112,6 +114,8 @@ namespace GYISMS.Employees.Dtos
         /// ÇøÏØÃû³Æ
         /// </summary>
         public string Area { get; set; }
+
+        public bool IsDeptArea { get; set; }
 
         //// custom codes
 

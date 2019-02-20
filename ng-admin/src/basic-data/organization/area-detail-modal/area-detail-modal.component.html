@@ -1,5 +1,5 @@
-<nz-modal [(nzVisible)]="isVisible" nzMaskClosable="false" nzTitle="区县维护" [nzContent]="modalContent" (nzOnCancel)="handleCancel($event)"
-    style="width: 520px;" [nzFooter]="modalFooter">
+<nz-modal [(nzVisible)]="isVisible" nzMaskClosable="false" nzTitle="区县维护" [nzContent]="modalContent"
+    (nzOnCancel)="handleCancel($event)" style="width: 520px;" [nzFooter]="modalFooter">
     <ng-template #modalContent>
         <form nz-form [formGroup]="validateForm" *ngIf="employee">
             <div nz-row nzGutter="16">
@@ -12,16 +12,34 @@
                 </div>
             </div>
             <nz-form-item nz-row>
-                <nz-form-label style="text-align:left;" nz-col [nzSm]="4" nzFor="unitCode">区县设置</nz-form-label>
-                <nz-form-control [nzSm]="20">
-                    <nz-select formControlName="unitCode" [nzPlaceHolder]="'选择区县'" name="countyCode" [(ngModel)]="employee.areaCode"
-                        (ngModelChange)="getText($event)" [nzShowSearch]="true">
+                <nz-form-label style="text-align:left;" nz-col [nzSm]="6" nzFor="isDeptArea">采用部门区县</nz-form-label>
+                <nz-form-control [nzSm]="18">
+                    <nz-switch [(ngModel)]="employee.isDeptArea" formControlName="isDeptArea" nzCheckedChildren="是"
+                        nzUnCheckedChildren="否">
+                    </nz-switch>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item *ngIf="!employee.isDeptArea" nz-row>
+                <nz-form-label style="text-align:left;" nz-col [nzSm]="6" nzFor="unitCode">区县设置</nz-form-label>
+                <nz-form-control [nzSm]="18">
+                    <nz-select formControlName="unitCode" [nzPlaceHolder]="'选择区县'" name="countyCode"
+                        [(ngModel)]="employee.areaCode" (ngModelChange)="getText($event)" [nzShowSearch]="true">
                         <nz-option *ngFor="let i of countyCodes" [nzLabel]="i.text" [nzValue]="i.value">
                         </nz-option>
                     </nz-select>
-                    <nz-alert nzType="info" nzMessage="这里区县设置是特别设置单个任何用户，区县部门对应设置请在配置管理进行配置" nzShowIcon></nz-alert>
                 </nz-form-control>
             </nz-form-item>
+            <div *ngIf="!employee.isDeptArea" nz-row>
+                <nz-alert nzType="info" nzMessage="区县设置是特别设置单个任何用户，设置后将直属某个区县" nzShowIcon></nz-alert>
+            </div>
+            <div *ngIf="employee.isDeptArea" nz-row nzGutter="16">
+                <div nz-col nzXs="24" nzSm="25">
+                    <desc-list size="small" col="1" class="mb-md">
+                        <desc-list-item term="所属部门区县">{{employee.deptArea}}</desc-list-item>
+                    </desc-list>
+                    <nz-alert nzType="info" nzMessage="该区县是用户所属部门区县，区县部门设置请在配置管理进行配置" nzShowIcon></nz-alert>
+                </div>
+            </div>
         </form>
     </ng-template>
     <ng-template #modalFooter>
