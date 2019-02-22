@@ -393,7 +393,8 @@ namespace GYISMS.GrowerAreaRecords
         {
             var orgCode = "";
             var orgIds = "";
-            //查区县
+            var isArea = false;
+            //当type为空 表示为区县级
             if (string.IsNullOrEmpty(input.Type))
             {
                 switch (input.Id)
@@ -418,6 +419,7 @@ namespace GYISMS.GrowerAreaRecords
                         }
                         break;
                 }
+                isArea = true;
                 orgIds = _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).First().Desc;
             }
             else if (input.Type == "otherArea")
@@ -536,11 +538,10 @@ namespace GYISMS.GrowerAreaRecords
                     });
                 }
             }
-
             else //烟技员统计
             {
                 var employee = new List<Employee>();
-                if (input.Type == "otherArea" && (input.Id == "1" || input.Id == "2" || input.Id == "3"))
+                if ((input.Type == "otherArea" || isArea) && (input.Id == "1" || input.Id == "2" || input.Id == "3"))
                 {
                     //区县-其他
                     var tempCode = (AreaCodeEnum)int.Parse(input.Id);
