@@ -97,8 +97,8 @@ namespace GYISMS.Employees
         {
             var entity = await _employeeRepository.GetAsync(id);
             var entityDto = entity.MapTo<EmployeeListDto>();
-            var area = await _employeeManager.GetAreaCodeByUserIdAsync(id);
-            entityDto.DeptArea = area.ToString();
+            var area = await _employeeManager.GetDeptAreaCodeByUserIdAsync(id);
+            entityDto.DeptArea = area == AreaCodeEnum.None? "无" : area.ToString();
             entityDto.DeptAreaCode = area;
             //如果没有指定区县 就 采用部门区县
             if (!entity.AreaCode.HasValue || entity.AreaCode == AreaCodeEnum.None)
@@ -119,8 +119,6 @@ namespace GYISMS.Employees
         /// <summary>
         /// 添加或者修改Employee的公共方法
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public async Task CreateOrUpdateEmployee(CreateOrUpdateEmployeeInput input)
         {
 

@@ -23,6 +23,11 @@ namespace GYISMS.Employees
         /// </summary>
         Task<AreaCodeEnum> GetAreaCodeByUserIdAsync(string userId);
 
+        /// <summary>
+        /// 获取部门区县
+        /// </summary>
+        Task<AreaCodeEnum> GetDeptAreaCodeByUserIdAsync(string userId);
+
         Task<string[]> GetAreaDeptIdArrayAsync(AreaCodeEnum? areaCode);
 
         /// <summary>
