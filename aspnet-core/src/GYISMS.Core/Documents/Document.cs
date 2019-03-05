@@ -73,5 +73,7 @@ namespace GYISMS.Documents
         /// 是否是全部用户
         /// </summary>
         public virtual bool IsAllUser { get; set; }
+
+
     }
 }

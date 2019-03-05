@@ -7,6 +7,7 @@ using Abp.Runtime.Session;
 using GYISMS.Authorization.Users;
 using GYISMS.MultiTenancy;
 using GYISMS.GYEnums;
+using System.Collections.Generic;
 
 namespace GYISMS
 {
@@ -63,6 +64,13 @@ namespace GYISMS
             var currentUser = await GetCurrentUserAsync();
             var roles = await UserManager.GetRolesAsync(currentUser);
             return roles.Contains(RoleCodes.Admin);
+        }
+
+        protected async Task<IList<string>> GetUserRolesAsync()
+        {
+            var currentUser = await GetCurrentUserAsync();
+            var roles = await UserManager.GetRolesAsync(currentUser);
+            return roles;
         }
     }
 }

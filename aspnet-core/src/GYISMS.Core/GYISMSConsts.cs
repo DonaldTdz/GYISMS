@@ -25,5 +25,10 @@
         /// 区县管理员
         /// </summary>
         public const string DistrictAdmin = "DistrictAdmin";
+
+        /// <summary>
+        /// 企管人员
+        /// </summary>
+        public const string EnterpriseAdmin = "EnterpriseAdmin";
     }
 }

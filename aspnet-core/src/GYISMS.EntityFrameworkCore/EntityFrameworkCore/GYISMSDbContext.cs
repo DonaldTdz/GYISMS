@@ -25,6 +25,7 @@ using GYISMS.Documents;
 using GYISMS.DocAttachments;
 using GYISMS.GrowerLocationLogs;
 using GYISMS.GrowerAreaRecords;
+using GYISMS.DocDingTalks;
 
 namespace GYISMS.EntityFrameworkCore
 {
@@ -69,6 +70,8 @@ namespace GYISMS.EntityFrameworkCore
 
         public virtual DbSet<GrowerLocationLog> GrowerLocationLogs { get; set; }
         public virtual DbSet<GrowerAreaRecord> GrowerAreaRecords { get; set; }
+
+        public virtual DbSet<DocDingTalk> DocDingTalks { get; set; }
 
     }
 }
