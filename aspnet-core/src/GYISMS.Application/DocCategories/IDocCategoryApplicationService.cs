@@ -81,5 +81,6 @@ namespace GYISMS.DocCategories
         Task<List<CategoryTreeNode>> GetTreeAsync();
         Task<List<GridListDto>> GetCategoryListAsync(string host,string userId);
         Task<List<TabListDto>> GetTabChildListByIdAsync(int id);
+        Task<string> GetParentName(int id);
     }
 }
