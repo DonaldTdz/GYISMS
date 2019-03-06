@@ -28,6 +28,9 @@ using GYISMS.Helpers;
 using GYISMS.DocCategories.DomainService;
 using GYISMS.Employees;
 using System.Text.RegularExpressions;
+using GYISMS.DocDingTalks;
+using GYISMS.Employees.Dtos;
+using GYISMS.Organizations;
 
 namespace GYISMS.Documents
 {
@@ -39,10 +42,12 @@ namespace GYISMS.Documents
     {
         private readonly IRepository<Document, Guid> _entityRepository;
         private readonly IRepository<DocAttachment, Guid> _docAttachmentRepository;
+        private readonly IRepository<DocDingTalk, Guid> _docDocDingTalkRepository;
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IDocumentManager _entityManager;
         private readonly IDocCategoryManager _docCategoryManager;
         private readonly IRepository<Employee, string> _employeeRepository;
+        private readonly IRepository<Organization, long> _organizationRepository;
 
         /// <summary>
         /// 构造函数 
@@ -53,7 +58,9 @@ namespace GYISMS.Documents
             , IRepository<DocAttachment, Guid> docAttachmentRepository
         , IHostingEnvironment hostingEnvironment
         , IDocCategoryManager docCategoryManager
-            , IRepository<Employee, string> employeeRepository
+        , IRepository<Employee, string> employeeRepository
+        , IRepository<DocDingTalk, Guid> docDocDingTalkRepository
+        , IRepository<Organization, long> organizationRepository
         )
         {
             _entityRepository = entityRepository;
@@ -62,6 +69,8 @@ namespace GYISMS.Documents
             _hostingEnvironment = hostingEnvironment;
             _docCategoryManager = docCategoryManager;
             _employeeRepository = employeeRepository;
+            _docDocDingTalkRepository = docDocDingTalkRepository;
+            _organizationRepository = organizationRepository;
         }
 
 
@@ -255,10 +264,8 @@ namespace GYISMS.Documents
         /// <summary>
         /// 钉钉资料详情&扫码搜索
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
         [AbpAllowAnonymous]
-        public async Task<DocumentListDto> GetDocInfoByScanAsync(Guid id, string host)
+        public async Task<DocumentListDto> GetDocInfoByScanAsync(Guid id, string host, string uid)
         {
             var doc = await _entityRepository.GetAll().Where(v => v.Id == id).AsNoTracking().FirstOrDefaultAsync();
             var result = doc.MapTo<DocumentListDto>();
@@ -266,25 +273,31 @@ namespace GYISMS.Documents
             {
                 result.CategoryDesc = result.CategoryDesc.Replace(",", " > ");
             }
-            var att = _docAttachmentRepository.GetAll().Where(v => v.DocId == id).AsNoTracking();
-            var gridList = await (from a in att
-                                  select new GridDocListDto()
-                                  {
-                                      Text = a.Name + a.Path.Substring(a.Path.LastIndexOf('.')),
-                                      Icon = host + "knowledge/annex.png",
-                                      FileUrl = host + a.Path
-                                  }).AsNoTracking().ToListAsync();
-            result.FileList = new List<GridDocListDto>();
-            result.FileList.AddRange(gridList);
+
+            var query = from a in _docAttachmentRepository.GetAll().Where(v => v.DocId == id)
+                        join d in _docDocDingTalkRepository.GetAll().Where(d => d.UserId == uid) on a.Id equals d.DocAttId into temp
+                        from ld in temp.DefaultIfEmpty()
+                        select new GridDocListDto(host)
+                        {
+                            Id = a.Id,
+                            Name = a.Name,
+                            Path = a.Path,
+                            SpaceId = ld == null ? "" : ld.SpaceId,
+                            FileId = ld == null ? "" : ld.FileId,
+                            FileName = ld == null ? "" : ld.FileName,
+                            FileSize = ld == null ? 0 : ld.FileSize,
+                            FileType = ld == null ? "" : ld.FileType
+                        };
+            //var gg = query.ToList();
+            var gridList = await query.ToListAsync();
+
+            result.FileList = gridList;
             return result;
         }
 
         /// <summary>
         /// 判断用户是否拥有权限
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="userId"></param>
-        /// <returns></returns>
         [AbpAllowAnonymous]
         public async Task<bool> GetHasDocPermissionFromScanAsync(Guid id, string userId)
         {
@@ -304,8 +317,6 @@ namespace GYISMS.Documents
         /// <summary>
         /// 获取文件列表项
         /// </summary>
-        /// <param name="parentId"></param>
-        /// <returns></returns>
         [AbpAllowAnonymous]
         public async Task<List<DocumentListDto>> GetDocListByParentIdAsync(string categoryCode, string userId, int pageIndex, int pageSize)
         {
@@ -332,8 +343,6 @@ namespace GYISMS.Documents
         /// <summary>
         /// 搜索标题和摘要
         /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
         [AbpAllowAnonymous]
         public async Task<List<DocumentListDto>> GetDocListByInputAsync(string input, string catId, string userId, int pageIndex, int pageSize)
         {
@@ -357,6 +366,110 @@ namespace GYISMS.Documents
                               .OrderBy(v => v.Id).AsNoTracking().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return list;
         }
+
+        [AbpAllowAnonymous]
+        public async Task SaveDocDingTalkAsync(DocDingTalkInput input)
+        {
+            var dingDoc = _docDocDingTalkRepository.GetAll().Where(d => d.UserId == input.UserId && d.DocAttId == input.DocAttId).FirstOrDefault();
+            if (dingDoc == null)//新增
+            {
+                var addEnitiy = input.MapTo<DocDingTalk>();
+                await _docDocDingTalkRepository.InsertAsync(addEnitiy);
+            }
+            else
+            {
+                input.MapTo(dingDoc);
+                await _docDocDingTalkRepository.UpdateAsync(dingDoc);
+            }
+        }
+
+        #region 文档发布部门树
+
+        /// <summary>
+        /// 构建子部门树
+        /// </summary>
+        private List<DocNzTreeNode> getDeptChildTree(long pid, List<Organization> depts)
+        {
+            var trees = depts.Where(d => d.ParentId == pid).Select(d => new DocNzTreeNode()
+            {
+                key = d.Id.ToString(),
+                title = d.DepartmentName,
+                children = getDeptChildTree(d.Id, depts)
+            });
+
+            return trees.ToList();
+        }
+
+        /// <summary>
+        /// 构建部门树
+        /// </summary>
+        private async Task<List<DocNzTreeNode>> getDeptTreeAsync(long[] deptids)
+        {
+            var trees = new List<DocNzTreeNode>();
+            var depts = await _organizationRepository.GetAll().AsNoTracking().ToListAsync();
+            foreach (var id in deptids)
+            {
+                if (id == 1)//顶级市
+                {
+                    trees.AddRange(getDeptChildTree(id, depts));
+                }
+                else
+                {
+                    var dept = depts.Where(d => d.Id == id).First();
+                    trees.Add(new DocNzTreeNode()
+                    {
+                        key = dept.Id.ToString(),
+                        title = dept.DepartmentName,
+                        children = getDeptChildTree(id, depts)
+                    });
+                }
+            }
+            return trees;
+        }
+
+        public async Task<List<DocNzTreeNode>> GetDeptDocNzTreeNodesAsync()
+        {
+            var docDeptList = new List<DocNzTreeNode>();
+            var root = new DocNzTreeNode()
+            {
+                key = "0",
+                title = "资料维护部门"
+            };
+            
+            //当前用户角色
+            var roles = await GetUserRolesAsync();
+            //如果包含市级管理员 和 系统管理员 全部架构
+            if (roles.Contains(RoleCodes.Admin) || roles.Contains(RoleCodes.CityAdmin))
+            {
+                root.children = await getDeptTreeAsync(new long[] { 1 });//顶级部门
+            }
+            else if (roles.Contains(RoleCodes.EnterpriseAdmin))//本部门架构
+            {
+                var user = await GetCurrentUserAsync();
+                if (!string.IsNullOrEmpty(user.EmployeeId))
+                {
+                    var employee = await _employeeRepository.GetAsync(user.EmployeeId);
+                    var depts = employee.Department.Substring(1, employee.Department.Length - 2).Split("][");//多部门拆分
+                    root.children = await getDeptTreeAsync(Array.ConvertAll(depts, d => long.Parse(d)));
+                }
+            }
+            if (root.children.Count == 0)
+            {
+                root.children.Add(new DocNzTreeNode()
+                {
+                    key = "-1",
+                    title = "没有任何部门权限"
+                });
+            }
+            else
+            {
+                root.children[0].selected = true;
+            }
+            docDeptList.Add(root);
+            return docDeptList;
+        }
+
+        #endregion
     }
 }
 

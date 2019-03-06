@@ -5,6 +5,7 @@ import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
 import { PagedResultDtoOfDocument, DocumentDto } from "@shared/entity/documents";
 import { ApiResult } from "../entity/parameter";
+import { NzTreeNode } from "ng-zorro-antd";
 
 @Injectable()
 export class DocumentService {
@@ -53,6 +54,18 @@ export class DocumentService {
         var param = { id: id };
         return this._gyhttp.delete(url_, param).map(data => {
             return data;
+        });
+    }
+
+    getDeptDocNzTreeNodes(): Observable<NzTreeNode[]> {
+        let url_ = "/api/services/app/Document/GetDeptDocNzTreeNodesAsync";
+        return this._gyhttp.get(url_, {}).map(data => {
+            let arry = [];
+            data.map(d => {
+                let tree = new NzTreeNode(d);
+                arry.push(tree);
+            });
+            return arry;
         });
     }
 }
