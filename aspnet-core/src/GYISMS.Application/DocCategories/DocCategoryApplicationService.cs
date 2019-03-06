@@ -262,7 +262,7 @@ namespace GYISMS.DocCategories
         [AbpAllowAnonymous]
         public async Task<List<TabListDto>> GetTabChildListByIdAsync(int id)
         {
-            var query = _entityRepository.GetAll().Where(v => v.ParentId == id).AsNoTracking();
+            var query = _entityRepository.GetAll().Where(v => v.ParentId == id);
             List<TabListDto> list = new List<TabListDto>();
             TabListDto item = new TabListDto();
             item.Id = id;
@@ -275,9 +275,42 @@ namespace GYISMS.DocCategories
                                     Id = t.Id,
                                     ParentId = t.ParentId,
                                     Title = t.Name
-                                }).AsNoTracking().ToListAsync();
+                                }).ToListAsync();
             list.AddRange(result);
             return list;
+        }
+
+
+        /// <summary>
+        /// 递归获取父级信息
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private void GetCurrentName(int id, ref string result)
+        {
+            var entity = _entityRepository.GetAll().Where(v => v.Id == id).AsNoTracking().FirstOrDefault();
+            result = $"{entity.Name} / " + result;
+            if (entity.ParentId.Value != 0)
+            {
+                GetCurrentName(entity.ParentId.Value,ref result);
+            }
+        }
+
+        /// <summary>
+        /// 获取层级
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<string> GetParentName(int id)
+        {
+            string result = "";
+            var doc = await _entityRepository.GetAsync(id);
+            result = doc.Name;
+            if (doc.ParentId != 0)
+            {
+               GetCurrentName(doc.ParentId.Value,ref result);
+            }
+            return result;
         }
     }
 }

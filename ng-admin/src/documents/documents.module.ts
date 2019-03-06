@@ -14,6 +14,7 @@ import { EditCategoryComponent } from './document/category/edit-category/edit-ca
 import { DocumentDetailComponent } from './document/detail/document-detail.component';
 import { UploadFileComponent } from './document/upload-file/upload-file.component';
 import { DeptUserComponent } from './document/dept-user/dept-user.component';
+import { QrCodeCategoryComponent } from './document/category/qr-code-category/qr-code-category.component';
 
 @NgModule({
     imports: [
@@ -32,14 +33,16 @@ import { DeptUserComponent } from './document/dept-user/dept-user.component';
         EditCategoryComponent,
         DocumentDetailComponent,
         UploadFileComponent,
-        DeptUserComponent
+        DeptUserComponent,
+        QrCodeCategoryComponent
     ],
     entryComponents: [
         CreateCategoryComponent,
         EditCategoryComponent,
         DocumentDetailComponent,
         UploadFileComponent,
-        DeptUserComponent
+        DeptUserComponent,
+        QrCodeCategoryComponent
     ],
     providers: [LocalizationService],
 })
