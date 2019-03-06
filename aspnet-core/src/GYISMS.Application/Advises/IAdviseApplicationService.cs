@@ -20,6 +20,7 @@ using Abp.Application.Services.Dto;
 
 using GYISMS.Advises.Dtos;
 using GYISMS.Advises;
+using GYISMS.Dtos;
 
 namespace GYISMS.Advises
 {
@@ -72,11 +73,6 @@ namespace GYISMS.Advises
         Task BatchDelete(List<Guid> input);
 
 
-		/// <summary>
-        /// 导出Advise为excel表
-        /// </summary>
-        /// <returns></returns>
-		//Task<FileDto> GetToExcel();
-
+        Task<APIResultDto> CreateAdviseAsync(AdviseEditDto input);
     }
 }

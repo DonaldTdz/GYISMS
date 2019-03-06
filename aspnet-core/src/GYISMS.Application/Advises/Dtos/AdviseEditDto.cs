@@ -1,12 +1,13 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using Abp.Domain.Entities;
 using Abp.Domain.Entities.Auditing;
 using GYISMS.Advises;
 
 namespace  GYISMS.Advises.Dtos
 {
-    public class AdviseEditDto
+    public class AdviseEditDto : Entity<Guid?>,IHasCreationTime
     {
 
         /// <summary>
@@ -50,9 +51,5 @@ namespace  GYISMS.Advises.Dtos
 		/// CreationTime
 		/// </summary>
 		public DateTime CreationTime { get; set; }
-
-
-
-
     }
 }

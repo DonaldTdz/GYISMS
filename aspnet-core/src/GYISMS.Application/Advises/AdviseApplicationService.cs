@@ -22,7 +22,7 @@ using GYISMS.Advises;
 using GYISMS.Advises.Dtos;
 using GYISMS.Advises.DomainService;
 using GYISMS.Advises.Authorization;
-
+using GYISMS.Dtos;
 
 namespace GYISMS.Advises
 {
@@ -193,19 +193,18 @@ AdviseEditDto editDto;
 			await _entityRepository.DeleteAsync(s => input.Contains(s.Id));
 		}
 
-
-		/// <summary>
-		/// 导出Advise为excel表,等待开发。
-		/// </summary>
-		/// <returns></returns>
-		//public async Task<FileDto> GetToExcel()
-		//{
-		//	var users = await UserManager.Users.ToListAsync();
-		//	var userListDtos = ObjectMapper.Map<List<UserListDto>>(users);
-		//	await FillRoleNames(userListDtos);
-		//	return _userListExcelExporter.ExportToFile(userListDtos);
-		//}
-
+        /// <summary>
+        /// 新增意见反馈
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<APIResultDto> CreateAdviseAsync(AdviseEditDto input)
+        {
+            var entity = input.MapTo<Advise>();
+            entity = await _entityRepository.InsertAsync(entity);
+            return new APIResultDto() { Code = 0, Msg = "ok" };
+        }
     }
 }
 
