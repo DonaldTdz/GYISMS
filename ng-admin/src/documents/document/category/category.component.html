@@ -14,12 +14,13 @@
 <div nz-row>
     <div nz-col nzSpan="24">
         <div *ngIf="nodes && nodes.length > 0">
-            <nz-tree #treeCom [nzData]="nodes" nzMultiple="true" (nzClick)="activeNode($event)" [nzSearchValue]="searchName"
-                (nzSearchValueChange)="nzEvent($event)" (nzDblClick)="openFolder($event)">
+            <nz-tree #treeCom [nzData]="nodes" nzMultiple="true" (nzClick)="activeNode($event)"
+                [nzSearchValue]="searchName" (nzSearchValueChange)="nzEvent($event)" (nzDblClick)="openFolder($event)">
                 <ng-template #contextTemplate>
                     <ul nz-menu nzInDropDown>
                         <li nz-menu-item (click)="edit()">修改分类</li>
                         <li nz-menu-item (click)="create('r-key')">新建子类</li>
+                        <li nz-menu-item (click)="qrCodeDetail('r-key')">预览下载</li>
                     </ul>
                 </ng-template>
                 <ng-template #nzTreeTemplate let-node>
@@ -39,7 +40,8 @@
                 </ng-template>
             </nz-tree>
         </div>
-        <div *ngIf="!nodes || nodes.length == 0" style="width:100%; text-align:left; padding-top: 15px; padding-bottom: 15px; color: grey;">
+        <div *ngIf="!nodes || nodes.length == 0"
+            style="width:100%; text-align:left; padding-top: 15px; padding-bottom: 15px; color: grey;">
             没有分类数据，点击“添加分类”进行添加
         </div>
     </div>

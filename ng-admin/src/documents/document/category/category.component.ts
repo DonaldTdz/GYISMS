@@ -11,6 +11,7 @@ import { CreateCategoryComponent } from './create-category/create-category.compo
 import { EditCategoryComponent } from './edit-category/edit-category.component';
 import { Category } from '@shared/entity/documents';
 import { CategoryService } from '@shared/service-proxies/documents';
+import { QrCodeCategoryComponent } from './qr-code-category/qr-code-category.component';
 
 
 @Component({
@@ -109,6 +110,30 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
             .subscribe(isSave => {
                 if (isSave) {
                     this.getTreeAsync();
+                }
+            });
+    }
+
+    qrCodeDetail(key: 'r-key'): void {
+        // console.log(this.rkeyNode);
+
+        if (this.dropdown) {
+            this.dropdown.close();
+        }
+        var pname;
+        var pcode;
+        if (key === 'r-key') {
+            pname = this.rkeyNode.title;
+            pcode = this.rkeyNode.key;
+        }
+        this.modalHelper
+            .open(QrCodeCategoryComponent, { pname: pname, pcode: pcode }, 'md', {
+                nzMask: true,
+                nzClosable: false,
+            })
+            .subscribe(isSave => {
+                if (isSave) {
+                    // this.getTreeAsync();
                 }
             });
     }

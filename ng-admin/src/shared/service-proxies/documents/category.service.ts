@@ -32,4 +32,10 @@ export class CategoryService {
         });
     }
 
+    getParentName(id: number): Observable<string> {
+        let url_ = "/api/services/app/DocCategory/GetParentName?id=" + id;
+        return this._gyhttp.get(url_).map(data => {
+            return data;
+        });
+    }
 }
