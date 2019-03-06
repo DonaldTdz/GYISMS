@@ -135,6 +135,22 @@ namespace GYISMS.Employees.Dtos
         //// custom codes end
     }
 
+    public class DocNzTreeNode : NzTreeNode
+    {
+        public override bool IsLeaf
+        {
+            get
+            {
+                if (children.Count == 0)
+                {
+                    return true;
+                }
+                return false;
+            }
+        }
+        public new List<DocNzTreeNode> children { get; set; }
+    }
+
     public class DingDingUserDto
     {
         public string Id { get; set; }

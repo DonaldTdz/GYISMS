@@ -21,6 +21,7 @@ using Abp.Application.Services.Dto;
 using GYISMS.Documents.Dtos;
 using GYISMS.Documents;
 using GYISMS.Dtos;
+using GYISMS.Employees.Dtos;
 
 namespace GYISMS.Documents
 {
@@ -72,19 +73,17 @@ namespace GYISMS.Documents
         /// </summary>
         Task BatchDelete(List<Guid> input);
 
-        Task<DocumentListDto> GetDocInfoByScanAsync(Guid id, string host);
+        Task<DocumentListDto> GetDocInfoByScanAsync(Guid id, string host, string uid);
         Task<List<DocumentListDto>> GetDocListByParentIdAsync(string categoryCode, string userId, int pageIndex, int pageSize);
         Task<List<DocumentListDto>> GetDocListByInputAsync(string input, string catId, string userId, int pageIndex, int pageSize);
-
-        /// <summary>
-        /// 导出Document为excel表
-        /// </summary>
-        /// <returns></returns>
-        //Task<FileDto> GetToExcel();
 
         Task DownloadZipFileTest();
 
         Task<APIResultDto> DownloadQRCodeZip(GetDocumentsInput input);
         Task<bool> GetHasDocPermissionFromScanAsync(Guid id, string userId);
+
+        Task SaveDocDingTalkAsync(DocDingTalkInput input);
+
+        Task<List<DocNzTreeNode>> GetDeptDocNzTreeNodesAsync();
     }
 }

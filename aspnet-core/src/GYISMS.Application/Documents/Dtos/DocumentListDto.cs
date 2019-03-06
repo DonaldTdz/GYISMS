@@ -105,8 +105,46 @@ namespace GYISMS.Documents.Dtos
 
     public class GridDocListDto
     {
-        public string Icon { get; set; }
-        public string Text { get; set; }
-        public string FileUrl { get; set; }
+        private string _host { get; set; }
+        public GridDocListDto(string host)
+        {
+            _host = host;
+        }
+        public Guid Id { get; set; }
+        public string Icon
+        {
+            get
+            {
+                return _host + "knowledge/annex.png";
+            }
+        }
+        [NonSerialized]
+        public string Name;
+        [NonSerialized]
+        public string Path;
+        public string Text
+        {
+            get
+            {
+                return Name + Path.Substring(Path.LastIndexOf('.'));
+            }
+        }
+        public string FileUrl
+        {
+            get
+            {
+                return _host + Path;
+            }
+        }
+
+        public string SpaceId { get; set; }
+
+        public string FileId { get; set; }
+
+        public string FileName { get; set; }
+
+        public string FileType { get; set; }
+
+        public long? FileSize { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 <div nz-row>
-    <div nz-col nzSpan="18" style="padding-right:10px;">
+    <div nz-col nzSpan="15" style="padding-right:10px;">
         <nz-input-group nzSearch [nzSuffix]="suffixButton">
             <input type="text" [(ngModel)]="searchName" nz-input placeholder="分类名称">
         </nz-input-group>
@@ -7,7 +7,7 @@
             <button nz-button nzType="default" nzSearch><i class="anticon anticon-search"></i></button>
         </ng-template>
     </div>
-    <div nz-col nzSpan="6" style="text-align:center;">
+    <div nz-col nzSpan="9" style="text-align:center;">
         <button nz-button type="button" (click)="create('click')" nzType="primary">添加分类</button>
     </div>
 </div>

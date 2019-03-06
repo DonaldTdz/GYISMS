@@ -1,10 +1,14 @@
 <page-header [title]=""></page-header>
 <nz-card>
     <div nz-row>
-        <div nz-col nzSpan="6">
+        <div nz-col nzSpan="4">
+            <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultExpandAll]="true">
+            </nz-tree>
+        </div>
+        <div nz-col nzSpan="5">
             <doc-category (selectedCategory)="onSelectedCategory($event)"></doc-category>
         </div>
-        <div nz-col nzSpan="18">
+        <div nz-col nzSpan="15">
             <doc-list #docList></doc-list>
         </div>
     </div>
