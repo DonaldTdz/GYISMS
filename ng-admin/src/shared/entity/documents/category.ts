@@ -4,6 +4,7 @@ export class Category implements ICategory {
     parentId: number;
     desc: string;
     parentName: string;
+    deptId: number;
 
     constructor(data?: ICategory) {
         if (data) {
@@ -21,6 +22,7 @@ export class Category implements ICategory {
             this.parentId = data["parentId"];
             this.desc = data["desc"];
             this.parentName = data["parentName"];
+            this.deptId = data["deptId"];
         }
     }
 
@@ -48,6 +50,7 @@ export class Category implements ICategory {
         data["parentId"] = this.parentId;
         data["desc"] = this.desc;
         data["parentName"] = this.parentName;
+        data["deptId"] = this.deptId;
         return data;
     }
 
@@ -63,4 +66,5 @@ export interface ICategory {
     name: string;
     parentId: number;
     desc: string;
+    deptId: number;
 }

@@ -214,9 +214,13 @@ namespace GYISMS.DocCategories
             return catQuery.ToList();
         }
 
-        public async Task<List<CategoryTreeNode>> GetTreeAsync()
+        public async Task<List<CategoryTreeNode>> GetTreeAsync(long? deptId)
         {
-            var categoryList = await _entityRepository.GetAllListAsync();
+            if (!deptId.HasValue)
+            {
+                return new List<CategoryTreeNode>();
+            }
+            var categoryList = await _entityRepository.GetAll().WhereIf(deptId.HasValue,e => e.DeptId == deptId).ToListAsync();
             return GetTrees(0, categoryList);
         }
 

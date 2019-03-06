@@ -23,6 +23,8 @@ namespace GYISMS.Documents.Dtos
 
         public string KeyWord { get; set; }
 
+        public long DeptId { get; set; }
+
         /// <summary>
         /// 正常化排序使用
         /// </summary>

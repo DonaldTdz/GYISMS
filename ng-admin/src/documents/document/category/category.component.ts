@@ -21,6 +21,8 @@ import { CategoryService } from '@shared/service-proxies/documents';
 export class CategoryComponent extends AppComponentBase implements OnInit {
 
     @Input() name: string;
+    @Input() deptId: any;
+    @Input() deptName: string;
 
     @ViewChild('treeCom') treeCom: NzTreeComponent;
     dropdown: NzDropdownContextComponent;
@@ -91,7 +93,11 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
     }
 
     create(key: 'click' | 'r-key'): void {
-        console.table(key);
+        //console.table(key);
+        if (!this.deptId) {
+            this.message.warn('请选择维护部门');
+            return;
+        }
         if (this.dropdown) {
             this.dropdown.close();
         }
@@ -102,7 +108,7 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
             pname = this.rkeyNode.title;
         }
         this.modalHelper
-            .open(CreateCategoryComponent, { pid: pid, pname: pname }, 'md', {
+            .open(CreateCategoryComponent, { pid: pid, pname: pname, deptId: this.deptId }, 'md', {
                 nzMask: true,
                 nzClosable: false,
             })
@@ -113,8 +119,11 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
             });
     }
 
-    getTreeAsync() {
-        this.categoryService.getTreeAsync().subscribe(res => {
+    getTreeAsync(deptId?: any) {
+        if (!deptId) {
+            deptId = this.deptId;
+        }
+        this.categoryService.getTreeAsync(deptId).subscribe(res => {
             /*if (this.treeCom) {
                 let expNodes = this.treeCom.getExpandedNodeList();
                 //console.table(expNodes);

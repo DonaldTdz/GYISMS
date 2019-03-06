@@ -30,6 +30,7 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
 
     document: DocumentDto = new DocumentDto();
     category = { id: '', name: '' };
+    dept = { id: '', name: '' };
     isUpdate = false;
     id: any = '';
     codeStyle = 'none';
@@ -49,6 +50,8 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             this.category.id = cid;
             this.category.name = this.actRouter.snapshot.params['cname'];
         }
+        this.dept.id = this.actRouter.snapshot.params['deptId'];
+        this.dept.name = this.actRouter.snapshot.params['deptName'];
         this.id = this.actRouter.snapshot.params['id'];
         //alert(this.id);
         //console.table(this.actRouter.snapshot.params);

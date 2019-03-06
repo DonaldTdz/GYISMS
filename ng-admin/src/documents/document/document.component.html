@@ -2,11 +2,13 @@
 <nz-card>
     <div nz-row>
         <div nz-col nzSpan="4">
-            <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultExpandAll]="true">
+            <nz-spin nzSimple [nzSize]="'small'" *ngIf="!nodes || nodes.length == 0"></nz-spin>
+            <nz-tree #detpTree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultExpandAll]="true">
             </nz-tree>
         </div>
         <div nz-col nzSpan="5">
-            <doc-category (selectedCategory)="onSelectedCategory($event)"></doc-category>
+            <doc-category #docCategory *ngIf="selectedDept" [deptId]="selectedDept.id" [deptName]="selectedDept.name"
+                (selectedCategory)="onSelectedCategory($event)"></doc-category>
         </div>
         <div nz-col nzSpan="15">
             <doc-list #docList></doc-list>

@@ -15,6 +15,7 @@ export class CreateCategoryComponent extends ModalFormComponentBase<Category> im
 
     @Input() pid: number = 0;
     @Input() pname: string;
+    @Input() deptId: any;
     @Input() names: any[];
 
     constructor(
@@ -42,6 +43,7 @@ export class CreateCategoryComponent extends ModalFormComponentBase<Category> im
 
 
     protected submitExecute(finisheCallback: Function): void {
+        this.category.deptId = this.deptId;
         this._categoryService.createOrUpdate(this.category)
             .finally(() => { this.saving = false; })
             .subscribe(res => {

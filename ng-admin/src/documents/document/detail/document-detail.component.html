@@ -3,6 +3,12 @@
         <div nz-row>
             <div nz-col [nzSpan]="16">
                 <nz-form-item nz-row style="margin-bottom: 0px;">
+                    <nz-form-label nz-col [nzSm]="4" nzRequired>维护部门</nz-form-label>
+                    <nz-form-control nz-col [nzSm]="20">
+                        <label>{{dept.name}}</label>
+                    </nz-form-control>
+                </nz-form-item>
+                <nz-form-item nz-row style="margin-bottom: 0px;">
                     <nz-form-label nz-col [nzSm]="4" nzRequired>资料分类</nz-form-label>
                     <nz-form-control nz-col [nzSm]="20">
                         <label>{{category.name}}</label>
@@ -12,15 +18,21 @@
                     <nz-form-label nz-col [nzSm]="4" nzRequired>资料名称</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
                         <input nz-input formControlName="name" id="name" [placeholder]="'请填写资料名称'">
-                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">字符长度小于等于200</nz-form-explain>
-                        <nz-form-explain *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">请输入资料名称</nz-form-explain>
+                        <nz-form-explain
+                            *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('maxlength')">
+                            字符长度小于等于200</nz-form-explain>
+                        <nz-form-explain
+                            *ngIf="validateForm.get('name').dirty&&validateForm.get('name').hasError('required')">
+                            请输入资料名称</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzFor="summary" nzRequired>摘要说明</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
                         <textarea nz-input rows="5" formControlName="summary" [placeholder]="'请填写摘要说明'"></textarea>
-                        <nz-form-explain *ngIf="validateForm.get('summary').dirty&&validateForm.get('summary').hasError('maxlength')">字符长度小于等于1000</nz-form-explain>
+                        <nz-form-explain
+                            *ngIf="validateForm.get('summary').dirty&&validateForm.get('summary').hasError('maxlength')">
+                            字符长度小于等于1000</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
                 <nz-form-item nz-row>
@@ -38,10 +50,12 @@
                         </nz-radio-group>
                         <!-- <input nz-input *ngIf="isAllUser == '0'" readonly="readonly" style="color:#1890ff;" value="{{userDesc? userDesc : '部门，人'}}">-->
                         <div *ngIf="isAllUser == '0'">
-                            <nz-tag *ngFor="let dept of deptTags; let i = index;" [nzColor]="'blue'" [nzMode]="'closeable'" (nzAfterClose)="handleDeptClose(dept)">
+                            <nz-tag *ngFor="let dept of deptTags; let i = index;" [nzColor]="'blue'"
+                                [nzMode]="'closeable'" (nzAfterClose)="handleDeptClose(dept)">
                                 {{ dept.name }}
                             </nz-tag>
-                            <nz-tag *ngFor="let user of userTags; let i = index;" [nzMode]="'closeable'" (nzAfterClose)="handleUserClose(user)">
+                            <nz-tag *ngFor="let user of userTags; let i = index;" [nzMode]="'closeable'"
+                                (nzAfterClose)="handleUserClose(user)">
                                 {{ user.name }}
                             </nz-tag>
                             <nz-tag class="editable-tag" [nzColor]="'#108ee9'" (click)="showDeptUserModel()">
@@ -54,15 +68,18 @@
                     <nz-form-label nz-col [nzSm]="4" nzRequired>发布日期</nz-form-label>
                     <nz-form-control [nzSm]="20" nzHasFeedback>
                         <nz-date-picker [nzFormat]="'yyyy/MM/dd'" formControlName="releaseDate"></nz-date-picker>
-                        <nz-form-explain *ngIf="validateForm.get('releaseDate').dirty&&validateForm.get('releaseDate').hasError('required')">请输入发布日期</nz-form-explain>
+                        <nz-form-explain
+                            *ngIf="validateForm.get('releaseDate').dirty&&validateForm.get('releaseDate').hasError('required')">
+                            请输入发布日期</nz-form-explain>
                     </nz-form-control>
                 </nz-form-item>
             </div>
             <div nz-col [nzSpan]="8" class="text-center">
                 <div [style.display]="codeStyle">
-                    <qr [value]="qrCode.value" [background]="qrCode.background" [backgroundAlpha]="qrCode.backgroundAlpha" [foreground]="qrCode.foreground"
-                        [foregroundAlpha]="qrCode.foregroundAlpha" [level]="qrCode.level" [mime]="qrCode.mime" [padding]="qrCode.padding"
-                        [size]="qrCode.size" style="border:1px solid #999"></qr>
+                    <qr [value]="qrCode.value" [background]="qrCode.background"
+                        [backgroundAlpha]="qrCode.backgroundAlpha" [foreground]="qrCode.foreground"
+                        [foregroundAlpha]="qrCode.foregroundAlpha" [level]="qrCode.level" [mime]="qrCode.mime"
+                        [padding]="qrCode.padding" [size]="qrCode.size" style="border:1px solid #999"></qr>
                 </div>
             </div>
         </div>
