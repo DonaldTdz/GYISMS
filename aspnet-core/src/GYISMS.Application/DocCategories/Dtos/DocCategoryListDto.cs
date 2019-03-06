@@ -35,6 +35,11 @@ namespace GYISMS.DocCategories.Dtos
 		public string Desc { get; set; }
 
         public string Summary { get; set; }
+
+        /// <summary>
+        /// 维护部门Id
+        /// </summary>
+        public long? DeptId { get; set; }
     }
 
     public class GridListDto

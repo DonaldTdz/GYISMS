@@ -25,11 +25,17 @@ export class CategoryService {
         });
     }
 
-    getTreeAsync(): Observable<any> {
+    getTreeAsync(deptId: any): Observable<any> {
         let url_ = "/api/services/app/DocCategory/GetTreeAsync";
-        return this._gyhttp.get(url_, {}).map(data => {
+        return this._gyhttp.get(url_, { deptId: deptId }).map(data => {
             return data;
         });
     }
 
+    getParentName(id: number): Observable<string> {
+        let url_ = "/api/services/app/DocCategory/GetParentName?id=" + id;
+        return this._gyhttp.get(url_).map(data => {
+            return data;
+        });
+    }
 }

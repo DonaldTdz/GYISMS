@@ -13,6 +13,7 @@ import { ApiResult } from '@shared/service-proxies/entity/parameter';
 export class DocListComponent extends AppComponentBase implements OnInit {
 
     @Input() categoryId: any;
+    dept: any = { id: '', name: '' };
     keyWord: string;
     loading = false;
     downloading = false;
@@ -39,6 +40,7 @@ export class DocListComponent extends AppComponentBase implements OnInit {
         params.KeyWord = this.keyWord;
         //alert(this.selectedCategory ? this.selectedCategory.name : '');
         params.CategoryId = this.selectedCategory ? this.selectedCategory.id : null;
+        params.DeptId = this.dept.id;
         this.documentService.getPaged(params).subscribe((result: PagedResultDtoOfDocument) => {
             this.loading = false;
             this.docs = result.items;
@@ -51,11 +53,11 @@ export class DocListComponent extends AppComponentBase implements OnInit {
             this.notify.info('请先选择分类');
             return;
         }
-        this.router.navigate(['app/doc/doc-detail', { cid: this.selectedCategory.id, cname: this.selectedCategory.name }]);
+        this.router.navigate(['app/doc/doc-detail', { cid: this.selectedCategory.id, cname: this.selectedCategory.name, deptId: this.dept.id, deptName: this.dept.name }]);
     }
 
     edit(item) {
-        this.router.navigate(['app/doc/doc-detail', item.id]);
+        this.router.navigate(['app/doc/doc-detail', { id: item.id, deptId: this.dept.id, deptName: this.dept.name }]);
     }
 
     download() {
@@ -63,6 +65,7 @@ export class DocListComponent extends AppComponentBase implements OnInit {
         let params: any = {};
         params.KeyWord = this.keyWord;
         params.CategoryId = this.selectedCategory ? this.selectedCategory.id : null;
+        params.DeptId = this.dept.id;
         this.documentService.download(params).subscribe((result: ApiResult) => {
             this.downloading = false;
             if (result.code == 0) {

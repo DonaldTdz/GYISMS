@@ -11,6 +11,7 @@ import { CreateCategoryComponent } from './create-category/create-category.compo
 import { EditCategoryComponent } from './edit-category/edit-category.component';
 import { Category } from '@shared/entity/documents';
 import { CategoryService } from '@shared/service-proxies/documents';
+import { QrCodeCategoryComponent } from './qr-code-category/qr-code-category.component';
 
 
 @Component({
@@ -21,6 +22,8 @@ import { CategoryService } from '@shared/service-proxies/documents';
 export class CategoryComponent extends AppComponentBase implements OnInit {
 
     @Input() name: string;
+    @Input() deptId: any;
+    @Input() deptName: string;
 
     @ViewChild('treeCom') treeCom: NzTreeComponent;
     dropdown: NzDropdownContextComponent;
@@ -91,7 +94,11 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
     }
 
     create(key: 'click' | 'r-key'): void {
-        console.table(key);
+        //console.table(key);
+        if (!this.deptId) {
+            this.message.warn('请选择维护部门');
+            return;
+        }
         if (this.dropdown) {
             this.dropdown.close();
         }
@@ -102,7 +109,7 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
             pname = this.rkeyNode.title;
         }
         this.modalHelper
-            .open(CreateCategoryComponent, { pid: pid, pname: pname }, 'md', {
+            .open(CreateCategoryComponent, { pid: pid, pname: pname, deptId: this.deptId }, 'md', {
                 nzMask: true,
                 nzClosable: false,
             })
@@ -113,8 +120,35 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
             });
     }
 
-    getTreeAsync() {
-        this.categoryService.getTreeAsync().subscribe(res => {
+    qrCodeDetail(key: 'r-key'): void {
+        // console.log(this.rkeyNode);
+
+        if (this.dropdown) {
+            this.dropdown.close();
+        }
+        var pname;
+        var pcode;
+        if (key === 'r-key') {
+            pname = this.rkeyNode.title;
+            pcode = this.rkeyNode.key;
+        }
+        this.modalHelper
+            .open(QrCodeCategoryComponent, { pname: pname, pcode: pcode }, 'md', {
+                nzMask: true,
+                nzClosable: false,
+            })
+            .subscribe(isSave => {
+                if (isSave) {
+                    // this.getTreeAsync();
+                }
+            });
+    }
+
+    getTreeAsync(deptId?: any) {
+        if (!deptId) {
+            deptId = this.deptId;
+        }
+        this.categoryService.getTreeAsync(deptId).subscribe(res => {
             /*if (this.treeCom) {
                 let expNodes = this.treeCom.getExpandedNodeList();
                 //console.table(expNodes);

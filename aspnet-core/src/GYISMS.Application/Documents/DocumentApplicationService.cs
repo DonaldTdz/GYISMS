@@ -31,6 +31,7 @@ using System.Text.RegularExpressions;
 using GYISMS.DocDingTalks;
 using GYISMS.Employees.Dtos;
 using GYISMS.Organizations;
+using GYISMS.DocCategories;
 
 namespace GYISMS.Documents
 {
@@ -48,6 +49,7 @@ namespace GYISMS.Documents
         private readonly IDocCategoryManager _docCategoryManager;
         private readonly IRepository<Employee, string> _employeeRepository;
         private readonly IRepository<Organization, long> _organizationRepository;
+        private readonly IRepository<DocCategory> _docCategoryRepository;
 
         /// <summary>
         /// 构造函数 
@@ -61,6 +63,7 @@ namespace GYISMS.Documents
         , IRepository<Employee, string> employeeRepository
         , IRepository<DocDingTalk, Guid> docDocDingTalkRepository
         , IRepository<Organization, long> organizationRepository
+        , IRepository<DocCategory> docCategoryRepository
         )
         {
             _entityRepository = entityRepository;
@@ -71,6 +74,7 @@ namespace GYISMS.Documents
             _employeeRepository = employeeRepository;
             _docDocDingTalkRepository = docDocDingTalkRepository;
             _organizationRepository = organizationRepository;
+            _docCategoryRepository = docCategoryRepository;
         }
 
 
@@ -82,8 +86,10 @@ namespace GYISMS.Documents
 
         public async Task<PagedResultDto<DocumentListDto>> GetPaged(GetDocumentsInput input)
         {
-
+            var categories = await _docCategoryRepository.GetAll().Where(d => d.DeptId == input.DeptId).Select(c => c.Id).ToArrayAsync();
+            var carr = Array.ConvertAll(categories, c => "," + c + ",");
             var query = _entityRepository.GetAll()
+                .Where(e => carr.Any(c => ("," + e.CategoryCode + ",").Contains(c)))
                 .WhereIf(!string.IsNullOrEmpty(input.CategoryCode), e => ("," + e.CategoryCode + ",").Contains(input.CategoryCode))
                 .WhereIf(!string.IsNullOrEmpty(input.KeyWord), e => e.Name.Contains(input.KeyWord) || e.Summary.Contains(input.KeyWord));
 
@@ -231,7 +237,11 @@ namespace GYISMS.Documents
 
         public async Task<APIResultDto> DownloadQRCodeZip(GetDocumentsInput input)
         {
+            var categories = await _docCategoryRepository.GetAll().Where(d => d.DeptId == input.DeptId).Select(c => c.Id).ToArrayAsync();
+            var carr = Array.ConvertAll(categories, c => "," + c + ",");
+
             var query = _entityRepository.GetAll()
+                .Where(e => carr.Any(c => ("," + e.CategoryCode + ",").Contains(c)))
                 .WhereIf(!string.IsNullOrEmpty(input.CategoryCode), e => ("," + e.CategoryCode + ",").Contains(input.CategoryCode))
                 .WhereIf(!string.IsNullOrEmpty(input.KeyWord), e => e.Name.Contains(input.KeyWord) || e.Summary.Contains(input.KeyWord));
             var docs = await query.Select(q => new { q.Id, q.Name, q.CategoryDesc }).ToListAsync();

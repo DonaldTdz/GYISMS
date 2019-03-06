@@ -78,7 +78,7 @@ namespace GYISMS.DocCategories
         /// <returns></returns>
         //Task<FileDto> GetToExcel();
 
-        Task<List<CategoryTreeNode>> GetTreeAsync();
+        Task<List<CategoryTreeNode>> GetTreeAsync(long? deptId);
         Task<List<GridListDto>> GetCategoryListAsync(string host,string userId);
         Task<List<TabListDto>> GetTabChildListByIdAsync(int id);
         Task<string> GetParentName(int id);

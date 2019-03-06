@@ -15,22 +15,20 @@ namespace  GYISMS.DocCategories.Dtos
 		[Required(ErrorMessage="Name不能为空")]
 		public string Name { get; set; }
 
-
-
 		/// <summary>
 		/// ParentId
 		/// </summary>
 		public int? ParentId { get; set; }
-
-
 
 		/// <summary>
 		/// Desc
 		/// </summary>
 		public string Desc { get; set; }
 
-
-
+        /// <summary>
+        /// 维护部门Id
+        /// </summary>
+        public long? DeptId { get; set; }
 
     }
 }
