@@ -3,7 +3,7 @@ import { GyismsHttpClient } from "@shared/service-proxies/gyisms-httpclient";
 import { Injectable, Inject, Optional } from "@angular/core";
 import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
-import { PagedResultDtoOfDocument, DocumentDto } from "@shared/entity/documents";
+import { PagedResultDtoOfDocument, DocumentDto, PagedResultDtoOfAdvise } from "@shared/entity/documents";
 import { ApiResult } from "../entity/parameter";
 import { NzTreeNode } from "ng-zorro-antd";
 
@@ -66,6 +66,13 @@ export class DocumentService {
                 arry.push(tree);
             });
             return arry;
+        });
+    }
+
+    getAdvisePaged(param: any): Observable<PagedResultDtoOfAdvise> {
+        let url_ = "/api/services/app/Advise/GetPaged";
+        return this._gyhttp.get(url_, param).map(data => {
+            return PagedResultDtoOfAdvise.fromJS(data);
         });
     }
 }

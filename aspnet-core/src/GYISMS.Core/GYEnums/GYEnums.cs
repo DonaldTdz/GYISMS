@@ -125,7 +125,8 @@ namespace GYISMS.GYEnums
         public static string JGXPID = "JGXPID";
         public static string WCXPID = "WCXPID";
         public static string LocationLimitCode = "LocationLimitCode";
-
+        public static string DocMediaId = "DocMediaId"; 
+        public static string DeptArry = "DeptArry";
         /// <summary>
         /// 昭化区 组织代码
         /// </summary>

@@ -26,12 +26,15 @@ namespace GYISMS.Organizations.Dtos
         public DingMsg()
         {
             link = new DingLinkMsg();
+            text = new DingTextMsg();
         }
+
         public string msgtype { get; set; }
 
         public DingLinkMsg link { get; set; }
-    }
+        public DingTextMsg text { get; set; }
 
+    }
     public class DingLinkMsg
     {
         public string messageUrl { get; set; }
@@ -41,5 +44,9 @@ namespace GYISMS.Organizations.Dtos
         public string text { get; set; }
 
         public string title { get; set; }
+    }
+    public class DingTextMsg
+    {
+        public string content { get; set; }
     }
 }

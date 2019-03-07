@@ -1,0 +1,28 @@
+<div nz-row>
+    <div nz-col nzSpan="24">
+        <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
+        <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total"
+            [nzData]="adviseList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize"
+            [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(false)"
+            (nzPageSizeChange)="refreshData(false)">
+            <thead>
+                <tr>
+                    <th>资料名称</th>
+                    <th>资料分类</th>
+                    <th>反馈内容</th>
+                    <th>反馈用户</th>
+                    <th>反馈时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of nzTable.data">
+                    <td>{{item.documentName}}</td>
+                    <td>{{item.categoryName}}</td>
+                    <td>{{item.content}}</td>
+                    <td>{{item.employeeName}}</td>
+                    <td>{{item.creationTime | _date}}</td>
+                </tr>
+            </tbody>
+        </nz-table>
+    </div>
+</div>

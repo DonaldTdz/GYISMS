@@ -14,7 +14,7 @@ namespace GYISMS.Advises
         /// </summary>
         [Required]
         [StringLength(200)]
-        public virtual string DocumentId { get; set; }
+        public virtual Guid DocumentId { get; set; }
 
         /// <summary>
         /// 员工id

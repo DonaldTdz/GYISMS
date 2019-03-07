@@ -21,7 +21,7 @@ namespace  GYISMS.Advises.Dtos
 		/// DocumentId
 		/// </summary>
 		[Required(ErrorMessage="DocumentId不能为空")]
-		public string DocumentId { get; set; }
+		public Guid DocumentId { get; set; }
 
 
 

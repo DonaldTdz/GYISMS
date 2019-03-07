@@ -15,6 +15,8 @@ import { DocumentDetailComponent } from './document/detail/document-detail.compo
 import { UploadFileComponent } from './document/upload-file/upload-file.component';
 import { DeptUserComponent } from './document/dept-user/dept-user.component';
 import { QrCodeCategoryComponent } from './document/category/qr-code-category/qr-code-category.component';
+import { AdvisesComponent } from './advises/advises.component';
+import { AdviseListComponent } from './advises/advise-list/advise-list.component';
 
 @NgModule({
     imports: [
@@ -34,7 +36,9 @@ import { QrCodeCategoryComponent } from './document/category/qr-code-category/qr
         DocumentDetailComponent,
         UploadFileComponent,
         DeptUserComponent,
-        QrCodeCategoryComponent
+        QrCodeCategoryComponent,
+        AdvisesComponent,
+        AdviseListComponent
     ],
     entryComponents: [
         CreateCategoryComponent,
@@ -42,7 +46,9 @@ import { QrCodeCategoryComponent } from './document/category/qr-code-category/qr
         DocumentDetailComponent,
         UploadFileComponent,
         DeptUserComponent,
-        QrCodeCategoryComponent
+        QrCodeCategoryComponent,
+        AdvisesComponent,
+        AdviseListComponent
     ],
     providers: [LocalizationService],
 })

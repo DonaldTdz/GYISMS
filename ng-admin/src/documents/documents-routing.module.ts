@@ -4,6 +4,7 @@ import { AppRouteGuard } from '@shared/auth/auth-route-guard';
 import { ACLGuard } from '@delon/acl';
 import { DocumentComponent } from './document/document.component';
 import { DocumentDetailComponent } from './document/detail/document-detail.component';
+import { AdvisesComponent } from './advises/advises.component';
 
 const routes: Routes = [
     {
@@ -21,6 +22,12 @@ const routes: Routes = [
     {
         path: 'doc-detail/:id',
         component: DocumentDetailComponent,
+        canActivate: [AppRouteGuard, ACLGuard],
+        data: { guard: 'EnterpriseAdmin' },
+    },
+    {
+        path: 'advise',
+        component: AdvisesComponent,
         canActivate: [AppRouteGuard, ACLGuard],
         data: { guard: 'EnterpriseAdmin' },
     }
