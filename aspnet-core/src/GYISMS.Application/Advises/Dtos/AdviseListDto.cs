@@ -16,7 +16,7 @@ namespace GYISMS.Advises.Dtos
 		/// DocumentId
 		/// </summary>
 		[Required(ErrorMessage="DocumentId不能为空")]
-		public string DocumentId { get; set; }
+		public Guid DocumentId { get; set; }
 
 
 
@@ -46,9 +46,39 @@ namespace GYISMS.Advises.Dtos
 		/// CreationTime
 		/// </summary>
 		public DateTime CreationTime { get; set; }
+    }
 
+    //后台意见反馈dto
+    public class AdviseDto : EntityDto<Guid>
+    {
+        public string DocumentName { get; set; }
+        public string CategoryName { get; set; }
+        public string CategoryCode { get; set; }
+        public string EmployeeName { get; set; }
+        public string Content { get; set; }
+        public DateTime CreationTime { get; set; }
+    }
 
+    public class DDAdviseDto
+    {
+        public string DocumentName { get; set; }
 
+        /// <summary>
+        /// EmployeeName
+        /// </summary>
+        public string EmployeeName { get; set; }
 
+        public string Content { get; set; }
+        /// <summary>
+        /// CreationTime
+        /// </summary>
+        public DateTime CreationTime { get; set; }
+        public string TimeFormat
+        {
+            get
+            {
+                return CreationTime.ToString("yyyy.MM.dd HH:mm");
+            }
+        }
     }
 }

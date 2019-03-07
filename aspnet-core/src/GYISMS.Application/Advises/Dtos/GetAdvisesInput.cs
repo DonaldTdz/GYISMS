@@ -7,7 +7,7 @@ namespace GYISMS.Advises.Dtos
 {
     public class GetAdvisesInput : PagedSortedAndFilteredInputDto, IShouldNormalize
     {
-
+        public long DeptId { get; set; }
         /// <summary>
         /// 正常化排序使用
         /// </summary>

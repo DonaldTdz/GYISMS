@@ -142,7 +142,13 @@ export class DefaultLayoutComponent extends AppComponentBase
                 '',
                 '',
                 '/app/doc/document',
-            )
+            ),
+            new MenuItem(
+                '意见反馈',
+                '',
+                '',
+                '/app/doc/advise',
+            ),
             ], null, 'EnterpriseAdmin'
         ),
         // 配置管理

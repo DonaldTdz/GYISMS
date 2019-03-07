@@ -1,3 +1,5 @@
+import { Advise } from "./advise";
+
 export class DocumentDto implements IDocumentDto {
     id: string;
     name: string;
@@ -182,4 +184,58 @@ export class PagedResultDtoOfDocument implements IPagedResultDtoOfDocument {
 export interface IPagedResultDtoOfDocument {
     totalCount: number;
     items: DocumentDto[];
+}
+
+export class PagedResultDtoOfAdvise implements IPagedResultDtoOfAdvise {
+    totalCount: number;
+    items: Advise[];
+
+    constructor(data?: IPagedResultDtoOfAdvise) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.totalCount = data["totalCount"];
+            if (data["items"] && data["items"].constructor === Array) {
+                this.items = [];
+                for (let item of data["items"])
+                    this.items.push(Advise.fromJS(item));
+            }
+        }
+    }
+
+    static fromJS(data: any): PagedResultDtoOfAdvise {
+        let result = new PagedResultDtoOfAdvise();
+        result.init(data);
+        return result;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["totalCount"] = this.totalCount;
+        if (this.items && this.items.constructor === Array) {
+            data["items"] = [];
+            for (let item of this.items)
+                data["items"].push(item.toJSON());
+        }
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new PagedResultDtoOfAdvise();
+        result.init(json);
+        return result;
+    }
+}
+
+export interface IPagedResultDtoOfAdvise {
+    totalCount: number;
+    items: Advise[];
 }

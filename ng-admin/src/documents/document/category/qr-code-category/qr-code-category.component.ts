@@ -32,7 +32,7 @@ export class QrCodeCategoryComponent extends ModalComponentBase implements OnIni
 
     ngOnInit() {
         this.qrCode.value = ',' + this.pcode;
-        this.getParentName(parseInt(this.qrCode.value));
+        this.getParentName(parseInt(this.pcode));
     }
 
     getParentName(id: number) {

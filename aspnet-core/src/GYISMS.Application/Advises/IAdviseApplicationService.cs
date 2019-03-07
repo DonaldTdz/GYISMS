@@ -34,7 +34,7 @@ namespace GYISMS.Advises
 		///</summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        Task<PagedResultDto<AdviseListDto>> GetPaged(GetAdvisesInput input);
+        Task<PagedResultDto<AdviseDto>> GetPaged(GetAdvisesInput input);
 
 
 		/// <summary>
@@ -74,5 +74,6 @@ namespace GYISMS.Advises
 
 
         Task<APIResultDto> CreateAdviseAsync(AdviseEditDto input);
+        Task<DDAdviseDto> GetDDAdviseByIdAsync(Guid id);
     }
 }
