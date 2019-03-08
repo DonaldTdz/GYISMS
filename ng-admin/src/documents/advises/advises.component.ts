@@ -39,6 +39,7 @@ export class AdvisesComponent extends AppComponentBase implements OnInit {
             this.selectedDept = { id: data.node.key, name: data.node.title };
         }
         this.adviseList.deptId = this.selectedDept.id;
+        this.adviseList.keyWord = '';
         // console.log(this.adviseList.deptId);
         if (this.adviseList.deptId.replace(/(^s*)|(s*$)/g, "").length != 0) {
             this.adviseList.refreshData(true);

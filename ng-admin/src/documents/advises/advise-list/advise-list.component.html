@@ -1,4 +1,14 @@
 <div nz-row>
+    <div nz-col nzSpan="24" style="padding-right:10px;">
+        <nz-input-group nzSearch [nzSuffix]="suffixButton">
+            <input type="text" [(ngModel)]="keyWord" nz-input placeholder="资料名称、反馈用户姓名">
+        </nz-input-group>
+        <ng-template #suffixButton>
+            <button nz-button nzType="default" [nzLoading]="loading" (click)="refreshData(true)" nzSearch>搜索</button>
+        </ng-template>
+    </div>
+</div>
+<div nz-row>
     <div nz-col nzSpan="24">
         <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
         <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total"
