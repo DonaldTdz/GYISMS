@@ -152,7 +152,7 @@ namespace GYISMS.Growers
                                            EmployeeId = g.EmployeeId,
                                            UnitName = g.UnitName,
                                            Tel = g.Tel
-                                       }).AsNoTracking().ToListAsync();
+                                       }).ToListAsync();
                     var scheduleDto = from s in scheduleDetailList
                                       select new
                                       {
@@ -192,7 +192,7 @@ namespace GYISMS.Growers
                                            EmployeeId = g.EmployeeId,
                                            UnitName = g.UnitName,
                                            Tel = g.Tel
-                                       }).AsNoTracking().ToListAsync();
+                                       }).ToListAsync();
                     var scheduleDto = from s in scheduleDetailList
                                       select new
                                       {
@@ -236,7 +236,7 @@ namespace GYISMS.Growers
                                            UnitName = g.UnitName,
                                            Tel = g.Tel,
                                            //Checked = true
-                                       }).AsNoTracking().ToListAsync();
+                                       }).ToListAsync();
                     return query;
                 }
                 else
@@ -256,7 +256,7 @@ namespace GYISMS.Growers
                                            UnitName = g.UnitName,
                                            Tel = g.Tel,
                                            //Checked = true
-                                       }).AsNoTracking().ToListAsync();
+                                       }).ToListAsync();
                     return query;
                 }
 

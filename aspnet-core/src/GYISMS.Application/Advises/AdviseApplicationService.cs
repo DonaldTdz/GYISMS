@@ -99,7 +99,7 @@ namespace GYISMS.Advises
             var result = await(from a in advise
                          join e in employee on a.EmployeeId equals e.Id
                          join d in doc on a.DocumentId equals d.Id
-                         where e.Department.Contains(input.DeptId.ToString())
+                         where e.Department.Contains(input.DeptId.ToString())                        
                          select new AdviseDto()
                          {
                              Id = a.Id,
@@ -109,7 +109,7 @@ namespace GYISMS.Advises
                              DocumentName = d.Name,
                              CategoryCode = d.CategoryCode
                              //DepartmentName = o.DepartmentName
-                         }).OrderByDescending(v=>v.CreationTime).ToListAsync();
+                         }).WhereIf(!string.IsNullOrEmpty(input.KeyWord),v=>v.EmployeeName.Contains(input.KeyWord)||v.DocumentName.Contains(input.KeyWord)).OrderByDescending(v=>v.CreationTime).ToListAsync();
 
             foreach (var item in result)
             {               
@@ -276,7 +276,7 @@ namespace GYISMS.Advises
                 foreach (var item in deptArry)
                 {
 
-                    adminIds.AddRange(await _employeeRepository.GetAll().Where(v => v.Department.Contains(userDeptId) && v.Position.Contains(item)).Select(v => v.Id).ToListAsync());
+                    adminIds.AddRange(await _employeeRepository.GetAll().Where(v => v.Department.Contains(userDeptId) && v.Position == item).Select(v => v.Id).ToListAsync());
                 }
 
                 DingDingAppConfig ddConfig = _dingDingAppService.GetDingDingConfigByApp(DingDingAppEnum.资料标准库);

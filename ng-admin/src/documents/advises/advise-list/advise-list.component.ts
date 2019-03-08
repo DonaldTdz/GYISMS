@@ -35,7 +35,7 @@ export class AdviseListComponent extends AppComponentBase implements OnInit {
         let params: any = {};
         params.SkipCount = this.query.skipCount();
         params.MaxResultCount = this.query.pageSize;
-        // params.KeyWord = this.keyWord;
+        params.KeyWord = this.keyWord;
         // params.CategoryId = this.selectedCategory ? this.selectedCategory.id : null;
         params.DeptId = this.deptId;
         this.documentService.getAdvisePaged(params).subscribe((result: PagedResultDtoOfAdvise) => {
