@@ -33,8 +33,6 @@ using GYISMS.Employees;
 using GYISMS.Employees.Dtos;
 using GYISMS.Helpers;
 using Microsoft.AspNetCore.Hosting;
-using GYISMS.GYEnums;
-using System.Collections;
 
 namespace GYISMS.GrowerAreaRecords
 {

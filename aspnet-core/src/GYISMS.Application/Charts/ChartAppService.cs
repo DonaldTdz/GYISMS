@@ -20,6 +20,8 @@ using Abp.Collections.Extensions;
 using System.Linq.Dynamic.Core;
 using Abp.Linq.Extensions;
 using GYISMS.Employees;
+using GYISMS.Organizations;
+using GYISMS.SystemDatas;
 
 namespace GYISMS.Charts
 {
@@ -37,6 +39,9 @@ namespace GYISMS.Charts
         private readonly ISheduleDetailRepository _scheduleDetailRepository;
         private readonly IRepository<VisitTask, int> _visittaskRepository;
         private readonly IEmployeeManager _employeeManager;
+        private readonly IRepository<SystemData> _systemdataRepository;
+        private readonly IRepository<Employee, string> _employeeRepository;
+        private readonly IRepository<Organization, long> _organizationRepository;
         /// <summary>
         /// 构造函数 
         ///</summary>
@@ -46,8 +51,11 @@ namespace GYISMS.Charts
             , ISheduleDetailRepository scheduleDetailRepository
             , IRepository<Grower> growerRepository
             , IRepository<VisitRecord, Guid> visitRecordRepository
-            , IRepository<VisitTask, int> visittaskRepository
+            , IRepository<VisitTask> visittaskRepository
             , IEmployeeManager employeeManager
+            , IRepository<SystemData> systemdataRepository
+            , IRepository<Employee, string> employeeRepository
+            , IRepository<Organization, long> organizationRepository
             )
         {
             _scheduletaskRepository = scheduletaskRepository;
@@ -58,6 +66,9 @@ namespace GYISMS.Charts
             _visitRecordRepository = visitRecordRepository;
             _visittaskRepository = visittaskRepository;
             _employeeManager = employeeManager;
+            _systemdataRepository = systemdataRepository;
+            _employeeRepository = employeeRepository;
+            _organizationRepository = organizationRepository;
         }
 
         /// <summary>
@@ -101,25 +112,14 @@ namespace GYISMS.Charts
             });
         }
 
+        #region 区县图表部分
 
         /// <summary>
         /// 获取区县图表数据
         /// </summary>
         /// <param name="tabIndex">（1表示当前任务，结束时间大于今天；2表示所有任务）</param>
-        /// <returns></returns>
         public async Task<DistrictChartDto> GetDistrictChartDataAsync(string userId, DateTime? startDate, DateTime? endDate, int tabIndex, AreaCodeEnum areaCode)
         {
-            //var str = startDate.Value.ToString("yyyy-MM-dd HH:mm ss");
-            //if (startDate.HasValue)
-            //{
-            //    var sdate = startDate.Value.Date;
-            //    startDate = sdate.AddHours(sdate.Hour * -1);
-            //}
-            //if (endDate.HasValue)
-            //{
-            //    var edate = endDate.Value.Date;
-            //    endDate = edate.AddHours(edate.Hour * -1);
-            //}
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
                         .WhereIf(startDate.HasValue && tabIndex == 2, s => s.EndTime >= startDate)
@@ -149,6 +149,223 @@ namespace GYISMS.Charts
             resultData.Districts = await rquery.ToListAsync();
             return resultData;
         }
+
+        private async Task<string[]> GetEmployeeIdsByDeptId(long deptId)
+        {
+            var childrenDeptIds = await _employeeManager.GetDeptIdArrayAsync(deptId);
+            var query = _employeeRepository.GetAll().Where(e => childrenDeptIds.Any(c => e.Department.Contains(c))).Select(e => e.Id);
+            return await query.ToArrayAsync();
+        }
+
+        /// <summary>
+        /// 区县下部门图表
+        /// </summary>
+        public async Task<ChartDataDto> GetDeptChartDataAsync(long deptIdOrAreaCode, string userId, DateTime? startDate, DateTime? endDate, int tabIndex, string type)
+        {
+            AreaCodeEnum areaCode = AreaCodeEnum.None;
+            if (deptIdOrAreaCode == 1 || deptIdOrAreaCode == 2 || deptIdOrAreaCode == 3)
+            {
+                areaCode = (AreaCodeEnum)deptIdOrAreaCode;
+            }
+            //基础查询语句
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                        join s in _scheduleRepository.GetAll()
+                        .WhereIf(startDate.HasValue && tabIndex == 2, s => s.EndTime >= startDate)
+                        .WhereIf(endDate.HasValue && tabIndex == 2, s => s.EndTime <= endDate)
+                        .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Today)
+                        on sd.ScheduleId equals s.Id
+                        join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                        where s.Status == ScheduleMasterStatusEnum.已发布
+                        select new
+                        {
+                            g.EmployeeId,
+                            sd.VisitNum,
+                            sd.CompleteNum,
+                            sd.Status
+                        };
+
+            if (areaCode != AreaCodeEnum.None)//当前为区县
+            {
+                var orgCode = string.Empty;
+                switch (areaCode)
+                {
+                    case AreaCodeEnum.昭化区:
+                        {
+                            orgCode = GYCode.昭化区;
+                        }
+                        break;
+                    case AreaCodeEnum.剑阁县:
+                        {
+                            orgCode = GYCode.剑阁县;
+                        }
+                        break;
+                    case AreaCodeEnum.旺苍县:
+                        {
+                            orgCode = GYCode.旺苍县;
+                        }
+                        break;
+                }
+                //部门
+                var orgIds = (await _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).FirstAsync()).Desc;
+                List<ChartDto> dataList = new List<ChartDto>();
+                var deptIds = Array.ConvertAll(orgIds.Split(','), o => long.Parse(o));
+                var depts = await _organizationRepository.GetAll().Where(o => deptIds.Contains(o.Id)).ToListAsync();
+                foreach (var deptId in deptIds)
+                {
+                    var empIds = await GetEmployeeIdsByDeptId(deptId);
+                    var deptName = depts.Where(d => d.Id == deptId).First().DepartmentName;
+                    var deptQuery = query.Where(q => empIds.Contains(q.EmployeeId));
+
+                    ChartDto chat = new ChartDto();
+                    chat.Type = "dept";
+                    chat.VisitNum = deptQuery.Select(q => q.VisitNum).Sum();
+                    chat.CompleteNum = deptQuery.Select(q => q.CompleteNum).Sum();
+                    chat.OverdueNum = deptQuery.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
+                    chat.Id = deptId.ToString();
+                    chat.Name = deptName;
+
+                    dataList.Add(chat);
+                }
+
+                if (deptIds.Length == 0 || type == "other")//没有部门 或是 其它  直接取其它下面的烟技员
+                {
+                    var empQuery = from g in query
+                                   join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                   where e.AreaCode == areaCode
+                                   select new
+                                   {
+                                       e.Id,
+                                       e.Name,
+                                       g.VisitNum,
+                                       g.CompleteNum,
+                                       g.Status
+                                   };
+                    var rquery = empQuery.GroupBy(g => new { g.Id, g.Name }).Select(g1 =>
+                                 new ChartDto()
+                                 {
+                                     Id = g1.Key.Id,
+                                     Name = g1.Key.Name,
+                                     Type = "employee",
+                                     VisitNum = g1.Sum(g => g.VisitNum),
+                                     CompleteNum = g1.Sum(g => g.CompleteNum),
+                                     OverdueNum = g1.Where(g => g.Status == ScheduleStatusEnum.已逾期).Sum(g => g.VisitNum - g.CompleteNum)
+                                 });
+
+                    var resultData = new ChartDataDto();
+                    resultData.Datas = await rquery.ToListAsync();
+                    return resultData;
+                }
+                else
+                {
+                    //其它
+                    var otherQuery = from g in query
+                                     join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                     where e.AreaCode == areaCode
+                                     select new
+                                     {
+                                         g.VisitNum,
+                                         g.CompleteNum,
+                                         g.Status
+                                     };
+                    if (otherQuery.Count() > 0)
+                    {
+                        ChartDto chat = new ChartDto();
+                        chat.Type = "other";
+                        chat.VisitNum = otherQuery.Select(q => q.VisitNum).Sum();
+                        chat.CompleteNum = otherQuery.Select(q => q.CompleteNum).Sum();
+                        chat.OverdueNum = otherQuery.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
+                        chat.Id = areaCode.GetHashCode().ToString();
+                        chat.Name = "其它";
+
+                        dataList.Add(chat);
+                    }
+                }
+                ChartDataDto result = new ChartDataDto();
+                result.Datas = dataList;
+                return result;
+            }
+            else//部门层级
+            {
+                //子部门
+                List<ChartDto> dataList = new List<ChartDto>();
+                var depts = await _organizationRepository.GetAll().Where(o => o.ParentId == deptIdOrAreaCode).ToListAsync();
+                foreach (var dept in depts)
+                {
+                    var empIds = await GetEmployeeIdsByDeptId(dept.Id);
+                    var deptQuery = query.Where(q => empIds.Contains(q.EmployeeId));
+                    ChartDto chat = new ChartDto();
+                    chat.Type = "dept";
+                    chat.VisitNum = query.Select(q => q.VisitNum).Sum();
+                    chat.CompleteNum = query.Select(q => q.CompleteNum).Sum();
+                    chat.OverdueNum = query.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
+                    chat.Id = dept.Id.ToString();
+                    chat.Name = dept.DepartmentName;
+
+                    dataList.Add(chat);
+                }
+
+                if (depts.Count == 0 || type == "other")//没有部门 或是 其它   直接取其它下面的烟技员
+                {
+                    var empIds = await GetEmployeeIdsByDeptId(deptIdOrAreaCode);
+                    var empQuery = from g in query
+                                  join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                  where empIds.Contains(g.EmployeeId)
+                                  select new
+                                  {
+                                      e.Id,
+                                      e.Name,
+                                      g.VisitNum,
+                                      g.CompleteNum,
+                                      g.Status
+                                  };
+                    var rquery = empQuery.GroupBy(g => new { g.Id, g.Name }).Select(g1 =>
+                                 new ChartDto()
+                                 {
+                                     Id = g1.Key.Id,
+                                     Name = g1.Key.Name,
+                                     Type = "employee",
+                                     VisitNum = g1.Sum(g => g.VisitNum),
+                                     CompleteNum = g1.Sum(g => g.CompleteNum),
+                                     OverdueNum = g1.Where(g => g.Status == ScheduleStatusEnum.已逾期).Sum(g => g.VisitNum - g.CompleteNum)
+                                 });
+
+                    var resultData = new ChartDataDto();
+                    resultData.Datas = await rquery.ToListAsync();
+                    return resultData;
+                }
+                else
+                {
+                    var deptstr = "[" + deptIdOrAreaCode + "]";
+                    //其它
+                    var otherQuery = from g in query
+                                     join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                     where e.Department.Contains(deptstr)
+                                     select new
+                                     {
+                                         g.VisitNum,
+                                         g.CompleteNum,
+                                         g.Status
+                                     };
+                    if (otherQuery.Count() > 0)
+                    {
+                        ChartDto chat = new ChartDto();
+                        chat.Type = "other";
+                        chat.VisitNum = otherQuery.Select(q => q.VisitNum).Sum();
+                        chat.CompleteNum = otherQuery.Select(q => q.CompleteNum).Sum();
+                        chat.OverdueNum = otherQuery.Where(q => q.Status == ScheduleStatusEnum.已逾期).Sum(q => q.VisitNum - q.CompleteNum);
+                        chat.Id = areaCode.GetHashCode().ToString();
+                        chat.Name = "其它";
+
+                        dataList.Add(chat);
+                    }
+                }
+                ChartDataDto result = new ChartDataDto();
+                result.Datas = dataList;
+                return result;
+            }
+        }
+
+        #endregion
 
         /// <summary>
         /// 统计任务完成情况的数据（按任务类型和任务名分组）
@@ -224,24 +441,6 @@ namespace GYISMS.Charts
                     CompleteNum = item.Completed,
                     ExpiredNum = item.Expired
                 });
-                //items.Add(new DistrictChartItemDto()
-                //{
-                //    District = item.GroupName,
-                //    Name = "计划",
-                //    Num = item.Total
-                //});
-                //items.Add(new DistrictChartItemDto()
-                //{
-                //    District = item.GroupName,
-                //    Name = "进行中",
-                //    Num = item.Completed
-                //});
-                //items.Add(new DistrictChartItemDto()
-                //{
-                //    District = item.GroupName,
-                //    Name = "逾期",
-                //    Num = item.Expired
-                //});
             }
             return result;
         }
@@ -289,7 +488,7 @@ namespace GYISMS.Charts
         /// 获取任务的明细信息
         /// </summary>
         /// <returns></returns>
-        public async Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, int TabIndex, string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus)
+        public async Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, int TabIndex, string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus, string EmployeeId)
         {
             if (!string.IsNullOrEmpty(DateString))
             {
@@ -313,7 +512,7 @@ namespace GYISMS.Charts
             //{
             //    querysd = querysd.Where(sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum);
             //}
-           
+
             var query = from sd in _scheduleDetailRepository.GetAll()
                                                       .WhereIf(Status == 2, sd => sd.CompleteNum > 0)
                                                       .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
@@ -331,6 +530,7 @@ namespace GYISMS.Charts
                          on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
                                                    .WhereIf(AreaCode.HasValue && AreaCode != AreaCodeEnum.广元市, g => g.AreaCode == AreaCode)
+                                                   .WhereIf(!string.IsNullOrEmpty(EmployeeId), g => g.EmployeeId == EmployeeId)
                         on sd.GrowerId equals g.Id
                         select new SheduleDetailDto
                         {
@@ -401,5 +601,6 @@ namespace GYISMS.Charts
             }).ToListAsync();
             return result;
         }
+
     }
 }
