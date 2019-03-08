@@ -84,6 +84,7 @@ namespace GYISMS.EntityFrameworkCore.Repositories
                      inner join [dbo].[Schedules] s on sd.ScheduleId = s.Id
                      inner join [dbo].[Growers] g on sd.GrowerId = g.Id
                     where s.EndTime >=@startTime and  s.EndTime < @endTime and s.Status=1 and (@areaCode = 4 or g.AreaCode = @areaCode)
+                    and g.IsDeleted = 0
                     ) temp group by[Year], [Month]
                     ) t1 left join(
                     select[Year],[Month], sum(ExpireNum) as ExpireNum
@@ -92,7 +93,7 @@ namespace GYISMS.EntityFrameworkCore.Repositories
                     inner join[dbo].[Schedules] s on sd.ScheduleId = s.Id
                     inner join [dbo].[Growers] g on sd.GrowerId = g.Id
                     where s.EndTime >= @startTime  and  s.EndTime < @endTime and s.Status=1 and (@areaCode = 4 or g.AreaCode = @areaCode)
-                    and sd.[Status] = 0
+                    and sd.[Status] = 0 and g.IsDeleted = 0
                     ) temp group by[Year], [Month]) t2 on t1.[Year] = t2.[Year] and t1.[Month] = t2.[Month]
                     ", CommandType.Text, sql);
             using (command)
