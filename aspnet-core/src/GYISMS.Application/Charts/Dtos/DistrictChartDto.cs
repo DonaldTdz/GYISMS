@@ -59,9 +59,8 @@ namespace GYISMS.Charts.Dtos
         public DistrictChartDto()
         {
             Districts = new List<DistrictDto>();
-
         }
-
+        
         public List<DistrictDto> Districts { get; set; }
 
         public List<DistrictChartItemDto> Items
@@ -132,8 +131,9 @@ namespace GYISMS.Charts.Dtos
         public ChartByTaskDto()
         {
             Tasks = new List<SheduleByTaskDto>();
+            AreaItem = new List<ItemDetail>();
         }
-
+        public List<ItemDetail> AreaItem { get; set; }
         public List<SheduleByTaskDto> Tasks { get; set; }
         public List<DistrictChartItemDto> Items
         {
@@ -334,7 +334,32 @@ namespace GYISMS.Charts.Dtos
                 }
             }
         }
+    }
 
-
+    //任务统计区县/部门完成率
+    public class ItemDetail
+    {
+        public AreaCodeEnum? AreaCode { get; set; }
+        //public string AreaName { get; set; }
+        public int? VisitNum { get; set; }
+        public int? CompleteNum { get; set; }
+        public string AreaName
+        {
+            get
+            {
+                return AreaCode.ToString();
+            }
+        }
+        public decimal? Percent
+        {
+            get
+            {
+                if (VisitNum.HasValue && VisitNum > 0)
+                {
+                    return Math.Round(CompleteNum.Value / (decimal)VisitNum.Value, 2) * 100;
+                }
+                return 0;
+            }
+        }
     }
 }

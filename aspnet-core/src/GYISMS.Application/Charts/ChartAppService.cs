@@ -160,7 +160,7 @@ namespace GYISMS.Charts
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
                         .WhereIf(startTime.HasValue && tabIndex == 2, s => s.EndTime >= startTime)
-                        .WhereIf(startTime.HasValue && tabIndex == 2, s => s.EndTime <= endTime.Value.AddDays(1))
+                        .WhereIf(endTime.HasValue && tabIndex == 2, s => s.EndTime <= endTime.Value.AddDays(1))
                         .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Today)
                         .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
                         on sd.ScheduleId equals s.Id
@@ -188,6 +188,27 @@ namespace GYISMS.Charts
              });
             var result = new ChartByTaskDto();
             result.Tasks = await list.OrderBy(l => l.TaskName).ToListAsync();
+
+            //分区县统计
+            var areaQuery =await (from sd in _scheduleDetailRepository.GetAll()
+                          join s in _scheduleRepository.GetAll()
+                          .WhereIf(startTime.HasValue && tabIndex == 2, s => s.EndTime >= startTime)
+                          .WhereIf(endTime.HasValue && tabIndex == 2, s => s.EndTime <= endTime.Value.AddDays(1))
+                          .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Today)
+                          .Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
+                          on sd.ScheduleId equals s.Id
+                          join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                          join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                          where (areaCode == AreaCodeEnum.广元市 || g.AreaCode == areaCode)
+                          //&& (g.AreaCode == AreaCodeEnum.昭化区)//添加区县权限 add by donald 2019-1-22
+                          group new {sd.VisitNum,sd.CompleteNum} by new { g.AreaCode } into g
+                          select new ItemDetail
+                          {
+                              VisitNum = g.Sum(v=>v.VisitNum.Value),
+                              CompleteNum = g.Sum(v=>v.CompleteNum.Value),
+                              AreaCode = g.Key.AreaCode
+                          }).ToListAsync();
+            result.AreaItem.AddRange(areaQuery);
             return result;
         }
 
