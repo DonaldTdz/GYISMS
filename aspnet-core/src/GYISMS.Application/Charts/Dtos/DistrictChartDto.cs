@@ -100,6 +100,96 @@ namespace GYISMS.Charts.Dtos
         }
     }
 
+    #region 公共chart数据
+
+    public class ChartDto
+    {
+        public string Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Type { get; set; }
+
+        public int? VisitNum { get; set; }
+
+        public int? CompleteNum { get; set; }
+
+        public int? OverdueNum { get; set; }
+
+        public decimal? Percent
+        {
+            get
+            {
+                if (VisitNum.HasValue && VisitNum > 0)
+                {
+                    return Math.Round(CompleteNum.Value / (decimal)VisitNum.Value, 2) * 100;
+                }
+                return 0;
+            }
+        }
+    }
+
+    public class ChartItemDto
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+
+        public string GroupName { get; set; }
+
+        public int? Num { get; set; }
+
+        public int? Status { get; set; }
+    }
+
+    public class ChartDataDto
+    {
+        public ChartDataDto()
+        {
+            Datas = new List<ChartDto>();
+
+        }
+
+        public List<ChartDto> Datas { get; set; }
+
+        public List<ChartItemDto> Items
+        {
+            get
+            {
+                var items = new List<ChartItemDto>();
+                foreach (var item in Datas)
+                {
+                    items.Add(new ChartItemDto()
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        GroupName = "完成",
+                        Num = item.CompleteNum,
+                        Status = 2,
+                    });
+                    items.Add(new ChartItemDto()
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        GroupName = "待完成",
+                        Num = item.VisitNum - item.CompleteNum - item.OverdueNum,
+                        Status = 3,
+                    });
+                    items.Add(new ChartItemDto()
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        GroupName = "逾期",
+                        Num = item.OverdueNum,
+                        Status = 0,
+                    });
+                }
+                return items;
+            }
+        }
+    }
+
+    #endregion
+
     public class SheduleByTaskDto
     {
         public int Id { get; set; }
