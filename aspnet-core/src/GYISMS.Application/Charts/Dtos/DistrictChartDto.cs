@@ -430,7 +430,9 @@ namespace GYISMS.Charts.Dtos
     public class ItemDetail
     {
         public AreaCodeEnum? AreaCode { get; set; }
-        //public string AreaName { get; set; }
+        public string Type { get; set; }
+        public string DeptId { get; set; }
+        public string DeptName { get; set; }
         public int? VisitNum { get; set; }
         public int? CompleteNum { get; set; }
         public string AreaName
@@ -451,5 +453,18 @@ namespace GYISMS.Charts.Dtos
                 return 0;
             }
         }
+    }
+
+    public class TaskChartDto
+    {
+        public int Id { get; set; }
+        public string EmployeeId { get; set; }
+        public TaskTypeEnum Type { get; set; }
+        public string Name { get; set; }
+        public ScheduleStatusEnum Status { get; set; }
+        public string Department { get; set; }
+
+        public int? VisitNum { get; set; }
+        public int? CompleteNum { get; set; }
     }
 }

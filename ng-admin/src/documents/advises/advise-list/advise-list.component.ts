@@ -24,7 +24,7 @@ export class AdviseListComponent extends AppComponentBase implements OnInit {
     }
 
     ngOnInit(): void {
-        this.refreshData(true);
+        // this.refreshData(true);
     }
 
     refreshData(search?: boolean) {

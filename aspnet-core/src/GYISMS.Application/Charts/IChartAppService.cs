@@ -25,5 +25,6 @@ namespace GYISMS.Charts
         Task<List<SheduleDetailDto>> GetSheduleDetail(int PageIndex, int TabIndex, string DateString, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus, string EmployeeId);
 
         Task<List<DistrictStatisDto>> GetSheduleDetailGroupArea(string DateString, int TabIndex, AreaCodeEnum? AreaCode, DateTime? StartTime, DateTime? EndTime, int? TaskId, int? Status, int? TStatus);
+        Task<ChartByTaskDto> GetTaskCommChartByGroupAsync(long deptIdOrAreaCode, DateTime? startTime, DateTime? endTime, int tabIndex, string type);
     }
 }
