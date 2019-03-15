@@ -387,6 +387,7 @@ namespace GYISMS.ScheduleDetails
             var query = from sd in _scheduledetailRepository.GetAll()
                         join t in _visittaskRepository.GetAll()
                         .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
+                        .WhereIf(input.TaskType.HasValue,t=>t.Type == input.TaskType)
                         on sd.TaskId equals t.Id
                         join s in _scheduleRepository.GetAll()
                             .WhereIf(input.StartTime.HasValue, s => s.EndTime >= input.StartTime)
@@ -407,7 +408,7 @@ namespace GYISMS.ScheduleDetails
                             sd.CompleteNum,
                             sd.Status,
                             s.Id,
-                            s.Desc,
+                            ScheduleName = s.Name,
                             s.BeginTime,
                             s.EndTime
                         };
@@ -420,8 +421,8 @@ namespace GYISMS.ScheduleDetails
                              q.Name,
                              q.VisitNum,
                              q.CompleteNum,
-                             q.Status
-                         } by new { q.AreaCode, q.Type, q.Name,q.Id,q.Desc,q.BeginTime,q.EndTime } into gq
+                             q.Status,
+                         } by new { q.AreaCode, q.Type, q.Name,q.Id,q.BeginTime,q.EndTime,q.ScheduleName } into gq
                          select new SheduleSumDto()
                          {
                              AreaCode = gq.Key.AreaCode,
@@ -431,7 +432,7 @@ namespace GYISMS.ScheduleDetails
                              Complete = gq.Sum(g => g.CompleteNum),
                              Expired = gq.Where(m => m.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum),
                              Time=gq.Key.BeginTime.Value.ToString("yyyy-MM-dd")+"至"+ gq.Key.EndTime.Value.ToString("yyyy-MM-dd"),
-                             SheduleName=gq.Key.Desc
+                             SheduleName=gq.Key.ScheduleName
                          };
 
             var result = new SheduleSumStatisDto();
@@ -496,6 +497,7 @@ namespace GYISMS.ScheduleDetails
                         on sd.ScheduleId equals s.Id
                         join t in _visittaskRepository.GetAll()
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
+                                                     .WhereIf(input.TaskType.HasValue,t=>t.Type == input.TaskType)
                         on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
                                                      .WhereIf(areaCodeE.HasValue, g => g.AreaCode == areaCodeE)
@@ -513,7 +515,7 @@ namespace GYISMS.ScheduleDetails
                             GrowerName = sd.GrowerName,
                             EmployeeName = sd.EmployeeName,
                             Time=s.BeginTime.Value.ToString("yyyy-MM-dd")+"至"+ s.EndTime.Value.ToString("yyyy-MM-dd"),
-                            SheduleName=s.Desc
+                            SheduleName = s.Name
                         };
 
             var scheduledetailCount = await query.CountAsync();
@@ -804,6 +806,7 @@ namespace GYISMS.ScheduleDetails
                         on sd.ScheduleId equals s.Id
                         join t in _visittaskRepository.GetAll()
                                                      .WhereIf(input.TaskId.HasValue, t => t.Id == input.TaskId)
+                                                     .WhereIf(input.TaskType.HasValue,t=>t.Type == input.TaskType)
                         on sd.TaskId equals t.Id
                         join g in _growerRepository.GetAll()
                                                      .WhereIf(areaCodeE.HasValue, g => g.AreaCode == areaCodeE)
@@ -821,7 +824,7 @@ namespace GYISMS.ScheduleDetails
                             GrowerName = sd.GrowerName,
                             EmployeeName = sd.EmployeeName,
                             Time = s.BeginTime.Value.ToString("yyyy-MM-dd") + "至" + s.EndTime.Value.ToString("yyyy-MM-dd"),
-                            SheduleName = s.Desc
+                            SheduleName = s.Name
                         };
             var result = await query.OrderBy(s => s.AreaCode).ToListAsync();
             return result;

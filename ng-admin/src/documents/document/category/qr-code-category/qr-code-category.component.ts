@@ -12,6 +12,7 @@ export class QrCodeCategoryComponent extends ModalComponentBase implements OnIni
     @Input() pname: string;
     @Input() pcode: string;
     text: string;
+    codeStyle = 'block';
     qrCode = {
         value: '',
         background: 'white',
@@ -44,8 +45,8 @@ export class QrCodeCategoryComponent extends ModalComponentBase implements OnIni
         var base64 = document.getElementById('abc').getElementsByTagName('img')[0].src;
         var a = document.createElement('a');          // 创建一个a节点插入的document
         var event = new MouseEvent('click')           // 模拟鼠标click点击事件
-        a.download = 'beautifulGirl'                  // 设置a节点的download属性值
+        a.download = 'qrCode'                  // 设置a节点的download属性值
         a.href = base64;                              // 将图片的src赋值给a节点的href
-        a.dispatchEvent(event)
+        a.dispatchEvent(event);
     }
 }

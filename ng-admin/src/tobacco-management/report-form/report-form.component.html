@@ -8,7 +8,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="area">区县</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="area" [nzPlaceHolder]="'请选择区域'" [(ngModel)]="sumSearch.areaCode" [nzShowSearch]="true">
+                            <nz-select name="area" [nzPlaceHolder]="'请选择区域'" [(ngModel)]="sumSearch.areaCode"
+                                [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of areas" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -19,7 +20,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskType">任务类型</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="taskType" [nzPlaceHolder]="'请选择任务类型'" [(ngModel)]="taskType" [nzShowSearch]="true" (ngModelChange)="taskChange()">
+                            <nz-select name="taskType" [nzPlaceHolder]="'请选择任务类型'" [(ngModel)]="sumSearch.taskType"
+                                [nzShowSearch]="true" (ngModelChange)="taskChange()">
                                 <nz-option *ngFor="let i of taskTypes" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -30,7 +32,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">任务</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="taskId" [nzDisabled]="!(tasks.length>0)" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="sumSearch.taskId" [nzShowSearch]="true">
+                            <nz-select name="taskId" [nzDisabled]="!(tasks.length>0)" [nzPlaceHolder]="'请选择任务'"
+                                [(ngModel)]="sumSearch.taskId" [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of tasks" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -41,7 +44,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">时间范围</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-range-picker name="dateRange" [(ngModel)]="dateRange" [nzFormat]="shedateFormat" (ngModelChange)="changeTime($event)"></nz-range-picker>
+                            <nz-range-picker name="dateRange" [(ngModel)]="dateRange" [nzFormat]="shedateFormat"
+                                (ngModelChange)="changeTime($event)"></nz-range-picker>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -66,7 +70,8 @@
                 </div>
             </div>
         </form>
-        <nz-table #nzTable [nzData]="sheduleSum" [nzFrontPagination]="false" [nzLoading]="loading" [nzShowSizeChanger]="true" [nzShowPagination]="false">
+        <nz-table #nzTable [nzData]="sheduleSum" [nzFrontPagination]="false" [nzLoading]="loading"
+            [nzShowSizeChanger]="true" [nzShowPagination]="false">
             <thead>
                 <tr>
                     <th>
@@ -132,7 +137,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="area">区县</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="area" [nzPlaceHolder]="'请选择区域'" [(ngModel)]="detailSearch.areaCode" [nzShowSearch]="true">
+                            <nz-select name="area" [nzPlaceHolder]="'请选择区域'" [(ngModel)]="detailSearch.areaCode"
+                                [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of areas" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -143,7 +149,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskTypeDe">任务类型</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="taskTypeDe" [nzPlaceHolder]="'请选择任务类型'" [(ngModel)]="taskTypeDe" [nzShowSearch]="true" (ngModelChange)="taskChangeDe()">
+                            <nz-select name="taskTypeDe" [nzPlaceHolder]="'请选择任务类型'" [(ngModel)]="detailSearch.taskType"
+                                [nzShowSearch]="true" (ngModelChange)="taskChangeDe()">
                                 <nz-option *ngFor="let i of taskTypes" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -154,7 +161,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">任务</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-select name="taskId" [nzDisabled]="!(tasksDe.length>0)" [nzPlaceHolder]="'请选择任务'" [(ngModel)]="detailSearch.taskId" [nzShowSearch]="true">
+                            <nz-select name="taskId" [nzDisabled]="!(tasksDe.length>0)" [nzPlaceHolder]="'请选择任务'"
+                                [(ngModel)]="detailSearch.taskId" [nzShowSearch]="true">
                                 <nz-option *ngFor="let i of tasksDe" [nzLabel]="i.text" [nzValue]="i.value">
                                 </nz-option>
                             </nz-select>
@@ -173,7 +181,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">烟技员名</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <input nz-input name="employeeName" placeholder="烟技员名" [(ngModel)]="detailSearch.employeeName">
+                            <input nz-input name="employeeName" placeholder="烟技员名"
+                                [(ngModel)]="detailSearch.employeeName">
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -189,7 +198,8 @@
                     <nz-form-item class="d-flex">
                         <nz-form-label nzFor="taskId">时间范围</nz-form-label>
                         <nz-form-control class="flex-1">
-                            <nz-range-picker name="dateRangeDe" [(ngModel)]="dateRangeDe" [nzFormat]="shedateFormatDe" (ngModelChange)="changeTimeDe($event)"></nz-range-picker>
+                            <nz-range-picker name="dateRangeDe" [(ngModel)]="dateRangeDe" [nzFormat]="shedateFormatDe"
+                                (ngModelChange)="changeTimeDe($event)"></nz-range-picker>
                         </nz-form-control>
                     </nz-form-item>
                 </div>
@@ -207,9 +217,10 @@
             </div>
         </form>
         <ng-template #totalContent>共{{query.total}}条</ng-template>
-        <nz-table #nzTable1 [nzData]="sheduleDetailTask" [nzFrontPagination]="false" [nzLoading]="loadingDe" [nzTotal]="query.total"
-            [(nzPageIndex)]="query.pageIndex" [nzShowTotal]="totalContent" [(nzPageSize)]="query.pageSize" [nzShowSizeChanger]="true"
-            (nzPageIndexChange)="getSheDulDetailByTask()" (nzPageSizeChange)="getSheDulDetailByTask()">
+        <nz-table #nzTable1 [nzData]="sheduleDetailTask" [nzFrontPagination]="false" [nzLoading]="loadingDe"
+            [nzTotal]="query.total" [(nzPageIndex)]="query.pageIndex" [nzShowTotal]="totalContent"
+            [(nzPageSize)]="query.pageSize" [nzShowSizeChanger]="true" (nzPageIndexChange)="getSheDulDetailByTask()"
+            (nzPageSizeChange)="getSheDulDetailByTask()">
             <thead>
                 <tr>
                     <th>

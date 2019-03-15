@@ -5,13 +5,16 @@ import {
     NzDropdownService,
     NzFormatEmitEvent,
     NzTreeComponent,
-    NzTreeNode
+    NzTreeNode,
+    NzModalRef,
+    NzModalService
 } from 'ng-zorro-antd';
 import { CreateCategoryComponent } from './create-category/create-category.component';
 import { EditCategoryComponent } from './edit-category/edit-category.component';
 import { Category } from '@shared/entity/documents';
 import { CategoryService } from '@shared/service-proxies/documents';
 import { QrCodeCategoryComponent } from './qr-code-category/qr-code-category.component';
+import { tryParse } from 'selenium-webdriver/http';
 
 
 @Component({
@@ -33,9 +36,12 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
     nodes = [];
     searchName;
     @Output() selectedCategory = new EventEmitter<any>();
+    confirmModal: NzModalRef;
 
 
-    constructor(injector: Injector, private nzDropdownService: NzDropdownService, private categoryService: CategoryService) {
+    constructor(injector: Injector, private nzDropdownService: NzDropdownService
+        , private categoryService: CategoryService
+        , private modal: NzModalService) {
         super(injector);
     }
 
@@ -171,5 +177,22 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
         //console.log(event, this.treeCom.getMatchedNodeList().map(v => v.title));
     }
 
-
+    deleteCate(): void {
+        this.confirmModal = this.modal.confirm({
+            nzContent: `是否删除当前分类[${this.rkeyNode.title}]?`,
+            nzOnOk: () => {
+                this.categoryService.deleteCategoryById(parseInt(this.rkeyNode.key)).subscribe(res => {
+                    if (this.dropdown) {
+                        this.dropdown.close();
+                    }
+                    if (res.code == 0) {
+                        this.notify.info('删除成功！', '');
+                        this.getTreeAsync();
+                    } else {
+                        this.notify.info('请确保当前分类下无子类或文件后再删除！', '');
+                    }
+                });
+            }
+        });
+    }
 }

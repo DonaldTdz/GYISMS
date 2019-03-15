@@ -41,6 +41,7 @@ using GYISMS.SystemDatas;
 using GYISMS.ScheduleTasks;
 using GYISMS.GrowerAreaRecords;
 using GYISMS.Schedules;
+using GYISMS.GrowerLocationLogs;
 //using PT = SixLabors.ImageSharp.Processing.Processors.Text;
 
 namespace GYISMS.VisitRecords
@@ -60,6 +61,7 @@ namespace GYISMS.VisitRecords
         private readonly IHostingEnvironment _hostingEnvironment;
         private readonly IRepository<SystemData> _systemDataRepository;
         private readonly IRepository<GrowerAreaRecord, Guid> _growerAreaRecordRepository;
+        private readonly IRepository<GrowerLocationLog, Guid> _growerLocationLogRepository;
 
         private readonly IVisitRecordManager _visitrecordManager;
 
@@ -77,6 +79,7 @@ namespace GYISMS.VisitRecords
             , IRepository<SystemData> systemDataRepository
             , IRepository<GrowerAreaRecord, Guid> growerAreaRecordRepository
             , IHostingEnvironment env
+            , IRepository<GrowerLocationLog, Guid> growerLocationLogRepository
             )
         {
             _visitrecordRepository = visitrecordRepository;
@@ -89,6 +92,7 @@ namespace GYISMS.VisitRecords
             _systemDataRepository = systemDataRepository;
             _growerAreaRecordRepository = growerAreaRecordRepository;
             _hostingEnvironment = env;
+            _growerLocationLogRepository = growerLocationLogRepository;
         }
 
 
@@ -409,8 +413,29 @@ namespace GYISMS.VisitRecords
         }
         [AbpAllowAnonymous]
         [Audited]
-        public async Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower)
+        //public async Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower)
+        //{
+        //    var distance = AbpMapByGoogle.GetDistance(lat, lon, latGrower, lonGrower);
+        //    var signRange = await _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.SignRange).FirstOrDefaultAsync();
+        //    var range = 500d;
+        //    if (signRange != null)
+        //    {
+        //        range = double.Parse(signRange.Desc);
+        //    }
+        //    if (distance < range)
+        //    {
+        //        return new APIResultDto() { Code = 0, Msg = "ok" };
+        //    }
+        //    else
+        //    {
+        //        return new APIResultDto() { Code = 901, Msg = "当前位置不在拜访位置范围内" };
+        //    }
+        //}
+        public async Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower, string empId)
         {
+            //TODO
+            var recordList = await _growerLocationLogRepository.GetAll().Where(v => v.EmployeeId == empId).OrderByDescending(v => v.CreationTime).Take(3).ToListAsync();
+
             var distance = AbpMapByGoogle.GetDistance(lat, lon, latGrower, lonGrower);
             var signRange = await _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.SignRange).FirstOrDefaultAsync();
             var range = 500d;
@@ -424,6 +449,14 @@ namespace GYISMS.VisitRecords
             }
             else
             {
+                foreach (var item in recordList)
+                {
+                    var temp = AbpMapByGoogle.GetDistance(lat, lon, Convert.ToDouble(item.Latitude), Convert.ToDouble(item.Longitude));
+                    if (temp < range)
+                    {
+                        return new APIResultDto() { Code = 0, Msg = "ok" };
+                    }
+                }
                 return new APIResultDto() { Code = 901, Msg = "当前位置不在拜访位置范围内" };
             }
         }

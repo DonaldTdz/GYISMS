@@ -51,9 +51,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// </summary>
         public string SheduleName { get; set; }
         public Guid ScheduleId { get; set; }
-        //// custom codes
-
-        //// custom codes end
+        public TaskTypeEnum? TaskType { get; set; }
 
         /// <summary>
         /// 正常化排序使用
@@ -101,5 +99,7 @@ namespace GYISMS.ScheduleDetails.Dtos
         /// 计划名称
         /// </summary>
         public string SheduleName { get; set; }
+
+        public TaskTypeEnum? TaskType { get; set; }
     }
 }

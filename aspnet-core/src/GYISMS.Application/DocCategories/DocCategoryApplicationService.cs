@@ -24,6 +24,7 @@ using GYISMS.DocCategories.DomainService;
 using GYISMS.Documents.Dtos;
 using GYISMS.Documents;
 using GYISMS.Employees;
+using GYISMS.Dtos;
 
 namespace GYISMS.DocCategories
 {
@@ -220,7 +221,7 @@ namespace GYISMS.DocCategories
             {
                 return new List<CategoryTreeNode>();
             }
-            var categoryList = await _entityRepository.GetAll().WhereIf(deptId.HasValue,e => e.DeptId == deptId).ToListAsync();
+            var categoryList = await _entityRepository.GetAll().WhereIf(deptId.HasValue, e => e.DeptId == deptId).ToListAsync();
             return GetTrees(0, categoryList);
         }
 
@@ -239,7 +240,7 @@ namespace GYISMS.DocCategories
                              {
                                  Id = c.Id,
                                  Text = c.Name,
-                                 Icon = host + "knowledge/homePage.png"
+                                 Icon = host + "knowledge/homePageNew.png"
                              };
             List<GridListDto> list = new List<GridListDto>();
             foreach (var item in entityList)
@@ -292,7 +293,7 @@ namespace GYISMS.DocCategories
             result = $"{entity.Name} / " + result;
             if (entity.ParentId.Value != 0)
             {
-                GetCurrentName(entity.ParentId.Value,ref result);
+                GetCurrentName(entity.ParentId.Value, ref result);
             }
         }
 
@@ -308,9 +309,33 @@ namespace GYISMS.DocCategories
             result = doc.Name;
             if (doc.ParentId != 0)
             {
-               GetCurrentName(doc.ParentId.Value,ref result);
+                GetCurrentName(doc.ParentId.Value, ref result);
             }
             return result;
+        }
+
+        /// <summary>
+        /// 删除分类
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<APIResultDto> CategoryRemoveById(EntityDto<int> id)
+        {
+            int childCount = await _entityRepository.GetAll().Where(v => v.ParentId == id.Id).CountAsync();
+            int docCount = await _documentRepository.GetAll().Where(v => v.CategoryId == id.Id).CountAsync();
+            if (childCount != 0)
+            {
+                return new APIResultDto() { Code = 1, Msg = "存在子分类" };
+            }
+            else if (docCount != 0)
+            {
+                return new APIResultDto() { Code = 2, Msg = "存在文档" };
+            }
+            else
+            {
+                await _entityRepository.DeleteAsync(id.Id);
+                return new APIResultDto() { Code = 0, Msg = "删除成功" };
+            }
         }
     }
 }

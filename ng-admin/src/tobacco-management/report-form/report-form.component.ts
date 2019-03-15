@@ -21,8 +21,8 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     expiredSum = 0;
     completeRate = '';
     sheduleDetailTask: ScheduleDetailTask[] = [];
-    sumSearch: any = { areaCode: null, startTime: null, endTime: null, taskId: null, sheduleName: '' }
-    detailSearch: any = { areaCode: null, startTime: null, endTime: null, taskId: null, growerName: '', employeeName: '', sheduleName: '' }
+    sumSearch: any = { areaCode: null, startTime: null, endTime: null, taskId: null, sheduleName: '', taskType: null }
+    detailSearch: any = { areaCode: null, startTime: null, endTime: null, taskId: null, growerName: '', employeeName: '', sheduleName: '', taskType: null }
     areas = [
         { text: '昭化区', value: 1 },
         { text: '剑阁县', value: 2 },
@@ -37,9 +37,9 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     ];
     tasks: VisitTaskName[] = [];
     tasksDe: VisitTaskName[] = [];
-    taskType = null;
+    // taskType = null;
     loading = false;
-    taskTypeDe = null;
+    // taskTypeDe = null;
     loadingDe = false;
     firstDay: Date;
     lastDay: Date;
@@ -67,7 +67,7 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
      */
     getSheduleSum(reset = false) {
         if (reset) {
-            this.sumSearch = { areaCode: null, startTime: null, endTime: null, taskId: null }
+            this.sumSearch = { areaCode: null, startTime: null, endTime: null, taskId: null, taskType: null }
             this.dateRange = [this.firstDay, this.lastDay];//[];
             this.resetTime(1);
         }
@@ -94,7 +94,7 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     getSheDulDetailByTask(reset = false, search = false) {
         if (reset) {
             this.query.pageIndex = 1;
-            this.detailSearch = { areaCode: null, startTime: null, endTime: null, taskId: null, growerName: '', employeeName: '' }
+            this.detailSearch = { areaCode: null, startTime: null, endTime: null, taskId: null, growerName: '', employeeName: '', taskType: null }
             this.resetTime(2);
         }
         if (search) {
@@ -118,7 +118,7 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     taskChange() {
         this.tasks = [];
         this.sumSearch.taskId = null;
-        this.taskService.getTaskName({ type: this.taskType }).subscribe(data => {
+        this.taskService.getTaskName({ type: this.sumSearch.taskType }).subscribe(data => {
             this.tasks = data;
         });
     }
@@ -139,7 +139,7 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
     taskChangeDe() {
         this.tasksDe = [];
         this.detailSearch.taskId = null;
-        this.taskService.getTaskName({ type: this.taskTypeDe }).subscribe(data => {
+        this.taskService.getTaskName({ type: this.detailSearch.taskType }).subscribe(data => {
             this.tasksDe = data;
         });
     }
@@ -173,6 +173,7 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
      */
     exportSheduleSum() {
         this.exportSLoading = true;
+        console.log(this.sumSearch);
         this.sheduleDetailService.exportExcelOfSheduleSum(this.sumSearch).subscribe(data => {
             if (data.code == 0) {
                 var url = AppConsts.remoteServiceBaseUrl + data.data;
@@ -192,6 +193,8 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
      */
     exportSheduleDe() {
         this.exportDLoading = true;
+        console.log(this.detailSearch);
+
         this.sheduleDetailService.exportExcelOfSheduleDetail(this.detailSearch).subscribe(data => {
             if (data.code == 0) {
                 var url = AppConsts.remoteServiceBaseUrl + data.data;

@@ -20,6 +20,7 @@ using Abp.Application.Services.Dto;
 
 using GYISMS.DocCategories.Dtos;
 using GYISMS.DocCategories;
+using GYISMS.Dtos;
 
 namespace GYISMS.DocCategories
 {
@@ -82,5 +83,6 @@ namespace GYISMS.DocCategories
         Task<List<GridListDto>> GetCategoryListAsync(string host,string userId);
         Task<List<TabListDto>> GetTabChildListByIdAsync(int id);
         Task<string> GetParentName(int id);
+        Task<APIResultDto> CategoryRemoveById(EntityDto<int> id);
     }
 }

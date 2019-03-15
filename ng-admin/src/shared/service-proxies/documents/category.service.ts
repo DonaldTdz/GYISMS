@@ -3,6 +3,7 @@ import { GyismsHttpClient } from "@shared/service-proxies/gyisms-httpclient";
 import { Injectable, Inject, Optional } from "@angular/core";
 import { API_BASE_URL } from "@shared/service-proxies/service-proxies";
 import { Observable } from "rxjs";
+import { ApiResult } from "../entity/parameter";
 
 @Injectable()
 export class CategoryService {
@@ -35,6 +36,14 @@ export class CategoryService {
     getParentName(id: number): Observable<string> {
         let url_ = "/api/services/app/DocCategory/GetParentName?id=" + id;
         return this._gyhttp.get(url_).map(data => {
+            return data;
+        });
+    }
+
+    deleteCategoryById(id: number): Observable<ApiResult> {
+        let url_ = "/api/services/app/DocCategory/CategoryRemoveById";
+        var param = { id: id };
+        return this._gyhttp.post(url_, param).map(data => {
             return data;
         });
     }
