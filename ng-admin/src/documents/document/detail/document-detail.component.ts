@@ -39,6 +39,7 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
     isAllUser = '1';
     deptTags = [];
     userTags = [];
+    roleTags = [];
 
     constructor(injector: Injector, private actRouter: ActivatedRoute, private router: Router
         , private documentService: DocumentService
@@ -122,6 +123,7 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
     setUserDepts(entity: DocumentDto) {
         this.deptTags = entity.getDepts();
         this.userTags = entity.getUsers();
+        this.roleTags = entity.getRoles();
     }
 
     protected getFormValues(): void {
@@ -142,6 +144,8 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             this.document.employeeDes = '';
             this.document.deptIds = '';
             this.document.deptDesc = '';
+            this.document.docRoleIds = '';
+            this.document.docRoleDesc = '';
         }
         else {
             let userIds = '';
@@ -160,6 +164,15 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
             }
             this.document.deptIds = (deptIds == '' ? '' : deptIds.substr(0, deptIds.length - 1));
             this.document.deptDesc = (deptNames == '' ? '' : deptNames.substr(0, deptNames.length - 1));
+            //资料库角色
+            let docRoleIds = '';
+            let docRoleNames = '';
+            for (let u of this.roleTags) {
+                docRoleIds += u.value + ',';
+                docRoleNames += u.label + ',';
+            }
+            this.document.docRoleIds = (docRoleIds == '' ? '' : docRoleIds.substr(0, docRoleIds.length - 1));
+            this.document.docRoleDesc = (docRoleNames == '' ? '' : docRoleNames.substr(0, docRoleNames.length - 1));
         }
     }
 
@@ -212,6 +225,17 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
         this.isAllUser = ngmodel;
     }
 
+    handleRoleClose(event: Event, value: string) {
+        let i = 0;
+        this.roleTags.forEach(v => {
+            if (v.value == value) {
+                this.roleTags.splice(i, 1);
+                return;
+            }
+            i++;
+        });
+    }
+
     handleDeptClose(tag: any) {
         var i = 0;
         for (const item of this.deptTags) {
@@ -247,7 +271,8 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
 
     showDeptUserModel() {
         this.modalHelper
-            .open(DeptUserComponent, { selectedDepts: this.deptTags, selectedUsers: this.userTags }, 'lg', {
+            // .open(DeptUserComponent, { selectedDepts: this.deptTags, selectedUsers: this.userTags }, 'lg', {
+            .open(DeptUserComponent, { selectedDepts: this.deptTags, selectedUsers: this.userTags, selectedRoles: this.roleTags }, 'lg', {
                 nzMask: true,
                 nzClosable: false,
             })
@@ -257,7 +282,4 @@ export class DocumentDetailComponent extends FormComponentBase<DocumentDto> impl
                 }
             });
     }
-
-
-
 }

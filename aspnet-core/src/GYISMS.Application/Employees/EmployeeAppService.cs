@@ -428,6 +428,7 @@ namespace GYISMS.Employees
         public async Task<EmployeeListDto> EditEmployeeAreaInfoAsync(EmployeeEditDto input)
         {
             var entity = await _employeeRepository.GetAsync(input.Id);
+            entity.DocRole = input.DocRole;
             if (input.IsDeptArea)//如果是使用部门区县 清除当前设置区县
             {
                 entity.Area = null;
@@ -472,6 +473,24 @@ namespace GYISMS.Employees
         }
 
         #endregion
+
+
+        /// <summary>
+        /// 批量更新员工资料库角色
+        /// </summary>
+        /// <param name="employeeIds"></param>
+        /// <param name="roleCode"></param>
+        /// <returns></returns>
+        public async Task BatchUpdateDocRoleAsync(GetBatchDocRoleInput input)
+        {
+            var ids = input.EmployeeIds.Split(',');
+            var employeeList = await _employeeRepository.GetAll().Where(v=>ids.Contains(v.Id)).ToListAsync();
+            foreach (var item in employeeList)
+            {
+                item.DocRole = input.RoleCode;
+            }
+            await CurrentUnitOfWork.SaveChangesAsync();
+        }
     }
 }
 

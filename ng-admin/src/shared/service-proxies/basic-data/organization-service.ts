@@ -6,7 +6,7 @@ import { Injectable, Inject, Optional } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { ApiResult } from '@shared/service-proxies/entity/parameter';
-import { Organization } from '@shared/entity/basic-data';
+import { Organization, CheckBoxGroup } from '@shared/entity/basic-data';
 import { API_BASE_URL } from '@shared/service-proxies/service-proxies';
 import { NzTreeNode } from 'ng-zorro-antd';
 import { GyismsHttpClient } from '@shared/service-proxies/gyisms-httpclient';
@@ -74,6 +74,17 @@ export class OrganizationServiceProxy {
                 arry.push(tree);
             });
             return arry;
+        });
+    }
+
+    GetDocRoleTypeAsync(): Observable<CheckBoxGroup[]> {
+        let url_ = "/api/services/app/SystemData/GetDocRoleGroup";
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return CheckBoxGroup.fromJSArray(data);
+            } else {
+                return null;
+            }
         });
     }
 }

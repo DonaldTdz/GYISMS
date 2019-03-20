@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Injector } from '@angular/core';
 import { NzModalRef } from 'ng-zorro-antd';
-import { Employee } from '@shared/entity/basic-data';
+import { Employee, SelectGroup } from '@shared/entity/basic-data';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { GrowerServiceProxy, EmployeeServiceProxy } from '@shared/service-proxies/basic-data';
 import { NotifyService } from 'abp-ng2-module/dist/src/notify/notify.service';
@@ -25,6 +25,7 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
     countyCodes: any = [
         { text: '昭化区', value: 1 }, { text: '剑阁县', value: 2 }, { text: '旺苍县', value: 3 }, { text: '广元市', value: 4 }
     ];
+    docRoles: SelectGroup[] = [];
     notify: NotifyService;
 
     constructor(injector: Injector, private employeeService: EmployeeServiceProxy, private fb: FormBuilder
@@ -36,7 +37,8 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
     ngOnInit(): void {
         this.validateForm = this.fb.group({
             unitCode: null,
-            isDeptArea: false
+            isDeptArea: false,
+            docRole: null
         });
     }
 
@@ -49,11 +51,27 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
             //     this.countyCodes = result;
             //     this.getEmployee(id);
             // });
-            this.getEmployee(id);
+            // this.getEmployee(id);
+            this.growerService.GetDocRoleTypeAsync().subscribe((result: SelectGroup[]) => {
+                this.docRoles = result;
+                this.getEmployee(id);
+            });
         }
         this.isVisible = true;
     }
 
+    getDocRoleText(e: any) {
+        if (e) {
+            let status: any = this.docRoles.find(s => s.value == e);
+            // this.employee.docRole = status.text;
+        }
+    }
+    // getDocRoleType() {
+    //     this.growerService.GetDocRoleTypeAsync().subscribe((result: SelectGroup[]) => {
+    //         this.docRoles = result;
+    //         this.getEmployee(id);
+    //     });
+    // }
     getEmployee(id: string) {
         this.employeeService.getEmployeeById(id).subscribe((result: Employee) => {
             this.employee = result;
@@ -90,6 +108,7 @@ export class AreaDetailModalComponent extends AppComponentBase implements OnInit
         params.Area = data.area;
         params.AreaCode = data.areaCode;
         params.IsDeptArea = this.employee.isDeptArea;
+        params.DocRole = data.docRole;
         this.employeeService.updateEmployeeArea(params).finally(() => { this.eloading = false; })
             .subscribe((result: Employee) => {
                 this.employee = result;

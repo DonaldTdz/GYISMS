@@ -28,7 +28,12 @@ namespace GYISMS.Employees.Dtos
                 Sorting = "Id";
             }
         }
+    }
 
+    public class GetBatchDocRoleInput
+    {
+        public string EmployeeIds { get; set; }
+        public string RoleCode { get; set; }
 
     }
 }

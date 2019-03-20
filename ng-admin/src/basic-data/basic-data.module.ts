@@ -13,6 +13,7 @@ import { GrowerComponent } from './grower/grower.component';
 import { GrowerDetailComponent } from './grower/grower-detail/grower-detail.component';
 import { GrowerEmployeeModalComponent } from './grower/grower-detail/grower-employee-modal/grower-employee-modal.component';
 import { AreaDetailModalComponent } from './organization/area-detail-modal/area-detail-modal.component';
+import { DocRoleModalComponent } from './organization/doc-role-modal/doc-role-modal.component';
 
 @NgModule({
     imports: [
@@ -30,7 +31,8 @@ import { AreaDetailModalComponent } from './organization/area-detail-modal/area-
         GrowerComponent,
         GrowerDetailComponent,
         GrowerEmployeeModalComponent,
-        AreaDetailModalComponent
+        AreaDetailModalComponent,
+        DocRoleModalComponent
     ],
     entryComponents: [
     ],

@@ -117,8 +117,10 @@ namespace GYISMS.Employees.Dtos
 
         public bool IsDeptArea { get; set; }
 
-        //// custom codes
-
-        //// custom codes end
+        /// <summary>
+        /// ×ÊÁÏ¿â½ÇÉ«
+        /// </summary>
+        [StringLength(50)]
+        public string DocRole { get; set; }
     }
 }

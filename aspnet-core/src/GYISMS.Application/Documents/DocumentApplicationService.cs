@@ -315,7 +315,7 @@ namespace GYISMS.Documents
             if (!string.IsNullOrEmpty(user.Department) && user.Department.Contains('['))
             {
                 var departmentId = user.Department.Replace('[', ' ').Replace(']', ' ').Trim();
-                int count = await _entityRepository.GetAll().Where(v => v.Id == id && (v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId))).AsNoTracking().CountAsync();
+                int count = await _entityRepository.GetAll().Where(v => v.Id == id && (v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId)) || v.DocRoleIds.Contains(user.DocRole)).AsNoTracking().CountAsync();
                 if (count != 0)
                 {
                     return true;
@@ -343,8 +343,10 @@ namespace GYISMS.Documents
                                   ReleaseDate = d.ReleaseDate,
                                   IsAllUser = d.IsAllUser,
                                   DeptIds = d.DeptIds,
-                                  EmployeeIds = d.EmployeeIds
-                              }).Where(v => v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId))
+                                  EmployeeIds = d.EmployeeIds,
+                                  DocRoleIds = d.DocRoleIds
+                              }).Where(v => v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId) ||v.DocRoleIds.Contains(user.DocRole))
+                              //}).Where(v => v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId) || v.DocRoleIds.Contains(user.DocRole))
                               .OrderBy(v => v.Id).AsNoTracking().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();
             return list;
         }
@@ -370,7 +372,7 @@ namespace GYISMS.Documents
                                   IsAllUser = d.IsAllUser,
                                   DeptIds = d.DeptIds,
                                   EmployeeIds = d.EmployeeIds
-                              }).Where(v => v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId))
+                              }).Where(v => v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId) || v.DocRoleIds.Contains(user.DocRole))
                               .WhereIf(!string.IsNullOrEmpty(catId), v => ("," + v.CategoryCode + ",").Contains("," + catId + ","))
                               .WhereIf(!string.IsNullOrEmpty(input), v => v.Name.Contains(input) || v.Summary.Contains(input))
                               .OrderBy(v => v.Id).AsNoTracking().Skip((pageIndex - 1) * pageSize).Take(pageSize).ToListAsync();

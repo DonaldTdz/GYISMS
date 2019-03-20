@@ -54,8 +54,10 @@
                     <ng-template style="margin:0px;" #nzTreeTemplate let-node>
                         <span class="custom-node" aria-grabbed="true" [class.active]="activedNode?.key===node.key">
                             <span *ngIf="!node.isLeaf" [class.shine-animate]="node.origin.isLoading">
-                                <i class="anticon anticon-folder" *ngIf="!node.isExpanded" (click)="openFolder(node)"></i>
-                                <i class="anticon anticon-folder-open" *ngIf="node.isExpanded" (click)="openFolder(node)"></i>
+                                <i class="anticon anticon-folder" *ngIf="!node.isExpanded"
+                                    (click)="openFolder(node)"></i>
+                                <i class="anticon anticon-folder-open" *ngIf="node.isExpanded"
+                                    (click)="openFolder(node)"></i>
                                 <span class="folder-name">{{node.title}}</span>
                                 <!-- <span class="folder-desc">{{node?.origin?.author | lowercase}}</span> -->
                             </span>
@@ -78,7 +80,8 @@
                                 <nz-form-label nzFor="name">用户名</nz-form-label>
                             </div>
                             <div nz-form-control class="flex-1">
-                                <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入用户名" nzSize="default">
+                                <input nz-input [(ngModel)]="search.name" name="name" placeholder="请输入用户名"
+                                    nzSize="default">
                             </div>
                         </div>
                     </div>
@@ -88,11 +91,14 @@
                                 <nz-form-label nzFor="mobile">电话号码</nz-form-label>
                             </div>
                             <div nz-form-control class="flex-1">
-                                <input nz-input [(ngModel)]="search.mobile" name="mobile" placeholder="请输入电话号码" nzSize="default">
+                                <input nz-input [(ngModel)]="search.mobile" name="mobile" placeholder="请输入电话号码"
+                                    nzSize="default">
                             </div>
                         </div>
                     </div>
                     <div nz-col [nzSpan]="8" class="mb-md" style="text-align: right;">
+                        <button nz-button type="button" (click)="showRole()" nzType="default"><i
+                                class="anticon anticon-user"></i>角色分配</button>
                         <button nz-button type="submit" nzType="primary" [nzLoading]="loading">查询</button>
                         <button nz-button type="reset" (click)="refreshData(tempNode,true)" class="mx-sm">重置</button>
                     </div>
@@ -100,10 +106,15 @@
             </form>
             <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
             <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total"
-                [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
-                [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)" (nzPageSizeChange)="refreshData(tempNode)">
+                [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize"
+                [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
+                (nzPageSizeChange)="refreshData(tempNode)">
                 <thead>
                     <tr>
+                        <th>
+                            <label nz-checkbox [(ngModel)]="isSelectedAll" (ngModelChange)="checkAll($event)">
+                            </label>
+                        </th>
                         <th>姓名</th>
                         <th>职位</th>
                         <th>电话号码</th>
@@ -112,11 +123,15 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of nzTable.data">
+                        <td nz-td>
+                            <label nz-checkbox [(ngModel)]="item.roleSelected" (ngModelChange)="isCancelCheck($event)">
+                            </label>
+                        </td>
                         <td>{{item.name}}</td>
                         <td>{{item.position}}</td>
                         <td>{{item.mobile}}</td>
                         <td [acl]="'Admin'">
-                            <a (click)="showModal(item.id)">区县设置</a>
+                            <a (click)="showModal(item.id)">信息设置</a>
                         </td>
                     </tr>
                 </tbody>
@@ -125,4 +140,5 @@
     </div>
 </nz-card>
 <area-detail-modal #selectModal></area-detail-modal>
+<doc-role-modal #docModal></doc-role-modal>
 <!-- <area-detail-modal #selectModal (modalSelect)="getSelectData($event) "></area-detail-modal> -->

@@ -80,5 +80,6 @@ namespace GYISMS.SystemDatas
         //List<SelectGroup> GetWeekOfMonth();
         Task DeleteSystemDataById(int Id);
         Task<List<SelectGroup>> GetWeekOfMonthAsync(Guid id);
+        Task<List<SelectGroup>> GetDocRoleType();
     }
 }

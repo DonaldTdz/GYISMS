@@ -22,6 +22,8 @@ export class Employee implements IEmployee {
     isDeptArea: boolean;
     deptArea: string;
     deptAreaCode: string;
+    docRole: string;
+    roleSelected: boolean;
     constructor(data?: IEmployee) {
         if (data) {
             for (var property in data) {
@@ -54,6 +56,7 @@ export class Employee implements IEmployee {
             this.isDeptArea = data["isDeptArea"];
             this.deptArea = data["deptArea"];
             this.deptAreaCode = data["deptAreaCode"];
+            this.docRole = data["docRole"];
         }
     }
 
@@ -97,6 +100,7 @@ export class Employee implements IEmployee {
         data["isDeptArea"] = this.isDeptArea;
         data["deptArea"] = this.deptArea;
         data["deptAreaCode"] = this.deptAreaCode;
+        data["docRole"] = this.docRole;
         return data;
     }
 
@@ -131,4 +135,6 @@ export interface IEmployee {
     isDeptArea: boolean;
     deptArea: string;
     deptAreaCode: string;
+    docRole: string;
+    roleSelected: boolean;
 }

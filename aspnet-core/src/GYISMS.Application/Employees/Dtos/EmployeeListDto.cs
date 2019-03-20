@@ -114,6 +114,12 @@ namespace GYISMS.Employees.Dtos
         public AreaCodeEnum? DeptAreaCode { get; set; }
 
         public string DeptArea { get; set; }
+
+
+        /// <summary>
+        /// ×ÊÁÏ¿â½ÇÉ«
+        /// </summary>
+        public string DocRole { get; set; }
     }
     public class NzTreeNode
     {

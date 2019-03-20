@@ -65,5 +65,6 @@ namespace GYISMS.Employees
         Task<List<EmployeeNzTreeNode>> GetTreesAsync();
 
         Task<List<EmployeeNzTreeNode>> GetGrowerTreesAsync();
+        Task BatchUpdateDocRoleAsync(GetBatchDocRoleInput input);
     }
 }

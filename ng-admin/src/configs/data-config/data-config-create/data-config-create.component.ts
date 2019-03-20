@@ -29,6 +29,8 @@ export class DataConfigCreateComponent extends AppComponentBase implements OnIni
         { value: 8, text: '智能报表', selected: false },
         { value: 9, text: '会议申请', selected: false },
         { value: 10, text: '企业标准库', selected: false },
+        { value: 11, text: '标准库角色', selected: false },
+
     ]
     config: any = [];
     form: FormGroup;

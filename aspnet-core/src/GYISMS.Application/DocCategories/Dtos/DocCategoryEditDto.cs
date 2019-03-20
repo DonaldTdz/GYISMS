@@ -7,7 +7,7 @@ using Abp.AutoMapper;
 namespace  GYISMS.DocCategories.Dtos
 {
     [AutoMapTo(typeof(DocCategory))]
-    public class DocCategoryEditDto : FullAuditedEntityDto
+    public class DocCategoryEditDto : FullAuditedEntityDto<int?>
     {
 		/// <summary>
 		/// Name

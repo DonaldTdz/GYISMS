@@ -281,3 +281,60 @@ export interface IRadioGroup {
     text: string;
     value: number;
 }
+
+export class CheckBoxGroup implements ICheckBoxGroup {
+    label: string;
+    value: string;
+    checked: boolean;
+    constructor(data?: ICheckBoxGroup) {
+        if (data) {
+            for (var property in data) {
+                if (data.hasOwnProperty(property))
+                    (<any>this)[property] = (<any>data)[property];
+            }
+        }
+    }
+
+    init(data?: any) {
+        if (data) {
+            this.label = data["label"];
+            this.value = data["value"];
+        }
+    }
+
+    static fromJS(data: any): CheckBoxGroup {
+        let result = new CheckBoxGroup();
+        result.init(data);
+        return result;
+    }
+
+    static fromJSArray(dataArray: any[]): CheckBoxGroup[] {
+        let array = [];
+        dataArray.forEach(result => {
+            let item = new CheckBoxGroup();
+            item.init(result);
+            array.push(item);
+        });
+
+        return array;
+    }
+
+    toJSON(data?: any) {
+        data = typeof data === 'object' ? data : {};
+        data["label"] = this.label;
+        data["value"] = this.value;
+        return data;
+    }
+
+    clone() {
+        const json = this.toJSON();
+        let result = new CheckBoxGroup();
+        result.init(json);
+        return result;
+    }
+}
+export interface ICheckBoxGroup {
+    label: string;
+    value: string;
+    checked: boolean;
+}

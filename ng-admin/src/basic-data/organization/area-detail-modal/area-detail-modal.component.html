@@ -11,7 +11,17 @@
                     </desc-list>
                 </div>
             </div>
-            <nz-form-item nz-row>
+            <nz-form-item nz-row style="margin-bottom: 12px;">
+                <nz-form-label style="text-align:left;" nz-col [nzSm]="6" nzFor="docRole">资料库角色</nz-form-label>
+                <nz-form-control [nzSm]="18">
+                    <nz-select formControlName="docRole" nzAllowClear [nzPlaceHolder]="'请选择资料库角色'" name="docRole"
+                        [(ngModel)]="employee.docRole" [nzShowSearch]="true">
+                        <nz-option *ngFor="let i of docRoles" [nzLabel]="i.text" [nzValue]="i.value">
+                        </nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+            <nz-form-item nz-row style="margin-bottom: 12px;">
                 <nz-form-label style="text-align:left;" nz-col [nzSm]="6" nzFor="isDeptArea">采用部门区县</nz-form-label>
                 <nz-form-control [nzSm]="18">
                     <nz-switch [(ngModel)]="employee.isDeptArea" formControlName="isDeptArea" nzCheckedChildren="是"

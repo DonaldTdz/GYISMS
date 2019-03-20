@@ -101,6 +101,13 @@ namespace GYISMS.Documents.Dtos
         /// </summary>
         public string CategoryCode { get; set; }
         public List<GridDocListDto> FileList { get; set; }
+
+        public string DocRoleIds { get; set; }
+
+        /// <summary>
+        /// 授权角色名称（以逗号分隔）
+        /// </summary>
+        public string DocRoleDesc { get; set; }
     }
 
     public class GridDocListDto

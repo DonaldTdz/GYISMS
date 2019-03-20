@@ -84,5 +84,7 @@ namespace GYISMS.DocCategories
         Task<List<TabListDto>> GetTabChildListByIdAsync(int id);
         Task<string> GetParentName(int id);
         Task<APIResultDto> CategoryRemoveById(EntityDto<int> id);
+        Task<APIResultDto> CopyCategoryByDeptIdAsync(CopyInput input);
+        Task<List<CategoryTreeNode>> GetCopyTreeWithRootAsync(long? deptId);
     }
 }

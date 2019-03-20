@@ -47,4 +47,18 @@ export class CategoryService {
             return data;
         });
     }
+
+    copyCategoryByDeptId(input: any): Observable<ApiResult> {
+        let url_ = "/api/services/app/DocCategory/CopyCategoryByDeptIdAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data;
+        });
+    }
+
+    getCopyTreeWithRootAsync(deptId: any): Observable<any> {
+        let url_ = "/api/services/app/DocCategory/GetCopyTreeWithRootAsync";
+        return this._gyhttp.get(url_, { deptId: deptId }).map(data => {
+            return data;
+        });
+    }
 }

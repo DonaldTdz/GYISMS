@@ -45,6 +45,17 @@ export class GrowerServiceProxy {
         });
     }
 
+    GetDocRoleTypeAsync(): Observable<SelectGroup[]> {
+        let url_ = "/api/services/app/SystemData/GetDocRoleType";
+        return this._gyhttp.get(url_).map(data => {
+            if (data) {
+                return SelectGroup.fromJSArray(data);
+            } else {
+                return null;
+            }
+        });
+    }
+
     getCountyCodeAsync(): Observable<RadioGroup[]> {
         let url_ = "/api/services/app/SystemData/GetCountyCodes";
         return this._gyhttp.get(url_).map(data => {
@@ -97,6 +108,13 @@ export class GrowerServiceProxy {
 
     deleteGrower(input: any): Observable<any> {
         let url_ = "/api/services/app/Grower/GrowerDeleteByIdAsync";
+        return this._gyhttp.post(url_, input).map(data => {
+            return data.result;
+        });
+    }
+
+    updateEmployeeDocRole(input: any): Observable<any> {
+        let url_ = "/api/services/app/Employee/BatchUpdateDocRoleAsync";
         return this._gyhttp.post(url_, input).map(data => {
             return data.result;
         });

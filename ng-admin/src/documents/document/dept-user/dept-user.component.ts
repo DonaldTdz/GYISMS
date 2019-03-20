@@ -1,8 +1,9 @@
 import { Component, OnInit, Injector, Output, EventEmitter, ViewChild, Input } from '@angular/core';
 import { ModalComponentBase } from '@shared/component-base/modal-component-base';
 import { NzTreeNode, NzFormatEmitEvent } from 'ng-zorro-antd';
-import { Employee } from '@shared/entity/basic-data';
+import { Employee, CheckBoxGroup } from '@shared/entity/basic-data';
 import { EmployeeServiceProxy, OrganizationServiceProxy, PagedResultDtoOfEmployee } from '@shared/service-proxies/basic-data';
+import { v } from '@angular/core/src/render3';
 
 @Component({
     selector: 'dept-user',
@@ -15,7 +16,9 @@ export class DeptUserComponent extends ModalComponentBase implements OnInit {
 
     @Input() selectedDepts = [];
     @Input() selectedUsers = [];
+    @Input() selectedRoles = [];
 
+    docRoleCheckGroup: CheckBoxGroup[] = [];
     checkedDeptKeys = [];
     orgCheckedKeys = [];
     activedNode: NzTreeNode;
@@ -39,7 +42,13 @@ export class DeptUserComponent extends ModalComponentBase implements OnInit {
     ngOnInit() {
         this.initOrgCheckedKeys();
         this.refreshData(null);
+        this.getDocRoleGroup();
         this.getTrees();
+    }
+    getDocRoleGroup() {
+        this.organizationService.GetDocRoleTypeAsync().subscribe((result: CheckBoxGroup[]) => {
+            this.docRoleCheckGroup = result;
+        });
     }
 
     initOrgCheckedKeys() {
@@ -95,34 +104,34 @@ export class DeptUserComponent extends ModalComponentBase implements OnInit {
         }
     }
 
-    openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
-        // do something if u want
-        if (data instanceof NzTreeNode) {
-            // change node's expand status
-            if (!data.isExpanded) {
-                // close to open
-                data.origin.isLoading = true;
-                setTimeout(() => {
-                    data.isExpanded = !data.isExpanded;
-                    data.origin.isLoading = false;
-                }, 500);
-            } else {
-                data.isExpanded = !data.isExpanded;
-            }
-        } else {
-            // change node's expand status
-            if (!data.node.isExpanded) {
-                // close to open
-                data.node.origin.isLoading = true;
-                setTimeout(() => {
-                    data.node.isExpanded = !data.node.isExpanded;
-                    data.node.origin.isLoading = false;
-                }, 500);
-            } else {
-                data.node.isExpanded = !data.node.isExpanded;
-            }
-        }
-    }
+    // openFolder(data: NzTreeNode | NzFormatEmitEvent): void {
+    //     // do something if u want
+    //     if (data instanceof NzTreeNode) {
+    //         // change node's expand status
+    //         if (!data.isExpanded) {
+    //             // close to open
+    //             data.origin.isLoading = true;
+    //             setTimeout(() => {
+    //                 data.isExpanded = !data.isExpanded;
+    //                 data.origin.isLoading = false;
+    //             }, 500);
+    //         } else {
+    //             data.isExpanded = !data.isExpanded;
+    //         }
+    //     } else {
+    //         // change node's expand status
+    //         if (!data.node.isExpanded) {
+    //             // close to open
+    //             data.node.origin.isLoading = true;
+    //             setTimeout(() => {
+    //                 data.node.isExpanded = !data.node.isExpanded;
+    //                 data.node.origin.isLoading = false;
+    //             }, 500);
+    //         } else {
+    //             data.node.isExpanded = !data.node.isExpanded;
+    //         }
+    //     }
+    // }
 
     // 选中节点
     activeNode(data: NzFormatEmitEvent): void {
@@ -142,7 +151,7 @@ export class DeptUserComponent extends ModalComponentBase implements OnInit {
 
     //checkbox
     checkBoxChange(data: NzFormatEmitEvent) {
-        console.log(data);
+        console.log(data.node);
         //console.log(this.treeCom.getCheckedNodeList());
         //let items = data.checkedKeys.map(checked => {
         //    return { id: checked.key, name: checked.title };
@@ -150,6 +159,60 @@ export class DeptUserComponent extends ModalComponentBase implements OnInit {
         //console.log(items);
         this.orgCheckedKeys = data.keys;
         this.refreshDeptTags({ id: data.node.key, name: data.node.origin.deptName, isChecked: data.node.isChecked });
+    }
+
+    handleRoleClose(event: Event, value: string) {
+        let i = 0;
+        this.selectedRoles.forEach(v => {
+            if (v.value == value) {
+                this.selectedRoles.splice(i, 1);
+                this.docRoleCheckGroup.forEach(v => {
+                    if (v.value == value) {
+                        v.checked = false;
+                        return;
+                    }
+                })
+                // return;
+            }
+            i++;
+        });
+    }
+
+    addDocRole(value: any[]): void {
+        const curChecked = value.filter(v => v.checked == true);
+        // for (const item of curChecked) {
+        //     console.log(item);
+        //     this.selectedRoles.push({ value: item.value, label: item.label });
+        // }
+        curChecked.forEach(v => {
+            if (!this.existsRole(v.value)) {
+                this.selectedRoles.push({ value: v.value, label: v.label });
+            }
+        });
+        const curUnChecked = value.filter(v => v.checked == false);
+        curUnChecked.forEach(v => {
+            if (this.existsRole(v.value)) {
+                let i: number = 0;
+                this.selectedRoles.forEach(s => {
+                    if (s.value == v.value) {
+                        this.selectedRoles.splice(i, 1);
+                        return;
+                    }
+                    i++;
+                });
+            }
+        });
+    }
+
+    existsRole(value: string): boolean {
+        let bo = false;
+        this.selectedRoles.forEach(v => {
+            if (v.value == value) {
+                bo = true;
+                return;
+            }
+        });
+        return bo;
     }
 
     refreshDeptTags(item: any) {

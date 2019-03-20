@@ -1,0 +1,28 @@
+<div class="padding-bottom-45">
+    <h3>
+        <span>复制分类</span>
+    </h3>
+    <nz-alert nzType="info" nzMessage="请为[{{rtitle}}]及子分类选择所属部门及父级分类" nzShowIcon></nz-alert>
+    <div nz-row>
+        <div nz-col nzSpan="4">
+            <nz-tree [(ngModel)]="nodes" (nzClick)="activeNode($event)" [nzDefaultExpandAll]="true">
+            </nz-tree>
+        </div>
+        <div nz-col nzSpan="4">
+
+        </div>
+        <div nz-col nzSpan="8" *ngIf="selectedDept.id !=0 && nodesCate && nodesCate.length > 0">
+            <nz-tree #treeCom [nzData]="nodesCate" (nzClick)="activeCateNode($event)">
+            </nz-tree>
+        </div>
+    </div>
+
+    <!-- 功能按钮 -->
+    <div class="custom-modal-footer">
+        <div class="custom-modal-footter-group">
+            <button nz-button type="button" (click)="closeOut()">
+                返回
+            </button>
+        </div>
+    </div>
+</div>

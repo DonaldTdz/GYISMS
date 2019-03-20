@@ -74,6 +74,16 @@ namespace GYISMS.Documents
         /// </summary>
         public virtual bool IsAllUser { get; set; }
 
+        /// <summary>
+        /// 授权角色Id（以逗号分隔）
+        /// </summary>
+        [StringLength(500)]
+        public virtual string DocRoleIds { get; set; }
+
+        /// <summary>
+        /// 授权角色名称（以逗号分隔）
+        /// </summary>
+        public virtual string DocRoleDesc { get; set; }
 
     }
 }

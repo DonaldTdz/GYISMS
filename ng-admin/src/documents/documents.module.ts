@@ -17,6 +17,7 @@ import { DeptUserComponent } from './document/dept-user/dept-user.component';
 import { QrCodeCategoryComponent } from './document/category/qr-code-category/qr-code-category.component';
 import { AdvisesComponent } from './advises/advises.component';
 import { AdviseListComponent } from './advises/advise-list/advise-list.component';
+import { CopyDeptComponent } from './document/copy-dept/copy-dept.component';
 
 @NgModule({
     imports: [
@@ -38,7 +39,8 @@ import { AdviseListComponent } from './advises/advise-list/advise-list.component
         DeptUserComponent,
         QrCodeCategoryComponent,
         AdvisesComponent,
-        AdviseListComponent
+        AdviseListComponent,
+        CopyDeptComponent
     ],
     entryComponents: [
         CreateCategoryComponent,
@@ -48,7 +50,8 @@ import { AdviseListComponent } from './advises/advise-list/advise-list.component
         DeptUserComponent,
         QrCodeCategoryComponent,
         AdvisesComponent,
-        AdviseListComponent
+        AdviseListComponent,
+        CopyDeptComponent
     ],
     providers: [LocalizationService],
 })

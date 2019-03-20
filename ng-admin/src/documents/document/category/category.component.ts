@@ -15,6 +15,7 @@ import { Category } from '@shared/entity/documents';
 import { CategoryService } from '@shared/service-proxies/documents';
 import { QrCodeCategoryComponent } from './qr-code-category/qr-code-category.component';
 import { tryParse } from 'selenium-webdriver/http';
+import { CopyDeptComponent } from '../copy-dept/copy-dept.component';
 
 
 @Component({
@@ -194,5 +195,22 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
                 });
             }
         });
+    }
+
+    copyCate() {
+        console.log(this.rkeyNode);
+        if (this.dropdown) {
+            this.dropdown.close();
+        }
+        this.modalHelper
+            .open(CopyDeptComponent, { rkey: this.rkeyNode.key, rtitle: this.rkeyNode.title }, 'md', {
+                nzMask: true,
+                nzClosable: false,
+                nzMaskClosable: false
+            })
+            .subscribe(isSave => {
+                if (isSave) {
+                }
+            });
     }
 }

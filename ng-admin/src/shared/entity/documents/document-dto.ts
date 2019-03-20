@@ -15,7 +15,8 @@ export class DocumentDto implements IDocumentDto {
     deptDesc: string;
     employeeDes: string;
     isAllUser: boolean;
-
+    docRoleIds: string;
+    docRoleDesc: string;
     constructor(data?: IDocumentDto) {
         if (data) {
             for (var property in data) {
@@ -41,6 +42,8 @@ export class DocumentDto implements IDocumentDto {
             this.deptDesc = data["deptDesc"];
             this.employeeDes = data["employeeDes"];
             this.isAllUser = data["isAllUser"];
+            this.docRoleIds = data["docRoleIds"];
+            this.docRoleDesc = data["docRoleDesc"];
         }
     }
 
@@ -77,6 +80,8 @@ export class DocumentDto implements IDocumentDto {
         data["deptDesc"] = this.deptDesc;
         data["employeeDes"] = this.employeeDes;
         data["isAllUser"] = this.isAllUser;
+        data["docRoleIds"] = this.docRoleIds;
+        data["docRoleDesc"] = this.docRoleDesc;
         return data;
     }
 
@@ -108,6 +113,20 @@ export class DocumentDto implements IDocumentDto {
         return users;
     }
 
+    getRoles(): any[] {
+        let roles = [];
+        let ids = this.docRoleIds.split(',');
+        let labels = this.docRoleDesc.split(',');
+        let i = 0;
+        for (let id of ids) {
+            if (id) {
+                roles.push({ value: id, label: labels[i] });
+            }
+            i++;
+        }
+        return roles;
+    }
+
     clone() {
         const json = this.toJSON();
         let result = new DocumentDto();
@@ -130,6 +149,8 @@ export interface IDocumentDto {
     deptDesc: string;
     employeeDes: string;
     isAllUser: boolean;
+    docRoleIds: string;
+    docRoleDesc: string;
 }
 
 export class PagedResultDtoOfDocument implements IPagedResultDtoOfDocument {

@@ -8,6 +8,7 @@ import { Parameter } from '@shared/service-proxies/entity/parameter';
 import { NzFormatEmitEvent, NzTreeNode, NzDropdownContextComponent } from 'ng-zorro-antd';
 import { PagedResultDtoOfEmployee, EmployeeServiceProxy } from '@shared/service-proxies/basic-data/employee-service';
 import { AreaDetailModalComponent } from './area-detail-modal/area-detail-modal.component';
+import { DocRoleModalComponent } from './doc-role-modal/doc-role-modal.component';
 
 @Component({
     moduleId: module.id,
@@ -19,6 +20,7 @@ import { AreaDetailModalComponent } from './area-detail-modal/area-detail-modal.
 export class OrganizationComponent extends AppComponentBase implements OnInit {
     @Output() modalSelect: EventEmitter<any> = new EventEmitter<any>();
     @ViewChild('selectModal') selectModal: AreaDetailModalComponent;
+    @ViewChild('docModal') docModal: DocRoleModalComponent;
     syncDataLoading = false;
     exportLoading = false;
     search: any = {};
@@ -30,6 +32,9 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
     employeeList: Employee[] = [];
     dragNodeElement;
     tempNode: string;
+    isSelectedAll: boolean = false; // 是否全选
+    checkboxCount: number = 0; // 所有Checkbox数量
+    checkedLength: number = 0; // 已选中的数量
     nodes = [
         // new NzTreeNode({
         //     title: '成都和创科技有限公司',
@@ -124,6 +129,7 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
 
 
     refreshData(departId: string, reset = false, search?: boolean) {
+        this.resetCheckBox();
         if (reset) {
             this.query.pageIndex = 1;
             this.search = {};
@@ -187,4 +193,42 @@ export class OrganizationComponent extends AppComponentBase implements OnInit {
     // getSelectData = () => {
     //     this.getTaskList();
     // }
+
+    checkAll(e) {
+        var v = this.isSelectedAll;
+        this.employeeList.forEach(u => {
+            u.roleSelected = v;
+        });
+        if (this.isSelectedAll == false) {
+            this.checkedLength = 0;
+        } else {
+            this.checkedLength = this.employeeList.filter(v => v.roleSelected).length;
+        }
+    }
+
+    isCancelCheck(x: any) {
+        this.checkedLength = this.employeeList.filter(v => v.roleSelected).length;
+        this.checkboxCount = this.employeeList.length;
+        if (this.checkboxCount - this.checkedLength > 0) {
+            this.isSelectedAll = false;
+        } else {
+            this.isSelectedAll = true;
+        }
+    }
+
+    resetCheckBox() {
+        this.isSelectedAll = false; // 是否全选
+        this.checkboxCount = 0; // 所有Checkbox数量
+        this.checkedLength = 0; // 已选中的数量
+    }
+
+    showRole() {
+        if (this.checkedLength == 0) {
+            this.notify.info('请选择所要分配的人员！', '');
+        } else {
+            var checkedEmoloyeeIds = this.employeeList.filter(v => v.roleSelected == true).map(v => { return v.id; }
+            ).join(',');
+            this.docModal.show(checkedEmoloyeeIds);
+        }
+    }
 }

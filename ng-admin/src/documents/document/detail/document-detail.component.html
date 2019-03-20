@@ -43,7 +43,7 @@
                 </nz-form-item>
                 <nz-form-item nz-row>
                     <nz-form-label nz-col [nzSm]="4" nzRequired>可查看用户</nz-form-label>
-                    <nz-form-control [nzSm]="20" nzHasFeedback>
+                    <nz-form-control [nzSm]="20">
                         <nz-radio-group formControlName="isAllUser" (ngModelChange)="allUserRadioChange($event)">
                             <label nz-radio nzValue="1">所有用户</label>
                             <label nz-radio nzValue="0">部分用户</label>
@@ -54,12 +54,16 @@
                                 [nzMode]="'closeable'" (nzAfterClose)="handleDeptClose(dept)">
                                 {{ dept.name }}
                             </nz-tag>
+                            <nz-tag *ngFor="let role of roleTags; let i = index;" [nzColor]="'volcano'"
+                                [nzMode]="'closeable'" (nzAfterClose)="handleRoleClose($event, role.value)">
+                                {{ role.label }}
+                            </nz-tag>
                             <nz-tag *ngFor="let user of userTags; let i = index;" [nzMode]="'closeable'"
                                 (nzAfterClose)="handleUserClose(user)">
                                 {{ user.name }}
                             </nz-tag>
                             <nz-tag class="editable-tag" [nzColor]="'#108ee9'" (click)="showDeptUserModel()">
-                                <i class="anticon anticon-plus"></i> 选择部门和人
+                                <i class="anticon anticon-plus"></i> 选择部门角色和人
                             </nz-tag>
                         </div>
                     </nz-form-control>

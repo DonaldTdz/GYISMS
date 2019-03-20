@@ -82,5 +82,11 @@ namespace  GYISMS.Documents.Dtos
 
         public bool IsAllUser { get; set; }
 
+        public string DocRoleIds { get; set; }
+
+        /// <summary>
+        /// 授权角色名称（以逗号分隔）
+        /// </summary>
+        public string DocRoleDesc { get; set; }
     }
 }

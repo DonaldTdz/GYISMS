@@ -105,5 +105,8 @@ namespace GYISMS.Employees
         /// 区县名称
         /// </summary>
         public virtual string Area { get; set; }
+
+        [StringLength(50)]
+        public virtual string DocRole { get; set; }
     }
 }

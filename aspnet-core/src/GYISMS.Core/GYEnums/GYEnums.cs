@@ -15,7 +15,8 @@ namespace GYISMS.GYEnums
         任务拜访 = 7,
         智能报表 = 8,
         会议申请 = 9,
-        企业标准库 = 10
+        企业标准库 = 10,
+        标准库角色 = 11
     }
 
     public enum ConfigModel

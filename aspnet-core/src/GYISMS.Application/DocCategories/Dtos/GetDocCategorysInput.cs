@@ -20,4 +20,15 @@ namespace GYISMS.DocCategories.Dtos
         }
 
     }
+
+    /// <summary>
+    /// 分类复制Input
+    /// </summary>
+    public class CopyInput
+    {
+        public string DeptId { get; set; } 
+        public int CategoryId { get; set; }
+        public string ParentId { get; set; }
+
+    }
 }

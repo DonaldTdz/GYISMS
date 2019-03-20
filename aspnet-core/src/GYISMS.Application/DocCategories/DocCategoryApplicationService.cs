@@ -1,4 +1,4 @@
-
+    
 using System;
 using System.Data;
 using System.Linq;
@@ -134,7 +134,7 @@ namespace GYISMS.DocCategories
         public async Task CreateOrUpdate(CreateOrUpdateDocCategoryInput input)
         {
             input.DocCategory.ParentId = input.DocCategory.ParentId ?? 0;
-            if (input.DocCategory.Id != 0)
+            if (input.DocCategory.Id != 0 && input.DocCategory.Id !=null)
             {
                 await Update(input.DocCategory);
             }
@@ -169,7 +169,7 @@ namespace GYISMS.DocCategories
         {
             //TODO:更新前的逻辑判断，是否允许更新
 
-            var entity = await _entityRepository.GetAsync(input.Id);
+            var entity = await _entityRepository.GetAsync(input.Id.Value);
             input.MapTo(entity);
 
             // ObjectMapper.Map(input, entity);
@@ -245,7 +245,7 @@ namespace GYISMS.DocCategories
             List<GridListDto> list = new List<GridListDto>();
             foreach (var item in entityList)
             {
-                int count = await _documentRepository.GetAll().Where(v => ("," + v.CategoryCode + ",").Contains("," + item.Id.ToString() + ",") && (v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId))).AsNoTracking().CountAsync();
+                int count = await _documentRepository.GetAll().Where(v => ("," + v.CategoryCode + ",").Contains("," + item.Id.ToString() + ",") && (v.IsAllUser == true || v.DeptIds.Contains(departmentId) || v.EmployeeIds.Contains(userId) || v.DocRoleIds.Contains(user.DocRole))).AsNoTracking().CountAsync();
                 if (count > 0)
                 {
                     list.Add(item);
@@ -337,7 +337,71 @@ namespace GYISMS.DocCategories
                 return new APIResultDto() { Code = 0, Msg = "删除成功" };
             }
         }
+
+        /// <summary>
+        /// 复制分类
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public async Task<APIResultDto> CopyCategoryByDeptIdAsync(CopyInput input)
+        {
+            long deptId = long.Parse(input.DeptId);
+            var rootCategory = await _entityRepository.GetAll().Where(v => v.Id == input.CategoryId).AsNoTracking().FirstOrDefaultAsync();
+            DocCategory entity = new DocCategory();
+            entity.Name = rootCategory.Name;
+            entity.DeptId = deptId;
+            entity.Desc = rootCategory.Desc;
+            entity.ParentId = Convert.ToInt32(input.ParentId);
+            var result = await _entityRepository.InsertAsync(entity);
+            await CurrentUnitOfWork.SaveChangesAsync();
+            await GetCopyChild(rootCategory.Id, result.Id, deptId);
+            return new APIResultDto() { Code = 0, Msg = "操作成功" };
+        }
+
+        /// <summary>
+        /// 递归子分类
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="insertList"></param>
+        /// <returns></returns>
+        private async Task GetCopyChild(int id, int parentId, long deptId)
+        {
+            var list = await _entityRepository.GetAll().Where(v => v.ParentId == id).AsNoTracking().ToListAsync();
+            if (list.Count() > 0)
+            {
+                foreach (var item in list)
+                {
+                    DocCategory entity = new DocCategory();
+                    entity.Name = item.Name;
+                    entity.DeptId = deptId;
+                    entity.Desc = item.Desc;
+                    entity.ParentId = parentId;
+                    var curEntity = await _entityRepository.InsertAsync(entity);
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                    await GetCopyChild(item.Id, curEntity.Id, deptId);
+                }
+            }
+        }
+
+        /// <summary>
+        /// 分类复制树
+        /// </summary>
+        /// <param name="deptId"></param>
+        /// <returns></returns>
+        public async Task<List<CategoryTreeNode>> GetCopyTreeWithRootAsync(long? deptId)
+        {
+            List<CategoryTreeNode> list = new List<CategoryTreeNode>();
+            CategoryTreeNode item = new CategoryTreeNode();
+            item.title = "根目录";
+            item.key = "0";
+            item.isLeaf = false;
+            item.expanded = true;
+            item.children = new List<CategoryTreeNode>();
+            var categoryList = await _entityRepository.GetAll().WhereIf(deptId.HasValue, e => e.DeptId == deptId).ToListAsync();
+            var child = GetTrees(0, categoryList);
+            item.children.AddRange(child);
+            list.Add(item);
+            return list;
+        }
     }
 }
-
-

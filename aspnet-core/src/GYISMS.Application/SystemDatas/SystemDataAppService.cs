@@ -332,6 +332,22 @@ systemdataListDtos
         }
 
         /// <summary>
+        /// 获取资料库角色Select
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<SelectGroup>> GetDocRoleType()
+        {
+            var entity = await (from c in _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.钉钉配置 && v.Type == ConfigType.标准库角色)
+                                select new
+                                {
+                                    text = c.Desc,
+                                    value = c.Code,
+                                    seq = c.Seq
+                                }).OrderBy(v => v.seq).AsNoTracking().ToListAsync();
+            return entity.MapTo<List<SelectGroup>>();
+        }
+
+        /// <summary>
         /// 获取烟农区县Radio
         /// </summary>
         /// <returns></returns>
@@ -362,6 +378,22 @@ systemdataListDtos
                                 }).OrderBy(v => v.seq).AsNoTracking().ToListAsync();
 
             return entity.MapTo<List<SelectGroup>>();
+        }
+
+        /// <summary>
+        /// 获取资料库角色CheckGroup
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<CheckBoxGroup>> GetDocRoleGroup()
+        {
+            var entity = await (from c in _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.钉钉配置 && v.Type == ConfigType.标准库角色).OrderBy(v=>v.Seq)
+                                select new
+                                {
+                                    label = c.Desc,
+                                    value = c.Code,
+                                }).AsNoTracking().ToListAsync();
+
+            return entity.MapTo<List<CheckBoxGroup>>();
         }
 
         /// <summary>

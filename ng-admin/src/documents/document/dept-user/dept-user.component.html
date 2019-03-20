@@ -1,6 +1,6 @@
 <div class="padding-bottom-45">
     <h3>
-        <span>选择部门与人员</span>
+        <span>选择部门角色与人员</span>
     </h3>
     <div nz-row>
         <div nz-col nzSpan="3">
@@ -11,7 +11,12 @@
                 (nzAfterClose)="handleDeptClose(dept)">
                 {{ dept.name }}
             </nz-tag>
-            <nz-tag *ngFor="let user of selectedUsers; let i = index;" [nzMode]="'closeable'" (nzAfterClose)="handleUserClose(user)">
+            <nz-tag *ngFor="let role of selectedRoles; let i = index;" [nzColor]="'volcano'" [nzMode]="'closeable'"
+                (nzAfterClose)="handleRoleClose($event, role.value)">
+                {{ role.label }}
+            </nz-tag>
+            <nz-tag *ngFor="let user of selectedUsers; let i = index;" [nzMode]="'closeable'"
+                (nzAfterClose)="handleUserClose(user)">
                 {{ user.name }}
             </nz-tag>
         </div>
@@ -19,23 +24,33 @@
     <div nz-row>
         <div nz-col nzSpan="12">
             <div>
-                <nz-tree #treeCom [nzCheckable]="true" [nzData]="nodes" [nzShowExpand]="true" (nzClick)="activeNode($event)"
-                    [nzCheckedKeys]="checkedDeptKeys" [nzCheckStrictly]="true" (nzDblClick)="openFolder($event)"
-                    (nzCheckBoxChange)="checkBoxChange($event)">
+                <!-- <nz-tree #treeCom [nzCheckable]="true" [nzData]="nodes" [nzShowExpand]="true"
+                    (nzClick)="activeNode($event)" [nzCheckedKeys]="checkedDeptKeys" [nzCheckStrictly]="true"
+                    (nzDblClick)="openFolder($event)" (nzCheckBoxChange)="checkBoxChange($event)">
+                </nz-tree> -->
+                <nz-tree #treeCom [nzCheckable]="true" [nzData]="nodes" [nzShowExpand]="true"
+                    (nzClick)="activeNode($event)" [nzCheckedKeys]="checkedDeptKeys" [nzCheckStrictly]="true"
+                    (nzDblClick)="openFolder($event)" (nzCheckBoxChange)="checkBoxChange($event)">
                 </nz-tree>
             </div>
+        </div>
+        <div nz-col nzSpan="12">
+            <nz-checkbox-group [(ngModel)]="docRoleCheckGroup" (ngModelChange)="addDocRole(docRoleCheckGroup)">
+            </nz-checkbox-group>
         </div>
         <div nz-col nzSpan="12">
             <nz-input-group nzSearch [nzSuffix]="suffixButton">
                 <input type="text" [(ngModel)]="userName" nz-input placeholder="用户名">
             </nz-input-group>
             <ng-template #suffixButton>
-                <button nz-button nzType="primary" type="button" (click)="refreshData(tempNode,false,true)" nzSearch>搜索</button>
+                <button nz-button nzType="primary" type="button" (click)="refreshData(tempNode,false,true)"
+                    nzSearch>搜索</button>
             </ng-template>
             <ng-template #totalTemplate let-total>共 {{query.total}} 条</ng-template>
             <nz-table #nzTable [nzFrontPagination]="false" [nzShowTotal]="totalTemplate" [nzTotal]="query.total"
-                [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize" [nzLoading]="loading"
-                [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)" (nzPageSizeChange)="refreshData(tempNode)">
+                [nzData]="employeeList" [(nzPageIndex)]="query.pageIndex" [(nzPageSize)]="query.pageSize"
+                [nzLoading]="loading" [nzShowSizeChanger]="true" (nzPageIndexChange)="refreshData(tempNode)"
+                (nzPageSizeChange)="refreshData(tempNode)">
                 <thead>
                     <tr>
                         <th nzShowCheckbox [(nzChecked)]="allChecked" [nzIndeterminate]="indeterminate"
@@ -46,7 +61,8 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let item of nzTable.data">
-                        <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshStatus($event, item)"></td>
+                        <td nzShowCheckbox [(nzChecked)]="item.checked" (nzCheckedChange)="refreshStatus($event, item)">
+                        </td>
                         <td>{{item.name}}</td>
                         <td>{{item.position}}</td>
                     </tr>
