@@ -151,7 +151,7 @@ export class DeptUserComponent extends ModalComponentBase implements OnInit {
 
     //checkbox
     checkBoxChange(data: NzFormatEmitEvent) {
-        console.log(data.node);
+        // console.log(data.node);
         //console.log(this.treeCom.getCheckedNodeList());
         //let items = data.checkedKeys.map(checked => {
         //    return { id: checked.key, name: checked.title };
@@ -220,10 +220,11 @@ export class DeptUserComponent extends ModalComponentBase implements OnInit {
         if (item.isChecked) {
             if (depts.length == 0) {
                 this.selectedDepts.push({ id: item.id, name: item.name });
+                // this.selectedDepts.push({ id: item.id, name: item.name, isChecked: item.isChecked });
             }
         } else {
             if (depts.length > 0) {
-                this.selectedDepts.splice(this.selectedUsers.indexOf(depts[0]), 1);
+                this.selectedDepts.splice(this.selectedDepts.indexOf(depts[0]), 1);
             }
         }
         /*
