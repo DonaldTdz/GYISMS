@@ -1,4 +1,4 @@
-    
+
 using System;
 using System.Data;
 using System.Linq;
@@ -25,6 +25,7 @@ using GYISMS.Documents.Dtos;
 using GYISMS.Documents;
 using GYISMS.Employees;
 using GYISMS.Dtos;
+using Abp.Domain.Uow;
 
 namespace GYISMS.DocCategories
 {
@@ -134,7 +135,7 @@ namespace GYISMS.DocCategories
         public async Task CreateOrUpdate(CreateOrUpdateDocCategoryInput input)
         {
             input.DocCategory.ParentId = input.DocCategory.ParentId ?? 0;
-            if (input.DocCategory.Id != 0 && input.DocCategory.Id !=null)
+            if (input.DocCategory.Id != 0 && input.DocCategory.Id != null)
             {
                 await Update(input.DocCategory);
             }
@@ -343,20 +344,22 @@ namespace GYISMS.DocCategories
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public async Task<APIResultDto> CopyCategoryByDeptIdAsync(CopyInput input)
-        {
-            long deptId = long.Parse(input.DeptId);
-            var rootCategory = await _entityRepository.GetAll().Where(v => v.Id == input.CategoryId).AsNoTracking().FirstOrDefaultAsync();
-            DocCategory entity = new DocCategory();
-            entity.Name = rootCategory.Name;
-            entity.DeptId = deptId;
-            entity.Desc = rootCategory.Desc;
-            entity.ParentId = Convert.ToInt32(input.ParentId);
-            var result = await _entityRepository.InsertAsync(entity);
-            await CurrentUnitOfWork.SaveChangesAsync();
-            await GetCopyChild(rootCategory.Id, result.Id, deptId);
-            return new APIResultDto() { Code = 0, Msg = "操作成功" };
-        }
+
+        //public async Task<APIResultDto> CopyCategoryByDeptIdAsync(CopyInput input)
+        //{
+        //    long deptId = long.Parse(input.DeptId);
+        //    var rootCategory = await _entityRepository.GetAll().Where(v => v.Id == input.CategoryId).AsNoTracking().FirstOrDefaultAsync();
+        //    DocCategory entity = new DocCategory();
+        //    entity.Name = rootCategory.Name;
+        //    entity.DeptId = deptId;
+        //    entity.Desc = rootCategory.Desc;
+        //    entity.ParentId = Convert.ToInt32(input.ParentId);
+        //    //var result = await _entityRepository.InsertAsync(entity);
+        //    var resultId = await _entityRepository.InsertAndGetIdAsync(entity);
+        //    await CurrentUnitOfWork.SaveChangesAsync();
+        //    await GetCopyChild(rootCategory.Id, resultId, deptId);
+        //    return new APIResultDto() { Code = 0, Msg = "操作成功" };
+        //}
 
         /// <summary>
         /// 递归子分类
@@ -364,9 +367,60 @@ namespace GYISMS.DocCategories
         /// <param name="id"></param>
         /// <param name="insertList"></param>
         /// <returns></returns>
-        private async Task GetCopyChild(int id, int parentId, long deptId)
+        //private async Task GetCopyChild(int id, int parentId, long deptId)
+        //{
+        //    var list = await _entityRepository.GetAll().Where(v => v.ParentId == id).AsNoTracking().ToListAsync();
+        //    if (list.Count() > 0)
+        //    {
+        //        foreach (var item in list)
+        //        {
+        //            DocCategory entity = new DocCategory();
+        //            entity.Name = item.Name;
+        //            entity.DeptId = deptId;
+        //            entity.Desc = item.Desc;
+        //            entity.ParentId = parentId;
+        //            //var curEntity = await _entityRepository.InsertAsync(entity);
+        //            var curEntityId = await _entityRepository.InsertAndGetIdAsync(entity);
+        //            await CurrentUnitOfWork.SaveChangesAsync();
+        //            await GetCopyChild(item.Id, curEntityId, deptId);
+        //        }
+        //    }
+        //}
+
+        public async Task<APIResultDto> CopyCategoryByDeptIdAsync(CopyInput input)
         {
-            var list = await _entityRepository.GetAll().Where(v => v.ParentId == id).AsNoTracking().ToListAsync();
+            long deptId = long.Parse(input.DeptId);
+            var tempList = new List<DocCategory>();
+            var rootCategory = await _entityRepository.GetAll().Where(v => v.Id == input.CategoryId).AsNoTracking().FirstOrDefaultAsync();
+            tempList.Add(rootCategory);
+            GetCopyChild(rootCategory.Id, tempList);
+            DocCategory entity = new DocCategory();
+            entity.Name = rootCategory.Name;
+            entity.DeptId = deptId;
+            entity.Desc = rootCategory.Desc;
+            entity.ParentId = Convert.ToInt32(input.ParentId);
+            var resultId = _entityRepository.InsertAndGetId(entity);
+            CurrentUnitOfWork.SaveChanges();
+            CopyChild(rootCategory.Id, resultId, deptId, tempList);
+            return new APIResultDto() { Code = 0, Msg = "操作成功" };
+        }
+        private void GetCopyChild(int id, List<DocCategory> docList)
+        {
+            var list = _entityRepository.GetAll().Where(v => v.ParentId == id).AsNoTracking().ToList();
+            if (list.Count() > 0)
+            {
+                foreach (var item in list)
+                {
+                    docList.Add(item);
+                    GetCopyChild(item.Id, docList);
+                }
+            }
+        }
+
+
+        private void CopyChild(int id, int parentId,long deptId, List<DocCategory> tempList)
+        {
+            var list = tempList.Where(v => v.ParentId == id).ToList();
             if (list.Count() > 0)
             {
                 foreach (var item in list)
@@ -376,9 +430,9 @@ namespace GYISMS.DocCategories
                     entity.DeptId = deptId;
                     entity.Desc = item.Desc;
                     entity.ParentId = parentId;
-                    var curEntity = await _entityRepository.InsertAsync(entity);
-                    await CurrentUnitOfWork.SaveChangesAsync();
-                    await GetCopyChild(item.Id, curEntity.Id, deptId);
+                    var curEntityId =  _entityRepository.InsertAndGetId(entity);
+                    CurrentUnitOfWork.SaveChanges();
+                    CopyChild(item.Id, curEntityId, deptId, tempList);
                 }
             }
         }
@@ -388,6 +442,7 @@ namespace GYISMS.DocCategories
         /// </summary>
         /// <param name="deptId"></param>
         /// <returns></returns>
+        [UnitOfWork(isTransactional: false)]
         public async Task<List<CategoryTreeNode>> GetCopyTreeWithRootAsync(long? deptId)
         {
             List<CategoryTreeNode> list = new List<CategoryTreeNode>();
