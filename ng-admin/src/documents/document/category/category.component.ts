@@ -88,6 +88,7 @@ export class CategoryComponent extends AppComponentBase implements OnInit {
         category.id = parseInt(this.rkeyNode.key);
         category.name = this.rkeyNode.title;
         category.parentId = this.rkeyNode.origin.parentId;
+        category.deptId = this.deptId;
         this.modalHelper
             .open(EditCategoryComponent, { category: category }, 'md', {
                 nzMask: true,
