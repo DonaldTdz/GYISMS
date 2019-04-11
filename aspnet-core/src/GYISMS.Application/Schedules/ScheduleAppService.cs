@@ -35,6 +35,17 @@ using Senparc.CO2NET.Helpers;
 using System.IO;
 using System.Text;
 using Senparc.CO2NET.HttpUtility;
+using GYISMS.GrowerAreaRecords;
+using GYISMS.GrowerLocationLogs;
+using GYISMS.VisitRecords;
+using GYISMS.Growers;
+using GYISMS.VisitTasks;
+using GYISMS.ScheduleTasks;
+using GYISMS.ScheduleTasks.Dtos;
+using GYISMS.VisitExamines;
+using GYISMS.TaskExamines;
+using System.Text.RegularExpressions;
+using Microsoft.AspNetCore.Hosting;
 
 namespace GYISMS.Schedules
 {
@@ -53,7 +64,16 @@ namespace GYISMS.Schedules
         private readonly IRepository<User, long> _userRepository;
         //private string accessToken;
         //private DingDingAppConfig ddConfig;
-
+        private readonly IRepository<ScheduleTask, Guid> _scheduletaskRepository;
+        private readonly IRepository<ScheduleDetail, Guid> _scheduleDetailRepository;
+        private readonly IRepository<VisitTask> _visitTaskRepository;
+        private readonly IRepository<Grower> _growerRepository;
+        private readonly IRepository<VisitRecord, Guid> _visitRecordRepository;
+        private readonly IRepository<GrowerLocationLog, Guid> _growerLocationLogRepository;
+        private readonly IRepository<GrowerAreaRecord, Guid> _growerAreaRecordRepository;
+        private readonly IRepository<VisitExamine, Guid> _visitexamineRepository;
+        private readonly IRepository<TaskExamine, int> _taskexamineRepository;
+        private readonly IHostingEnvironment _hostingEnvironment;
         /// <summary>
         /// 构造函数 
         ///</summary>
@@ -63,14 +83,38 @@ namespace GYISMS.Schedules
             , IDingDingAppService dingDingAppService
             , IRepository<SystemData, int> systemdataRepository
             , IRepository<User, long> userRepository
+
+            , IRepository<ScheduleTask, Guid> scheduletaskRepository
+            , IScheduleTaskManager scheduletaskManager
+            , IRepository<VisitTask> visitTaskRepository
+            , IRepository<ScheduleDetail, Guid> scheduleDetailRepository
+            , IRepository<Grower> growerRepository
+            , IRepository<VisitRecord, Guid> visitRecordRepository
+            , IRepository<GrowerLocationLog, Guid> growerLocationLogRepository
+            , IRepository<GrowerAreaRecord, Guid> growerAreaRecordRepository
+            , IRepository<VisitExamine, Guid> visitexamineRepository
+            , IRepository<TaskExamine, int> taskexamineRepository
+            , IHostingEnvironment hostingEnvironment
             )
         {
             _scheduleRepository = scheduleRepository;
             _scheduleManager = scheduleManager;
             _scheduledetailRepository = scheduledetailRepository;
             _dingDingAppService = dingDingAppService;
-            _systemdataRepository = systemdataRepository;
             _userRepository = userRepository;
+
+            _scheduletaskRepository = scheduletaskRepository;
+            _scheduleRepository = scheduleRepository;
+            _scheduleDetailRepository = scheduleDetailRepository;
+            _visitTaskRepository = visitTaskRepository;
+            _growerRepository = growerRepository;
+            _visitRecordRepository = visitRecordRepository;
+            _systemdataRepository = systemdataRepository;
+            _growerLocationLogRepository = growerLocationLogRepository;
+            _growerAreaRecordRepository = growerAreaRecordRepository;
+            _visitexamineRepository = visitexamineRepository;
+            _taskexamineRepository = taskexamineRepository;
+            _hostingEnvironment = hostingEnvironment;
         }
 
 
@@ -80,7 +124,7 @@ namespace GYISMS.Schedules
         public async Task<PagedResultDto<ScheduleListDto>> GetPagedSchedulesAsync(GetSchedulesInput input)
         {
             var isAdmin = await CheckAdminAsync();
-           
+
             var query = _scheduleRepository.GetAll()
                         .WhereIf(!string.IsNullOrEmpty(input.Name), u => u.Name.Contains(input.Name))
                         .WhereIf(input.ScheduleType.HasValue, r => r.Type == input.ScheduleType)
@@ -88,7 +132,7 @@ namespace GYISMS.Schedules
 
             var user = _userRepository.GetAll();
             var entity = from q in query
-                         join u in user on q.CreatorUserId equals u.Id 
+                         join u in user on q.CreatorUserId equals u.Id
                          //into table
                          //from t in table.DefaultIfEmpty()
                          select new ScheduleListDto()
@@ -389,6 +433,188 @@ namespace GYISMS.Schedules
                 Logger.ErrorFormat("SendMessageToEmployeeAsync errormsg{0} Exception{1}", ex.Message, ex);
                 return new APIResultDto() { Code = 901, Msg = "钉钉消息发送失败" };
             }
+        }
+
+        /// <summary>
+        /// APP获取需要同步的数据
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        [Audited]
+        public async Task<AppSyncData> GetSyncDataAppTask(string userId)
+        {
+            AppSyncData result = new AppSyncData();
+            var query = from st in _scheduletaskRepository.GetAll()
+                        join sd in _scheduleDetailRepository.GetAll() on st.Id equals sd.ScheduleTaskId
+                        join t in _visitTaskRepository.GetAll() on st.TaskId equals t.Id
+                        join s in _scheduleRepository.GetAll() on st.ScheduleId equals s.Id
+                        where sd.EmployeeId == userId
+                        && (sd.Status == ScheduleStatusEnum.未开始 || sd.Status == ScheduleStatusEnum.进行中)
+                        && s.Status == ScheduleMasterStatusEnum.已发布
+                        && s.EndTime >= DateTime.Today
+                        select new
+                        {
+                            ScheduleId = s.Id,
+                            ScheduleDetailId = sd.Id,
+                            ScheduleTaskId = st.Id,
+                            VistTaskId = t.Id,
+                        };
+            var sIds = await query.Select(v => v.ScheduleId).Distinct().ToListAsync();
+            var sdIds = await query.Select(v => v.ScheduleDetailId).Distinct().ToListAsync();
+            var stIds = await query.Select(v => v.ScheduleTaskId).Distinct().ToListAsync();
+            var vIds = query.Select(v => v.VistTaskId).Distinct();
+            foreach (var item in sIds) //同步计划
+            {
+                result.ScheduleList.Add(await _scheduleRepository.GetAll().Where(v => v.Id == item).AsNoTracking().FirstOrDefaultAsync());
+            }
+            foreach (var item in sdIds) //同步计划详情and拜访记录and拜访考核and面积落实记录
+            {
+                var entity = await _scheduleDetailRepository.GetAll().Where(v => v.Id == item).AsNoTracking().FirstOrDefaultAsync();
+                result.ScheduleDetailList.Add(entity);
+                await CurrentUnitOfWork.SaveChangesAsync();
+                var vistRecord = await _visitRecordRepository.GetAll().Where(v => v.ScheduleDetailId == item).AsNoTracking().ToListAsync();
+                await CurrentUnitOfWork.SaveChangesAsync();
+                result.VisitRecordList.AddRange(vistRecord);
+                foreach (var vr in vistRecord)
+                {
+                    var vistExamine = await _visitexamineRepository.GetAll().Where(v => v.VisitRecordId == vr.Id).AsNoTracking().ToListAsync();
+                    result.VisitExamineList.AddRange(vistExamine);
+                }
+                var growerAreaRecord = await _growerAreaRecordRepository.GetAll().Where(v => v.ScheduleDetailId == item).AsNoTracking().ToListAsync();
+                result.GrowerAreaRecordList.AddRange(growerAreaRecord);
+                //var grower = await _growerRepository.GetAll().Where(v => v.Id == entity.GrowerId).AsNoTracking().FirstOrDefaultAsync();
+                //result.GrowerList.Add(grower);
+            }
+            foreach (var item in stIds) //同步计划任务
+            {
+                result.ScheduleTaskList.Add(await _scheduletaskRepository.GetAll().Where(v => v.Id == item).AsNoTracking().FirstOrDefaultAsync());
+            }
+            foreach (var item in vIds) // 同步任务信息and任务考核项
+            {
+                result.VisitTaskList.Add(await _visitTaskRepository.GetAll().Where(v => v.Id == item).AsNoTracking().FirstOrDefaultAsync());
+                result.TaskExamineList.AddRange(await _taskexamineRepository.GetAll().Where(v => v.TaskId == item).AsNoTracking().ToListAsync());
+            }
+            //同步烟农
+            result.GrowerList.AddRange(await _growerRepository.GetAll().Where(v => v.EmployeeId == userId).AsNoTracking().ToListAsync());
+            //同步采集位置
+            result.GrowerLocationLogList.AddRange(await _growerLocationLogRepository.GetAll().Where(v => v.EmployeeId == userId).AsNoTracking().ToListAsync());
+            //同步部分系统配置
+            result.SystemDataList.AddRange(await _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.烟叶公共 && v.ModelId == ConfigModel.烟叶服务).ToListAsync());
+            return result;
+        }
+
+        /// <summary>
+        /// 离线端上传数据
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        [Audited]
+        public async Task<APIResultDto> UploadDataAsnyc(AppUploadDto input)
+        {
+            foreach (var item in input.ScheduleDetailList)
+            {
+                var sd = await _scheduleDetailRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                if (sd != null)
+                {
+                    sd.CompleteNum = item.CompleteNum;
+                    sd.Status = item.Status;
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                }
+            }
+
+            foreach (var item in input.GrowerAreaRecordList)
+            {
+                var gar = await _growerAreaRecordRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                if (gar == null)
+                {
+                    //await _growerAreaRecordRepository.DeleteAsync(gar.Id);
+                    //await CurrentUnitOfWork.SaveChangesAsync();
+                    string[] imgArry = item.ImgPath.Split(',');
+                    item.ImgPath = "";
+                    foreach (var img in imgArry)
+                    {
+                        var base64 = new ImgBase64() { imageBase64 = img };
+                        var photoUrl = await FilesPostsBase64(base64);
+                        item.ImgPath = string.Join(',', photoUrl);
+                    }
+                    await _growerAreaRecordRepository.InsertAsync(item);
+                }
+            }
+
+            foreach (var item in input.VisitRecordList)
+            {
+                var vr = await _visitRecordRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                if (vr == null)
+                {
+                    await _visitRecordRepository.InsertAsync(item);
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                }
+            }
+
+            foreach (var item in input.VisitExamineList)
+            {
+                var ve = await _visitexamineRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                if (ve == null)
+                {
+                    await _visitexamineRepository.InsertAsync(item);
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                }
+            }
+
+            foreach (var item in input.GrowerList)
+            {
+                var g = await _growerRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                if (g != null)
+                {
+                    g.ActualArea = item.ActualArea;
+                    g.AreaTime = item.AreaTime;
+                    g.AreaStatus = item.AreaStatus;
+                    g.AreaScheduleDetailId = item.AreaScheduleDetailId;
+                    await CurrentUnitOfWork.SaveChangesAsync();
+                }
+            }
+            return new APIResultDto() { Code = 901, Msg = "上传成功" };
+        }
+
+        /// <summary>
+        /// base64转换
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        private async Task<string> FilesPostsBase64(ImgBase64 input)
+        {
+            var saveUrl = "";
+            if (!string.IsNullOrWhiteSpace(input.imageBase64))
+            {
+                var reg = new Regex("data:image/(.*);base64,");
+                input.imageBase64 = reg.Replace(input.imageBase64, "");
+                byte[] imageByte = Convert.FromBase64String(input.imageBase64);
+                var memorystream = new MemoryStream(imageByte);
+
+                string webRootPath = _hostingEnvironment.WebRootPath;
+                string contentRootPath = _hostingEnvironment.ContentRootPath;
+                string fileExt = Path.GetExtension(input.fileName); //文件扩展名，不含“.”
+                string newFileName = Guid.NewGuid().ToString() + fileExt; //随机生成新的文件名
+                var fileDire = webRootPath + "/visit/";
+
+                if (!Directory.Exists(fileDire))
+                {
+                    Directory.CreateDirectory(fileDire);
+                }
+
+                var filePath = fileDire + newFileName;
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await memorystream.CopyToAsync(stream);
+                    //TODO水印
+                }
+                saveUrl = filePath.Substring(webRootPath.Length);
+                return saveUrl;
+            }
+            return saveUrl;
         }
     }
 }

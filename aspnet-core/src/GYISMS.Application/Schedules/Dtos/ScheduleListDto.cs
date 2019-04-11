@@ -8,6 +8,24 @@ using System.Collections.Generic;
 using GYISMS.Schedules;
 using GYISMS.GYEnums;
 using Abp.AutoMapper;
+using GYISMS.ScheduleDetails.Dtos;
+using GYISMS.ScheduleTasks.Dtos;
+using GYISMS.Growers.Dtos;
+using GYISMS.TaskExamines.Dtos;
+using GYISMS.VisitExamines.Dtos;
+using GYISMS.VisitRecords.Dtos;
+using GYISMS.VisitTasks.Dtos;
+using GYISMS.GrowerAreaRecords.Dtos;
+using GYISMS.GrowerLocationLogs;
+using GYISMS.GrowerAreaRecords;
+using GYISMS.VisitTasks;
+using GYISMS.VisitRecords;
+using GYISMS.VisitExamines;
+using GYISMS.TaskExamines;
+using GYISMS.Growers;
+using GYISMS.ScheduleTasks;
+using GYISMS.ScheduleDetails;
+using GYISMS.SystemDatas;
 
 namespace GYISMS.Schedules.Dtos
 {
@@ -142,5 +160,59 @@ namespace GYISMS.Schedules.Dtos
                 return 0;
             }
         }
+    }
+
+    public class AppSyncData
+    {
+        public AppSyncData()
+        {
+            ScheduleList = new List<Schedule>();
+            ScheduleDetailList = new List<ScheduleDetail>();
+            ScheduleTaskList = new List<ScheduleTask>();
+            GrowerList = new List<Grower>();
+            TaskExamineList = new List<TaskExamine>();
+            VisitExamineList = new List<VisitExamine>();
+            VisitRecordList = new List<VisitRecord>();
+            VisitTaskList = new List<VisitTask>();
+            GrowerAreaRecordList = new List<GrowerAreaRecord>();
+            GrowerLocationLogList = new List<GrowerLocationLog>();
+            SystemDataList = new List<SystemData>();
+        }
+        public List<Schedule> ScheduleList { get; set; }
+        public List<ScheduleDetail> ScheduleDetailList { get; set; }
+
+        public List<ScheduleTask> ScheduleTaskList { get; set; }
+        public List<Grower> GrowerList { get; set; }
+        public List<TaskExamine> TaskExamineList { get; set; }
+        public List<VisitExamine> VisitExamineList { get; set; }
+        public List<VisitRecord> VisitRecordList { get; set; }
+        public List<VisitTask> VisitTaskList { get; set; }
+        public List<GrowerAreaRecord> GrowerAreaRecordList { get; set; }
+        public List<GrowerLocationLog> GrowerLocationLogList { get; set; }
+        public List<SystemData> SystemDataList { get; set; }
+        //public AppSyncData()
+        //{
+        //    List<ScheduleListDto> ScheduleList = new List<ScheduleListDto>();
+        //    List<ScheduleDetailListDto> ScheduleDetialList = new List<ScheduleDetailListDto>();
+        //    List<ScheduleTaskListDto> ScheduleTaskList = new List<ScheduleTaskListDto>();
+        //    List<GrowerListDto> GrowerList = new List<GrowerListDto>();
+        //    List<TaskExamineListDto> TaskExamineList = new List<TaskExamineListDto>();
+        //    List<VisitExamineListDto> VisitExamineList = new List<VisitExamineListDto>();
+        //    List<VisitRecordListDto> VisitRecordList = new List<VisitRecordListDto>();
+        //    List<VisitTaskListDto> VisitTaskList = new List<VisitTaskListDto>();
+        //    List<GrowerAreaRecordListDto> GrowerAreaRecordList = new List<GrowerAreaRecordListDto>();
+        //    List<GrowerLocationLog> GrowerLocationLogList = new List<GrowerLocationLog>();
+        //}
+        //public List<ScheduleListDto> ScheduleList { get; set; }
+        //public List<ScheduleDetailListDto> ScheduleDetialList { get; set; }
+
+        //public List<ScheduleTaskListDto> ScheduleTaskList { get; set; }
+        //public List<GrowerListDto> GrowerList { get; set; }
+        //public List<TaskExamineListDto> TaskExamineList { get; set; }
+        //public List<VisitExamineListDto> VisitExamineList { get; set; }
+        //public List<VisitRecordListDto> VisitRecordList { get; set; }
+        //public List<VisitTaskListDto> VisitTaskList { get; set; }
+        //public List<GrowerAreaRecordListDto> GrowerAreaRecordList { get; set; }
+        //public List<GrowerLocationLog> GrowerLocationLogList { get; set; }
     }
 }
