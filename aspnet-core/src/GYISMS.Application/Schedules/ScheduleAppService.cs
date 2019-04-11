@@ -595,8 +595,9 @@ namespace GYISMS.Schedules
 
                 string webRootPath = _hostingEnvironment.WebRootPath;
                 string contentRootPath = _hostingEnvironment.ContentRootPath;
-                string fileExt = Path.GetExtension(input.fileName); //文件扩展名，不含“.”
-                string newFileName = Guid.NewGuid().ToString() + fileExt; //随机生成新的文件名
+                //string fileExt = Path.GetExtension(input.fileName); //文件扩展名，不含“.”
+                //string newFileName = Guid.NewGuid().ToString() + fileExt; //随机生成新的文件名
+                string newFileName = Guid.NewGuid().ToString(); //随机生成新的文件名
                 var fileDire = webRootPath + "/visit/";
 
                 if (!Directory.Exists(fileDire))
