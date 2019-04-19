@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.ScheduleDetails;
 using GYISMS.GYEnums;
+using Abp.Domain.Entities;
+using GYISMS.VisitRecords;
+using Abp.AutoMapper;
 
 namespace GYISMS.ScheduleDetails.Dtos
 {
@@ -232,5 +235,54 @@ namespace GYISMS.ScheduleDetails.Dtos
         }
     }
 
+    [AutoMapFrom(typeof(VisitRecord))]
 
+    public class APPScheduleDetail : Entity<Guid>
+    {
+        /// <summary>
+        /// 任务Id 外键
+        /// </summary>
+        public  int TaskId { get; set; }
+
+        /// <summary>
+        /// 计划Id 外键
+        /// </summary>
+        public Guid ScheduleId { get; set; }
+
+        /// <summary>
+        /// 烟技员Id外键
+        /// </summary>
+        public  string EmployeeId { get; set; }
+
+        /// <summary>
+        /// 烟农Id 外键
+        /// </summary>
+        public  int GrowerId { get; set; }
+
+        /// <summary>
+        /// 拜访次数
+        /// </summary>
+        public  int? VisitNum { get; set; }
+
+        /// <summary>
+        /// 完成次数
+        /// </summary>
+        public  int? CompleteNum { get; set; }
+
+        /// <summary>
+        /// 任务进行状态
+        /// </summary>
+        public  ScheduleStatusEnum Status { get; set; }
+        /// <summary>
+        /// CreationTime
+        /// </summary>
+        public  DateTime CreationTime { get; set; }
+
+        public  Guid ScheduleTaskId { get; set; }
+
+        public  string EmployeeName { get; set; }
+
+        public  string GrowerName { get; set; }
+        public DateTime? AreaTime { get; set; }
+    }
 }

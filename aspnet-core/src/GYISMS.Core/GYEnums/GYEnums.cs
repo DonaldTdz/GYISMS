@@ -140,5 +140,8 @@ namespace GYISMS.GYEnums
         /// 旺苍县 组织代码
         /// </summary>
         public static string 旺苍县 = "WCX_ORG_CODE";
+
+        public static string GaoDeAPIKey = "GaoDeAPIKey";
+        public static string TaskApp = "TaskApp";
     }
 }

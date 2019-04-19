@@ -8,6 +8,7 @@ using Abp.Application.Services.Dto;
 using GYISMS.Employees.Dtos;
 using GYISMS.Employees;
 using GYISMS.DingDing.Dtos;
+using GYISMS.Dtos;
 
 namespace GYISMS.Employees
 {
@@ -66,5 +67,6 @@ namespace GYISMS.Employees
 
         Task<List<EmployeeNzTreeNode>> GetGrowerTreesAsync();
         Task BatchUpdateDocRoleAsync(GetBatchDocRoleInput input);
+        Task<APIResultDto> AppLoginAsnyc(AppLoginInfo input);
     }
 }

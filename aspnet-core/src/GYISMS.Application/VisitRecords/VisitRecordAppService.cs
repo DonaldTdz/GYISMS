@@ -382,7 +382,7 @@ namespace GYISMS.VisitRecords
             //计划明细
             var detail = await _scheduleDetailRepository.GetAsync(input.ScheduleDetailId);
             //生成水印图片
-            vistitRecord.ImgPath = ImageHelper.GenerateWatermarkImg(vistitRecord.ImgPath, vistitRecord.Location, detail.EmployeeName, detail.GrowerName, _hostingEnvironment.WebRootPath);
+            //vistitRecord.ImgPath = ImageHelper.GenerateWatermarkImg(vistitRecord.ImgPath, vistitRecord.Location, detail.EmployeeName, detail.GrowerName, _hostingEnvironment.WebRootPath);
             //拜访记录
             var vrId = await _visitrecordRepository.InsertAndGetIdAsync(vistitRecord);
             await CurrentUnitOfWork.SaveChangesAsync();
@@ -431,10 +431,9 @@ namespace GYISMS.VisitRecords
         //        return new APIResultDto() { Code = 901, Msg = "当前位置不在拜访位置范围内" };
         //    }
         //}
-        public async Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower, string empId)
+        public async Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower, string empId,int growerId)
         {
             //TODO
-            var recordList = await _growerLocationLogRepository.GetAll().Where(v => v.EmployeeId == empId).OrderByDescending(v => v.CreationTime).Take(3).ToListAsync();
 
             var distance = AbpMapByGoogle.GetDistance(lat, lon, latGrower, lonGrower);
             var signRange = await _systemDataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == GYCode.SignRange).FirstOrDefaultAsync();
@@ -449,6 +448,7 @@ namespace GYISMS.VisitRecords
             }
             else
             {
+                var recordList = await _growerLocationLogRepository.GetAll().Where(v => v.EmployeeId == empId && v.GrowerId == growerId).OrderByDescending(v => v.CreationTime).Take(3).ToListAsync();
                 foreach (var item in recordList)
                 {
                     var temp = AbpMapByGoogle.GetDistance(lat, lon, Convert.ToDouble(item.Latitude), Convert.ToDouble(item.Longitude));

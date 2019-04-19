@@ -8,6 +8,8 @@ using GYISMS.GrowerAreaRecords;
 using Abp.AutoMapper;
 using System.Collections.Generic;
 using GYISMS.Employees.Dtos;
+using Abp.Domain.Entities;
+using GYISMS.GrowerLocationLogs;
 
 namespace GYISMS.GrowerAreaRecords.Dtos
 {
@@ -230,5 +232,90 @@ namespace GYISMS.GrowerAreaRecords.Dtos
     //        }
     //    }
     //}
+    [AutoMapFrom(typeof(GrowerAreaRecord))]
+    public class AppGrowerAreaRecord: EntityDto<Guid>
+    {
+        public int GrowerId { get; set; }
 
+        /// <summary>
+        /// 计划明细Id 外键
+        /// </summary>
+        public Guid ScheduleDetailId { get; set; }
+
+        /// <summary>
+        /// 拍照图片
+        /// </summary>
+        public string ImgPath { get; set; }
+
+        /// <summary>
+        /// 经度
+        /// </summary>
+        public decimal? Longitude { get; set; }
+
+        /// <summary>
+        /// 纬度
+        /// </summary>
+        public decimal? Latitude { get; set; }
+
+        /// <summary>
+        /// 位置信息
+        /// </summary>
+        public string Location { get; set; }
+
+        /// <summary>
+        /// 采集人快照（烟技员名称）
+        /// </summary>
+        public string EmployeeName { get; set; }
+
+        /// <summary>
+        /// 采集人快照（烟技员Id）
+        /// </summary>
+        public string EmployeeId { get; set; }
+
+        /// <summary>
+        /// 采集时间
+        /// </summary>
+        public DateTime? CollectionTime { get; set; }
+
+        /// <summary>
+        /// 采集面积
+        /// </summary>
+        public decimal? Area { get; set; }
+
+        /// <summary>
+        /// 备注
+        /// </summary>
+        public string Remark { get; set; }
+    }
+
+    [AutoMapFrom(typeof(GrowerLocationLog))]
+
+    public class APPGrowerLocationLog : Entity<Guid>
+    {
+        /// <summary>
+        /// 
+        /// </summary>
+        //public Guid Id { get; set; }
+        /// <summary>
+        /// 修改人
+        /// </summary>
+        public string EmployeeId { get; set; }
+        /// <summary>
+        /// 烟农
+        /// </summary>
+        public int GrowerId { get; set; }
+        /// <summary>
+        /// 经度
+        /// </summary>
+        public decimal? Longitude { get; set; }
+        /// <summary>
+        /// 纬度
+        /// </summary>
+        public decimal? Latitude { get; set; }
+        /// <summary>
+        /// 修改时间
+        /// </summary>
+        public DateTime? CreationTime { get; set; }
+
+    }
 }

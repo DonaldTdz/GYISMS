@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using GYISMS.Employees;
 using GYISMS.GYEnums;
 using Abp.AutoMapper;
+using System.Text.RegularExpressions;
 
 namespace GYISMS.Employees.Dtos
 {
@@ -170,5 +171,60 @@ namespace GYISMS.Employees.Dtos
         public string Area { get; set; }
 
         public AreaCodeEnum AreaCode { get; set; }
+    }
+
+    [AutoMapFrom(typeof(Employee))]
+    public class APPEmployeeListDto : EntityDto<string>
+    {
+
+        /// <summary>
+        /// Name
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
+        /// Department
+        /// </summary>
+        public string Department { get; set; }
+
+
+        /// <summary>
+        /// Position
+        /// </summary>
+        public string Position { get; set; }
+
+        /// <summary>
+        /// 区县Code
+        /// </summary>
+        public AreaCodeEnum? AreaCode { get; set; }
+
+        /// <summary>
+        /// 区县名称
+        /// </summary>
+        public string Area { get; set; }
+
+        /// <summary>
+        /// 离线APP登录密码
+        /// </summary>
+        public string Pwd
+        {
+            get
+            {
+                string result = Regex.Replace(Id, @"[^0-9]+", "");
+                var pwd = Convert.ToUInt64(result) * 927;
+                while (pwd.ToString().Length < 8)
+                {
+                    pwd = pwd * 927;
+                }
+                return pwd.ToString().Substring(2, 8);
+                //var pwd = Math.Abs(Id.GetHashCode()) * 92794;
+                //while (pwd.ToString().Length < 8)
+                //{
+                //    pwd = pwd * 92794;
+                //}
+                //return pwd.ToString().Substring(2, 8);
+
+            }
+        }
     }
 }

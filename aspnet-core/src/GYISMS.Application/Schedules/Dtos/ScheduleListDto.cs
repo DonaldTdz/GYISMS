@@ -215,4 +215,25 @@ namespace GYISMS.Schedules.Dtos
         //public List<GrowerAreaRecordListDto> GrowerAreaRecordList { get; set; }
         //public List<GrowerLocationLog> GrowerLocationLogList { get; set; }
     }
+
+    /// <summary>
+    /// 高德坐标
+    /// </summary>
+    public class GaodeLatLon
+    {
+        public string Status { get; set; }
+        public string locations { get; set; }
+    }
+
+    /// <summary>
+    /// 高德地理位置信息
+    /// </summary>
+    public class GaodeMap {
+        public string Status { get; set; }
+        public Regeocode Regeocode { get; set; }
+    }
+    public class Regeocode
+    {
+        public string formatted_address { get; set; }   
+    }
 }

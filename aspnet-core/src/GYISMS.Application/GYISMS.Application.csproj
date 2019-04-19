@@ -14,6 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Abp.Quartz" Version="3.8.1" />
     <PackageReference Include="DotNetCore.NPOI" Version="1.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
     <PackageReference Include="QRCoder" Version="1.3.3" />
     <PackageReference Include="Senparc.CO2NET" Version="0.3.0.2" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0-beta0004" />

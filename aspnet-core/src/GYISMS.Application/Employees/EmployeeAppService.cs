@@ -25,6 +25,8 @@ using GYISMS.GYEnums;
 using GYISMS.SystemDatas.Dtos;
 using GYISMS.DingDing.Dtos;
 using GYISMS.Organizations;
+using GYISMS.Dtos;
+using System.Text.RegularExpressions;
 
 namespace GYISMS.Employees
 {
@@ -98,7 +100,7 @@ namespace GYISMS.Employees
             var entity = await _employeeRepository.GetAsync(id);
             var entityDto = entity.MapTo<EmployeeListDto>();
             var area = await _employeeManager.GetDeptAreaCodeByUserIdAsync(id);
-            entityDto.DeptArea = area == AreaCodeEnum.None? "无" : area.ToString();
+            entityDto.DeptArea = area == AreaCodeEnum.None ? "无" : area.ToString();
             entityDto.DeptAreaCode = area;
             //如果没有指定区县 就 采用部门区县
             if (!entity.AreaCode.HasValue || entity.AreaCode == AreaCodeEnum.None)
@@ -322,7 +324,7 @@ namespace GYISMS.Employees
                     });
                 }
             }
-            
+
             //添加特定访问人员（通过设置区县指定）
             var specificUserList = GetAreaEmoloyee(area);
             areaList.AddRange(specificUserList);
@@ -450,7 +452,7 @@ namespace GYISMS.Employees
                     return entity.MapTo<EmployeeListDto>();
                 }
             }
-           
+
         }
 
         #region 烟农页面层级树 add by donald 2019-2-12
@@ -484,12 +486,51 @@ namespace GYISMS.Employees
         public async Task BatchUpdateDocRoleAsync(GetBatchDocRoleInput input)
         {
             var ids = input.EmployeeIds.Split(',');
-            var employeeList = await _employeeRepository.GetAll().Where(v=>ids.Contains(v.Id)).ToListAsync();
+            var employeeList = await _employeeRepository.GetAll().Where(v => ids.Contains(v.Id)).ToListAsync();
             foreach (var item in employeeList)
             {
                 item.DocRole = input.RoleCode;
             }
             await CurrentUnitOfWork.SaveChangesAsync();
+        }
+
+        /// <summary>
+        /// APP用户登录验证
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        [AbpAllowAnonymous]
+        public async Task<APIResultDto> AppLoginAsnyc(AppLoginInfo input)
+        {
+            var entity = await _employeeRepository.GetAll().Where(v => v.Id == input.EmployeeId).AsNoTracking().FirstOrDefaultAsync();
+            if (entity == null)
+            {
+                return new APIResultDto() { Code = 901, Msg = "用户不存在" };
+            }
+            else
+            {
+                var dto = entity.MapTo<APPEmployeeListDto>();                           
+                if (input.Password != dto.Pwd)
+                {
+                    return new APIResultDto() { Code = 902, Msg = "密码错误" };
+                }
+                else
+                {
+                    return new APIResultDto() { Code = 101, Msg = "登录成功",Data = dto };
+                }
+            }
+        }
+
+        [AbpAllowAnonymous]
+        public object testabc(string Id)
+        {
+            string result = Regex.Replace(Id, @"[^0-9]+", "");
+            var pwd = Convert.ToUInt64(result) * 927;
+            while (pwd.ToString().Length < 8)
+                {
+                    pwd = pwd * 927;
+                }
+                return pwd.ToString().Substring(2, 8);    
         }
     }
 }

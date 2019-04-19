@@ -73,7 +73,7 @@ namespace GYISMS.VisitRecords
 
         Task GenerateWatermarkImgTests();
 
-        Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower, string empId);
+        Task<APIResultDto> ValidateLocationAsync(double lat, double lon, double latGrower, double lonGrower, string empId, int growerId);
 
         Task<DingDingVisitRecordInputDto> GetDingDingVisitRecordAsync(Guid id);
 

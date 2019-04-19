@@ -36,4 +36,11 @@ namespace GYISMS.Employees.Dtos
         public string RoleCode { get; set; }
 
     }
+
+    public class AppLoginInfo
+    {
+        public string EmployeeId { get; set; }
+        public string Password { get; set; }
+
+    }
 }

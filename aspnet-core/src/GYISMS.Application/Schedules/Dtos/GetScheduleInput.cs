@@ -3,19 +3,12 @@
 using Abp.Runtime.Validation;
 using GYISMS.Dtos;
 using GYISMS.GYEnums;
-using GYISMS.Schedules;
 using System;
-using GYISMS.GrowerLocationLogs;
-using GYISMS.GrowerAreaRecords;
-using GYISMS.VisitTasks;
-using GYISMS.VisitRecords;
-using GYISMS.VisitExamines;
-using GYISMS.TaskExamines;
-using GYISMS.Growers;
-using GYISMS.ScheduleTasks;
-using GYISMS.ScheduleDetails;
-using GYISMS.SystemDatas;
 using System.Collections.Generic;
+using GYISMS.GrowerAreaRecords.Dtos;
+using GYISMS.VisitRecords.Dtos;
+using GYISMS.VisitExamines.Dtos;
+using GYISMS.ScheduleDetails.Dtos;
 
 namespace GYISMS.Schedules.Dtos
 {
@@ -47,17 +40,24 @@ namespace GYISMS.Schedules.Dtos
     }
 
     public class AppUploadDto {
+        public AppUploadDto()
+        {
+            ScheduleDetail = new APPScheduleDetail();
+        }
+
         public string EmployeeId { get; set; }
-        //public List<Schedule> ScheduleList { get; set; }
-        public List<ScheduleDetail> ScheduleDetailList { get; set; }
-        //public List<ScheduleTask> ScheduleTaskList { get; set; }
-        public List<Grower> GrowerList { get; set; }
-        //public List<TaskExamine> TaskExamineList { get; set; }
-        public List<VisitExamine> VisitExamineList { get; set; }
-        public List<VisitRecord> VisitRecordList { get; set; }
-        //public List<VisitTask> VisitTaskList { get; set; }
-        public List<GrowerAreaRecord> GrowerAreaRecordList { get; set; }
-        public List<GrowerLocationLog> GrowerLocationLogList { get; set; }
+        //public List<ScheduleDetail> ScheduleDetailList { get; set; }
+        //public List<Grower> GrowerList { get; set; }
+        //public List<VisitExamine> VisitExamineList { get; set; }
+        //public List<AppVisitRecord> VisitRecordList { get; set; }
+        //public List<AppGrowerAreaRecord> GrowerAreaRecordList { get; set; }
+        //public List<GrowerLocationLog> GrowerLocationLogList { get; set; }
+        public APPScheduleDetail ScheduleDetail { get; set; }
+        //public List<APPGrower> GrowerList { get; set; }
+        public List<APPVisitExamine> VisitExamineList { get; set; }
+        public List<AppVisitRecord> VisitRecordList { get; set; }
+        public List<AppGrowerAreaRecord> GrowerAreaRecordList { get; set; }
+        public List<APPGrowerLocationLog> GrowerLocationLogList { get; set; }
     }
 
     public class ImgBase64

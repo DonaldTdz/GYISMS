@@ -7,6 +7,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Collections.Generic;
 using GYISMS.SystemDatas;
 using GYISMS.GYEnums;
+using Abp.AutoMapper;
 
 namespace GYISMS.SystemDatas.Dtos
 {
@@ -84,5 +85,16 @@ namespace GYISMS.SystemDatas.Dtos
     {
         public string text { get; set; }
         public int value { get; set; }
+    }
+
+    [AutoMapFrom(typeof(SystemData))]
+    public class AppInfoDto
+    {
+        public string AppName { get; set; }
+
+        public string Version { get; set; }
+        public string Account { get; set; }
+        public string Password { get; set; }
+        public string DownloadUrl { get; set; }
     }
 }

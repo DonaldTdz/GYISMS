@@ -18,6 +18,7 @@ using GYISMS.Identity;
 
 using Abp.AspNetCore.SignalR.Hubs;
 using Abp.Quartz;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace GYISMS.Web.Host.Startup
 {
@@ -130,6 +131,15 @@ namespace GYISMS.Web.Host.Startup
                 options.IndexStream = () => Assembly.GetExecutingAssembly()
                     .GetManifestResourceStream("GYISMS.Web.Host.wwwroot.swagger.ui.index.html");
             }); // URL: /swagger
+
+
+            var provider = new FileExtensionContentTypeProvider();
+            // Add new mappings`enter code here`
+            provider.Mappings[".apk"] = "application/octet-stream";
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                ContentTypeProvider = provider
+            });
         }
         
     }

@@ -21,6 +21,7 @@ using GYISMS.Authorization;
 using GYISMS.GYEnums;
 using GYISMS.Schedules;
 using Abp.Auditing;
+using System.Text.RegularExpressions;
 
 namespace GYISMS.SystemDatas
 {
@@ -439,6 +440,26 @@ systemdataListDtos
             }
 
             return list;
+        }
+
+        [AbpAllowAnonymous]
+        public async Task<AppInfoDto> GetAppInfoAsnyc(string id)
+        {
+            var entity = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.钉钉配置 && v.Type == ConfigType.任务拜访 && v.Code == GYCode.TaskApp).AsNoTracking().FirstOrDefaultAsync();
+            AppInfoDto result = new AppInfoDto();
+            string[] text = entity.Remark.Split(',');
+            result.DownloadUrl = entity.Desc;
+            result.AppName = text[0];
+            result.Version = text[1];
+            result.Account = id;
+            string rtx = Regex.Replace(id, @"[^0-9]+", "");
+            var pwd = Convert.ToUInt64(rtx) * 92794;
+            while (pwd.ToString().Length < 8)
+            {
+                pwd = pwd * 92794;
+            }
+            result.Password = pwd.ToString().Substring(2, 8);
+            return result;
         }
     }
 }

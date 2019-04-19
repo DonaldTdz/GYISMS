@@ -10,6 +10,7 @@ using Abp.AutoMapper;
 using GYISMS.TaskExamines;
 using GYISMS.VisitExamines;
 using GYISMS.GYEnums;
+using Abp.Domain.Entities;
 
 namespace GYISMS.VisitRecords.Dtos
 {
@@ -245,5 +246,60 @@ namespace GYISMS.VisitRecords.Dtos
               
             }
         }
+    }
+
+    [AutoMapFrom(typeof(VisitRecord))]
+    public class AppVisitRecord : Entity<Guid>
+    {
+
+        /// <summary>
+        /// 任务明细Id 外键
+        /// </summary>
+        public Guid ScheduleDetailId { get; set; }
+
+        /// <summary>
+        /// 烟技员Id外键
+        /// </summary>
+        public string EmployeeId { get; set; }
+
+        /// <summary>
+        /// 烟农Id 外键
+        /// </summary>
+        public int? GrowerId { get; set; }
+
+        /// <summary>
+        /// 签到时间
+        /// </summary>
+        public DateTime? SignTime { get; set; }
+
+        /// <summary>
+        /// 签到地点
+        /// </summary>
+        public string Location { get; set; }
+
+        /// <summary>
+        /// 签到经度
+        /// </summary>
+        public decimal? Longitude { get; set; }
+
+        /// <summary>
+        /// 签到纬度
+        /// </summary>
+        public decimal? Latitude { get; set; }
+
+        /// <summary>
+        /// 签到说明
+        /// </summary>
+        public string Desc { get; set; }
+
+        /// <summary>
+        /// 生成签到拍照生成水印图片路径
+        /// </summary>
+        public string ImgPath { get; set; }
+
+        /// <summary>
+        /// CreationTime
+        /// </summary>
+        public DateTime CreationTime { get; set; }
     }
 }
