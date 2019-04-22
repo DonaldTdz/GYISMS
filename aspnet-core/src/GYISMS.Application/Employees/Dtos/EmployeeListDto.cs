@@ -211,10 +211,10 @@ namespace GYISMS.Employees.Dtos
             get
             {
                 string result = Regex.Replace(Id, @"[^0-9]+", "");
-                var pwd = Convert.ToUInt64(result) * 927;
+                var pwd = Convert.ToUInt64(result) * 92794;
                 while (pwd.ToString().Length < 8)
                 {
-                    pwd = pwd * 927;
+                    pwd = pwd * 92794;
                 }
                 return pwd.ToString().Substring(2, 8);
                 //var pwd = Math.Abs(Id.GetHashCode()) * 92794;

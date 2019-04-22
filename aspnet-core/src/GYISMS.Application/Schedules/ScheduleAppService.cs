@@ -50,6 +50,8 @@ using GYISMS.GrowerAreaRecords.Dtos;
 using GYISMS.Employees;
 using System.Net;
 using Newtonsoft.Json;
+using Abp.UI;
+using Abp.Domain.Uow;
 
 namespace GYISMS.Schedules
 {
@@ -518,117 +520,126 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         [AbpAllowAnonymous]
         [Audited]
+        [UnitOfWork(IsDisabled = true)]
         public async Task<APIResultDto> UploadDataAsnyc(AppUploadDto input)
         {
             try
             {
-                // 获取高德WebApiKey
-                string key = _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.任务拜访 && v.ModelId == ConfigModel.钉钉配置 && v.Code == GYCode.GaoDeAPIKey).Select(v => v.Desc).FirstOrDefault();
-                if (string.IsNullOrEmpty(key))
+                using (var unitOfWork = UnitOfWorkManager.Begin())
                 {
-                    key = "456ece7eaa3dbea39d859998b305aa2c";
-                }
-
-                var sd = await _scheduleDetailRepository.GetAll().Where(v => v.Id == input.ScheduleDetail.Id).FirstOrDefaultAsync();
-                if (sd != null)
-                {
-                    sd.CompleteNum = input.ScheduleDetail.CompleteNum;
-                    sd.Status = input.ScheduleDetail.Status;
-                    await CurrentUnitOfWork.SaveChangesAsync();
-                    if (sd.Status == ScheduleStatusEnum.已完成)
+                    // 获取高德WebApiKey
+                    string key = _systemdataRepository.GetAll().Where(v => v.Type == ConfigType.任务拜访 && v.ModelId == ConfigModel.钉钉配置 && v.Code == GYCode.GaoDeAPIKey).Select(v => v.Desc).FirstOrDefault();
+                    if (string.IsNullOrEmpty(key))
                     {
-                        var growerIds = input.GrowerAreaRecordList.Select(v => v.GrowerId).Distinct().ToList();
-                        //更新烟农落实面积
-                        foreach (var id in growerIds)
+                        key = "456ece7eaa3dbea39d859998b305aa2c";
+                    }
+
+                    var sd = await _scheduleDetailRepository.GetAll().Where(v => v.Id == input.ScheduleDetail.Id).FirstOrDefaultAsync();
+                    if (sd != null)
+                    {
+                        sd.CompleteNum = input.ScheduleDetail.CompleteNum;
+                        sd.Status = input.ScheduleDetail.Status;
+                        await CurrentUnitOfWork.SaveChangesAsync();
+                        if (sd.Status == ScheduleStatusEnum.已完成)
                         {
-                            var grower = await _growerRepository.GetAsync(id);
-                            decimal sumArea = input.GrowerAreaRecordList.Where(v => v.GrowerId == id && v.EmployeeId == input.EmployeeId).Sum(v => v.Area.Value);
-                            grower.AreaStatus = AreaStatusEnum.已落实;
-                            grower.AreaTime = input.ScheduleDetail.AreaTime;
-                            grower.ActualArea = sumArea + (grower.ActualArea.Value == 0?0:grower.ActualArea.Value);
-                            grower.AreaScheduleDetailId = input.ScheduleDetail.Id;
+                            var growerIds = input.GrowerAreaRecordList.Select(v => v.GrowerId).Distinct().ToList();
+                            //更新烟农落实面积
+                            foreach (var id in growerIds)
+                            {
+                                var grower = await _growerRepository.GetAsync(id);
+                                decimal sumArea = input.GrowerAreaRecordList.Where(v => v.GrowerId == id && v.EmployeeId == input.EmployeeId).Sum(v => v.Area.Value);
+                                grower.AreaStatus = AreaStatusEnum.已落实;
+                                grower.AreaTime = input.ScheduleDetail.AreaTime;
+                                grower.ActualArea = sumArea + (grower.ActualArea ?? 0);
+                                grower.AreaScheduleDetailId = input.ScheduleDetail.Id;
+                            }
                         }
                     }
-                }
 
-                foreach (var item in input.GrowerAreaRecordList)
-                {
-
-                    var gar = await _growerAreaRecordRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
-                    if (gar == null)
+                    foreach (var item in input.GrowerAreaRecordList)
                     {
-                        var json = GetGaoDeWebApi(item.Longitude.Value, item.Latitude.Value, key);
-                        item.Location = json.Regeocode.formatted_address;
-                        string[] imgArry = item.ImgPath.Split(',');
-                        item.ImgPath = "";
-                        string growerName = await _growerRepository.GetAll().Where(v => v.Id == item.GrowerId).Select(v => v.Name).FirstOrDefaultAsync();
-                        foreach (var img in imgArry)
+
+                        var gar = await _growerAreaRecordRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                        if (gar == null)
                         {
-                            //Logger.Info("in3");
-                            var base64 = new ImgBase64() { imageBase64 = img };
-                            var photoUrl = await FilesPostsBase64(base64);
-                            var image = ImageHelper.GenerateWatermarkImg(photoUrl, item.Location, item.EmployeeName, growerName, _hostingEnvironment.WebRootPath);
-                            item.ImgPath = string.IsNullOrEmpty(item.ImgPath) == true ? image : (item.ImgPath + "," + image);
+                            var json = GetGaoDeWebApi(item.Longitude.Value, item.Latitude.Value, key);
+                            //var json = GetGaoDeWebApi(item.Longitude.Value, item.Latitude.Value, "aaaaaaaaaaaaaa");
+                            item.Location = json.Regeocode.formatted_address;
+                            string[] imgArry = item.ImgPath.Split(',');
+                            item.ImgPath = "";
+                            string growerName = await _growerRepository.GetAll().Where(v => v.Id == item.GrowerId).Select(v => v.Name).FirstOrDefaultAsync();
+                            foreach (var img in imgArry)
+                            {
+                                //Logger.Info("in3");
+                                var base64 = new ImgBase64() { imageBase64 = img };
+                                var photoUrl = await FilesPostsBase64(base64);
+                                var image = ImageHelper.GenerateWatermarkImg(photoUrl, item.Location, item.EmployeeName, growerName, _hostingEnvironment.WebRootPath);
+                                item.ImgPath = string.IsNullOrEmpty(item.ImgPath) == true ? image : (item.ImgPath + "," + image);
+                            }
+                            await _growerAreaRecordRepository.InsertAsync(item.MapTo<GrowerAreaRecord>());
                         }
-                        await _growerAreaRecordRepository.InsertAsync(item.MapTo<GrowerAreaRecord>());
                     }
-                }
 
-                foreach (var item in input.VisitRecordList)
-                {
-                    var vr = await _visitRecordRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
-                    if (vr == null)
+                    foreach (var item in input.VisitRecordList)
                     {
-                        var json = GetGaoDeWebApi(item.Longitude.Value, item.Latitude.Value, key);
-                        item.Location = json.Regeocode.formatted_address;
-                        string[] imgArry = item.ImgPath.Split(',');
-                        item.ImgPath = "";
-                        string growerName = await _growerRepository.GetAll().Where(v => v.Id == item.GrowerId).Select(v => v.Name).FirstOrDefaultAsync();
-                        string employeeName = await _employeeRepository.GetAll().Where(v => v.Id == item.EmployeeId).Select(v => v.Name).FirstOrDefaultAsync();
-                        foreach (var img in imgArry)
+                        var vr = await _visitRecordRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                        if (vr == null)
                         {
-                            var base64 = new ImgBase64() { imageBase64 = img };
-                            var photoUrl = await FilesPostsBase64(base64);
-                            var image = ImageHelper.GenerateWatermarkImg(photoUrl, item.Location, employeeName, growerName, _hostingEnvironment.WebRootPath);
-                            item.ImgPath = string.IsNullOrEmpty(item.ImgPath) == true ? image : (item.ImgPath + "," + image);
+                            var json = GetGaoDeWebApi(item.Longitude.Value, item.Latitude.Value, key);
+                            item.Location = json.Regeocode.formatted_address;
+                            string[] imgArry = item.ImgPath.Split(',');
+                            item.ImgPath = "";
+                            string growerName = await _growerRepository.GetAll().Where(v => v.Id == item.GrowerId).Select(v => v.Name).FirstOrDefaultAsync();
+                            string employeeName = await _employeeRepository.GetAll().Where(v => v.Id == item.EmployeeId).Select(v => v.Name).FirstOrDefaultAsync();
+                            foreach (var img in imgArry)
+                            {
+                                var base64 = new ImgBase64() { imageBase64 = img };
+                                var photoUrl = await FilesPostsBase64(base64);
+                                var image = ImageHelper.GenerateWatermarkImg(photoUrl, item.Location, employeeName, growerName, _hostingEnvironment.WebRootPath);
+                                item.ImgPath = string.IsNullOrEmpty(item.ImgPath) == true ? image : (item.ImgPath + "," + image);
+                            }
+                            await _visitRecordRepository.InsertAsync(item.MapTo<VisitRecord>());
+                            await CurrentUnitOfWork.SaveChangesAsync();
                         }
-                        await _visitRecordRepository.InsertAsync(item.MapTo<VisitRecord>());
-                        await CurrentUnitOfWork.SaveChangesAsync();
                     }
-                }
 
-                foreach (var item in input.VisitExamineList)
-                {
-                    var ve = await _visitexamineRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
-                    if (ve == null)
+                    foreach (var item in input.VisitExamineList)
                     {
-                        await _visitexamineRepository.InsertAsync(item.MapTo<VisitExamine>());
-                        await CurrentUnitOfWork.SaveChangesAsync();
+                        var ve = await _visitexamineRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                        if (ve == null)
+                        {
+                            await _visitexamineRepository.InsertAsync(item.MapTo<VisitExamine>());
+                            await CurrentUnitOfWork.SaveChangesAsync();
+                        }
                     }
-                }
 
-                //foreach (var item in input.GrowerList)
-                //{
-                //    var g = await _growerRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
-                //    if (g != null)
-                //    {
-                //        g.ActualArea = item.ActualArea;
-                //        g.AreaTime = item.AreaTime;
-                //        g.AreaStatus = item.AreaStatus;
-                //        g.AreaScheduleDetailId = item.AreaScheduleDetailId;
-                //        await CurrentUnitOfWork.SaveChangesAsync();
-                //    }
-                //}
-
-                foreach (var item in input.GrowerLocationLogList)
-                {
-                    var g = await _growerLocationLogRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
-                    if (g == null)
+                    foreach (var item in input.GrowerList)
                     {
-                        await _growerLocationLogRepository.InsertAsync(item.MapTo<GrowerLocationLog>());
-
-                        await CurrentUnitOfWork.SaveChangesAsync();
+                        var g = await _growerRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                        if (g != null)
+                        {
+                            //g.ActualArea = item.ActualArea;
+                            //g.AreaTime = item.AreaTime;
+                            //g.AreaStatus = item.AreaStatus;
+                            g.Longitude = item.Longitude;
+                            g.Latitude = item.Latitude;
+                            g.CollectNum = item.CollectNum;
+                            //g.AreaScheduleDetailId = item.AreaScheduleDetailId;
+                            await CurrentUnitOfWork.SaveChangesAsync();
+                        }
                     }
+
+                    foreach (var item in input.GrowerLocationLogList)
+                    {
+                        var g = await _growerLocationLogRepository.GetAll().Where(v => v.Id == item.Id).FirstOrDefaultAsync();
+                        if (g == null)
+                        {
+                            await _growerLocationLogRepository.InsertAsync(item.MapTo<GrowerLocationLog>());
+
+                            await CurrentUnitOfWork.SaveChangesAsync();
+                        }
+                    }
+                    await unitOfWork.CompleteAsync();
                 }
                 return new APIResultDto() { Code = 901, Msg = "上传成功" };
             }
@@ -739,33 +750,33 @@ namespace GYISMS.Schedules
         private GaodeMap GetLocationByURL(string url)
         {
             string strResult = "";
-            try
+            //try
+            //{
+            HttpWebRequest req = WebRequest.Create(url) as HttpWebRequest;
+            req.ContentType = "multipart/form-data";
+            req.Accept = "*/*";
+            req.UserAgent = "";
+            req.Timeout = 10000;
+            req.Method = "GET";
+            req.KeepAlive = true;
+            HttpWebResponse response = req.GetResponse() as HttpWebResponse;
+            using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
             {
-                HttpWebRequest req = WebRequest.Create(url) as HttpWebRequest;
-                req.ContentType = "multipart/form-data";
-                req.Accept = "*/*";
-                req.UserAgent = "";
-                req.Timeout = 10000;
-                req.Method = "GET";
-                req.KeepAlive = true;
-                HttpWebResponse response = req.GetResponse() as HttpWebResponse;
-                using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
-                {
-                    strResult = sr.ReadToEnd();
-                }
-                //JsonReader reader = new JsonTextReader(new StringReader(strResult));
-                GaodeMap rb = JsonConvert.DeserializeObject<GaodeMap>(strResult);
-                //while (reader.Read())
-                //{
-                //    Console.WriteLine(reader.TokenType + "\t\t" + reader.ValueType + "\t\t" + reader.Value);
-                //}
-                return rb;
+                strResult = sr.ReadToEnd();
             }
-            catch (Exception ex)
-            {
-                Logger.Info("地理位置获取异常信息" + ex);
-                return new GaodeMap() { Status = "0" };
-            }
+            //JsonReader reader = new JsonTextReader(new StringReader(strResult));
+            GaodeMap rb = JsonConvert.DeserializeObject<GaodeMap>(strResult);
+            //while (reader.Read())
+            //{
+            //    Console.WriteLine(reader.TokenType + "\t\t" + reader.ValueType + "\t\t" + reader.Value);
+            //}
+            return rb;
+            //}
+            //catch (Exception ex)
+            //{
+            //    Logger.Info("地理位置获取异常信息" + ex);
+            //    return new GaodeMap() { Status = "0" };
+            //}
         }
     }
 }

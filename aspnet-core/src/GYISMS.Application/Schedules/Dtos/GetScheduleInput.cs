@@ -9,6 +9,7 @@ using GYISMS.GrowerAreaRecords.Dtos;
 using GYISMS.VisitRecords.Dtos;
 using GYISMS.VisitExamines.Dtos;
 using GYISMS.ScheduleDetails.Dtos;
+using GYISMS.Growers.Dtos;
 
 namespace GYISMS.Schedules.Dtos
 {
@@ -43,6 +44,11 @@ namespace GYISMS.Schedules.Dtos
         public AppUploadDto()
         {
             ScheduleDetail = new APPScheduleDetail();
+            GrowerList = new List<APPGrower>();
+            VisitExamineList = new List<APPVisitExamine>();
+            VisitRecordList = new List<AppVisitRecord>();
+            GrowerAreaRecordList = new List<AppGrowerAreaRecord>();
+            GrowerLocationLogList = new List<APPGrowerLocationLog>();
         }
 
         public string EmployeeId { get; set; }
@@ -53,7 +59,7 @@ namespace GYISMS.Schedules.Dtos
         //public List<AppGrowerAreaRecord> GrowerAreaRecordList { get; set; }
         //public List<GrowerLocationLog> GrowerLocationLogList { get; set; }
         public APPScheduleDetail ScheduleDetail { get; set; }
-        //public List<APPGrower> GrowerList { get; set; }
+        public List<APPGrower> GrowerList { get; set; }
         public List<APPVisitExamine> VisitExamineList { get; set; }
         public List<AppVisitRecord> VisitRecordList { get; set; }
         public List<AppGrowerAreaRecord> GrowerAreaRecordList { get; set; }

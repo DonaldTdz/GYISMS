@@ -525,10 +525,10 @@ namespace GYISMS.Employees
         public object testabc(string Id)
         {
             string result = Regex.Replace(Id, @"[^0-9]+", "");
-            var pwd = Convert.ToUInt64(result) * 927;
+            var pwd = Convert.ToUInt64(result) * 92794;
             while (pwd.ToString().Length < 8)
                 {
-                    pwd = pwd * 927;
+                    pwd = pwd * 92794;
                 }
                 return pwd.ToString().Substring(2, 8);    
         }

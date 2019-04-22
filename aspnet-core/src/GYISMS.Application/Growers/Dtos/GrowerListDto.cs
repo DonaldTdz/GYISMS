@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using GYISMS.Growers;
 using Abp.AutoMapper;
 using GYISMS.GYEnums;
+using Abp.Domain.Entities;
 
 namespace GYISMS.Growers.Dtos
 {
@@ -162,5 +163,28 @@ namespace GYISMS.Growers.Dtos
                 return AreaStatus.ToString();
             }
         }
+    }
+
+
+    public class APPGrower : Entity<int>
+    {
+        public string Name { get; set; }
+        public string EmployeeName { get; set; }
+
+        /// <summary>
+        /// Longitude
+        /// </summary>
+        public decimal? Longitude { get; set; }
+
+
+        /// <summary>
+        /// Latitude
+        /// </summary>
+        public decimal? Latitude { get; set; }
+
+        /// <summary>
+        /// 采集次数
+        /// </summary>
+        public int CollectNum { get; set; }
     }
 }
