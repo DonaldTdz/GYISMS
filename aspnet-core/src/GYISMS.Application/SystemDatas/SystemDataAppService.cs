@@ -443,18 +443,24 @@ systemdataListDtos
         }
 
         [AbpAllowAnonymous]
-        public async Task<AppInfoDto> GetAppInfoAsnyc(string id)
+        public AppInfoDto GetAppInfo(string id)
         {
-            var entity = await _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.钉钉配置 && v.Type == ConfigType.任务拜访 && v.Code == GYCode.TaskApp).AsNoTracking().FirstOrDefaultAsync();
+            var entity = _systemdataRepository.GetAll().Where(v => v.ModelId == ConfigModel.钉钉配置 && v.Type == ConfigType.任务拜访 && v.Code == GYCode.TaskApp).AsNoTracking().FirstOrDefault();
             AppInfoDto result = new AppInfoDto();
             string[] text = entity.Remark.Split(',');
             result.DownloadUrl = entity.Desc;
             result.AppName = text[0];
             result.Version = text[1];
             result.Account = id;
-            string rtx = Regex.Replace(id, @"[^0-9]+", "");
+            var userId = "";
+            if (id.Length > 12)
+            {
+                userId = id.Substring(2, 8);
+            }
+            else { userId = id; }
+            string rtx = Regex.Replace(userId, @"[^0-9]+", "");
             var pwd = Convert.ToUInt64(rtx) * 92794;
-            while (pwd.ToString().Length < 8)
+            while (pwd.ToString().Length < 10)
             {
                 pwd = pwd * 92794;
             }

@@ -524,9 +524,15 @@ namespace GYISMS.Employees
         [AbpAllowAnonymous]
         public object testabc(string Id)
         {
-            string result = Regex.Replace(Id, @"[^0-9]+", "");
+            var id = "";
+            if (Id.Length > 12)
+            {
+                id = Id.Substring(2, 8);
+            }
+            else { id = Id; }
+            string result = Regex.Replace(id, @"[^0-9]+", "");
             var pwd = Convert.ToUInt64(result) * 92794;
-            while (pwd.ToString().Length < 8)
+            while (pwd.ToString().Length < 10)
                 {
                     pwd = pwd * 92794;
                 }

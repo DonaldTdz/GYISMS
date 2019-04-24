@@ -8,6 +8,7 @@ using Abp.AspNetCore.Mvc.Controllers;
 using Abp.Auditing;
 using Abp.Authorization;
 using GYISMS.Dtos;
+using GYISMS.SystemDatas;
 using HC.WeChat.Configuration;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -22,13 +23,28 @@ namespace GYISMS.Web.Host.Controllers
     public class GYISMSFileController : AbpController
     {
         private readonly IHostingEnvironment _hostingEnvironment;
+        ISystemDataAppService _systemDataAppService;
 
-        public GYISMSFileController(IHostingEnvironment hostingEnvironment)
+        public GYISMSFileController(IHostingEnvironment hostingEnvironment
+            , ISystemDataAppService systemDataAppService)
         {
             this._hostingEnvironment = hostingEnvironment;
+            _systemDataAppService = systemDataAppService;
         }
         public IActionResult Index()
         {
+            return View();
+        }
+
+        public IActionResult AppDownloadIndex(string id)
+        {
+            id = id ?? "999";
+            var info = _systemDataAppService.GetAppInfo(id);
+            ViewBag.appName = info.AppName;
+            ViewBag.version = info.Version;
+            ViewBag.account = info.Account;
+            ViewBag.password = info.Password;
+            ViewBag.downloadUrl = info.DownloadUrl;
             return View();
         }
 

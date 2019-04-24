@@ -207,6 +207,6 @@ export class ReportFormComponent extends AppComponentBase implements OnInit {
         })
     }
     goTask(growerId: string) {
-        this.router.navigate(['app/basic/grower-detail', { id: growerId }])
+        this.router.navigate(['app/basic/grower-detail', { id: growerId, type: 'report' }]);
     }
 }

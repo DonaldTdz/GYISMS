@@ -81,6 +81,6 @@ namespace GYISMS.SystemDatas
         Task DeleteSystemDataById(int Id);
         Task<List<SelectGroup>> GetWeekOfMonthAsync(Guid id);
         Task<List<SelectGroup>> GetDocRoleType();
-        Task<AppInfoDto> GetAppInfoAsnyc(string id);
+        AppInfoDto GetAppInfo(string id);
     }
 }

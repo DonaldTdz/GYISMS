@@ -47,6 +47,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
     //     { text: '启用', value: true },
     //     { text: '禁用', value: false }
     // ]
+    fromType: string = '';//从哪个页面跳转过来
     queryGAR: any = {
         pageIndexGAR: 1,
         pageSizeGAR: 10,
@@ -61,6 +62,7 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
         , private taskService: VisitTaskServiceProxy) {
         super(injector);
         this.id = this.actRouter.snapshot.params['id'];
+        this.fromType = this.actRouter.snapshot.params['type'];
     }
 
     ngOnInit(): void {
@@ -224,7 +226,11 @@ export class GrowerDetailComponent extends AppComponentBase implements OnInit {
         this.selectsEmployeeModal.show(this.grower.areaCode);
     }
     return() {
-        this.router.navigate(['app/basic/grower']);
+        if (this.fromType != 'report') {
+            this.router.navigate(['app/basic/grower']);
+        } else {
+            this.router.navigate(['app/task/report-form']);
+        }
     }
 
     handlePreview = (url: string) => {

@@ -260,14 +260,26 @@ export class DefaultLayoutComponent extends AppComponentBase
     processMenu(resMenu: Menu[], menus: MenuItem[], isChild?: boolean) {
         menus.forEach(item => {
             let subMenu: Menu;
-            subMenu = {
-                text: item.displayName,
-                link: item.route,
-                icon: `${item.icon}`,
-                hide: item.hide,
-                acl: item.acl,
-                reuse: false
-            };
+            if (item.displayName == '统计报表') {
+                subMenu = {
+                    text: item.displayName,
+                    link: item.route,
+                    icon: `${item.icon}`,
+                    hide: item.hide,
+                    acl: item.acl,
+                    reuse: true
+                };
+            } else {
+                subMenu = {
+                    text: item.displayName,
+                    link: item.route,
+                    icon: `${item.icon}`,
+                    hide: item.hide,
+                    acl: item.acl,
+                    reuse: false
+                };
+            }
+
             if (item.permission !== '' && !this.isGranted(item.permission)) {
                 subMenu.hide = true;
             }

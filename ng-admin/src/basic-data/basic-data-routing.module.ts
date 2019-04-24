@@ -41,6 +41,11 @@ const routes: Routes = [
         component: GrowerDetailComponent,
         canActivate: [AppRouteGuard],
     },
+    {
+        path: 'grower-detail/:id/:type',
+        component: GrowerDetailComponent,
+        canActivate: [AppRouteGuard],
+    },
 ];
 
 @NgModule({

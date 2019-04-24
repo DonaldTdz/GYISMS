@@ -749,34 +749,24 @@ namespace GYISMS.Schedules
         /// <returns></returns>
         private GaodeMap GetLocationByURL(string url)
         {
-            string strResult = "";
-            //try
+            //string strResult = "";
+            //HttpWebRequest req = WebRequest.Create(url) as HttpWebRequest;
+            //req.ContentType = "multipart/form-data";
+            //req.Accept = "*/*";
+            //req.UserAgent = "";
+            //req.Timeout = 10000;
+            //req.Method = "GET";
+            //req.KeepAlive = true;
+            //HttpWebResponse response = req.GetResponse() as HttpWebResponse;
+            //using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
             //{
-            HttpWebRequest req = WebRequest.Create(url) as HttpWebRequest;
-            req.ContentType = "multipart/form-data";
-            req.Accept = "*/*";
-            req.UserAgent = "";
-            req.Timeout = 10000;
-            req.Method = "GET";
-            req.KeepAlive = true;
-            HttpWebResponse response = req.GetResponse() as HttpWebResponse;
-            using (StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
-            {
-                strResult = sr.ReadToEnd();
-            }
-            //JsonReader reader = new JsonTextReader(new StringReader(strResult));
-            GaodeMap rb = JsonConvert.DeserializeObject<GaodeMap>(strResult);
-            //while (reader.Read())
-            //{
-            //    Console.WriteLine(reader.TokenType + "\t\t" + reader.ValueType + "\t\t" + reader.Value);
+            //    strResult = sr.ReadToEnd();
             //}
-            return rb;
-            //}
-            //catch (Exception ex)
-            //{
-            //    Logger.Info("地理位置获取异常信息" + ex);
-            //    return new GaodeMap() { Status = "0" };
-            //}
+            //GaodeMap rb = JsonConvert.DeserializeObject<GaodeMap>(strResult);
+
+            //return rb;
+            GaodeMap result = Get.GetJson<GaodeMap>(string.Format(url));
+            return result;
         }
     }
 }

@@ -640,6 +640,7 @@ namespace GYISMS.Charts
                     });
                     //result.AreaItem = await rquery.ToListAsync();
                     result.AreaItem = rquery.ToList();
+                    return result;
                 }
                 else
                 {
