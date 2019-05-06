@@ -122,8 +122,8 @@ namespace GYISMS.Charts
         {
             var query = from sd in _scheduleDetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
-                        .WhereIf(startDate.HasValue && tabIndex == 2, s => s.EndTime >= startDate)
-                        .WhereIf(endDate.HasValue && tabIndex == 2, s => s.EndTime <= endDate)
+                        .WhereIf(startDate.HasValue, s => s.EndTime >= startDate)
+                        .WhereIf(endDate.HasValue, s => s.EndTime <= endDate)
                         .WhereIf(tabIndex == 1, s => s.EndTime >= DateTime.Today)
                         on sd.ScheduleId equals s.Id
                         join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
@@ -399,12 +399,12 @@ namespace GYISMS.Charts
                             t.Name,
                             t.Id
                         };
-            var list = query.GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
+            var list = query.OrderBy(v=>v.Id).GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
              new SheduleByTaskDto()
              {
                  Id = s.Key.Id,
                  //TaskType=s.Key.Type,
-                 TaskName = s.Key.Name,
+                 TaskName = $"({s.Key.Type}){s.Key.Name}",
                  VisitNum = s.Sum(sd => sd.VisitNum),
                  CompleteNum = s.Sum(sd => sd.CompleteNum),
                  ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
@@ -481,7 +481,7 @@ namespace GYISMS.Charts
                  {
                      Id = s.Key.Id,
                      //TaskType=s.Key.Type,
-                     TaskName = s.Key.Name,
+                     TaskName = $"({s.Key.Type}){s.Key.Name}",
                      VisitNum = s.Sum(sd => sd.VisitNum),
                      CompleteNum = s.Sum(sd => sd.CompleteNum),
                      ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)

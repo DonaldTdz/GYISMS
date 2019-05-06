@@ -58,9 +58,9 @@ namespace GYISMS.Helpers
                     var font = new Font(fontCollection.Install(fontPath), 12, FontStyle.Bold);
                     //var fontTitle = SystemFonts.CreateFont("Microsoft YaHei UI", 20, FontStyle.Bold);
                     //var font = SystemFonts.CreateFont("Microsoft YaHei UI", 12, FontStyle.Bold);
-                    vimage.Mutate(x => x.DrawText(stime.ToString("HH:mm"), fontTitle, Rgba32.Red, new PointF(10, 5)));
-                    vimage.Mutate(x => x.DrawText(string.Format("{0} {1}", stime.ToString("yyyy.MM.dd"), GetWeekDay(stime.DayOfWeek)), font, Rgba32.Red, new PointF(10, 30)));
-                    vimage.Mutate(x => x.DrawText(string.Format("拜访烟农: {0}", growerName), font, Rgba32.Red, new PointF(10, 48)));
+                    vimage.Mutate(x => x.DrawText(stime.ToString("HH:mm"), fontTitle, Rgba32.WhiteSmoke, new PointF(10, 5)));
+                    vimage.Mutate(x => x.DrawText(string.Format("{0} {1}", stime.ToString("yyyy.MM.dd"), GetWeekDay(stime.DayOfWeek)), font, Rgba32.WhiteSmoke, new PointF(10, 30)));
+                    vimage.Mutate(x => x.DrawText(string.Format("拜访烟农: {0}", growerName), font, Rgba32.WhiteSmoke, new PointF(10, 48)));
                     TextGraphicsOptions options = new TextGraphicsOptions(true)
                     {
                         Antialias = true,
@@ -68,8 +68,8 @@ namespace GYISMS.Helpers
                         VerticalAlignment = VerticalAlignment.Center
                     };
                     var height = vimage.Height;
-                    vimage.Mutate(x => x.DrawText(options, "用户: " + userName, font, Rgba32.Red, new PointF(350, height - 46)));
-                    vimage.Mutate(x => x.DrawText(options, "位置: " + location, font, Rgba32.Red, new PointF(350, height - 28)));
+                    vimage.Mutate(x => x.DrawText(options, "用户: " + userName, font, Rgba32.WhiteSmoke, new PointF(350, height - 46)));
+                    vimage.Mutate(x => x.DrawText(options, "位置: " + location, font, Rgba32.WhiteSmoke, new PointF(350, height - 28)));
                     var newImagePath = imgPath.Replace("visit", "visit/watermark");
                     var newFolder = host + "/visit/watermark";
                     if (!Directory.Exists(newFolder))

@@ -592,7 +592,7 @@ namespace GYISMS.GrowerAreaRecords
             record.EmployeeName = scheduledetail.EmployeeName;
             record.CollectionTime = DateTime.Now;
             record.GrowerId = scheduledetail.GrowerId;
-            //record.ImgPath = ImageHelper.GenerateWatermarkImg(input.ImgPaths, input.Location, record.EmployeeName, scheduledetail.GrowerName, _hostingEnvironment.WebRootPath); //string.Join(',', input.ImgPaths);
+            record.ImgPath = ImageHelper.GenerateWatermarkImg(input.ImgPaths, input.Location, record.EmployeeName, scheduledetail.GrowerName, _hostingEnvironment.WebRootPath); //string.Join(',', input.ImgPaths);
             record.Latitude = input.Latitude;
             record.Longitude = input.Longitude;
             record.Location = input.Location;

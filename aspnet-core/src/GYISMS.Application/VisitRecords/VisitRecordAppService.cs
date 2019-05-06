@@ -382,7 +382,7 @@ namespace GYISMS.VisitRecords
             //计划明细
             var detail = await _scheduleDetailRepository.GetAsync(input.ScheduleDetailId);
             //生成水印图片
-            //vistitRecord.ImgPath = ImageHelper.GenerateWatermarkImg(vistitRecord.ImgPath, vistitRecord.Location, detail.EmployeeName, detail.GrowerName, _hostingEnvironment.WebRootPath);
+            vistitRecord.ImgPath = ImageHelper.GenerateWatermarkImg(vistitRecord.ImgPath, vistitRecord.Location, detail.EmployeeName, detail.GrowerName, _hostingEnvironment.WebRootPath);
             //拜访记录
             var vrId = await _visitrecordRepository.InsertAndGetIdAsync(vistitRecord);
             await CurrentUnitOfWork.SaveChangesAsync();
