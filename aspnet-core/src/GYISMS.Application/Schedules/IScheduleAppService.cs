@@ -61,5 +61,6 @@ namespace GYISMS.Schedules
         object UpdateAndGetMediaId(string path);
         Task<AppSyncData> GetSyncDataAppTask(string userId);
         Task<APIResultDto> UploadDataAsnyc(AppUploadDto input);
+         //object POSTIds(GetSchedulesInput names);
     }
 }

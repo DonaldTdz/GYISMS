@@ -82,7 +82,7 @@ namespace GYISMS.GrowerAreaRecords
         /// </summary>
         Task SaveGrowerAreaRecordAsync(DingDingAreaRecordInput input);
         /// <summary>
-        /// 落实面积提交
+        /// 核实面积提交
         /// </summary>
         Task SubmitGrowerAreaAsync(EntityDto<Guid> input);
 

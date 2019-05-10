@@ -188,7 +188,7 @@ namespace GYISMS.VisitRecords.Dtos
     public class DingDingAreaRecordInputDto : DingDingVisitRecordInputDto
     {
         /// <summary>
-        /// 落实面积
+        /// 核实面积
         /// </summary>
         public decimal? Area { get; set; }
 

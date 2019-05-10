@@ -66,7 +66,7 @@ namespace GYISMS.GYEnums
         技术服务 = 1,
         生产管理 = 2,
         政策宣传 = 3,
-        面积落实 = 5,
+        面积核实 = 5,
         临时任务 = 4
     }
 
@@ -113,8 +113,8 @@ namespace GYISMS.GYEnums
 
     public enum AreaStatusEnum
     {
-        未落实 = 0,
-        已落实 = 1
+        未核实 = 0,
+        已核实 = 1
     }
 
     public static class GYCode

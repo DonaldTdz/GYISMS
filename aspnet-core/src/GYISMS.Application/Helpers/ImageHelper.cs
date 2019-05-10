@@ -51,11 +51,11 @@ namespace GYISMS.Helpers
                 {
                     //画文字
                     var fontCollection = new FontCollection();
-                    var fontPath = "C:/Windows/Fonts/simkai.ttf";
+                    var fontPath = "C:/Windows/Fonts/simsunb.ttf";
                     //var fontPath = "C:/Windows/Fonts/STXINWEI.TTF";
                     //var fontPath = "C:/Windows/Fonts/simfang.ttf";
                     var fontTitle = new Font(fontCollection.Install(fontPath), 20, FontStyle.Bold);
-                    var font = new Font(fontCollection.Install(fontPath), 12, FontStyle.Bold);
+                    var font = new Font(fontCollection.Install(fontPath), 14, FontStyle.Bold);
                     //var fontTitle = SystemFonts.CreateFont("Microsoft YaHei UI", 20, FontStyle.Bold);
                     //var font = SystemFonts.CreateFont("Microsoft YaHei UI", 12, FontStyle.Bold);
                     vimage.Mutate(x => x.DrawText(stime.ToString("HH:mm"), fontTitle, Rgba32.WhiteSmoke, new PointF(10, 5)));

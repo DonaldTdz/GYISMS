@@ -77,6 +77,7 @@ namespace GYISMS.Growers
                 //.WhereIf(input.AreaName.HasValue, u => u.AreaCode == input.AreaName)
                 .WhereIf(areaCode.HasValue, u => u.AreaCode == areaCode)
                 .WhereIf(input.IsEnable.HasValue, u => u.IsEnable == input.IsEnable);
+            var x =query.ToList();
             //区县层级查询
             if (!string.IsNullOrEmpty(input.AreaName))
             {
@@ -89,7 +90,7 @@ namespace GYISMS.Growers
                 else//员工部门
                 {
                     var employeeIds = await GetEmployeeIdsByTreeKey(input.AreaName);
-                    query = query.Where(u => employeeIds.Contains(u.EmployeeId));
+                    query = query.Where(u => employeeIds.Contains(u.EmployeeId.Trim()));
                 }
             }
 

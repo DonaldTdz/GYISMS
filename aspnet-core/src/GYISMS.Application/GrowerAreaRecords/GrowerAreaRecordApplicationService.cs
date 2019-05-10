@@ -232,7 +232,7 @@ namespace GYISMS.GrowerAreaRecords
         }
 
         /// <summary>
-        /// 广元市落实面积图表
+        /// 广元市核实面积图表
         /// </summary>
         /// <returns></returns>
         [AbpAllowAnonymous]
@@ -243,7 +243,7 @@ namespace GYISMS.GrowerAreaRecords
             result.list = new List<AreaChartDto>();
 
             AreaChartDto actual = new AreaChartDto();
-            actual.GroupName = "落实面积";
+            actual.GroupName = "核实面积";
             actual.AreaName = "广元市";
             actual.Area = await _growerRepository.GetAll().SumAsync(v => v.ActualArea ?? 0);
             AreaChartDto expected = new AreaChartDto();
@@ -259,7 +259,7 @@ namespace GYISMS.GrowerAreaRecords
         }
 
         /// <summary>
-        /// 区县落实面积图表
+        /// 区县核实面积图表
         /// </summary>
         /// <returns></returns>
         [AbpAllowAnonymous]
@@ -278,7 +278,7 @@ namespace GYISMS.GrowerAreaRecords
                 var zhExpectedArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).Select(g => g.PlantingArea).Sum();
                 zhExpected.Area = zhExpectedArea ?? 0;
                 AreaChartDto zhActual = new AreaChartDto();
-                zhActual.GroupName = "落实面积";
+                zhActual.GroupName = "核实面积";
                 zhActual.AreaName = "昭化区";
                 //zhActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).SumAsync(v => v.ActualArea ?? 0);
                 var zhActualArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.昭化区).Select(g => g.ActualArea).Sum();
@@ -298,7 +298,7 @@ namespace GYISMS.GrowerAreaRecords
                 var jgExpectedArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).Select(g => g.PlantingArea).Sum();
                 jgExpected.Area = jgExpectedArea ?? 0;
                 AreaChartDto jgActual = new AreaChartDto();
-                jgActual.GroupName = "落实面积";
+                jgActual.GroupName = "核实面积";
                 jgActual.AreaName = "剑阁县";
                 //jgActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).SumAsync(v => v.ActualArea ?? 0);
                 var jgActualArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.剑阁县).Select(g => g.ActualArea).Sum();
@@ -318,7 +318,7 @@ namespace GYISMS.GrowerAreaRecords
                 var wcExpectedArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).Select(g => g.PlantingArea).Sum();
                 wcExpected.Area = wcExpectedArea ?? 0;
                 AreaChartDto wcActual = new AreaChartDto();
-                wcActual.GroupName = "落实面积";
+                wcActual.GroupName = "核实面积";
                 wcActual.AreaName = "旺苍县";
                 //wcActual.Area = await _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).SumAsync(v => v.ActualArea ?? 0);
                 var wcActualArea =  _growerRepository.GetAll().Where(v => v.AreaCode == GYEnums.AreaCodeEnum.旺苍县).Select(g => g.ActualArea).Sum();
@@ -462,7 +462,7 @@ namespace GYISMS.GrowerAreaRecords
                     });
                     commDetail.List.Add(new CommChartDto()
                     {
-                        GroupName = "落实面积",
+                        GroupName = "核实面积",
                         AreaName = org.DepartmentName,
                         Area = actualArea
                     });
@@ -496,7 +496,7 @@ namespace GYISMS.GrowerAreaRecords
                         });
                         commDetail.List.Add(new CommChartDto()
                         {
-                            GroupName = "落实面积",
+                            GroupName = "核实面积",
                             AreaName = "其他",
                             Area = actualOtherArea
                         });
@@ -523,7 +523,7 @@ namespace GYISMS.GrowerAreaRecords
                     });
                     commDetail.List.Add(new CommChartDto()
                     {
-                        GroupName = "落实面积",
+                        GroupName = "核实面积",
                         AreaName = "其他",
                         Area = actualOtherArea
                     });
@@ -565,7 +565,7 @@ namespace GYISMS.GrowerAreaRecords
                     });
                     commDetail.List.Add(new CommChartDto()
                     {
-                        GroupName = "落实面积",
+                        GroupName = "核实面积",
                         AreaName = item.Name,
                         Area = actualArea
                     });
@@ -616,10 +616,10 @@ namespace GYISMS.GrowerAreaRecords
             var scheduleDetail = await _scheduledetailRepository.GetAsync(input.Id);
             scheduleDetail.Status = ScheduleStatusEnum.已完成;
             scheduleDetail.CompleteNum = scheduleDetail.VisitNum;
-            //更新烟农落实面积
+            //更新烟农核实面积
             var grower = await _growerRepository.GetAsync(scheduleDetail.GrowerId);
             var sumArea = _entityRepository.GetAll().Where(e => e.GrowerId == grower.Id && e.ScheduleDetailId == input.Id).Sum(e => e.Area);
-            grower.AreaStatus = AreaStatusEnum.已落实;
+            grower.AreaStatus = AreaStatusEnum.已核实;
             grower.AreaTime = DateTime.Now;
             grower.ActualArea = sumArea;
             grower.AreaScheduleDetailId = input.Id;

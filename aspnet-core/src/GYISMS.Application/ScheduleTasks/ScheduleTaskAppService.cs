@@ -413,7 +413,7 @@ namespace GYISMS.ScheduleTasks
             taskDetailDto.GrowerInfo = (await _growerRepository.GetAsync(taskDetailDto.GrowerId.Value)).MapTo<GrowerListDto>();
             taskDetailDto.GrowerInfo.LimitNum = limitNum;
             taskDetailDto.GrowerInfo.CollectNum = num;
-            if (taskDetailDto.TaskType == TaskTypeEnum.面积落实)//新增面积落实 2019-2-18
+            if (taskDetailDto.TaskType == TaskTypeEnum.面积核实)//新增面积核实 2019-2-18
             {
                 taskDetailDto.VisitRecords = await _growerAreaRecordRepository.GetAll()
                                                     .Where(g => g.ScheduleDetailId == scheduleDetailId && g.GrowerId == taskDetailDto.GrowerId)

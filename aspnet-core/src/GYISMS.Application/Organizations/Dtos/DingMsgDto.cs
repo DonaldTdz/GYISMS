@@ -49,4 +49,29 @@ namespace GYISMS.Organizations.Dtos
     {
         public string content { get; set; }
     }
+
+    public class Processinstance
+    {
+        public long? AgentId { get; set; }
+
+        public long? DeptId { get; set; }
+
+        public string ProcessCode { get; set; }
+
+        public string OriginatorUserId { get; set; }
+        public List<FormComponentValueVoDomain> FormComponentValues_ = new List<FormComponentValueVoDomain>();
+
+    }
+
+    [Serializable]
+
+    public class FormComponentValueVoDomain 
+    {
+        public string Name { get; set; }
+
+        /// <summary>
+        /// 表单每一栏的值
+        /// </summary>
+        public string Value { get; set; }
+    }
 }

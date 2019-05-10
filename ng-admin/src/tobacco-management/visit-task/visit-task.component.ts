@@ -18,7 +18,7 @@ export class VisitTaskComponent extends AppComponentBase implements OnInit {
         { text: '技术服务', value: 1 },
         { text: '生产管理', value: 2 },
         { text: '政策宣传', value: 3 },
-        { text: '面积落实', value: 5 },
+        { text: '面积核实', value: 5 },
         { text: '临时任务', value: 4 }];
     constructor(injector: Injector, private taskService: VisitTaskServiceProxy,
         private router: Router) {

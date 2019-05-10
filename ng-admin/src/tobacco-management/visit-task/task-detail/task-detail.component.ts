@@ -22,7 +22,7 @@ export class TaskDetailComponent extends AppComponentBase implements OnInit {
     task: VisitTask = new VisitTask();
     taskExamine: TaskExamine = new TaskExamine();
     taskExamineList: TaskExamine[] = [];
-    types: any[] = [{ text: '技术服务', value: 1 }, { text: '生产管理', value: 2 }, { text: '政策宣传', value: 3 }, { text: '面积落实', value: 5 }, { text: '临时任务', value: 4 }];
+    types: any[] = [{ text: '技术服务', value: 1 }, { text: '生产管理', value: 2 }, { text: '政策宣传', value: 3 }, { text: '面积核实', value: 5 }, { text: '临时任务', value: 4 }];
     isExamines: any[] = [{ text: '是', value: true }, { text: '否', value: false }];
     isConfirmLoading = false;
     successMsg = '';

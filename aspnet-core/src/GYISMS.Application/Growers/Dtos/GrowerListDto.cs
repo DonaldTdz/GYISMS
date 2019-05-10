@@ -137,22 +137,22 @@ namespace GYISMS.Growers.Dtos
         public decimal? UnitVolume { get; set; }
 
         /// <summary>
-        /// 落实面积 2019-2-13
+        /// 核实面积 2019-2-13
         /// </summary>
         public decimal? ActualArea { get; set; }
 
         /// <summary>
-        /// 落实面积状态（枚举：未落实 0， 已落实 1）2019-2-13
+        /// 核实面积状态（枚举：未核实 0， 已核实 1）2019-2-13
         /// </summary>
         public AreaStatusEnum? AreaStatus { get; set; }
 
         /// <summary>
-        /// 落实面积时间 2019-2-13
+        /// 核实面积时间 2019-2-13
         /// </summary>
         public DateTime? AreaTime { get; set; }
 
         /// <summary>
-        /// 采用落实面积的计划明细Id 2019-2-15
+        /// 采用核实面积的计划明细Id 2019-2-15
         /// </summary>
         public Guid? AreaScheduleDetailId { get; set; }
 

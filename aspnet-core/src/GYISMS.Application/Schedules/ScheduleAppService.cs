@@ -477,7 +477,7 @@ namespace GYISMS.Schedules
             {
                 result.ScheduleList.Add(await _scheduleRepository.GetAll().Where(v => v.Id == item).AsNoTracking().FirstOrDefaultAsync());
             }
-            foreach (var item in sdIds) //同步计划详情and拜访记录and拜访考核and面积落实记录
+            foreach (var item in sdIds) //同步计划详情and拜访记录and拜访考核and面积核实记录
             {
                 var entity = await _scheduleDetailRepository.GetAll().Where(v => v.Id == item).AsNoTracking().FirstOrDefaultAsync();
                 result.ScheduleDetailList.Add(entity);
@@ -543,12 +543,12 @@ namespace GYISMS.Schedules
                         if (sd.Status == ScheduleStatusEnum.已完成)
                         {
                             var growerIds = input.GrowerAreaRecordList.Select(v => v.GrowerId).Distinct().ToList();
-                            //更新烟农落实面积
+                            //更新烟农核实面积
                             foreach (var id in growerIds)
                             {
                                 var grower = await _growerRepository.GetAsync(id);
                                 decimal sumArea = input.GrowerAreaRecordList.Where(v => v.GrowerId == id && v.EmployeeId == input.EmployeeId).Sum(v => v.Area.Value);
-                                grower.AreaStatus = AreaStatusEnum.已落实;
+                                grower.AreaStatus = AreaStatusEnum.已核实;
                                 grower.AreaTime = input.ScheduleDetail.AreaTime;
                                 grower.ActualArea = sumArea + (grower.ActualArea ?? 0);
                                 grower.AreaScheduleDetailId = input.ScheduleDetail.Id;
@@ -768,5 +768,61 @@ namespace GYISMS.Schedules
             GaodeMap result = Get.GetJson<GaodeMap>(string.Format(url));
             return result;
         }
+
+        public object abc()
+        {
+            string accessToken = "c04fb48da59635e8b1fda82730e545b0";
+            DefaultDingTalkClient client = new DefaultDingTalkClient("https://oapi.dingtalk.com/topapi/processinstance/create");
+            OapiProcessinstanceCreateRequest request = new OapiProcessinstanceCreateRequest();
+            request.AgentId = 199066678;
+            request.DeptId = 67209026;
+            request.ProcessCode = "PROC-C3F82626-4DBB-4A6D-8EF1-517D3892CEBB";
+            request.OriginatorUserId = "1926112826844702";
+            //request.Approvers = "1926112826844702,165500493321719640";
+            List<OapiProcessinstanceCreateRequest.FormComponentValueVoDomain> formComponentValues = new List<OapiProcessinstanceCreateRequest.FormComponentValueVoDomain>();
+            OapiProcessinstanceCreateRequest.FormComponentValueVoDomain vo = new OapiProcessinstanceCreateRequest.FormComponentValueVoDomain();
+            vo.Name = "原始条款";
+            vo.Value = "这里是原始内容";
+            vo.Name = "新条款";
+            vo.Value = "这里是修订内容";
+            formComponentValues.Add(vo);
+            request.FormComponentValues_ = formComponentValues;
+            OapiProcessinstanceCreateResponse response = client.Execute(request, accessToken);
+            return response;
+            //var msgdto = new Processinstance();
+            //msgdto.AgentId = 199066678;
+            //msgdto.DeptId = 67209026;
+            //msgdto.ProcessCode = "PROC-C3F82626-4DBB-4A6D-8EF1-517D3892CEBB";
+            //msgdto.OriginatorUserId = "1926112826844702";
+            //var vo = new FormComponentValueVoDomain();
+            //vo.Name = "原始条款";
+            //vo.Value = "这里是原始内容";
+            //vo.Name = "新条款";
+            //vo.Value = "这里是修订内容";
+            //msgdto.FormComponentValues_.Add(vo);
+            //var url = string.Format("https://oapi.dingtalk.com/topapi/processinstance/create?access_token={0}", accessToken);
+            //var jsonString = SerializerHelper.GetJsonString(msgdto, null);
+            //using (MemoryStream ms = new MemoryStream())
+            //{
+            //    var bytes = Encoding.UTF8.GetBytes(jsonString);
+            //    ms.Write(bytes, 0, bytes.Length);
+            //    ms.Seek(0, SeekOrigin.Begin);
+            //    var obj = Post.PostGetJson<object>(url, null, ms);
+            //};
+            //return true;
+        }
+
+        //[AbpAllowAnonymous]
+        //public object POSTIds(GetSchedulesInput names)
+        //{
+        //    //names.Name.Replace("\n", "");
+        //    var item = names.Name.Replace("\n", "").Split(',');
+        //    var ids = new List<string>();
+        //    foreach (var i in item)
+        //    {
+        //        ids.Add(_employeeRepository.GetAll().Where(v => v.Name == i.Trim()).Select(v => v.Id).First());
+        //    }
+        //    return ids;
+        //}
     }
 }
