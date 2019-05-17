@@ -618,7 +618,7 @@ namespace GYISMS.GrowerAreaRecords
             scheduleDetail.CompleteNum = scheduleDetail.VisitNum;
             //更新烟农核实面积
             var grower = await _growerRepository.GetAsync(scheduleDetail.GrowerId);
-            var sumArea = _entityRepository.GetAll().Where(e => e.GrowerId == grower.Id && e.ScheduleDetailId == input.Id).Sum(e => e.Area);
+            var sumArea = _entityRepository.GetAll().Where(e => e.GrowerId == grower.Id && e.ScheduleDetailId == input.Id).Sum(e => e.Area);//TODO
             grower.AreaStatus = AreaStatusEnum.已核实;
             grower.AreaTime = DateTime.Now;
             grower.ActualArea = sumArea;

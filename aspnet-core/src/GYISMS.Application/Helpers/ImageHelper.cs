@@ -51,7 +51,8 @@ namespace GYISMS.Helpers
                 {
                     //画文字
                     var fontCollection = new FontCollection();
-                    var fontPath = "C:/Windows/Fonts/simsunb.ttf";
+                    // var fontPath = "C:/Windows/Fonts/simhei.ttf";
+                    var fontPath = "C:/Windows/Fonts/simkai.ttf";
                     //var fontPath = "C:/Windows/Fonts/STXINWEI.TTF";
                     //var fontPath = "C:/Windows/Fonts/simfang.ttf";
                     var fontTitle = new Font(fontCollection.Install(fontPath), 20, FontStyle.Bold);

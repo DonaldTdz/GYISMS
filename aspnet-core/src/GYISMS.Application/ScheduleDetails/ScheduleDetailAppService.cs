@@ -366,7 +366,7 @@ namespace GYISMS.ScheduleDetails
             //{
             //    areaCode = AreaCodeEnum.广元市;
             //}
-            var list = await _scheduledetailRepository. GetSheduleStatisticalDtosByMothAsync(startTime, endTime, areaCode.HasValue? areaCode.Value : AreaCodeEnum.广元市);
+            var list = await _scheduledetailRepository.GetSheduleStatisticalDtosByMothAsync(startTime, endTime, areaCode.HasValue? areaCode.Value : AreaCodeEnum.广元市);
 
             return list.OrderBy(s => s.GroupName).ToList();
         }
