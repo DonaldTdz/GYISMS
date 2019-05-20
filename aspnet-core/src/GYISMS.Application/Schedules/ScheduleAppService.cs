@@ -547,10 +547,10 @@ namespace GYISMS.Schedules
                             foreach (var id in growerIds)
                             {
                                 var grower = await _growerRepository.GetAsync(id);
-                                decimal sumArea = input.GrowerAreaRecordList.Where(v => v.GrowerId == id && v.EmployeeId == input.EmployeeId).Sum(v => v.Area.Value);
+                                var sumArea = input.GrowerAreaRecordList.Where(v => v.GrowerId == id && v.EmployeeId == input.EmployeeId).Sum(v => v.Area);
                                 grower.AreaStatus = AreaStatusEnum.已核实;
                                 grower.AreaTime = input.ScheduleDetail.AreaTime;
-                                grower.ActualArea = sumArea + (grower.ActualArea ?? 0);
+                                grower.ActualArea = sumArea;
                                 grower.AreaScheduleDetailId = input.ScheduleDetail.Id;
                             }
                         }

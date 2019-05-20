@@ -411,10 +411,10 @@ namespace GYISMS.Employees
             ddConfig = _dingDingAppService.GetDingDingConfigByApp(appId);
             //测试环境注释
             var assessToken = _dingDingAppService.GetAccessToken(ddConfig.Appkey, ddConfig.Appsecret);
-            //var userId = _dingDingAppService.GetUserId(assessToken, code);
+            var userId = _dingDingAppService.GetUserId(assessToken, code);
             //var userId = "16550049332052666774";
             //var userId = "1926112826844702";
-            var userId = "171438201426083877"; //罗礼帮
+            //var userId = "171438201426083877"; //罗礼帮
             var query = await _employeeRepository.GetAsync(userId);
             var dduser = query.MapTo<DingDingUserDto>();
             var area = await _employeeManager.GetAreaCodeByUserIdAsync(dduser.Id);//钉钉用户区县权限
@@ -526,7 +526,7 @@ namespace GYISMS.Employees
         }
 
         [AbpAllowAnonymous]
-        public object testabc(string Id)
+        public object testPwd(string Id)
         {
             var id = "";
             if (Id.Length > 12)
