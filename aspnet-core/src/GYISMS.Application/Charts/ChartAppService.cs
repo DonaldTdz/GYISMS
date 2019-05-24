@@ -399,16 +399,16 @@ namespace GYISMS.Charts
                             t.Name,
                             t.Id
                         };
-            var list = query.OrderBy(v=>v.Id).GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
-             new SheduleByTaskDto()
-             {
-                 Id = s.Key.Id,
-                 //TaskType=s.Key.Type,
-                 TaskName = $"({s.Key.Type}){s.Key.Name}",
-                 VisitNum = s.Sum(sd => sd.VisitNum),
-                 CompleteNum = s.Sum(sd => sd.CompleteNum),
-                 ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
-             });
+            var list = query.OrderBy(v => v.Id).GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
+               new SheduleByTaskDto()
+               {
+                   Id = s.Key.Id,
+                   //TaskType=s.Key.Type,
+                   TaskName = $"({s.Key.Type}){s.Key.Name}",
+                   VisitNum = s.Sum(sd => sd.VisitNum),
+                   CompleteNum = s.Sum(sd => sd.CompleteNum),
+                   ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+               });
             var result = new ChartByTaskDto();
             result.Tasks = await list.OrderBy(l => l.TaskName).ToListAsync();
 
@@ -615,7 +615,7 @@ namespace GYISMS.Charts
                                    select new
                                    {
                                        e.Id,
-                                       e.Name,  
+                                       e.Name,
                                        g.VisitNum,
                                        g.CompleteNum,
                                        g.Status
@@ -688,7 +688,7 @@ namespace GYISMS.Charts
                             chat.DeptId = dept.Id.ToString();
                             chat.DeptName = dept.DepartmentName;
                             dataList.Add(chat);
-                        }   
+                        }
                     }
                 }
 
@@ -724,13 +724,13 @@ namespace GYISMS.Charts
                     var deptstr = "[" + deptIdOrAreaCode + "]";
                     //其它
                     var otherQuery = from g in query
-                                      join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
-                                      where e.Department.Contains(deptstr)
-                                      select new
-                                      {
-                                          g.VisitNum,
-                                          g.CompleteNum,
-                                      };
+                                     join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                     where e.Department.Contains(deptstr)
+                                     select new
+                                     {
+                                         g.VisitNum,
+                                         g.CompleteNum,
+                                     };
                     if (otherQuery.Count() > 0)
                     {
                         ItemDetail chat = new ItemDetail();
@@ -943,5 +943,391 @@ namespace GYISMS.Charts
             return result;
         }
 
+
+        /// <summary>
+        /// 任务状态查询图标
+        /// </summary>
+        /// <param name="areaCode"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        public async Task<DistrictChartByStatusDto> GetStatusChartDataAsync(AreaCodeEnum areaCode, int Status)
+        {
+            var query = from sd in _scheduleDetailRepository.GetAll()
+                         .WhereIf(Status == 2, sd => sd.CompleteNum > 0)
+                         .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
+                         .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                        join s in _scheduleRepository.GetAll().Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
+                        on sd.ScheduleId equals s.Id
+                        join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                        join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                        where s.EndTime >= DateTime.Today && (areaCode == AreaCodeEnum.广元市 || g.AreaCode == areaCode)//添加区县权限
+                        select new
+                        {
+                            sd.VisitNum,
+                            sd.CompleteNum,
+                            sd.Status,
+                            t.Type,
+                            t.Name,
+                            t.Id
+                        };
+            var list = query.OrderBy(v => v.Id).GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
+               new SheduleByStatusDto()
+               {
+                   Status = Status,
+                   Id = s.Key.Id,
+                   TaskName = $"({s.Key.Type}){s.Key.Name}",
+                   VisitNum = s.Sum(sd => sd.VisitNum),
+                   CompleteNum = s.Sum(sd => sd.CompleteNum),
+                   ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+               });
+            var result = new DistrictChartByStatusDto();
+            result.TasksByStatus = list.OrderBy(l => l.TaskName).ToList();
+
+            //分区县统计
+            var areaQuery = await (from sd in _scheduleDetailRepository.GetAll()
+                                   .WhereIf(Status == 2, sd => sd.CompleteNum > 0)
+                         .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
+                         .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                                   join s in _scheduleRepository.GetAll().Where(s => s.Status == ScheduleMasterStatusEnum.已发布)
+                                   on sd.ScheduleId equals s.Id
+                                   join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                                   join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                                   where s.EndTime >= DateTime.Today && (areaCode == AreaCodeEnum.广元市 || g.AreaCode == areaCode)
+                                   group new { sd.VisitNum, sd.CompleteNum, sd.Status } by new { g.AreaCode, sd.VisitNum, sd.CompleteNum } into g
+                                   select new ItemDetailByStatus
+                                   {
+                                       Status = Status,
+                                       VisitNum = g.Sum(sd => sd.VisitNum),
+                                       CompleteNum = g.Sum(sd => sd.CompleteNum),
+                                       ExpiredNum = g.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum),
+                                       AreaCode = g.Key.AreaCode
+                                   }).ToListAsync();
+            result.AreaItemByStatus.AddRange(areaQuery);
+            return result;
+        }
+
+        /// <summary>
+        /// 智能报表-当前任务（组织架构）查看
+        /// </summary>
+        /// <param name="deptIdOrAreaCode"></param>
+        /// <param name="type"></param>
+        /// <param name="Status"></param>
+        /// <returns></returns>
+        public async Task<ChartByStatusDto> GetStatusTaskCommChartAsync(long deptIdOrAreaCode, string type, int Status)
+        {
+            List<TaskChartByStatusDto> query = new List<TaskChartByStatusDto>();
+            var result = new ChartByStatusDto();
+            if (deptIdOrAreaCode == 1 || deptIdOrAreaCode == 2 || deptIdOrAreaCode == 3)
+            {
+                var areaCode = (AreaCodeEnum)deptIdOrAreaCode;
+                query = await (from sd in _scheduleDetailRepository.GetAll()
+                                .WhereIf(Status == 2, sd => sd.CompleteNum > 0)
+                         .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
+                         .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                               join s in _scheduleRepository.GetAll()
+
+                               .Where(s => s.Status == ScheduleMasterStatusEnum.已发布 && s.EndTime >= DateTime.Today)
+                               on sd.ScheduleId equals s.Id
+                               join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                               join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                               join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                               where areaCode == AreaCodeEnum.广元市 || g.AreaCode == areaCode//添加区县权限
+                               select new TaskChartByStatusDto
+                               {
+                                   VisitNum = sd.VisitNum,
+                                   CompleteNum = sd.CompleteNum,
+                                   Status = sd.Status,
+                                   Type = t.Type,
+                                   Name = t.Name,
+                                   Id = t.Id,
+                                   EmployeeId = g.EmployeeId,
+                                   Department = e.Department
+                               }).ToListAsync();
+                var list = query.GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
+                 new SheduleByStatusDto()
+                 {
+                     Id = s.Key.Id,
+                     Status = Status,
+                     TaskName = $"({s.Key.Type}){s.Key.Name}",
+                     VisitNum = s.Sum(sd => sd.VisitNum),
+                     CompleteNum = s.Sum(sd => sd.CompleteNum),
+                     ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+                 });
+                result.Tasks = list.OrderBy(l => l.TaskName).ToList();
+            }
+            else if ((deptIdOrAreaCode != 1 && deptIdOrAreaCode != 2 && deptIdOrAreaCode != 3) && type == "other")
+            {
+                query = await (from sd in _scheduleDetailRepository.GetAll().WhereIf(Status == 2, sd => sd.CompleteNum > 0)
+                         .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
+                         .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                               join s in _scheduleRepository.GetAll()
+                               .Where(s => s.Status == ScheduleMasterStatusEnum.已发布 && s.EndTime >= DateTime.Today)
+                               on sd.ScheduleId equals s.Id
+                               join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                               join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                               join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                               where e.Department.Contains(deptIdOrAreaCode.ToString())
+                               select new TaskChartByStatusDto
+                               {
+                                   VisitNum = sd.VisitNum,
+                                   CompleteNum = sd.CompleteNum,
+                                   Status = sd.Status,
+                                   Type = t.Type,
+                                   Name = t.Name,
+                                   Id = t.Id,
+                                   EmployeeId = g.EmployeeId,
+                                   Department = e.Department
+                               }).ToListAsync();
+                var list = query.GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
+                 new SheduleByStatusDto()
+                 {
+                     Id = s.Key.Id,
+                     //TaskType=s.Key.Type,
+                     Status = Status,
+                     TaskName = s.Key.Name,
+                     VisitNum = s.Sum(sd => sd.VisitNum),
+                     CompleteNum = s.Sum(sd => sd.CompleteNum),
+                     ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+                 });
+                //result.Tasks = await list.OrderBy(l => l.TaskName).ToListAsync();
+                result.Tasks = list.OrderBy(l => l.TaskName).ToList();
+            }
+            else
+            {
+                var empIds = await GetEmployeeIdsByDeptId(deptIdOrAreaCode);
+                query = await (from sd in _scheduleDetailRepository.GetAll().WhereIf(Status == 2, sd => sd.CompleteNum > 0)
+                         .WhereIf(Status == 0, sd => sd.Status == ScheduleStatusEnum.已逾期)
+                         .WhereIf(Status == 3, sd => sd.Status != ScheduleStatusEnum.已逾期 && sd.CompleteNum < sd.VisitNum)
+                               join s in _scheduleRepository.GetAll().Where(s => s.Status == ScheduleMasterStatusEnum.已发布 && s.EndTime >= DateTime.Today)
+                               on sd.ScheduleId equals s.Id
+                               join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
+                               join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
+                               join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                               where empIds.Contains(e.Id)
+                               select new TaskChartByStatusDto
+                               {
+                                   VisitNum = sd.VisitNum,
+                                   CompleteNum = sd.CompleteNum,
+                                   Status = sd.Status,
+                                   Type = t.Type,
+                                   Name = t.Name,
+                                   Id = t.Id,
+                                   EmployeeId = g.EmployeeId,
+                                   Department = e.Department
+                               }).ToListAsync();
+                var list = query.GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s =>
+                 new SheduleByStatusDto()
+                 {
+                     Id = s.Key.Id,
+                     //TaskType=s.Key.Type,
+                     Status = Status,
+                     TaskName = s.Key.Name,
+                     VisitNum = s.Sum(sd => sd.VisitNum),
+                     CompleteNum = s.Sum(sd => sd.CompleteNum),
+                     ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+                 });
+                //result.Tasks = await list.OrderBy(l => l.TaskName).ToListAsync();
+                result.Tasks = list.OrderBy(l => l.TaskName).ToList();
+            }
+
+            //统计详情
+            if (deptIdOrAreaCode == 1 || deptIdOrAreaCode == 2 || deptIdOrAreaCode == 3)//当前为区县
+            {
+                var orgCode = string.Empty;
+                switch ((AreaCodeEnum)deptIdOrAreaCode)
+                {
+                    case AreaCodeEnum.昭化区:
+                        {
+                            orgCode = GYCode.昭化区;
+                        }
+                        break;
+                    case AreaCodeEnum.剑阁县:
+                        {
+                            orgCode = GYCode.剑阁县;
+                        }
+                        break;
+                    case AreaCodeEnum.旺苍县:
+                        {
+                            orgCode = GYCode.旺苍县;
+                        }
+                        break;
+                }
+                //部门
+                var orgIds = (await _systemdataRepository.GetAll().Where(s => s.ModelId == ConfigModel.烟叶服务 && s.Type == ConfigType.烟叶公共 && s.Code == orgCode).FirstAsync()).Desc;
+                List<ItemDetailByStatus> dataList = new List<ItemDetailByStatus>();
+                var deptIds = Array.ConvertAll(orgIds.Split(','), o => long.Parse(o));
+                var depts = await _organizationRepository.GetAll().Where(o => deptIds.Contains(o.Id)).ToListAsync();
+                foreach (var deptId in deptIds)
+                {
+                    var empIds = await GetEmployeeIdsByDeptId(deptId);
+                    var deptName = depts.Where(d => d.Id == deptId).First().DepartmentName;
+                    var deptQuery = query.Where(q => empIds.Contains(q.EmployeeId));
+
+                    ItemDetailByStatus chat = new ItemDetailByStatus();
+                    chat.Type = "dept";
+                    chat.VisitNum = deptQuery.Select(q => q.VisitNum).Sum();
+                    chat.CompleteNum = deptQuery.Select(q => q.CompleteNum).Sum();
+                    chat.ExpiredNum = deptQuery.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum);
+                    chat.Status = Status;
+                    chat.DeptId = deptId.ToString();
+                    chat.DeptName = deptName;
+                    dataList.Add(chat);
+                }
+                if (deptIds.Length == 0 || type == "other")//没有部门 或是 其它  直接取其它下面的烟技员
+                {
+                    var areaCode = (AreaCodeEnum)deptIdOrAreaCode;
+                    var empQuery = from g in query
+                                   join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                   where e.AreaCode == areaCode
+                                   select new
+                                   {
+                                       e.Id,
+                                       e.Name,
+                                       g.VisitNum,
+                                       g.CompleteNum,
+                                       g.Status
+                                   };
+                    var rquery = empQuery.GroupBy(g => new { g.Id, g.Name }).Select(g1 =>
+                                 new ItemDetailByStatus()
+                                 {
+                                     DeptId = g1.Key.Id,
+                                     DeptName = g1.Key.Name,
+                                     Type = "employee",
+                                     VisitNum = g1.Sum(g => g.VisitNum),
+                                     CompleteNum = g1.Sum(g => g.CompleteNum),
+                                     Status = Status,
+                                     ExpiredNum = g1.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+                                 });
+                    var list = query.GroupBy(s => new { s.Name, s.Type, s.Id }).Select(s => new SheduleByStatusDto()
+                    {
+                        Id = s.Key.Id,
+                        //TaskType=s.Key.Type,
+                          Status = Status,
+                        TaskName = s.Key.Name,
+                        VisitNum = s.Sum(sd => sd.VisitNum),
+                        CompleteNum = s.Sum(sd => sd.CompleteNum),
+                        ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+                    });
+                    //result.AreaItem = await rquery.ToListAsync();
+                    result.AreaItem = rquery.ToList();
+                    return result;
+                }
+                else
+                {
+                    //其它
+                    var areaCode = (AreaCodeEnum)deptIdOrAreaCode;
+                    var otherQuery = (from g in query
+                                      join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                      where e.AreaCode == areaCode
+                                      select new
+                                      {
+                                          g.VisitNum,
+                                          g.CompleteNum,
+                                          g.Status
+                                      }).ToList();
+                    if (otherQuery.Count() > 0)
+                    {
+                        ItemDetailByStatus chat = new ItemDetailByStatus();
+                        chat.Type = "other";
+                        chat.VisitNum = otherQuery.Select(q => q.VisitNum).Sum();
+                        chat.CompleteNum = otherQuery.Select(q => q.CompleteNum).Sum();
+                        chat.ExpiredNum = otherQuery.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum);
+                        chat.Status = Status;
+                        chat.DeptId = deptIdOrAreaCode.ToString();
+                        chat.DeptName = "其它";
+                        dataList.Add(chat);
+                    }
+                }
+                result.AreaItem = dataList;
+                return result;
+            }
+            else//部门层级
+            {
+                //子部门
+                List<ItemDetailByStatus> dataList = new List<ItemDetailByStatus>();
+                var depts = await _organizationRepository.GetAll().Where(o => o.ParentId == deptIdOrAreaCode).ToListAsync();
+                foreach (var dept in depts)
+                {
+                    var empIds = await GetEmployeeIdsByDeptId(dept.Id);
+                    if (empIds.Length > 0)
+                    {
+                        var deptQuery = query.Where(q => empIds.Contains(q.EmployeeId));
+                        if (deptQuery.Count() > 0)
+                        {
+                            ItemDetailByStatus chat = new ItemDetailByStatus();
+                            chat.Type = "dept";
+                            chat.VisitNum = deptQuery.Select(q => q.VisitNum).Sum();
+                            chat.CompleteNum = deptQuery.Select(q => q.CompleteNum).Sum();
+                            chat.ExpiredNum = deptQuery.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum);
+                            chat.Status = Status;
+                            chat.DeptId = dept.Id.ToString();
+                            chat.DeptName = dept.DepartmentName;
+                            dataList.Add(chat);
+                        }
+                    }
+                }
+
+                if (depts.Count == 0 || type == "other")//没有部门 或是 其它   直接取其它下面的烟技员
+                {
+                    var empIds = await GetEmployeeIdsByDeptId(deptIdOrAreaCode);
+                    var empQuery = from g in query
+                                   join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                   where empIds.Contains(g.EmployeeId)
+                                   select new
+                                   {
+                                       e.Id,
+                                       e.Name,
+                                       g.VisitNum,
+                                       g.CompleteNum,
+                                       g.Status
+                                   };
+                    var rquery = empQuery.GroupBy(g => new { g.Id, g.Name }).Select(g1 =>
+                                 new ItemDetailByStatus()
+                                 {
+                                     DeptId = g1.Key.Id,
+                                     DeptName = g1.Key.Name,
+                                     Type = "employee",
+                                     VisitNum = g1.Sum(g => g.VisitNum),
+                                     CompleteNum = g1.Sum(g => g.CompleteNum),
+                                     Status = Status,
+                                     ExpiredNum = g1.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
+                                 });
+
+                    //result.AreaItem = await rquery.ToListAsync();
+                    result.AreaItem = rquery.ToList();
+                    return result;
+                }
+                else
+                {
+                    var deptstr = "[" + deptIdOrAreaCode + "]";
+                    //其它
+                    var otherQuery = from g in query
+                                     join e in _employeeRepository.GetAll() on g.EmployeeId equals e.Id
+                                     where e.Department.Contains(deptstr)
+                                     select new
+                                     {
+                                         g.VisitNum,
+                                         g.CompleteNum,
+                                         g.Status
+                                     };
+                    if (otherQuery.Count() > 0)
+                    {
+                        ItemDetailByStatus chat = new ItemDetailByStatus();
+                        chat.Type = "other";
+                        chat.VisitNum = otherQuery.Select(q => q.VisitNum).Sum();
+                        chat.CompleteNum = otherQuery.Select(q => q.CompleteNum).Sum();
+                        chat.ExpiredNum = otherQuery.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum);
+                        chat.Status = Status;
+                        chat.DeptId = deptIdOrAreaCode.ToString();
+                        chat.DeptName = "其它";
+
+                        dataList.Add(chat);
+                    }
+                }
+                result.AreaItem = dataList;
+                return result;
+            }
+            //return result;
+        }
     }
 }

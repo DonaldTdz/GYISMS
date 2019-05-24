@@ -60,7 +60,7 @@ namespace GYISMS.Charts.Dtos
         {
             Districts = new List<DistrictDto>();
         }
-        
+
         public List<DistrictDto> Districts { get; set; }
 
         public List<DistrictChartItemDto> Items
@@ -467,4 +467,167 @@ namespace GYISMS.Charts.Dtos
         public int? VisitNum { get; set; }
         public int? CompleteNum { get; set; }
     }
+
+    #region 状态图表DTO
+    public class SheduleByStatusDto
+    {
+        public int Id { get; set; }
+        public string GroupName
+        {
+            get
+            {
+                if (Status.HasValue)
+                {
+                    return Status == 0 ? "逾期" : (Status == 2 ? "完成" : "待完成");
+                }
+                else
+                {
+                    return "";
+                }
+
+            }
+        }
+        public int? Status { get; set; }
+        public string TaskName { get; set; }
+
+        public int? VisitNum { get; set; }
+
+        /// <summary>
+        /// CompleteNum
+        /// </summary>
+        public int? CompleteNum { get; set; }
+
+        /// <summary>
+        /// 逾期数
+        /// </summary>
+        public int? ExpiredNum { get; set; }
+        public int? Num
+        {
+            get
+            {
+                if (Status.HasValue)
+                {
+                    if (Status == 0)
+                    {
+                        return ExpiredNum;
+                    }
+                    else if (Status == 3)
+                    {
+                        return VisitNum - CompleteNum - ExpiredNum;
+                    }
+                    else
+                    {
+                        return CompleteNum;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+    }
+
+    public class ItemDetailByStatus
+    {
+        public AreaCodeEnum? AreaCode { get; set; }
+        public string GroupName
+        {
+            get
+            {
+                if (Status.HasValue)
+                {
+                    return Status == 0 ? "逾期" : (Status == 2 ? "完成" : "待完成");
+                }
+                else
+                {
+                    return "";
+                }
+
+            }
+        }
+        public string Type { get; set; }
+        public string DeptId { get; set; }
+        public string DeptName { get; set; }
+        public int? VisitNum { get; set; }
+
+        /// <summary>
+        /// CompleteNum
+        /// </summary>
+        public int? CompleteNum { get; set; }
+
+        /// <summary>
+        /// 逾期数
+        /// </summary>
+        public int? ExpiredNum { get; set; }
+        public int? Status { get; set; }
+
+        public int? Num
+        {
+            get
+            {
+                if (Status.HasValue)
+                {
+                    if (Status == 0)
+                    {
+                        return ExpiredNum;
+                    }
+                    else if (Status == 3)
+                    {
+                        return VisitNum - CompleteNum - ExpiredNum;
+                    }
+                    else
+                    {
+                        return CompleteNum;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        public string AreaName
+        {
+            get
+            {
+                return AreaCode.ToString();
+            }
+        }
+    }
+    public class DistrictChartByStatusDto
+    {
+        public DistrictChartByStatusDto()
+        {
+            TasksByStatus = new List<SheduleByStatusDto>();
+            AreaItemByStatus = new List<ItemDetailByStatus>();
+        }
+        public List<ItemDetailByStatus> AreaItemByStatus { get; set; }
+        public List<SheduleByStatusDto> TasksByStatus { get; set; }
+    }
+
+    public class TaskChartByStatusDto
+    {
+        public int Id { get; set; }
+        public string EmployeeId { get; set; }
+        public TaskTypeEnum Type { get; set; }
+        public string Name { get; set; }
+        public ScheduleStatusEnum Status { get; set; }
+        public string Department { get; set; }
+
+        public int? VisitNum { get; set; }
+        public int? CompleteNum { get; set; }
+    }
+    public class ChartByStatusDto
+    {
+        public ChartByStatusDto()
+        {
+            Tasks = new List<SheduleByStatusDto>();
+            AreaItem = new List<ItemDetailByStatus>();
+        }
+        public List<ItemDetailByStatus> AreaItem { get; set; }
+        public List<SheduleByStatusDto> Tasks { get; set; }
+    }
+
+    #endregion
 }
