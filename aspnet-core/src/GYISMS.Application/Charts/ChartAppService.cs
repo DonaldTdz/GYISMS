@@ -92,9 +92,11 @@ namespace GYISMS.Charts
                 var tnum = query.Sum(q => q.VisitNum);
                 tnum = tnum ?? 0;
                 //完成数
-                var cnum = query.Sum(q => q.CompleteNum);
+                var cnum = query.Sum(q => q.CompleteNum - q.VisitNum > 0 ? q.VisitNum : q.CompleteNum);
                 cnum = cnum ?? 0;
                 var cpercent = tnum == 0 ? 0 : Math.Round(cnum.Value / (decimal)tnum.Value, 2); //百分比
+                //var cpercent = Convert.ToDecimal(cnum.Value) / Convert.ToDecimal(tnum.Value);
+                //var cpercent = percent.ToString("0.00%");//得到5.88%
                 dataList.Add(new ScheduleSummaryDto() { Num = cnum, Name = "完成", ClassName = "complete", Percent = cpercent * 100, Seq = 1, Status = 2 });
 
                 //逾期数
@@ -104,8 +106,10 @@ namespace GYISMS.Charts
                 dataList.Add(new ScheduleSummaryDto() { Num = etnum, Name = "逾期", ClassName = "overdue", Percent = etpercent * 100, Seq = 3, Status = 0 });
 
                 //待完成数
-                var pnum = tnum - cnum - etnum;
-                var ppercent = tnum == 0 ? 0 : (1M - cpercent - etpercent);
+                //var pnum = tnum - cnum - etnum;
+                //var ppercent = tnum == 0 ? 0 : (1M - cpercent - etpercent);
+                var pnum = query.Sum(q => q.VisitNum - q.CompleteNum >= 0 ? q.VisitNum - q.CompleteNum : 0);
+                var ppercent = tnum == 0 ? 0 : Math.Round(pnum.Value / (decimal)tnum.Value, 2);
                 dataList.Add(new ScheduleSummaryDto() { Num = pnum, Name = "待完成", ClassName = "process", Percent = ppercent * 100, Seq = 2, Status = 3 });
 
                 return dataList.OrderBy(d => d.Seq).ToList();
@@ -977,12 +981,11 @@ namespace GYISMS.Charts
                    Id = s.Key.Id,
                    TaskName = $"({s.Key.Type}){s.Key.Name}",
                    VisitNum = s.Sum(sd => sd.VisitNum),
-                   CompleteNum = s.Sum(sd => sd.CompleteNum),
+                   CompleteNum = s.Sum(sd => sd.CompleteNum - sd.VisitNum > 0 ? sd.VisitNum : sd.CompleteNum),
                    ExpiredNum = s.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum)
                });
             var result = new DistrictChartByStatusDto();
             result.TasksByStatus = list.OrderBy(l => l.TaskName).ToList();
-
             //分区县统计
             var areaQuery = await (from sd in _scheduleDetailRepository.GetAll()
                                    .WhereIf(Status == 2, sd => sd.CompleteNum > 0)
@@ -993,14 +996,14 @@ namespace GYISMS.Charts
                                    join t in _visitTaskRepository.GetAll() on sd.TaskId equals t.Id
                                    join g in _growerRepository.GetAll() on sd.GrowerId equals g.Id
                                    where s.EndTime >= DateTime.Today && (areaCode == AreaCodeEnum.广元市 || g.AreaCode == areaCode)
-                                   group new { sd.VisitNum, sd.CompleteNum, sd.Status } by new { g.AreaCode, sd.VisitNum, sd.CompleteNum } into g
+                                   group new { sd.VisitNum, sd.CompleteNum, sd.Status } by  g.AreaCode into g
                                    select new ItemDetailByStatus
                                    {
                                        Status = Status,
                                        VisitNum = g.Sum(sd => sd.VisitNum),
-                                       CompleteNum = g.Sum(sd => sd.CompleteNum),
+                                       CompleteNum = g.Sum(sd => sd.CompleteNum - sd.VisitNum > 0 ? sd.VisitNum : sd.CompleteNum),
                                        ExpiredNum = g.Where(sd => sd.Status == ScheduleStatusEnum.已逾期).Sum(sd => sd.VisitNum - sd.CompleteNum),
-                                       AreaCode = g.Key.AreaCode
+                                       AreaCode = g.Key
                                    }).ToListAsync();
             result.AreaItemByStatus.AddRange(areaQuery);
             return result;

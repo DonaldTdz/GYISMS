@@ -274,7 +274,9 @@ namespace GYISMS.ScheduleDetails
             }
             else
             {
-                homeInfo.CompletedRate = (Math.Round((double)homeInfo.Completed / homeInfo.Total, 2) * 100).ToString() + "%";
+                //homeInfo.CompletedRate = (Math.Round((double)homeInfo.Completed / homeInfo.Total, 2) * 100).ToString() + "%";
+                double percent = Convert.ToDouble(homeInfo.Completed) / Convert.ToDouble(homeInfo.Total);
+                homeInfo.CompletedRate = percent.ToString("0.00%");//得到5.88%
             }
             var expirCount = query.Where(s => s.Status == ScheduleStatusEnum.已逾期).Sum(s => s.VisitNum - s.CompleteNum);
             homeInfo.Expired = expirCount.HasValue ? expirCount.Value : 0;
@@ -581,7 +583,7 @@ namespace GYISMS.ScheduleDetails
         [AbpAllowAnonymous]
         public async Task AutoUpdateOverdueStatusAsync()
         {
-            var dateTime = DateTime.Now;
+            var dateTime = DateTime.Today;
             var query = from sd in _scheduledetailRepository.GetAll()
                         join s in _scheduleRepository.GetAll()
                         on sd.ScheduleId equals s.Id
@@ -750,7 +752,9 @@ namespace GYISMS.ScheduleDetails
                 var completeRateT = "0%";
                 if (data.CompleteSum != 0 && data.TotalSum != 0)
                 {
-                    completeRateT = (Math.Round((double)data.CompleteSum / data.TotalSum, 2) * 100).ToString() + "%";
+                    //completeRateT = (Math.Round((double)data.CompleteSum / data.TotalSum, 2) * 100).ToString() + "%";
+                    double percent = Convert.ToDouble(data.CompleteSum) / Convert.ToDouble(data.TotalSum);
+                    completeRateT = percent.ToString("0.00%");//得到5.88%
                 }
                 rowIndex++;
                 IRow rowEnd = sheet.CreateRow(rowIndex);

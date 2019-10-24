@@ -6,7 +6,7 @@ import { AppComponentBase } from '@shared/app-component-base';
 import { MenuService, Menu, SettingsService } from '@delon/theme';
 
 @Component({
-    selector: 'abp-sidebar-nav',
+    selector: 'abp- -nav',
     templateUrl: './sidebar-nav.component.html',
     styleUrls: ["./sidebar-nav.component.less"]
 })
